@@ -1,50 +1,32 @@
-# React + TypeScript + Vite
+# meetpick_frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## 🎯 Commit convention
+```
+CHORE: 코드 수정, 내부 파일 수정
+FEAT: 새로운 기능 추가
+FIX: 버그, 오류 수정
+DOCS: README 등의 문서 수정
+REFACTOR: 기능 변경 없이 구조 개선
+TEST: 테스트 코드 추가 및 수정
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+## 🪴 Branch Convention (GitHub Flow)
+- `main`: 배포 가능한 브랜치, 항상 배포 가능한 상태를 유지
+- `feature/{description}`: 새로운 기능을 개발하는 브랜치
+  - 예: `feature/add-login-page`
+### 🌊Flow
+1. `feature` 브랜치에서 새로운 브랜치를 생성.
+2. 작업을 완료하고 커밋 메시지에 맞게 커밋.
+3. Pull Request를 생성 / 팀원들의 리뷰.
+4. 리뷰가 완료되면 `develop` 브랜치로 병합.
+5. `main` 브랜치로 병합 후, 배포.
+**예시**:
 ```
+# 새로운 기능 개발
+git checkout -b feature/add-login-page
+# 작업 완료 후, develop 브랜치로 병합
+git checkout develop
+git pull origin develop   # 최신 develop 브랜치를 로컬로 가져오기
+git merge feature/add-login-page   # feature 브랜치를 develop 브랜치에 병합
+git push origin develop 
