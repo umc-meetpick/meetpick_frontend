@@ -20,7 +20,7 @@ const ProgressWrapper = styled.div`
   height: 8px;
   background-color:#F1F1F1;
   border-radius: 5px;
-  margin-bottom: 20px;
+  margin: 35px auto;
 `;
 
 const ProgressFill = styled.div<ProgressBarProps>`
