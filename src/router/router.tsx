@@ -7,6 +7,7 @@ import Login from "../pages/Login"
 import Signup from "../pages/Signup"
 import MatchingPage from "../pages/Matching";
 import MyPage from "../pages/MyPage";
+import SetNickName from '../pages/setProfilePages/setNickname';
 
 const router = createBrowserRouter([
     {
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
           {
             path:'matching',
             element:<MatchingPage/>
+          },
+          {
+            path:'setProfile/nickname',
+            element:<SetNickName/>
           },
         ]
     }])

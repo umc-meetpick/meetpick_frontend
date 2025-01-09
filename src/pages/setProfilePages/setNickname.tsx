@@ -1,5 +1,5 @@
 import React from 'react';
-const setNickName = () => {
+const SetNickName = () => {
     return (
         <>
             <h1>닉네임 설정 페이지</h1>
@@ -7,4 +7,4 @@ const setNickName = () => {
     );
 };
 
-export default setNickName;
+export default SetNickName;
