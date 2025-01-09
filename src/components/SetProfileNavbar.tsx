@@ -29,6 +29,7 @@ const IconPosition = styled.div`
 const Title = styled.div`
     font-size:17px;
     font-weight:500;
+    color:black;
     display:flex;
     justify-content: center;
     line-height:60px;
