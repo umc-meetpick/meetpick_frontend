@@ -12,5 +12,13 @@ const Input = styled.input`
     width:300px;
     height:48px;
     border:none;
-    border-bottom: 1px solid gray;
+    border-bottom: 1px solid #CECECE;
+    font-size:17px;
+    font-weight:400;
+    ::placeholder {
+        color: #939395;
+    }
+    &:focus {
+        outline: none;
+    }
 `;

@@ -1,9 +1,19 @@
 import React from 'react';
+import { useState } from 'react';
 import SetProfileNavbar from '../../components/SetProfileNavbar';
 import ProgressBar from '../../components/ProgressBar';
 import styled from 'styled-components';
+import GrayBottomInput from '../../components/GrayBottomInput';
+import { PiWarningCircle } from "react-icons/pi";
+import { FaRegCircleCheck } from "react-icons/fa6";
+import MoveNextRoundBtn from "../../components/MoveNextRoundBtn"
 
-const SetNickName = () => {
+const SetNickName: React.FC = () => {
+    const [btnClicked, setBtnClicked] =useState(false)
+    const [isDupilicate, setIsDupilicate] = useState(true)
+    const handleDupilicate = () =>{
+        setBtnClicked(true)
+    }
     return (
         <>
             <SetProfileNavbar/>
@@ -14,6 +24,22 @@ const SetNickName = () => {
                     입력해주세요!
                 </Title>
                 <SubInfo>공백 제외 한글, 영문 10자까지 가능</SubInfo>
+                <GrayBottomInput/>
+                <DupilicateBtn onClick={handleDupilicate}>중복확인</DupilicateBtn>
+                {btnClicked && (
+                    isDupilicate ? (
+                        <Warning isRed={isDupilicate}>
+                            <PiWarningCircle color={"#DB1818"} style={{ marginTop: "5px"}}/>
+                            <div>이미 존재하는 닉네임입니다.</div>
+                        </Warning>
+                    ):(
+                        <Warning isRed={isDupilicate}>
+                            <FaRegCircleCheck color={"#007AFF"} style={{ marginTop: "5px"}}/>
+                            <div>사용 가능한 닉네임입니다.</div>
+                        </Warning>
+                    )
+                )}
+                <MoveNextRoundBtn nextPage={"/setProfile/image"}/>
             </Container>
         </>
     );
@@ -23,8 +49,8 @@ export default SetNickName;
 
 const Container = styled.div`
     margin-top:100px;
-    border:1px solid red;
     margin: 0 auto;
+    height:calc(100vh - 240px)
 `;
 const Title = styled.div`
     margin-top:60px;
@@ -42,4 +68,36 @@ const SubInfo = styled.div`
     height:23px;
     font-size:14px;
     color:#838383;
+    margin-bottom:40px;
+`;
+const DupilicateBtn = styled.button`
+    width:75px;
+    height:28px;
+    color:#838383;
+    font-size:14px;
+    font-weight:400;
+    line-height:16.71px;
+    border: 1px solid #E5E5E5;
+    border-radius: 22px;
+    background-color:white;
+    padding:0px;
+    position:absolute;
+    top:335px;
+    left:275px;
+    &:focus {
+        border: 1px solid #E5E5E5;
+        outline: none;
+    }
+`;
+const Warning = styled.div<{ isRed?: boolean }>`
+    margin-top:10px;
+    display:flex;
+    font-size:14px;
+    width:200px;
+    height:24px;
+    line-height:24px;
+    div{
+        margin-left:5px;
+        color:${(props)=>(props.isRed ? "#DB1818" : "black")}
+    }
 `;
