@@ -6,8 +6,8 @@ interface ProfileInfoContextType {
     setNickName: (nickname: string) => void;
     image: string;
     setImage: (image: string) => void;
-    studentNum: number;
-    setStudentNum: (studentNum: number) => void;
+    studentNum: string;
+    setStudentNum: (studentNum: string) => void;
     mbti: string;
     setMbti: (mbti: string) => void;
     major: string;
@@ -16,6 +16,8 @@ interface ProfileInfoContextType {
     setHobby: (hobby: string[]) => void;
     contect: string;
     setContect: (contect: string) => void;
+    mbtiArray: string[];
+    setMbtiArray: (hobby: string[]) => void;
   }
 
 // 초기값 설정
@@ -24,7 +26,7 @@ const defaultValue: ProfileInfoContextType = {
     setNickName: () => {},
     image: "",
     setImage: () => {},
-    studentNum: 0,
+    studentNum: "",
     setStudentNum: () => {},
     mbti: "",
     setMbti: () => {},
@@ -34,6 +36,8 @@ const defaultValue: ProfileInfoContextType = {
     setHobby: () => {},
     contect: "",
     setContect: () => {},
+    mbtiArray:[],
+    setMbtiArray: () => {},
   };
 
   
@@ -46,12 +50,12 @@ interface ProfileContextProviderProps {
 export function ProfileContextProvider({children}:ProfileContextProviderProps){
     const [nickname, setNickName] = useState<string>("");
     const [image, setImage] = useState<string>("");
-    const [studentNum, setStudentNum] = useState<number>(0);
+    const [studentNum, setStudentNum] = useState<string>("");
     const [mbti, setMbti] = useState<string>("");
     const [major, setMajor] = useState<string>("");
     const [hobby, setHobby] = useState<string[]>([]);
     const [contect, setContect] = useState<string>("");
-
+    const [mbtiArray, setMbtiArray] = useState<string[]>([]);
     return(
         <ProfileInfoContext.Provider
             value={{
@@ -68,7 +72,9 @@ export function ProfileContextProvider({children}:ProfileContextProviderProps){
                 hobby,
                 setHobby,
                 contect,
-                setContect
+                setContect,
+                mbtiArray,
+                setMbtiArray
             }}
         >
             {children}

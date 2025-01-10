@@ -9,6 +9,8 @@ import MatchingPage from "../pages/Matching";
 import MyPage from "../pages/MyPage";
 import SetNickName from '../pages/setProfilePages/setNickname';
 import SetImage from '../pages/setProfilePages/setImage';
+import SetStudentNum from '../pages/setProfilePages/setStudentNum';
+import SetMBTI from '../pages/setProfilePages/setMBTI';
 
 const router = createBrowserRouter([
     {
@@ -44,6 +46,14 @@ const router = createBrowserRouter([
             path:'setProfile/image',
             element:<SetImage/>
           },
+          {
+            path:'setProfile/studentNum',
+            element:<SetStudentNum/>
+          },
+          {
+            path:'setProfile/mbti',
+            element:<SetMBTI/>
+          }
         ]
     }])
   

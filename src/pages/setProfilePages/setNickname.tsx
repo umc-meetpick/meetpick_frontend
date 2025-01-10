@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import SetProfileNavbar from '../../components/SetProfileNavbar';
+import SetProfileNavbar from '../../components/BasicNavbar';
 import ProgressBar from '../../components/ProgressBar';
 import styled from 'styled-components';
 import GrayBottomInput from '../../components/GrayBottomInput';
@@ -21,7 +21,7 @@ const SetNickName: React.FC = () => {
     }
     return (
         <>
-            <SetProfileNavbar/>
+            <SetProfileNavbar title={"프로필 작성"}/>
             <ProgressBar progress={14}/>
             <Container>
                 <Title>

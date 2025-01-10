@@ -3,7 +3,11 @@ import styled from 'styled-components';
 import { useNavigate } from "react-router-dom";
 import { IoChevronBackOutline } from "react-icons/io5";
 
-const SetProfileNavbar: React.FC = () =>{
+interface TitleProps{
+    title:string;
+}
+
+const BasicNavbar: React.FC<TitleProps> = ({title}) =>{
     const navigate = useNavigate();
     const handleGoBack = () => {
         navigate(-1);
@@ -11,11 +15,11 @@ const SetProfileNavbar: React.FC = () =>{
     return(
         <Container>
             <IconPosition onClick={handleGoBack}><IoChevronBackOutline size={24}/></IconPosition>
-            <Title>프로필 작성</Title>
+            <Title>{title}</Title>
         </Container>
     )
 }
-export default SetProfileNavbar
+export default BasicNavbar
 
 const Container = styled.div`
     width:393px;

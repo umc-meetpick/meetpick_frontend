@@ -4,12 +4,19 @@ import { useNavigate } from "react-router-dom";
 
 interface MoveNextRoundBtnProps {
     nextPage: string;
+    onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void; 
   }
 
-const MoveNextRoundBtn = ({nextPage}: MoveNextRoundBtnProps) =>{
+const MoveNextRoundBtn:  React.FC<MoveNextRoundBtnProps>= ({nextPage, onClick}) =>{
     const navigate = useNavigate();
+    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        if (onClick) {
+            onClick(event); 
+        }
+        navigate(nextPage); 
+      };
     return(
-        <Btn onClick={()=>navigate(nextPage)}>다음</Btn>
+        <Btn onClick={handleClick}>다음</Btn>
     )
 }
 export default MoveNextRoundBtn

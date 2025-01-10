@@ -1,5 +1,5 @@
 import React, {useState, useContext} from "react"
-import SetProfileNavbar from '../../components/SetProfileNavbar';
+import SetProfileNavbar from '../../components/BasicNavbar';
 import ProgressBar from '../../components/ProgressBar';
 import styled from "styled-components";
 import MoveNextRoundBtn from "../../components/MoveNextRoundBtn";
@@ -18,9 +18,9 @@ const SetImage = () =>{
     }
     return(
         <>
-            <SetProfileNavbar/>
+            <SetProfileNavbar title={"프로필 작성"}/>
             <ProgressBar progress={28}/>
-            <ProfileSelectedBorder input={nickname}/>
+            <ProfileSelectedBorder input={[nickname]}/>
             <Container>
                 <Title>원하는 프로필을 선택하세요!</Title>
                 <ImageWrapper>
