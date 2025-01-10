@@ -11,6 +11,7 @@ import SetNickName from '../pages/setProfilePages/setNickname';
 import SetImage from '../pages/setProfilePages/setImage';
 import SetStudentNum from '../pages/setProfilePages/setStudentNum';
 import SetMBTI from '../pages/setProfilePages/setMBTI';
+import SetMajor from '../pages/setProfilePages/setMajor';
 
 const router = createBrowserRouter([
     {
@@ -53,6 +54,10 @@ const router = createBrowserRouter([
           {
             path:'setProfile/mbti',
             element:<SetMBTI/>
+          },
+          {
+            path:'setProfile/major',
+            element:<SetMajor/>
           }
         ]
     }])
