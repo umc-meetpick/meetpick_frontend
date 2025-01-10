@@ -2,31 +2,35 @@ import React, { useContext } from "react";
 import styled from "styled-components";
 import SetProfileNavbar from '../../components/BasicNavbar';
 import ProgressBar from '../../components/ProgressBar';
-import MoveNextRoundBtn from "../../components/MoveNextRoundBtn";
 import { ProfileInfoContext } from '../../context/profileInfoContext';
 import ProfileSelectedBorder from "../../components/profileSelectedBorder";
+import ToggleList from "../../components/ToggleList";
 
 const SetMajor = () =>{
-    const {nickname, image, studentNum, mbti, setMajor} = useContext(ProfileInfoContext);
+    const {nickname, image, studentNum, mbti} = useContext(ProfileInfoContext);
     return(
-        <>
+        <Wrapper>
             <SetProfileNavbar title={"프로필 작성"}/>
-            <ProgressBar progress={40}/>
+            <ProgressBar progress={70}/>
             <ProfileSelectedBorder input={[nickname,image,studentNum,mbti]}/>
             <Container>
                 <Title>전공을 선택해주세요</Title>
-                <MoveNextRoundBtn nextPage={"/setProfile/hobby"}/>
+                <ToggleList/>
             </Container>
-        </>
+        </Wrapper>
     )
 }
 export default SetMajor;
 
+const Wrapper = styled.div`
+    width:100%;
+    height:calc(100vh - 100px);
+    overflow-y: auto;
+`;
 const Container = styled.div`
-    margin-top:100px;
+    width:302px;
     margin: 0 auto;
-    height:calc(100vh - 240px)
-    border:1px solid red;
+    position: relative;
 `;
 const Title = styled.div`
     font-size:21px;

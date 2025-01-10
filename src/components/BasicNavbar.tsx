@@ -24,9 +24,10 @@ export default BasicNavbar
 const Container = styled.div`
     width:393px;
     height:60px;
+    align-items: center;
 `;
 const IconPosition = styled.div`
-    position:fixed;
+    position:relative;
     top:20px;
     left:33px;
 `;
@@ -36,5 +37,5 @@ const Title = styled.div`
     color:black;
     display:flex;
     justify-content: center;
-    line-height:60px;
+    margin-top:-10px;
 `
