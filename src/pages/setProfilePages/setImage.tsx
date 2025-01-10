@@ -1,4 +1,4 @@
-import React from "react"
+import React, {useContext} from "react"
 import SetProfileNavbar from '../../components/SetProfileNavbar';
 import ProgressBar from '../../components/ProgressBar';
 import styled from "styled-components";
@@ -6,12 +6,16 @@ import MoveNextRoundBtn from "../../components/MoveNextRoundBtn";
 import profile1 from "../../assets/profileImg/프로필1.png";
 import profile2 from "../../assets/profileImg/프로필2.png";
 import profile3 from "../../assets/profileImg/프로필3.png";
+import { ProfileInfoContext } from '../../context/profileInfoContext';
+import ProfileSelectedBorder from "../../components/profileSelectedBorder";
 
 const SetImage = () =>{
+    const {nickname, setImage} = useContext(ProfileInfoContext);
     return(
         <>
             <SetProfileNavbar/>
             <ProgressBar progress={28}/>
+            <ProfileSelectedBorder input={nickname}/>
             <Container>
                 <Title>원하는 프로필을 선택하세요!</Title>
                 <ImageWrapper>
@@ -36,14 +40,12 @@ const Container = styled.div`
     border:1px solid red;
 `;
 const Title = styled.div`
-    margin-top:60px;
     font-size:21px;
     font-weight:700;
     color:black;
     width:302px;
     height:23px;
     line-height:23px;
-    margin-top:60px;
 `;
 const ImageWrapper = styled.div`
     display: grid;

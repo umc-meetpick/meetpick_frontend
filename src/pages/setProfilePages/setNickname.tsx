@@ -1,5 +1,4 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import SetProfileNavbar from '../../components/SetProfileNavbar';
 import ProgressBar from '../../components/ProgressBar';
 import styled from 'styled-components';
@@ -7,12 +6,18 @@ import GrayBottomInput from '../../components/GrayBottomInput';
 import { PiWarningCircle } from "react-icons/pi";
 import { FaRegCircleCheck } from "react-icons/fa6";
 import MoveNextRoundBtn from "../../components/MoveNextRoundBtn"
+import { ProfileInfoContext } from '../../context/profileInfoContext';
 
 const SetNickName: React.FC = () => {
+    const [inputValue, setInputValue] = useState("");
     const [btnClicked, setBtnClicked] =useState(false)
-    const [isDupilicate, setIsDupilicate] = useState(true)
+    const [isDupilicate, setIsDupilicate] = useState(false)
+    const {setNickName} = useContext(ProfileInfoContext);
     const handleDupilicate = () =>{
         setBtnClicked(true)
+        if(!isDupilicate){
+            setNickName(inputValue);
+        }
     }
     return (
         <>
@@ -24,16 +29,19 @@ const SetNickName: React.FC = () => {
                     입력해주세요!
                 </Title>
                 <SubInfo>공백 제외 한글, 영문 10자까지 가능</SubInfo>
-                <GrayBottomInput/>
+                <GrayBottomInput
+                    value={inputValue} 
+                    onChange={(e)=>setInputValue(e.target.value)} 
+                />
                 <DupilicateBtn onClick={handleDupilicate}>중복확인</DupilicateBtn>
                 {btnClicked && (
                     isDupilicate ? (
-                        <Warning isRed={isDupilicate}>
+                        <Warning $isRed={isDupilicate}>
                             <PiWarningCircle color={"#DB1818"} style={{ marginTop: "5px"}}/>
                             <div>이미 존재하는 닉네임입니다.</div>
                         </Warning>
                     ):(
-                        <Warning isRed={isDupilicate}>
+                        <Warning $isRed={isDupilicate}>
                             <FaRegCircleCheck color={"#007AFF"} style={{ marginTop: "5px"}}/>
                             <div>사용 가능한 닉네임입니다.</div>
                         </Warning>
@@ -89,7 +97,7 @@ const DupilicateBtn = styled.button`
         outline: none;
     }
 `;
-const Warning = styled.div<{ isRed?: boolean }>`
+const Warning = styled.div<{ $isRed?: boolean }>`
     margin-top:10px;
     display:flex;
     font-size:14px;
@@ -98,6 +106,6 @@ const Warning = styled.div<{ isRed?: boolean }>`
     line-height:24px;
     div{
         margin-left:5px;
-        color:${(props)=>(props.isRed ? "#DB1818" : "black")}
+        color:${({$isRed})=>($isRed ? "#DB1818" : "black")};
     }
 `;
