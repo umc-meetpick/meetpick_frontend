@@ -8,6 +8,7 @@ import Signup from "../pages/Signup"
 import MatchingPage from "../pages/Matching";
 import MyPage from "../pages/MyPage";
 import SetNickName from '../pages/setProfilePages/setNickname';
+import SetImage from '../pages/setProfilePages/setImage';
 
 const router = createBrowserRouter([
     {
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
           {
             path:'setProfile/nickname',
             element:<SetNickName/>
+          },
+          {
+            path:'setProfile/image',
+            element:<SetImage/>
           },
         ]
     }])
