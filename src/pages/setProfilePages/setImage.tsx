@@ -1,4 +1,4 @@
-import React, {useContext} from "react"
+import React, {useState, useContext} from "react"
 import SetProfileNavbar from '../../components/SetProfileNavbar';
 import ProgressBar from '../../components/ProgressBar';
 import styled from "styled-components";
@@ -10,7 +10,12 @@ import { ProfileInfoContext } from '../../context/profileInfoContext';
 import ProfileSelectedBorder from "../../components/profileSelectedBorder";
 
 const SetImage = () =>{
+    const [isSelected, setIsSelected] = useState<number>(0);
     const {nickname, setImage} = useContext(ProfileInfoContext);
+    const handleSelected = (num:number, profile:string) =>{
+        setIsSelected(num);
+        setImage(profile);
+    }
     return(
         <>
             <SetProfileNavbar/>
@@ -19,12 +24,12 @@ const SetImage = () =>{
             <Container>
                 <Title>원하는 프로필을 선택하세요!</Title>
                 <ImageWrapper>
-                    <ProfileRound src={profile1} alt="프로필1"/>
-                    <ProfileRound src={profile2} alt="프로필2"/>
-                    <ProfileRound src={profile3} alt="프로필3"/>
-                    <ProfileRound src={profile1} alt="프로필1"/>
-                    <ProfileRound src={profile2} alt="프로필2"/>
-                    <ProfileRound src={profile3} alt="프로필3"/>
+                    <ProfileRound src={profile1} alt="프로필1" $isSelected={1==isSelected} onClick={()=>handleSelected(1, profile1)}/>
+                    <ProfileRound src={profile2} alt="프로필2" $isSelected={2==isSelected} onClick={()=>handleSelected(2, profile2)}/>
+                    <ProfileRound src={profile3} alt="프로필3" $isSelected={3==isSelected} onClick={()=>handleSelected(3, profile3)}/>
+                    <ProfileRound src={profile1} alt="프로필1" $isSelected={4==isSelected} onClick={()=>handleSelected(4, profile1)}/>
+                    <ProfileRound src={profile2} alt="프로필2" $isSelected={5==isSelected} onClick={()=>handleSelected(5, profile2)}/>
+                    <ProfileRound src={profile3} alt="프로필3" $isSelected={6==isSelected} onClick={()=>handleSelected(6, profile3)}/>
                 </ImageWrapper>
                 <MoveNextRoundBtn nextPage={"/setProfile/studentNum"}/>
             </Container>
@@ -54,9 +59,9 @@ const ImageWrapper = styled.div`
     gap:10px;
     margin-top:40px;
 `;
-const ProfileRound = styled.img`
+const ProfileRound = styled.img<{$isSelected: boolean}>`
     width:80px;
     height:80px;
-    border:1px solid #CECECE;
+    border:${({$isSelected}) => ($isSelected ? "1px solid #007AFF" : "1px solid #CECECE")};
     border-radius:100px;
 `;
