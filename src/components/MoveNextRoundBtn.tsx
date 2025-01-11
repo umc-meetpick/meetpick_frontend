@@ -4,10 +4,11 @@ import { useNavigate } from "react-router-dom";
 
 interface MoveNextRoundBtnProps {
     nextPage: string;
+    title?: string;
     onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void; 
   }
 
-const MoveNextRoundBtn:  React.FC<MoveNextRoundBtnProps>= ({nextPage, onClick}) =>{
+const MoveNextRoundBtn:  React.FC<MoveNextRoundBtnProps>= ({nextPage, title, onClick}) =>{
     const navigate = useNavigate();
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         if (onClick) {
@@ -16,7 +17,7 @@ const MoveNextRoundBtn:  React.FC<MoveNextRoundBtnProps>= ({nextPage, onClick}) 
         navigate(nextPage); 
       };
     return(
-        <Btn onClick={handleClick}>다음</Btn>
+        <Btn onClick={handleClick}>{title ? title : "다음"}</Btn>
     )
 }
 export default MoveNextRoundBtn
@@ -26,10 +27,10 @@ const Btn = styled.button`
     height:48px;
     color:#326DC1;
     font-size:15px;
-    weight:600;
+    font-weight:600;
     background-color:#E7F2FE;
     border-radius:100px;
     position:fixed;
-    top:670px;
+    top:640px;
     left:41px;
 `;

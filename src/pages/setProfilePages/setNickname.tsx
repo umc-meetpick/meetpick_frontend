@@ -68,7 +68,6 @@ const Title = styled.div`
     width:302px;
     height:23px;
     line-height:23px;
-    margin-top:60px;
 `;
 const SubInfo = styled.div`
     margin-top:40px;

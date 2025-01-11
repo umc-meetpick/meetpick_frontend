@@ -14,6 +14,8 @@ interface ProfileInfoContextType {
     setMajor: (major: string) => void;
     hobby: string[];
     setHobby: (hobby: string[]) => void;
+    contectType: string;
+    setContectType: (contect: string) => void;
     contect: string;
     setContect: (contect: string) => void;
     mbtiArray: string[];
@@ -34,6 +36,8 @@ const defaultValue: ProfileInfoContextType = {
     setMajor: () => {},
     hobby: [],
     setHobby: () => {},
+    contectType: "",
+    setContectType: () => {},
     contect: "",
     setContect: () => {},
     mbtiArray:[],
@@ -54,6 +58,7 @@ export function ProfileContextProvider({children}:ProfileContextProviderProps){
     const [mbti, setMbti] = useState<string>("");
     const [major, setMajor] = useState<string>("");
     const [hobby, setHobby] = useState<string[]>([]);
+    const [contectType, setContectType] = useState<string>("");
     const [contect, setContect] = useState<string>("");
     const [mbtiArray, setMbtiArray] = useState<string[]>([]);
     return(
@@ -71,6 +76,8 @@ export function ProfileContextProvider({children}:ProfileContextProviderProps){
                 setMajor,
                 hobby,
                 setHobby,
+                contectType,
+                setContectType,
                 contect,
                 setContect,
                 mbtiArray,

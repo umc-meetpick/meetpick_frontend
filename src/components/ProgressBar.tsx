@@ -8,7 +8,7 @@ interface ProgressBarProps {
 const ProgressBar: React.FC<ProgressBarProps> = ({ progress }) => {
   return (
     <ProgressWrapper>
-      <ProgressFill progress={progress} />
+      <ProgressFill $progress={progress} />
     </ProgressWrapper>
   );
 };
@@ -23,8 +23,8 @@ const ProgressWrapper = styled.div`
   margin: 35px auto;
 `;
 
-const ProgressFill = styled.div<ProgressBarProps>`
-  width: ${(props) => props.progress}%;
+const ProgressFill = styled.div<{ $progress: number }>`
+  width: ${(props) => props.$progress}%;
   height: 100%;
   background: linear-gradient(90deg, #ABD9FF 20% ,#1A98FF 80%);
   border-radius: 5px;

@@ -23,13 +23,13 @@ const ToggleList: React.FC = () =>{
         <Container>
             {majorList.map(item => (
                 <div key={item.id}>
-                    <Toggle onClick={() => handleToggle(item.id)} $isOpened={openItems.includes(item.id)}>
+                    <Toggle key={item.id} onClick={() => handleToggle(item.id)} $isOpened={openItems.includes(item.id)}>
                         {item.college}
                         <FaChevronDown style={{color:"#AAAAAA"}}/>
                     </Toggle>
                     {openItems.includes(item.id) && (
-                        item.majors.map(major => (
-                            <Detail onClick={()=>handleMajor(major)}>
+                        item.majors.map((major, index) => (
+                            <Detail key={`major-${item.id}-${index}`} onClick={()=>handleMajor(major)}>
                                 {major}
                             </Detail>
                         ))
@@ -86,7 +86,7 @@ const Btn = styled.button`
     height:48px;
     color:#326DC1;
     font-size:15px;
-    weight:600;
+    font-weight:600;
     background-color:#E7F2FE;
     border-radius:100px;
     margin-top:43px;

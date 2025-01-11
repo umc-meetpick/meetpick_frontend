@@ -27,7 +27,7 @@ const SetHobby = () =>{
                     {hobbyList.map((content,index)=>(
                         <Border 
                             key={index} 
-                            length={content.length} 
+                            $length={content.length} 
                             onClick={()=>handleChoose(content)}
                             $isSelected={hobby.includes(content)}
                         >
@@ -64,14 +64,14 @@ const HobbyWrapper = styled.div`
     flex-wrap: wrap;
     gap:10px;
 `;
-const Border = styled.button<{ length: number, $isSelected:boolean}>`
+const Border = styled.button<{ $length: number, $isSelected:boolean}>`
     color: ${({$isSelected})=> $isSelected ? "#007AFF" : "black"};
     font-size:13px;
     font-weight:400;
     align-items: center;
     text-align:center;
     padding:0;
-    width: ${({ length }: { length: number }) => (length > 0 ? `${length * 13}px` : "60px")};
+    width: ${({ $length }: { $length: number }) => ($length > 0 ? `${$length * 10 + 20}px` : "60px")};
     height:28px;
     border: ${({$isSelected})=> $isSelected ? "1px solid #007AFF" : "1px solid #CECECE"};
     background-color: #FFFFFF;
