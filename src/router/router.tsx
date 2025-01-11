@@ -7,6 +7,9 @@ import Login from "../pages/Login"
 import Signup from "../pages/Signup"
 import MatchingPage from "../pages/Matching";
 import MyPage from "../pages/MyPage";
+import Signup1 from '../pages/Signup1';
+import Signup2 from '../pages/Signup2';
+import Signup3 from '../pages/Signup3';
 
 const router = createBrowserRouter([
     {
@@ -34,6 +37,18 @@ const router = createBrowserRouter([
             path:'matching',
             element:<MatchingPage/>
           },
+          {
+            path:'signup1',
+            element:<Signup1/>
+          },
+          {
+            path:'signup2',
+            element:<Signup2/>
+          },
+          {
+            path:'signup3',
+            element:<Signup3/>
+          }
         ]
     }])
   
