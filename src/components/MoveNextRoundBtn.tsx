@@ -29,7 +29,7 @@ const Btn = styled.button`
     weight:600;
     background-color:#E7F2FE;
     border-radius:100px;
-    position:absolute;
-    bottom:120px;
+    position:fixed;
+    top:670px;
     left:41px;
 `;

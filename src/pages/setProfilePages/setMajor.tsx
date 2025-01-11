@@ -30,7 +30,6 @@ const Wrapper = styled.div`
 const Container = styled.div`
     width:302px;
     margin: 0 auto;
-    position: relative;
 `;
 const Title = styled.div`
     font-size:21px;

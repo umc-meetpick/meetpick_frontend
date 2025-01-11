@@ -37,7 +37,7 @@ const Border = styled.div<{ length: number}>`
     font-weight:400;
     text-align:center;
     line-height:28px;
-    width: ${({ length }: { length: number }) => (length > 0 ? `${length * 10 + 20}px` : "60px")};
+    width: ${({ length }: { length: number }) => (length > 0 ? `${length * 13 + 20}px` : "60px")};
     height:28px;
     border: 1px solid #1B98FF;
     background-color: #ECF6FF;

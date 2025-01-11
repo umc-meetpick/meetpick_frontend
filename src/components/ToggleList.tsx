@@ -23,7 +23,7 @@ const ToggleList: React.FC = () =>{
         <Container>
             {majorList.map(item => (
                 <div key={item.id}>
-                    <Toggle onClick={() => handleToggle(item.id)} isOpened={openItems.includes(item.id)}>
+                    <Toggle onClick={() => handleToggle(item.id)} $isOpened={openItems.includes(item.id)}>
                         {item.college}
                         <FaChevronDown style={{color:"#AAAAAA"}}/>
                     </Toggle>
@@ -48,9 +48,9 @@ const Container = styled.div`
     margin-top:20px;
     max-height: calc(100vh - 150px);
     position:relative;
-    overflow-y: auto; 
+    
 `;
-const Toggle = styled.button<{isOpened:boolean;}>`
+const Toggle = styled.button<{$isOpened:boolean;}>`
     width:312px;
     height:48px;
     color: #5A5A5A;
@@ -59,7 +59,7 @@ const Toggle = styled.button<{isOpened:boolean;}>`
     justify-content: space-between;
     align-items: center;
     border:none;
-    background-color:${({isOpened})=> isOpened ? "#F9FAFB" : "#FFFFFF"};
+    background-color:${({$isOpened})=> $isOpened ? "#F9FAFB" : "#FFFFFF"};
     border-top: 1px solid #D9D9D9;
     border-bottom: 1px solid #D9D9D9;
     &:focus {
@@ -89,7 +89,7 @@ const Btn = styled.button`
     weight:600;
     background-color:#E7F2FE;
     border-radius:100px;
-    margin-top:35px;
+    margin-top:43px;
     &:focus {
         outline: none;
     }

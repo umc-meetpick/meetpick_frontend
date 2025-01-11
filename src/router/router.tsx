@@ -12,6 +12,7 @@ import SetImage from '../pages/setProfilePages/setImage';
 import SetStudentNum from '../pages/setProfilePages/setStudentNum';
 import SetMBTI from '../pages/setProfilePages/setMBTI';
 import SetMajor from '../pages/setProfilePages/setMajor';
+import SetHobby from '../pages/setProfilePages/setHobby';
 
 const router = createBrowserRouter([
     {
@@ -58,6 +59,10 @@ const router = createBrowserRouter([
           {
             path:'setProfile/major',
             element:<SetMajor/>
+          },
+          {
+            path:'setProfile/hobby',
+            element:<SetHobby/>
           }
         ]
     }])
