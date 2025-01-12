@@ -45,6 +45,7 @@ const Signup = () => {
 
   return (
     <>
+    <Wrapper>
       <BasicNavbar title="회원가입" />
       <Container>
         <AgreeList>
@@ -106,26 +107,33 @@ const Signup = () => {
           </Link>
         </ButtonContainer>
       </Container>
+    </Wrapper>
     </>
   );
 };
 
 export default Signup;
 
+
+const Wrapper = styled.div`
+    height:calc(100vh - 68px);
+    overflow-y: auto;
+`; 
+
 const Container = styled.div`
   display: flex;
-  height: 80vh;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding:0 35px;
+  justify-content: center; /* 세로 중앙 정렬 */
+  align-items: center; /* 가로 중앙 정렬 */
+  padding: 0 35px;
 `;
 
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
-  margin-top: 50px;
+  margin-top: 35px;
+  margin-bottom: 20px;
 `;
 
 const AgreeList = styled.div`

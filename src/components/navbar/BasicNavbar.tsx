@@ -25,6 +25,7 @@ const Container = styled.div`
     width:393px;
     height:60px;
     align-items: center;
+    background-color:white;
 `;
 const IconPosition = styled.div`
     position:relative;
