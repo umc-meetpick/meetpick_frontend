@@ -34,7 +34,7 @@ const SetContect= () => {
                     value={inputValue} 
                     onChange={(e)=>setInputValue(e.target.value)} 
                 />
-                <MoveNextRoundBtn nextPage={"/setProfile/hobby"} title="메이트 찾으러 가기" onClick={()=>{setContect(inputValue)}}/>
+                <MoveNextRoundBtn nextPage={"/"} title="메이트 찾으러 가기" onClick={()=>{setContect(inputValue)}}/>
             </Container>
         </>
     );
