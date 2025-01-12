@@ -153,9 +153,8 @@ const Text = styled.p`
 
 const EntireContainer = styled.div`
   display: flex;
-  height: 600px;
+  height: 100vh;
   flex-direction: column;
-  justify-content: center;
   padding: 0 40.5px;
 `;
 

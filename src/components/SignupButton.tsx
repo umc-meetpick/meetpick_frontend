@@ -42,6 +42,7 @@ const StyledButton = styled.button<{ $backgroundColor: string; width: string; co
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
+  margin-bottom:10px;
 `;
 
 export default SignupButton;
