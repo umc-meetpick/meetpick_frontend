@@ -12,7 +12,7 @@ const SetNickName: React.FC = () => {
     const [inputValue, setInputValue] = useState("");
     const [btnClicked, setBtnClicked] =useState(false)
     const [isDupilicate, setIsDupilicate] = useState(false)
-    const {setNickName} = useContext(ProfileInfoContext);
+    const {nickname, setNickName} = useContext(ProfileInfoContext);
     const handleDupilicate = () =>{
         setBtnClicked(true)
         if(!isDupilicate){
@@ -30,7 +30,7 @@ const SetNickName: React.FC = () => {
                 </Title>
                 <SubInfo>공백 제외 한글, 영문 10자까지 가능</SubInfo>
                 <GrayBottomInput
-                    value={inputValue} 
+                    value={inputValue||nickname} 
                     onChange={(e)=>setInputValue(e.target.value)} 
                 />
                 <DupilicateBtn onClick={handleDupilicate}>중복확인</DupilicateBtn>

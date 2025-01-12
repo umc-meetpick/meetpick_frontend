@@ -7,7 +7,7 @@ import { ProfileInfoContext } from '../context/profileInfoContext';
 
 const ToggleList: React.FC = () =>{
     const navigate = useNavigate();
-    const {setMajor} = useContext(ProfileInfoContext);
+    const {major, setMajor} = useContext(ProfileInfoContext);
     const [openItems, setOpenItems] = useState<number[]>([]);
     const handleToggle = (id: number) => {
         if (openItems.includes(id)) {
@@ -28,9 +28,9 @@ const ToggleList: React.FC = () =>{
                         <FaChevronDown style={{color:"#AAAAAA"}}/>
                     </Toggle>
                     {openItems.includes(item.id) && (
-                        item.majors.map((major, index) => (
-                            <Detail key={`major-${item.id}-${index}`} onClick={()=>handleMajor(major)}>
-                                {major}
+                        item.majors.map((maj, index) => (
+                            <Detail key={`major-${item.id}-${index}`} onClick={()=>handleMajor(maj)} $isSelected={major===maj}>
+                                {maj}
                             </Detail>
                         ))
                     )}
@@ -48,7 +48,6 @@ const Container = styled.div`
     margin-top:20px;
     max-height: calc(100vh - 150px);
     position:relative;
-    
 `;
 const Toggle = styled.button<{$isOpened:boolean;}>`
     width:312px;
@@ -69,16 +68,15 @@ const Toggle = styled.button<{$isOpened:boolean;}>`
         outline: none;
     }
 `;
-const Detail = styled.button`
+const Detail = styled.button<{$isSelected: boolean}>`
     width:296px;
     height:48px;
     align-items: center;
-    color: #7D7D7D;
+    color:${({$isSelected})=>$isSelected ? "#007AFF" : "#7D7D7D"};
     border:none;
     &:focus {
         border: none;
         outline: none;
-        color:#007AFF;
     }
 `;
 const Btn = styled.button`

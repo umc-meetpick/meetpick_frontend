@@ -30,6 +30,8 @@ const BlueRadio:React.FC<RadioProps> = ({title, name}) =>{
             type="radio"
             name={name}
             onClick={handleClick} 
+            checked={mbtiArray[index] === title}
+            readOnly 
         />
     )
 }
