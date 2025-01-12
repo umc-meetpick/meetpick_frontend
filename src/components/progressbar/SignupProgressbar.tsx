@@ -42,7 +42,7 @@ const ProgressContainer = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  margin: 10px 20px 34px 0;
+  margin: 10px 20px 25px 0;
 `;
 
 const Step = styled.div<{$isActive:boolean}>`

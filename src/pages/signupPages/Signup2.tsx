@@ -135,6 +135,7 @@ const ButtonContainer = styled.div`
   justify-content: space-between;
   width: 100%;
   margin-top: 40px;
+  gap:5px;
 `;
 
 const BottomText = styled.p`

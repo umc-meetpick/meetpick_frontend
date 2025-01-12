@@ -44,6 +44,7 @@ const BottomNav = styled.div`
   border-radius: 10px 10px 0 0;
   box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
   z-index: 1000; /*네비게이션 바가 항상 최상단에 위치*/
+  background-color:white;
 `
 
 const NavItem = styled.div`
