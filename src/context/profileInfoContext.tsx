@@ -4,6 +4,8 @@ import React, { createContext, useState, ReactNode } from "react";
 interface ProfileInfoContextType {
     nickname: string;
     setNickName: (nickname: string) => void;
+    imgNum : number;
+    setImgNum : (imgNum: number) => void;
     image: string;
     setImage: (image: string) => void;
     studentNum: string;
@@ -15,9 +17,9 @@ interface ProfileInfoContextType {
     hobby: string[];
     setHobby: (hobby: string[]) => void;
     contactType: string;
-    setContactType: (contect: string) => void;
+    setContactType: (contactType: string) => void;
     contact: string;
-    setContact: (contect: string) => void;
+    setContact: (contact: string) => void;
     mbtiArray: string[];
     setMbtiArray: (hobby: string[]) => void;
   }
@@ -26,6 +28,8 @@ interface ProfileInfoContextType {
 const defaultValue: ProfileInfoContextType = {
     nickname: "",
     setNickName: () => {},
+    imgNum:0,
+    setImgNum: () => {},
     image: "",
     setImage: () => {},
     studentNum: "",
@@ -53,6 +57,7 @@ interface ProfileContextProviderProps {
 
 export function ProfileContextProvider({children}:ProfileContextProviderProps){
     const [nickname, setNickName] = useState<string>("");
+    const [imgNum, setImgNum] = useState<number>(0);
     const [image, setImage] = useState<string>("");
     const [studentNum, setStudentNum] = useState<string>("");
     const [mbti, setMbti] = useState<string>("");
@@ -66,6 +71,8 @@ export function ProfileContextProvider({children}:ProfileContextProviderProps){
             value={{
                 nickname,
                 setNickName,
+                imgNum,
+                setImgNum,
                 image,
                 setImage,
                 studentNum,

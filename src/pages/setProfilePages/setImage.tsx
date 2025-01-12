@@ -10,10 +10,9 @@ import { ProfileInfoContext } from '../../context/profileInfoContext';
 import ProfileSelectedBorder from "../../components/profileSelectedBorder";
 
 const SetImage = () =>{
-    const [isSelected, setIsSelected] = useState<number>(0);
-    const {nickname, setImage} = useContext(ProfileInfoContext);
+    const {nickname, setImage, imgNum, setImgNum} = useContext(ProfileInfoContext);
     const handleSelected = (num:number, profile:string) =>{
-        setIsSelected(num);
+        setImgNum(num);
         setImage(profile);
     }
     return(
@@ -24,12 +23,12 @@ const SetImage = () =>{
             <Container>
                 <Title>원하는 프로필을 선택하세요!</Title>
                 <ImageWrapper>
-                    <ProfileRound src={profile1} alt="프로필1" $isSelected={1==isSelected} onClick={()=>handleSelected(1, profile1)}/>
-                    <ProfileRound src={profile2} alt="프로필2" $isSelected={2==isSelected} onClick={()=>handleSelected(2, profile2)}/>
-                    <ProfileRound src={profile3} alt="프로필3" $isSelected={3==isSelected} onClick={()=>handleSelected(3, profile3)}/>
-                    <ProfileRound src={profile1} alt="프로필1" $isSelected={4==isSelected} onClick={()=>handleSelected(4, profile1)}/>
-                    <ProfileRound src={profile2} alt="프로필2" $isSelected={5==isSelected} onClick={()=>handleSelected(5, profile2)}/>
-                    <ProfileRound src={profile3} alt="프로필3" $isSelected={6==isSelected} onClick={()=>handleSelected(6, profile3)}/>
+                    <ProfileRound src={profile1} alt="프로필1" $isSelected={1==imgNum} onClick={()=>handleSelected(1, profile1)}/>
+                    <ProfileRound src={profile2} alt="프로필2" $isSelected={2==imgNum} onClick={()=>handleSelected(2, profile2)}/>
+                    <ProfileRound src={profile3} alt="프로필3" $isSelected={3==imgNum} onClick={()=>handleSelected(3, profile3)}/>
+                    <ProfileRound src={profile1} alt="프로필1" $isSelected={4==imgNum} onClick={()=>handleSelected(4, profile1)}/>
+                    <ProfileRound src={profile2} alt="프로필2" $isSelected={5==imgNum} onClick={()=>handleSelected(5, profile2)}/>
+                    <ProfileRound src={profile3} alt="프로필3" $isSelected={6==imgNum} onClick={()=>handleSelected(6, profile3)}/>
                 </ImageWrapper>
                 <MoveNextRoundBtn nextPage={"/setProfile/studentNum"}/>
             </Container>

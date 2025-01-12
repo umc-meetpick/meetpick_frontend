@@ -9,7 +9,7 @@ import GrayBottomInput from "../../components/GrayBottomInput";
 
 const SetStudentNum = () =>{
     const [inputValue, setInputValue] = useState("");
-    const {nickname, image, setStudentNum} = useContext(ProfileInfoContext);
+    const {nickname, image, studentNum, setStudentNum} = useContext(ProfileInfoContext);
     return(
         <>
             <SetProfileNavbar title={"프로필 작성"}/>
@@ -18,7 +18,7 @@ const SetStudentNum = () =>{
             <Container>
                 <Title>학번을 입력해주세요</Title>
                 <SubInfo>숫자만 입력해주세요! ex) 22학번 → 22</SubInfo>
-                <GrayBottomInput value={inputValue} onChange={(e)=>{setInputValue(e.target.value)}}/>
+                <GrayBottomInput value={inputValue || String(studentNum).slice(0, 2)} onChange={(e)=>{setInputValue(e.target.value)}}/>
                 <MoveNextRoundBtn nextPage={"/setProfile/mbti"} onClick={()=>{setStudentNum(inputValue+"학번")}}/>
             </Container>
         </>
