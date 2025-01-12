@@ -29,8 +29,8 @@ export default SetStudentNum;
 const Container = styled.div`
     margin-top:100px;
     margin: 0 auto;
-    height:calc(100vh - 240px)
-    border:1px solid red;
+    width:320px;
+    height:calc(100vh - 240px);
 `;
 const Title = styled.div`
     font-size:21px;

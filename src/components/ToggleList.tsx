@@ -90,7 +90,9 @@ const Btn = styled.button`
     background-color:#E7F2FE;
     border-radius:100px;
     margin-top:43px;
+    border:none;
     &:focus {
         outline: none;
+        border:none;
     }
 `;

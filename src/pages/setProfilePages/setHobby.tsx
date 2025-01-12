@@ -44,9 +44,10 @@ const SetHobby = () =>{
 export default SetHobby;
 
 const Container = styled.div`
-    width:302px;
+    margin-top:100px;
     margin: 0 auto;
-    position: relative;
+    width:320px;
+    height:calc(100vh - 240px);
 `;
 const Title = styled.div`
     font-size:21px;
