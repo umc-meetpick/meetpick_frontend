@@ -40,7 +40,7 @@ const Signup3 = () => {
               />
             </Link>
             <SignupButton
-                  text="우리 학교 MATE 둘러보기기"
+                  text="우리 학교 MATE 둘러보기"
                   $backgroundColor="#F5F5F5"
                   width="312px"
                   color="#454545"
