@@ -7,6 +7,7 @@ import Login from "../pages/Login"
 import Signup from "../pages/signupPages/Signup"
 import MatchingPage from "../pages/Matching";
 import MyPage from "../pages/MyPage";
+<<<<<<< Updated upstream
 import Signup1 from '../pages/signupPages/Signup1';
 import Signup2 from '../pages/signupPages/Signup2';
 import Signup3 from '../pages/signupPages/Signup3';
@@ -17,6 +18,9 @@ import SetMBTI from '../pages/setProfilePages/setMBTI';
 import SetMajor from '../pages/setProfilePages/setMajor';
 import SetHobby from '../pages/setProfilePages/setHobby';
 import SetContact from '../pages/setProfilePages/setContact';
+=======
+import LookingMate from '../pages/LookingMate';
+>>>>>>> Stashed changes
 
 const router = createBrowserRouter([
     {
@@ -27,6 +31,10 @@ const router = createBrowserRouter([
           {
             index:true,
             element:<HomePage/>
+          },
+          {
+            path:'looking',
+            element:<LookingMate/>
           },
           {
             path:'login',
