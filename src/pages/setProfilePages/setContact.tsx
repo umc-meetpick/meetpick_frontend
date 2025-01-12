@@ -45,6 +45,7 @@ export default SetContact;
 const Container = styled.div`
     margin-top:100px;
     margin: 0 auto;
+    width:320px;
     height:calc(100vh - 240px);
 `;
 const Title = styled.div`

@@ -29,8 +29,14 @@ const Btn = styled.button`
     font-size:15px;
     font-weight:600;
     background-color:#E7F2FE;
+    border:none;
     border-radius:100px;
-    position:fixed;
-    top:640px;
-    left:41px;
+    position: absolute;
+    bottom: 150px; 
+    left: 50%;
+    transform: translateX(-50%);
+    &:focus {
+        outline: none; 
+        border:none;
+    }
 `;

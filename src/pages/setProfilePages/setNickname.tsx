@@ -58,7 +58,8 @@ export default SetNickName;
 const Container = styled.div`
     margin-top:100px;
     margin: 0 auto;
-    height:calc(100vh - 240px)
+    width:320px;
+    height:calc(100vh - 240px);
 `;
 const Title = styled.div`
     margin-top:60px;
@@ -88,9 +89,9 @@ const DupilicateBtn = styled.button`
     border-radius: 22px;
     background-color:white;
     padding:0px;
-    position:absolute;
-    top:335px;
-    left:275px;
+    position:relative;
+    left:220px;
+    top:-40px;
     &:focus {
         border: 1px solid #E5E5E5;
         outline: none;
