@@ -42,7 +42,7 @@ const Signup1 = () => {
           {/* 1단계: 이름 입력 */}
           <SignupInput
             placeholder={"이름"}
-            marginBottom={50}
+            $marginBottom={50}
             value={name}
             onChange={handleNameChange}
           />
@@ -57,13 +57,13 @@ const Signup1 = () => {
                 <SignupGrayButton
                   text="남성"
                   width="80px"
-                  isSelected={selectedGender === "남성"}
+                  $isSelected={selectedGender === "남성"}
                   onClick={() => handleGenderClick("남성")}
                 />
                 <SignupGrayButton
                   text="여성"
                   width="80px"
-                  isSelected={selectedGender === "여성"}
+                  $isSelected={selectedGender === "여성"}
                   onClick={() => handleGenderClick("여성")}
                 />
               </GrayButtonContainer>
@@ -124,7 +124,7 @@ const Signup1 = () => {
             <Link to="/Signup2">
             <SignupButton
               text="다음으로"
-              backgroundColor="#E7F2FE"
+              $backgroundColor="#E7F2FE"
               width="312px"
               color="#326DC1"
               disabled={!selectedGrade} // 학번이 선택되지 않으면 비활성화

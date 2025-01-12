@@ -4,6 +4,7 @@ import BasicNavbar from "../components/BasicNavbar";
 import SignupButton from "../components/SignupButton";
 import SignupImage from "../assets/images/SignupImage.png";
 import SignupProgressbar from "../components/SignupProgressbar";
+import { Link } from "react-router-dom";
 
 const Signup3 = () => {
 
@@ -29,13 +30,15 @@ const Signup3 = () => {
                     밋픽에서 새로운 메이트를 만들어보세요
                 </Text2>
             </Text>
-            <SignupButton
-                text="매칭을 위한 프로필 작성하러가기"
-                backgroundColor="#E7F2FE"
-                width="312px"
-                color="#326DC1"
-                onClick={handleNext}
-            />
+            <Link to ="/setProfile/nickname">
+              <SignupButton
+                  text="매칭을 위한 프로필 작성하러가기"
+                  $backgroundColor="#E7F2FE"
+                  width="312px"
+                  color="#326DC1"
+                  onClick={handleNext}
+              />
+            </Link>
         </Container>
       </EntireContainer>
     </>

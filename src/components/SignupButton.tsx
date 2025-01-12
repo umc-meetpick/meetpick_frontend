@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 interface ButtonProps {
   text: string;
-  backgroundColor?: string;
+  $backgroundColor?: string;
   width?: string;
   color?:string;
   disabled?:boolean;
@@ -12,7 +12,7 @@ interface ButtonProps {
 
 const SignupButton: React.FC<ButtonProps> = ({
   text,
-  backgroundColor = "#E3F2FD", // 기본값 설정
+  $backgroundColor = "#E3F2FD", // 기본값 설정
   width = "140px", // 기본값 설정
   color="black",
   disabled=false,
@@ -20,7 +20,7 @@ const SignupButton: React.FC<ButtonProps> = ({
 }) => {
     return (
         <StyledButton
-          backgroundColor={backgroundColor}
+          $backgroundColor={$backgroundColor}
           width={width}
           color={color}
           disabled={disabled} // button에 disabled 전달
@@ -32,8 +32,8 @@ const SignupButton: React.FC<ButtonProps> = ({
 };
 
 
-const StyledButton = styled.button<{ backgroundColor: string; width: string; color: string }>`
-  background-color: ${({ backgroundColor }) => backgroundColor};
+const StyledButton = styled.button<{ $backgroundColor: string; width: string; color: string }>`
+  background-color: ${({ $backgroundColor }) => $backgroundColor};
   width: ${({ width }) => width};
   color: ${({ color }) => color};
   height: 52px;

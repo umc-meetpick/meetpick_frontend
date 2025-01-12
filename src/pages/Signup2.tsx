@@ -89,7 +89,7 @@ const Signup2 = () => {
             <Link to="/Signup1">
               <SignupButton
                 text="이전"
-                backgroundColor="#F5F5F5"
+                $backgroundColor="#F5F5F5"
                 width="150px"
                 color="black"
                 onClick={handlePrevious}
@@ -98,7 +98,7 @@ const Signup2 = () => {
             <Link to="/Signup3">
               <SignupButton
                 text="다음"
-                backgroundColor="#E7F2FE"
+                $backgroundColor="#E7F2FE"
                 width="150px"
                 color="#326DC1"
                 onClick={handleNext}

@@ -7,7 +7,7 @@ interface TitleProps {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void; // 입력값 변경 핸들러
   hasButton?: boolean;
   buttonText?: string;
-  marginBottom?: number;
+  $marginBottom?: number;
   onButtonClick?: () => void;
 }
 
@@ -17,11 +17,11 @@ const SignupInput: React.FC<TitleProps> = ({
   onChange,
   hasButton = false,
   buttonText,
-  marginBottom,
+  $marginBottom,
   onButtonClick,
 }) => {
   return (
-    <Container marginBottom={marginBottom}>
+    <Container $marginBottom={$marginBottom}>
       <StyledInput
         placeholder={placeholder}
         value={value} // 상태를 입력값으로 연결
@@ -38,13 +38,13 @@ const SignupInput: React.FC<TitleProps> = ({
 
 export default SignupInput;
 
-const Container = styled.div<{ marginBottom?: number }>`
+const Container = styled.div<{ $marginBottom?: number }>`
   display: flex;
   align-items: center;
   width: 100%;
   max-width: 350px; /* 컨테이너 최대 너비 */
   border-bottom: 2px solid #CECECE;
-  margin-bottom: ${({ marginBottom }) => marginBottom || 0}px;
+  margin-bottom: ${({ $marginBottom }) => $marginBottom || 0}px;
 `;
 
 const StyledInput = styled.input`

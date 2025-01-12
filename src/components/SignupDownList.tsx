@@ -5,7 +5,7 @@ interface DropdownButtonProps {
   text: string; // 버튼 텍스트
   width?: string; // 버튼 너비
   options?: string[]; // 드롭다운 옵션 리스트
-  isSelected?: boolean; // 선택된 버튼 여부
+  $isSelected?: boolean; // 선택된 버튼 여부
   onSelect?: (selected: string) => void; // 리스트 선택 시 이벤트
 }
 
@@ -13,7 +13,7 @@ const DropdownButton: React.FC<DropdownButtonProps> = ({
   text,
   width = "100px",
   options = [],
-  isSelected = false,
+  $isSelected = false,
   onSelect,
 }) => {
   // 드롭 다운 리스트가 열려있는지 닫혀있는지 나타내는 상태
@@ -30,7 +30,7 @@ const DropdownButton: React.FC<DropdownButtonProps> = ({
 
   return (
     <Container>
-      <StyledButton style={{ width }} isSelected={isSelected} onClick={toggleDropdown}>
+      <StyledButton style={{ width }} $isSelected={$isSelected} onClick={toggleDropdown}>
         {text}
       </StyledButton>
       {isOpen && options.length > 0 && (
@@ -53,7 +53,7 @@ const Container = styled.div`
   display: inline-block;
 `;
 
-const StyledButton = styled.button<{ isSelected?: boolean }>`
+const StyledButton = styled.button<{ $isSelected?: boolean }>`
   height: 40px;
   border: 2px solid #CECECE;
   border-radius: 20px;

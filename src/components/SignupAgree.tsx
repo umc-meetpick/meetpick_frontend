@@ -4,7 +4,7 @@ import styled from "styled-components";
 interface AgreeItemProps {
   text: string;
   hasViewButton?: boolean;
-  isMain?: boolean; // 약관 전체 동의인지 여부
+  $isMain?: boolean; // 약관 전체 동의인지 여부
   checked: boolean; // 선택 여부
   onChange: () => void; // 선택 변경 핸들러
 }
@@ -12,12 +12,12 @@ interface AgreeItemProps {
 const AgreeItem: React.FC<AgreeItemProps> = ({ 
   text,
   hasViewButton = false,
-  isMain = false,
+  $isMain = false,
   checked,
   onChange,
 }) => {
   return (
-    <Container isMain={isMain}>
+    <Container $isMain={$isMain}>
       <CheckBoxContainer>
         <CheckBoxButton 
           type="checkbox" 
@@ -33,12 +33,12 @@ const AgreeItem: React.FC<AgreeItemProps> = ({
 
 export default AgreeItem;
 
-const Container = styled.div<{ isMain?: boolean }>`
+const Container = styled.div<{ $isMain?: boolean }>`
   display: flex;
   justify-content: space-between;
   padding: 20px 0;
-  border-bottom: ${({ isMain }) => (isMain ? "2px solid #D9D9D9" : "none")};
-  margin-bottom: ${({ isMain }) => (isMain ? "20px" : "0")};
+  border-bottom: ${({ $isMain }) => ($isMain ? "2px solid #D9D9D9" : "none")};
+  margin-bottom: ${({ $isMain }) => ($isMain ? "20px" : "0")};
 `;
 
 const CheckBoxContainer = styled.div`

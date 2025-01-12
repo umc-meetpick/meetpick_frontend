@@ -51,7 +51,7 @@ const Signup = () => {
           <AgreeItem
             text="약관 전체 동의"
             hasViewButton={false}
-            isMain={true}
+            $isMain={true}
             checked={allChecked}
             onChange={handleAllCheck}
           />
@@ -85,7 +85,7 @@ const Signup = () => {
         <ButtonContainer>
           <SignupButton
             text="이전"
-            backgroundColor="#F5F5F5"
+            $backgroundColor="#F5F5F5"
             width="150px"
             color="black"
             onClick={() => console.log("이전 버튼 클릭")}
@@ -93,7 +93,7 @@ const Signup = () => {
           <Link to={areRequiredChecked ? "/Signup1" : "#"}>
             <SignupButton
               text="다음"
-              backgroundColor={areRequiredChecked ? "#E7F2FE" : "#E0E0E0"}
+              $backgroundColor={areRequiredChecked ? "#E7F2FE" : "#E0E0E0"}
               width="150px"
               color={areRequiredChecked ? "#326DC1" : "#A0A0A0"}
               disabled={!areRequiredChecked}

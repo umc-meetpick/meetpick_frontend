@@ -4,18 +4,18 @@ import styled from "styled-components";
 interface ButtonProps {
   text: string; // 버튼에 표시될 텍스트
   width?: string; // 버튼의 너비
-  isSelected?: boolean; // 선택 상태
+  $isSelected?: boolean; // 선택 상태
   onClick?: () => void; // 클릭 이벤트 핸들러
 }
 
 const SignupGrayButton: React.FC<ButtonProps> = ({ 
     text, 
     width = "100px", 
-    isSelected, 
+    $isSelected, 
     onClick,
 }) => {
     return (
-        <StyledButton style={{ width }} isSelected={isSelected} onClick={onClick}>
+        <StyledButton style={{ width }} $isSelected={$isSelected} onClick={onClick}>
           {text}
         </StyledButton>
       );
@@ -23,12 +23,12 @@ const SignupGrayButton: React.FC<ButtonProps> = ({
 
 export default SignupGrayButton;
 
-const StyledButton = styled.button<{ isSelected?: boolean }>`
+const StyledButton = styled.button<{ $isSelected?: boolean }>`
   height: 40px;
-  border: 2px solid ${({ isSelected }) => (isSelected ? "#34A3FD" : "#CECECE")}; /* 테두리 색상 */
+  border: 2px solid ${({ $isSelected }) => ($isSelected ? "#34A3FD" : "#CECECE")}; /* 테두리 색상 */
   border-radius: 20px; /* 둥근 테두리 */
   font-size: 14px;
-  color: ${({ isSelected }) => (isSelected ? "#34A3FD" : "#8B8B8B")}; /* 텍스트 색상 */
+  color: ${({ $isSelected }) => ($isSelected ? "#34A3FD" : "#8B8B8B")}; /* 텍스트 색상 */
   background-color: white; /* 버튼 배경색 */
   display: flex;
   align-items: center;

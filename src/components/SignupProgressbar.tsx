@@ -14,12 +14,12 @@ interface SignupProgressbarProps {
     return (
         <ProgressContainer>
         {Array.from({ length: totalSteps }, (_, index) => {
-          const isCompleted = index + 1 < currentStep; // 이미 완료된 단계
-          const isActive = index + 1 === currentStep; // 현재 단계
+          const $isCompleted = index + 1 < currentStep; // 이미 완료된 단계
+          const $isActive = index + 1 === currentStep; // 현재 단계
           return (
-            <Step key={index} isActive={index + 1 <= currentStep}>
-              <Circle isActive={isActive} isCompleted={isCompleted}>
-                {isCompleted ? (
+            <Step key={index} $isActive={index + 1 <= currentStep}>
+              <Circle $isActive={$isActive} $isCompleted={$isCompleted}>
+                {$isCompleted ? (
                   <IconWrapper>
                     <AiOutlineCheck />
                   </IconWrapper>
@@ -28,7 +28,7 @@ interface SignupProgressbarProps {
                 )}
               </Circle>
               {index < totalSteps - 1 && (
-                <Line isActive={index + 1 < currentStep} />
+                <Line $isActive={index + 1 < currentStep} />
               )}
             </Step>
           );
@@ -45,37 +45,37 @@ const ProgressContainer = styled.div`
   margin: 10px 20px 34px 0;
 `;
 
-const Step = styled.div<{isActive:boolean}>`
+const Step = styled.div<{$isActive:boolean}>`
   display: flex;
   align-items: center;
 `;
 
-const Circle = styled.div<{ isActive: boolean; isCompleted: boolean }>`
+const Circle = styled.div<{ $isActive: boolean; $isCompleted: boolean }>`
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  background-color: ${({ isActive, isCompleted }) =>
-    isActive || isCompleted ? "#C4E0FF" : "#FFFFFF"};
-  color: ${({ isActive, isCompleted }) =>
-    isActive || isCompleted ? "#0287F4" : "#DBDBDB"};
+  background-color: ${({ $isActive, $isCompleted }) =>
+    $isActive || $isCompleted ? "#C4E0FF" : "#FFFFFF"};
+  color: ${({ $isActive, $isCompleted }) =>
+    $isActive || $isCompleted ? "#0287F4" : "#DBDBDB"};
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: bold;
   font-size: 14px;
   transition: background-color 0.3s, color 0.3s;
-  border: ${({ isActive, isCompleted }) =>
-    isCompleted
+  border: ${({ $isActive, $isCompleted }) =>
+    $isCompleted
       ? "3.5px solid #0287F4" // 완료된 단계
-      : isActive
+      : $isActive
       ? "3.5px solid #0287F4" // 현재 단계
       : "3.5px solid #DBDBDB"}; // 다음 단계
   
 `;
-const Line = styled.div<{ isActive: boolean }>`
+const Line = styled.div<{ $isActive: boolean }>`
   width: 12.5px;
   height: 3px;
-  background-color: ${({ isActive }) => (isActive ? "#0287F4" : "#E5E5E5")};
+  background-color: ${({ $isActive }) => ($isActive ? "#0287F4" : "#E5E5E5")};
   transition: background-color 0.3s;
 `;
 
