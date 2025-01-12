@@ -63,7 +63,7 @@ const Container = styled.div`
 
 const EntireContainer = styled.div`
   display: flex;
-  height:100vh;
+  height:70vh;
   flex-direction: column;
   justify-content:center;
   align-items:center;
