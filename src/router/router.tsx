@@ -7,6 +7,13 @@ import Login from "../pages/Login"
 import Signup from "../pages/Signup"
 import MatchingPage from "../pages/Matching";
 import MyPage from "../pages/MyPage";
+import SetNickName from '../pages/setProfilePages/setNickname';
+import SetImage from '../pages/setProfilePages/setImage';
+import SetStudentNum from '../pages/setProfilePages/setStudentNum';
+import SetMBTI from '../pages/setProfilePages/setMBTI';
+import SetMajor from '../pages/setProfilePages/setMajor';
+import SetHobby from '../pages/setProfilePages/setHobby';
+import SetContact from '../pages/setProfilePages/setContact';
 
 const router = createBrowserRouter([
     {
@@ -34,6 +41,34 @@ const router = createBrowserRouter([
             path:'matching',
             element:<MatchingPage/>
           },
+          {
+            path:'setProfile/nickname',
+            element:<SetNickName/>
+          },
+          {
+            path:'setProfile/image',
+            element:<SetImage/>
+          },
+          {
+            path:'setProfile/studentNum',
+            element:<SetStudentNum/>
+          },
+          {
+            path:'setProfile/mbti',
+            element:<SetMBTI/>
+          },
+          {
+            path:'setProfile/major',
+            element:<SetMajor/>
+          },
+          {
+            path:'setProfile/hobby',
+            element:<SetHobby/>
+          },
+          {
+            path:'setProfile/contact',
+            element:<SetContact/>
+          }
         ]
     }])
   
