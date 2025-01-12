@@ -46,13 +46,6 @@ const Signup3 = () => {
                   onClick={handleNext}
               />
             </Link>
-            <SignupButton
-                  text="우리 학교 MATE 둘러보기"
-                  $backgroundColor="#F5F5F5"
-                  width="312px"
-                  color="#454545"
-                  onClick={handleNext}
-              />
         </Container>
       </EntireContainer>
     </>
