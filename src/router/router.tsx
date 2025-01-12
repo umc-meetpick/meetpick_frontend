@@ -2,6 +2,7 @@ import React from 'react';
 import {createBrowserRouter} from "react-router-dom";
 import RootLayout from "../layout/RootLayout";
 import HomePage from "../pages/HomePage"
+import LookingMate from '../pages/LookingMate';
 import NotFound from "../pages/NotFound"
 import Login from "../pages/Login"
 import Signup from "../pages/signupPages/Signup"
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
           {
             index:true,
             element:<HomePage/>
+          },
+          {
+            path:'looking',
+            element:<LookingMate/>
           },
           {
             path:'login',
