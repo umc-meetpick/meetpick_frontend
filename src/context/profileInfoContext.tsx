@@ -14,10 +14,10 @@ interface ProfileInfoContextType {
     setMajor: (major: string) => void;
     hobby: string[];
     setHobby: (hobby: string[]) => void;
-    contectType: string;
-    setContectType: (contect: string) => void;
-    contect: string;
-    setContect: (contect: string) => void;
+    contactType: string;
+    setContactType: (contect: string) => void;
+    contact: string;
+    setContact: (contect: string) => void;
     mbtiArray: string[];
     setMbtiArray: (hobby: string[]) => void;
   }
@@ -36,10 +36,10 @@ const defaultValue: ProfileInfoContextType = {
     setMajor: () => {},
     hobby: [],
     setHobby: () => {},
-    contectType: "",
-    setContectType: () => {},
-    contect: "",
-    setContect: () => {},
+    contactType: "",
+    setContactType: () => {},
+    contact: "",
+    setContact: () => {},
     mbtiArray:[],
     setMbtiArray: () => {},
   };
@@ -58,8 +58,8 @@ export function ProfileContextProvider({children}:ProfileContextProviderProps){
     const [mbti, setMbti] = useState<string>("");
     const [major, setMajor] = useState<string>("");
     const [hobby, setHobby] = useState<string[]>([]);
-    const [contectType, setContectType] = useState<string>("");
-    const [contect, setContect] = useState<string>("");
+    const [contactType, setContactType] = useState<string>("");
+    const [contact, setContact] = useState<string>("");
     const [mbtiArray, setMbtiArray] = useState<string[]>([]);
     return(
         <ProfileInfoContext.Provider
@@ -76,10 +76,10 @@ export function ProfileContextProvider({children}:ProfileContextProviderProps){
                 setMajor,
                 hobby,
                 setHobby,
-                contectType,
-                setContectType,
-                contect,
-                setContect,
+                contactType,
+                setContactType,
+                contact,
+                setContact,
                 mbtiArray,
                 setMbtiArray
             }}

@@ -36,7 +36,7 @@ const SetHobby = () =>{
                     ))
                     }
                 </HobbyWrapper> 
-                <MoveNextRoundBtn nextPage={"/setProfile/contect"} />
+                <MoveNextRoundBtn nextPage={"/setProfile/contact"} />
             </Container>
         </>
     )

@@ -13,7 +13,7 @@ import SetStudentNum from '../pages/setProfilePages/setStudentNum';
 import SetMBTI from '../pages/setProfilePages/setMBTI';
 import SetMajor from '../pages/setProfilePages/setMajor';
 import SetHobby from '../pages/setProfilePages/setHobby';
-import SetContect from '../pages/setProfilePages/setContect';
+import SetContact from '../pages/setProfilePages/setContact';
 
 const router = createBrowserRouter([
     {
@@ -66,8 +66,8 @@ const router = createBrowserRouter([
             element:<SetHobby/>
           },
           {
-            path:'setProfile/contect',
-            element:<SetContect/>
+            path:'setProfile/contact',
+            element:<SetContact/>
           }
         ]
     }])

@@ -8,14 +8,14 @@ import { ProfileInfoContext } from '../../context/profileInfoContext';
 import ProfileSelectedBorder from '../../components/profileSelectedBorder';
 import SelectToggle from '../../components/SelectToggle';
 
-const SetContect= () => {
-    const {nickname, image, studentNum, mbti, major, hobby, setContectType, setContect} = useContext(ProfileInfoContext);
+const SetContact= () => {
+    const {nickname, image, studentNum, mbti, major, hobby, setContactType, setContact} = useContext(ProfileInfoContext);
     const [inputValue, setInputValue] = useState("");
     const options = ["카카오톡 ID", "오픈채팅 링크", "전화번호"]
 
     const handleSelectChange = (selectedOption: { value: string; label: string } | null)  => {
         if (selectedOption) {
-            setContectType(selectedOption.value);
+            setContactType(selectedOption.value);
         }
     };
     return (
@@ -34,13 +34,13 @@ const SetContect= () => {
                     value={inputValue} 
                     onChange={(e)=>setInputValue(e.target.value)} 
                 />
-                <MoveNextRoundBtn nextPage={"/"} title="메이트 찾으러 가기" onClick={()=>{setContect(inputValue)}}/>
+                <MoveNextRoundBtn nextPage={"/"} title="메이트 찾으러 가기" onClick={()=>{setContact(inputValue)}}/>
             </Container>
         </>
     );
 };
 
-export default SetContect;
+export default SetContact;
 
 const Container = styled.div`
     margin-top:100px;
