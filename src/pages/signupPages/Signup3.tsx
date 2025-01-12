@@ -38,6 +38,13 @@ const Signup3 = () => {
                   color="#326DC1"
                   onClick={handleNext}
               />
+              <SignupButton
+                  text="우리 학교 MATE 둘러보기"
+                  $backgroundColor="#F5F5F5"
+                  width="312px"
+                  color="#454545"
+                  onClick={handleNext}
+              />
             </Link>
         </Container>
       </EntireContainer>
@@ -56,10 +63,11 @@ const Container = styled.div`
 
 const EntireContainer = styled.div`
   display: flex;
-  height:600px;
+  height:100vh;
   flex-direction: column;
   justify-content:center;
-  padding: 40.5px;
+  align-items:center;
+  padding: 0 40.5px;
 `
 const Text = styled.div`
     display:flex;
@@ -76,7 +84,7 @@ const Text1 = styled.p`
 
 const Text2 =styled.p`
     font-size:16px;
-    margin-bottom:50px;
+    margin-bottom:30px;
     margin-top:10px;
 `
 
