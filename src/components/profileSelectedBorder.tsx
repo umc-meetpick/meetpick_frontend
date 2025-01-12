@@ -6,15 +6,7 @@ interface SelectedProps {
 }
 
 const ProfileSelectedBorder:React.FC<SelectedProps> = ({input}) =>{
-    // const calculateWidth = (text: string) => {
-    //     const canvas = document.createElement('canvas');
-    //     const context = canvas.getContext('2d');
-    //     if (context) {
-    //       context.font = "13px Arial"; // 적용할 글꼴과 크기 설정
-    //       return Math.max(context.measureText(text).width, 60); // 최소 너비 60px
-    //     }
-    //     return 60;
-    //   };
+
     return(
         <Container>
             {input.map((item, index) => {
@@ -53,7 +45,7 @@ const Border = styled.div<{ $length: number}>`
     font-weight:400;
     text-align:center;
     line-height:28px;
-    width: ${({ $length }: { $length: number }) => ($length > 0 ? `${$length*13}px` : "60px")};
+    width: ${({ $length }: { $length: number }) => ($length > 0 ? `${$length*13}px` : "30px")};
     height:28px;
     border: 1px solid #1B98FF;
     background-color: #ECF6FF;
