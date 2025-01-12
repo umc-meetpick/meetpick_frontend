@@ -1,8 +1,8 @@
 import React, { useState, useContext} from "react"
-import SetProfileNavbar from '../../components/BasicNavbar';
-import ProgressBar from '../../components/ProgressBar';
+import SetProfileNavbar from '../../components/navbar/BasicNavbar';
+import ProgressBar from '../../components/progressbar/ProgressBar';
 import styled from "styled-components";
-import MoveNextRoundBtn from "../../components/MoveNextRoundBtn";
+import MoveNextRoundBtn from "../../components/button/MoveNextRoundBtn";
 import { ProfileInfoContext } from '../../context/profileInfoContext';
 import ProfileSelectedBorder from "../../components/profileSelectedBorder";
 import RadioWrapper from "../../components/RadioWrapper";

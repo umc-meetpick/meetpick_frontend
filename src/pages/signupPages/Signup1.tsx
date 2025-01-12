@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import BasicNavbar from "../components/BasicNavbar";
-import SignupButton from "../components/SignupButton";
-import SignupInput from "../components/SignupInput";
-import SignupGrayButton from "../components/SignupGrayButton";
-import DropdownButton from "../components/SignupDownList";
-import SignupProgressbar from "../components/SignupProgressbar";
+import BasicNavbar from "../../components/navbar/BasicNavbar";
+import SignupButton from "../../components/button/SignupButton";
+import SignupInput from "../../components/SignupInput";
+import SignupGrayButton from "../../components/button/SignupGrayButton";
+import DropdownButton from "../../components/SignupDownList";
+import SignupProgressbar from "../../components/progressbar/SignupProgressbar";
 import { BsDot } from "react-icons/bs";
 import { Link } from "react-router-dom";
 

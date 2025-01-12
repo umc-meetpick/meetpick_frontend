@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
-import SetProfileNavbar from '../../components/BasicNavbar';
-import ProgressBar from '../../components/ProgressBar';
+import SetProfileNavbar from '../../components/navbar/BasicNavbar';
+import ProgressBar from '../../components/progressbar/ProgressBar';
 import { ProfileInfoContext } from '../../context/profileInfoContext';
 import ProfileSelectedBorder from "../../components/profileSelectedBorder";
 import ToggleList from "../../components/ToggleList";

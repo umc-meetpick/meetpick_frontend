@@ -1,8 +1,8 @@
 import React, {useState, useContext} from "react"
-import SetProfileNavbar from '../../components/BasicNavbar';
-import ProgressBar from '../../components/ProgressBar';
+import SetProfileNavbar from '../../components/navbar/BasicNavbar';
+import ProgressBar from '../../components/progressbar/ProgressBar';
 import styled from "styled-components";
-import MoveNextRoundBtn from "../../components/MoveNextRoundBtn";
+import MoveNextRoundBtn from "../../components/button/MoveNextRoundBtn";
 import profile1 from "../../assets/profileImg/프로필1.png";
 import profile2 from "../../assets/profileImg/프로필2.png";
 import profile3 from "../../assets/profileImg/프로필3.png";

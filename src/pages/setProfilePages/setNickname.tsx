@@ -1,11 +1,11 @@
 import React, { useState, useContext } from 'react';
-import SetProfileNavbar from '../../components/BasicNavbar';
-import ProgressBar from '../../components/ProgressBar';
+import SetProfileNavbar from '../../components/navbar/BasicNavbar';
+import ProgressBar from '../../components/progressbar/ProgressBar';
 import styled from 'styled-components';
 import GrayBottomInput from '../../components/GrayBottomInput';
 import { PiWarningCircle } from "react-icons/pi";
 import { FaRegCircleCheck } from "react-icons/fa6";
-import MoveNextRoundBtn from "../../components/MoveNextRoundBtn"
+import MoveNextRoundBtn from "../../components/button/MoveNextRoundBtn"
 import { ProfileInfoContext } from '../../context/profileInfoContext';
 
 const SetNickName: React.FC = () => {

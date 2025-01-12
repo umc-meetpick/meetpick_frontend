@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import BasicNavbar from "../components/BasicNavbar";
-import SignupButton from "../components/SignupButton";
-import SignupInput from "../components/SignupInput";
-import SignupProgressbar from "../components/SignupProgressbar";
+import BasicNavbar from "../../components/navbar/BasicNavbar";
+import SignupButton from "../../components/button/SignupButton";
+import SignupInput from "../../components/SignupInput";
+import SignupProgressbar from "../../components/progressbar/SignupProgressbar";
 import { Link } from "react-router-dom";
 import { BsDot } from "react-icons/bs";
 import { MdErrorOutline } from "react-icons/md";

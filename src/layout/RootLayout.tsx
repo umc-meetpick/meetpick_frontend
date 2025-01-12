@@ -1,7 +1,7 @@
 import React from 'react';
 import {Outlet} from "react-router-dom";
 import styled from "styled-components";
-import BottomNavBar from "../components/BottomNavBar";
+import BottomNavBar from "../components/navbar/BottomNavBar";
 
 const Main=styled.div`
     width:393px;

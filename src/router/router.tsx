@@ -4,12 +4,12 @@ import RootLayout from "../layout/RootLayout";
 import HomePage from "../pages/HomePage"
 import NotFound from "../pages/NotFound"
 import Login from "../pages/Login"
-import Signup from "../pages/Signup"
+import Signup from "../pages/signupPages/Signup"
 import MatchingPage from "../pages/Matching";
 import MyPage from "../pages/MyPage";
-import Signup1 from '../pages/Signup1';
-import Signup2 from '../pages/Signup2';
-import Signup3 from '../pages/Signup3';
+import Signup1 from '../pages/signupPages/Signup1';
+import Signup2 from '../pages/signupPages/Signup2';
+import Signup3 from '../pages/signupPages/Signup3';
 import SetNickName from '../pages/setProfilePages/setNickname';
 import SetImage from '../pages/setProfilePages/setImage';
 import SetStudentNum from '../pages/setProfilePages/setStudentNum';

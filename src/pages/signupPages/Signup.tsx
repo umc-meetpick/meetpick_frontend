@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import BasicNavbar from "../components/BasicNavbar";
-import AgreeItem from "../components/SignupAgree";
-import SignupButton from "../components/SignupButton";
+import BasicNavbar from "../../components/navbar/BasicNavbar";
+import AgreeItem from "../../components/SignupAgree";
+import SignupButton from "../../components/button/SignupButton";
 import { Link } from "react-router-dom";
 
 const Signup = () => {

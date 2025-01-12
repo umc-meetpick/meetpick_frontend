@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import BasicNavbar from "../components/BasicNavbar";
-import SignupButton from "../components/SignupButton";
-import SignupImage from "../assets/images/SignupImage.png";
-import SignupProgressbar from "../components/SignupProgressbar";
+import BasicNavbar from "../../components/navbar/BasicNavbar";
+import SignupButton from "../../components/button/SignupButton";
+import SignupImage from "../../assets/images/SignupImage.png";
+import SignupProgressbar from "../../components/progressbar/SignupProgressbar";
 import { Link } from "react-router-dom";
 
 const Signup3 = () => {
