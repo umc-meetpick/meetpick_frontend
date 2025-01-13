@@ -20,7 +20,8 @@ const ToggleList: React.FC = () =>{
         setMajor(major)
     };
     return(
-        <Container>
+        <>
+            <Container>
             {majorList.map(item => (
                 <div key={item.id}>
                     <Toggle key={item.id} onClick={() => handleToggle(item.id)} $isOpened={openItems.includes(item.id)}>
@@ -37,7 +38,8 @@ const ToggleList: React.FC = () =>{
                 </div>
             ))}
             <Btn onClick={()=>navigate("/setProfile/hobby")}>다음</Btn>
-        </Container>
+            </Container>
+        </>
     )
 }
 export default ToggleList;

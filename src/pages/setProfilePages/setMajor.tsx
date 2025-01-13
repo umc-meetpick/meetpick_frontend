@@ -23,13 +23,12 @@ const SetMajor = () =>{
 export default SetMajor;
 
 const Wrapper = styled.div`
-    width:100%;
-    height:calc(100vh - 100px);
-    overflow-y: auto;
-    overflow-x: hidden;
+    width: 100%;
+    min-height: calc(100vh - 100px); 
 `;
 const Container = styled.div`
     width:302px;
+    min-height: calc(100vh - 300px);
     margin: 0 auto;
 `;
 const Title = styled.div`
