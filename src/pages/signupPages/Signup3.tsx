@@ -14,7 +14,6 @@ const Signup3 = () => {
 
   return (
     <>
-     <Wrapper>
       <BasicNavbar title="회원가입" />
 
       <SignupProgressbar currentStep={4} totalSteps={3} />
@@ -49,18 +48,13 @@ const Signup3 = () => {
             </Link>
         </Container>
       </EntireContainer>
-      </Wrapper>
+ 
     </>
   );
 };
 
 export default Signup3;
 
-
-const Wrapper = styled.div`
-    height:calc(100vh - 70px);
-    overflow-y: auto;
-`; 
 
 const Container = styled.div`
   display: flex;
