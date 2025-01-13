@@ -2,11 +2,29 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import BasicNavbar from "../../components/navbar/BasicNavbar";
 import ApplicationImage from "../../assets/images/Application.png";
+import ApplicationAlert from "../../assets/images/ApplicationAlert.png";
 import ApplicationGrayButton from "../../components/button/ApplicationGrayButton";
 import ApplicationGrayBox from "../../components/ApplicationGrayBox";
 import { IoHeart } from "react-icons/io5";
+import { FaCheck } from "react-icons/fa6";
+import { IoAlertCircle } from "react-icons/io5";
 
 const Application = () => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [message, setMessage]= useState<string | null>(null); // 메세지 상태 추가
+
+    const handleOpenModal = () => setIsModalOpen(true); // 팝업 열기
+    const handleCloseModal = () => setIsModalOpen(false); // 팝업 닫기
+
+    const handleConfirm = () => {
+        setMessage("신청이 완료되었습니다.");
+        setIsModalOpen(false); // 팝업 닫기
+    };
+
+    const handleCancel = () => {
+        setMessage("신청 조건을 다시 확인해주세요!");
+        setIsModalOpen(false); // 팝업 닫기
+    };
 
     return (
         <>
@@ -77,10 +95,37 @@ const Application = () => {
                 <ApplicationGrayBox text1="하고 싶은 말" text2="맛난 거 먹어유~" width="318px"/>
             </Mate1>
             <Button2>
-                <ApplicationButton>
+                <ApplicationButton onClick={handleOpenModal}>
                     메이트 신청하기
                 </ApplicationButton>
             </Button2>
+
+            {isModalOpen && (
+                <ModalOverlay>
+                    <AlarmBox>
+                        <ModalContent>
+                            <p>메이트 신청을 하시겠습니까?</p>
+                        </ModalContent>
+                        <Button3>
+                            <ModalButton1 onClick={handleCancel}>취소</ModalButton1>
+                            <ModalButton2 confirm onClick={handleConfirm}>확인</ModalButton2>
+                        </Button3>
+                    </AlarmBox>
+                </ModalOverlay>
+            )}
+
+            {message && (
+                <ModalOverlay>
+                    <MessageContainer>
+                        {message === "신청이 완료되었습니다." ? (
+                            <CheckContainer><FaCheck color="white" size={10} /></CheckContainer> // 신청 완료 아이콘
+                        ) : (
+                            <StyledImage2 src={ApplicationAlert} alt="회원가입 완료 이미지" /> // 취소 시 다른 아이콘
+                        )}
+                        {message}
+                    </MessageContainer>
+                </ModalOverlay>
+            )}
         </>
     )
 }
@@ -91,6 +136,13 @@ const StyledImage = styled.img`
   width: 80px;
   height: 80px;
   border-radius: 50%; /* 둥근 모양 */
+`;
+
+const StyledImage2 = styled.img`
+  width: 14px;
+  height: 14px;
+  border-radius: 50%; /* 둥근 모양 */
+  margin-right:10px;
 `;
 
 const ImageContainer = styled.div`
@@ -156,6 +208,18 @@ const HeartContainer = styled.div`
   background-color: #FEECEC; /* 배경색 설정 */
 `;
 
+const CheckContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 14px; /* 아이콘 배경의 크기 */
+    height: 14px; /* 아이콘 배경의 크기 */
+    border-radius: 50%; /* 완전한 원 모양 */
+    margin-right:10px;
+    background-color: #52C41A; /* 배경색 설정 */
+  
+`;
+
 const ApplicationButton = styled.button`
     color:#2760AD;
     width: 232px;
@@ -170,4 +234,96 @@ const Button2 = styled.div`
     justify-content:center;
     margin-top:15.51px;
     margin-bottom:24.89px;
+`
+
+const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 393px;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.29); /* 반투명 배경 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1; /* 최상위 배치 */
+`;
+
+
+const ModalContent = styled.div`
+  width: 270px;
+  height:56px;
+  background: rgba(244, 244, 244, 0.99);
+  border-top-right-radius: 12px;
+  border-top-left-radius:12px;
+  padding: 10px 0;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(193, 75, 75, 0.09);
+  color:#383838;
+  font-family: "Pretendard Variable";
+  font-weight:bold;
+`;
+
+const ModalButton1 = styled.button<{ confirm?: boolean }>`
+  width: 135px;
+  height: 45px;
+  background:  rgba(244, 244, 244, 0.99);
+  color: #007AFF;
+  cursor: pointer;
+  border-top-left-radius: 0; /* 왼쪽 상단 모서리 둥글기 제거 */
+  border-top-right-radius: 0; /* 오른쪽 상단 모서리 둥글기 제거 */
+  border-bottom-left-radius: 12px; /* 왼쪽 하단 모서리는 둥글게 설정 */
+  border-bottom-right-radius: 0; /* 오른쪽 하단 모서리는 둥글게 설정 */
+
+  border-top:1px solid #B3B3B3;
+  border-right:1px solid #B3B3B3;
+
+
+  &:hover {
+    color:white;
+    background: #007AFF;
+  }
+`;
+
+const ModalButton2 = styled.button<{ confirm?: boolean }>`
+  width: 135px;
+  height: 45px;
+  background: rgba(244, 244, 244, 0.99);
+  color: #007AFF;
+  cursor: pointer;
+  border-top-left-radius: 0; /* 왼쪽 상단 모서리 둥글기 제거 */
+  border-top-right-radius: 0; /* 오른쪽 상단 모서리 둥글기 제거 */
+  border-bottom-left-radius: 0; /* 왼쪽 하단 모서리는 둥글게 설정 */
+  border-bottom-right-radius: 12px; /* 오른쪽 하단 모서리는 둥글게 설정 */
+
+  border-top:1px solid #B3B3B3;
+
+
+  &:hover {
+    color:white;
+    background: #007AFF;
+  }
+`;
+
+const Button3= styled.div`
+    
+`
+
+const AlarmBox = styled.div`
+
+`
+
+const MessageContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    width: auto;
+    padding: 0 20px;
+    height: 45px;
+    background: white;
+    color: black;
+    font-size: 14px;
+    font-family: "Pretendard Variable";
+    border-radius:3px;
 `
