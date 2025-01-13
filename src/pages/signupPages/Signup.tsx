@@ -45,7 +45,6 @@ const Signup = () => {
 
   return (
     <>
-    <Wrapper>
       <BasicNavbar title="회원가입" />
       <Container>
         <AgreeList>
@@ -107,18 +106,13 @@ const Signup = () => {
           </Link>
         </ButtonContainer>
       </Container>
-    </Wrapper>
+
     </>
   );
 };
 
 export default Signup;
 
-
-const Wrapper = styled.div`
-    height:calc(100vh - 68px);
-    overflow-y: auto;
-`; 
 
 const Container = styled.div`
   display: flex;

@@ -127,8 +127,6 @@ const EntireContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0 40.5px;
-  overflow-y: auto;
-  height:calc(100vh - 220px);
 `;
 
 const ButtonContainer = styled.div`
