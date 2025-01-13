@@ -53,7 +53,7 @@ const CheckBoxButton = styled.input.attrs({ type: "checkbox" })`
   border: 2px solid #1890ff; /* 파란 테두리 */
   border-radius: 50%; /* 원형 */
   background-color: white; /* 기본 배경색 흰색 */
-  margin-right: 8px;
+  margin-right:6px;
   cursor: pointer;
   position: relative;
 
@@ -80,7 +80,7 @@ const ViewButton = styled.a`
   font-size: 15px;
   color: #000000;
   cursor: pointer;
-  margin-left: 15px;
+  margin-left: 6px;
   border-bottom: 1.5px solid #000000;
   font-weight:bold;
 `;

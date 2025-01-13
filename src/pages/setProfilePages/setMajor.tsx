@@ -26,6 +26,7 @@ const Wrapper = styled.div`
     width:100%;
     height:calc(100vh - 100px);
     overflow-y: auto;
+    overflow-x: hidden;
 `;
 const Container = styled.div`
     width:302px;

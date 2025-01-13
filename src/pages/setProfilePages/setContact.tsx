@@ -34,8 +34,8 @@ const SetContact= () => {
                     value={inputValue} 
                     onChange={(e)=>setInputValue(e.target.value)} 
                 />
-                <MoveNextRoundBtn nextPage={"/"} title="메이트 찾으러 가기" onClick={()=>{setContact(inputValue)}}/>
             </Container>
+            <MoveNextRoundBtn nextPage={"/"} title="메이트 찾으러 가기" onClick={()=>{setContact(inputValue)}}/>
         </>
     );
 };
@@ -46,7 +46,7 @@ const Container = styled.div`
     margin-top:100px;
     margin: 0 auto;
     width:320px;
-    height:calc(100vh - 240px);
+    height:350px;
 `;
 const Title = styled.div`
     font-size:21px;

@@ -106,26 +106,28 @@ const Signup = () => {
           </Link>
         </ButtonContainer>
       </Container>
+
     </>
   );
 };
 
 export default Signup;
 
+
 const Container = styled.div`
   display: flex;
-  height: 100vh;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding:0 35px;
+  justify-content: center; /* 세로 중앙 정렬 */
+  align-items: center; /* 가로 중앙 정렬 */
+  padding: 0 35px;
 `;
 
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
-  margin-top: 50px;
+  margin-top: 35px;
+  margin-bottom: 20px;
 `;
 
 const AgreeList = styled.div`

@@ -32,7 +32,6 @@ const Btn = styled.button`
     border:none;
     border-radius:100px;
     position: absolute;
-    bottom: 150px; 
     left: 50%;
     transform: translateX(-50%);
     &:focus {

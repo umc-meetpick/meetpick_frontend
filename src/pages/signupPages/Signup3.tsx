@@ -15,8 +15,8 @@ const Signup3 = () => {
   return (
     <>
       <BasicNavbar title="회원가입" />
-      <SignupProgressbar currentStep={4} totalSteps={3} />
 
+      <SignupProgressbar currentStep={4} totalSteps={3} />
       <EntireContainer>
         <Container>
             <ImageContainer>
@@ -48,26 +48,26 @@ const Signup3 = () => {
             </Link>
         </Container>
       </EntireContainer>
+ 
     </>
   );
 };
 
 export default Signup3;
 
+
 const Container = styled.div`
   display: flex;
-  height:50vh;
   flex-direction: column;
 `;
 
 
 const EntireContainer = styled.div`
   display: flex;
-  height:100vh;
   flex-direction: column;
   justify-content:center;
   align-items:center;
-  padding: 0 40.5px;
+  padding:0 40.5px;
 `
 const Text = styled.div`
     display:flex;
@@ -100,3 +100,4 @@ const StyledImage = styled.img`
   height: 136px;
   border-radius: 50%; /* 둥근 모양 */
 `;
+

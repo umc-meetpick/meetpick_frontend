@@ -125,7 +125,6 @@ const Text = styled.p`
 
 const EntireContainer = styled.div`
   display: flex;
-  height: 100vh;
   flex-direction: column;
   padding: 0 40.5px;
 `;
@@ -135,6 +134,7 @@ const ButtonContainer = styled.div`
   justify-content: space-between;
   width: 100%;
   margin-top: 40px;
+  gap:5px;
 `;
 
 const BottomText = styled.p`

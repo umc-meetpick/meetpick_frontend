@@ -47,8 +47,8 @@ const SetNickName: React.FC = () => {
                         </Warning>
                     )
                 )}
-                <MoveNextRoundBtn nextPage={"/setProfile/image"}/>
             </Container>
+            <MoveNextRoundBtn nextPage={"/setProfile/image"}/>
         </>
     );
 };
@@ -59,7 +59,7 @@ const Container = styled.div`
     margin-top:100px;
     margin: 0 auto;
     width:320px;
-    height:calc(100vh - 240px);
+    height:300px;
 `;
 const Title = styled.div`
     margin-top:60px;

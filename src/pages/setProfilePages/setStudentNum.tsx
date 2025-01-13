@@ -19,8 +19,8 @@ const SetStudentNum = () =>{
                 <Title>학번을 입력해주세요</Title>
                 <SubInfo>숫자만 입력해주세요! ex) 22학번 → 22</SubInfo>
                 <GrayBottomInput value={inputValue || String(studentNum).slice(0, 2)} onChange={(e)=>{setInputValue(e.target.value)}}/>
-                <MoveNextRoundBtn nextPage={"/setProfile/mbti"} onClick={()=>{setStudentNum(inputValue+"학번")}}/>
             </Container>
+            <MoveNextRoundBtn nextPage={"/setProfile/mbti"} onClick={()=>{setStudentNum(inputValue+"학번")}}/>
         </>
     )
 }
@@ -30,7 +30,7 @@ const Container = styled.div`
     margin-top:100px;
     margin: 0 auto;
     width:320px;
-    height:calc(100vh - 240px);
+    height:300px;
 `;
 const Title = styled.div`
     font-size:21px;
