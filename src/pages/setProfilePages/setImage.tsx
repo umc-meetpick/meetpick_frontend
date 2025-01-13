@@ -30,8 +30,8 @@ const SetImage = () =>{
                     <ProfileRound src={profile2} alt="프로필2" $isSelected={5==imgNum} onClick={()=>handleSelected(5, profile2)}/>
                     <ProfileRound src={profile3} alt="프로필3" $isSelected={6==imgNum} onClick={()=>handleSelected(6, profile3)}/>
                 </ImageWrapper>
-                <MoveNextRoundBtn nextPage={"/setProfile/studentNum"}/>
             </Container>
+            <MoveNextRoundBtn nextPage={"/setProfile/studentNum"}/>
         </>
     )
 }
@@ -40,8 +40,8 @@ export default SetImage
 const Container = styled.div`
     margin-top:100px;
     margin: 0 auto;
-    height:calc(100vh - 240px)
-    border:1px solid red;
+    width:320px;
+    height:300px;
 `;
 const Title = styled.div`
     font-size:21px;

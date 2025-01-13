@@ -31,8 +31,8 @@ const SetMBTI = () =>{
                         <Mbti>{mbti}</Mbti><Title> 메이트시군요!</Title>
                     </MbtiWrapper>
                 }
-                <MoveNextRoundBtn nextPage={"/setProfile/major"} />
             </Container>
+            <MoveNextRoundBtn nextPage={"/setProfile/major"} />
         </>
     )
 }
@@ -41,7 +41,8 @@ export default SetMBTI;
 const Container = styled.div`
     margin-top:100px;
     margin: 0 auto;
-    height:calc(100vh - 240px)
+    width:320px;
+    height:450px;
 `;
 const Title = styled.div`
     font-size:21px;

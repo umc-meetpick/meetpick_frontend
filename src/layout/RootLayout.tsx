@@ -1,9 +1,7 @@
 import React from 'react';
-import {Outlet} from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import styled from "styled-components";
 import BottomNavBar from '../components/navbar/BottomNavBar';
-
-/* --- intent랑 안겹치게 수정 ---*/
 
 const Main=styled.div`
     width:393px;
@@ -13,8 +11,6 @@ const Main=styled.div`
     flex-direction: column;
     position: relative; /* 상대적 위치 지정 */
 `;
-
-
 
 const ContentWrapper = styled.div`
   flex-grow: 1; /* 나머지 공간을 채움 */
@@ -35,6 +31,6 @@ const RootLayout = () => {
         <BottomNavBar />
       </Main>
     );
-  };
+};
 
 export default RootLayout;

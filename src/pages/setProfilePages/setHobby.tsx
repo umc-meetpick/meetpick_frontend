@@ -36,8 +36,8 @@ const SetHobby = () =>{
                     ))
                     }
                 </HobbyWrapper> 
-                <MoveNextRoundBtn nextPage={"/setProfile/contact"} />
             </Container>
+            <MoveNextRoundBtn nextPage={"/setProfile/contact"} />
         </>
     )
 }
@@ -47,7 +47,7 @@ const Container = styled.div`
     margin-top:100px;
     margin: 0 auto;
     width:320px;
-    height:calc(100vh - 240px);
+    height:450px;
 `;
 const Title = styled.div`
     font-size:21px;
