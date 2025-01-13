@@ -34,7 +34,7 @@ const IconPosition = styled.div`
 `;
 const Title = styled.div`
     font-size:17px;
-    font-weight:500;
+    font-weight:bold;
     color:black;
     display:flex;
     justify-content: center;
