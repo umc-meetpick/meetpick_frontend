@@ -18,6 +18,7 @@ import SetMBTI from '../pages/setProfilePages/setMBTI';
 import SetMajor from '../pages/setProfilePages/setMajor';
 import SetHobby from '../pages/setProfilePages/setHobby';
 import SetContact from '../pages/setProfilePages/setContact';
+import FoodMateProfile from '../pages/FoodMateProfile';
 
 const router = createBrowserRouter([
     {
@@ -88,6 +89,10 @@ const router = createBrowserRouter([
           {
             path:'setProfile/contact',
             element:<SetContact/>
+          },
+          {
+            path:'foodMateProfile',
+            element:<FoodMateProfile/>
           }
         ]
     }])
