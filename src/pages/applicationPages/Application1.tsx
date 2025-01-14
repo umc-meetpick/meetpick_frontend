@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import BasicNavbar from "../../components/navbar/BasicNavbar";
 import ApplicationImage from "../../assets/images/Application.png";
@@ -12,19 +12,39 @@ import { IoAlertCircle } from "react-icons/io5";
 const Application = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [message, setMessage]= useState<string | null>(null); // 메세지 상태 추가
+    const [buttonMessage, setButtonMessage] = useState<string>("메이트 신청하기"); // 버튼에 있는 텍스트
+    const [buttonStyle, setButtonStyle] = useState({ // 버튼 초기 스타일
+        color: "#2760AD",
+        background: "#E7F2FE",
+    });
 
     const handleOpenModal = () => setIsModalOpen(true); // 팝업 열기
-    const handleCloseModal = () => setIsModalOpen(false); // 팝업 닫기
 
     const handleConfirm = () => {
         setMessage("신청이 완료되었습니다.");
         setIsModalOpen(false); // 팝업 닫기
+        setButtonMessage("신청 완료"); // 버튼 텍스트 변경
+        setButtonStyle({ // 버튼 스타일 변경
+            color: "white",
+            background: "#101010",
+        });
     };
 
     const handleCancel = () => {
         setMessage("신청 조건을 다시 확인해주세요!");
         setIsModalOpen(false); // 팝업 닫기
     };
+
+    // 메시지가 설정되었을 때 3초 뒤 메시지를 초기화
+    useEffect(() => {
+        if (message) {
+            const timer = setTimeout(() => {
+                setMessage(null); // 메시지를 초기화
+            }, 2000); // 2초 후에 실행
+
+            return () => clearTimeout(timer); // 컴포넌트가 unmount 되거나 message가 바뀌면 타이머 클리어
+        }
+    }, [message]);
 
     return (
         <>
@@ -95,8 +115,8 @@ const Application = () => {
                 <ApplicationGrayBox text1="하고 싶은 말" text2="맛난 거 먹어유~" width="318px"/>
             </Mate1>
             <Button2>
-                <ApplicationButton onClick={handleOpenModal}>
-                    메이트 신청하기
+                <ApplicationButton style={buttonStyle} onClick={handleOpenModal}>
+                    {buttonMessage}
                 </ApplicationButton>
             </Button2>
 
