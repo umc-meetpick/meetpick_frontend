@@ -11,7 +11,7 @@ interface DropdownButtonProps {
 
 const DropdownButton: React.FC<DropdownButtonProps> = ({
   text,
-  width = "100px",
+  width = "110px",
   options = [],
   $isSelected = false,
   onSelect,
@@ -64,7 +64,7 @@ const StyledButton = styled.button<{ $isSelected?: boolean }>`
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  padding: 0 10px;
+  padding: 0 15px;
   margin-right: 10px;
   box-sizing: border-box;
 
@@ -77,12 +77,12 @@ const DropdownList = styled.ul`
   position: absolute;
   left: 0;
   margin-top:5px;
-  padding: 10px;
+  padding: 0px;
   background: white;
   border: 1.5px solid #cecece;
   list-style: none;
   z-index: 1;
-  width: 75px;
+  width: 108px;
 
   max-height: 100px; /* 리스트의 최대 높이를 설정 */
   overflow-y: scroll; /* 내용이 많을 경우 스크롤 활성화 */
@@ -91,10 +91,17 @@ const DropdownList = styled.ul`
 `;
 
 const DropdownItem = styled.li`
-  padding: 5px 5px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height: 32px;
   cursor: pointer;
   text-align:center;
   color:black;
-  border-bottom:1px solid #cecece;
+  font-size:13px;
+
+  &:hover{
+    background-color:#F5F5F5;
+  }
 
 `;
