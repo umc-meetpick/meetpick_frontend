@@ -1,4 +1,3 @@
-import React from 'react';
 import { Outlet } from "react-router-dom";
 import styled from "styled-components";
 import BottomNavBar from '../components/navbar/BottomNavBar';
@@ -17,7 +16,7 @@ const ContentWrapper = styled.div`
   overflow-y: scroll; /* 콘텐츠 영역이 넘치면 스크롤 */
   position: absolute;
   top: 0;
-  bottom: 0px; /* BottomNavBar 높이와 아래 여백만큼 */
+  bottom: 100px; /* BottomNavBar 높이와 아래 여백만큼 */
   width: 100%;
   overflow-x: hidden; /* 수평 스크롤 제거 */
 `;

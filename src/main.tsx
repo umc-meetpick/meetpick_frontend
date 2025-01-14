@@ -3,11 +3,14 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
 import { ProfileContextProvider } from './context/profileInfoContext.tsx'
+import { ChatProvider } from "./context/useChatContext.tsx"
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ProfileContextProvider>
-      <App />
+      <ChatProvider>
+        <App />
+      </ChatProvider>
     </ProfileContextProvider>
   </StrictMode>,
 )
