@@ -19,6 +19,7 @@ import SetMajor from '../pages/setProfilePages/setMajor';
 import SetHobby from '../pages/setProfilePages/setHobby';
 import SetContact from '../pages/setProfilePages/setContact';
 import Application from '../pages/applicationPages/Application1';
+import Alarm from '../pages/alarmPages/alarm';
 
 const router = createBrowserRouter([
     {
@@ -93,6 +94,10 @@ const router = createBrowserRouter([
           {
             path:'application',
             element:<Application/>
+          },
+          {
+            path:'alarm',
+            element:<Alarm/>
           }
         ]
     }])
