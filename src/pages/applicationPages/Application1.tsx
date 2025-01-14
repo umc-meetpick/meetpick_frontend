@@ -266,7 +266,7 @@ const ModalOverlay = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1; /* 최상위 배치 */
+  z-index: 9999; /* 최상위 배치 */
 `;
 
 
