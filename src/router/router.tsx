@@ -20,6 +20,7 @@ import SetHobby from '../pages/setProfilePages/setHobby';
 import SetContact from '../pages/setProfilePages/setContact';
 import Application from '../pages/applicationPages/Application1';
 import Alarm from '../pages/alarmPages/alarm';
+import Modify from '../pages/modifyPages/Modify';
 
 const router = createBrowserRouter([
     {
@@ -98,6 +99,10 @@ const router = createBrowserRouter([
           {
             path:'alarm',
             element:<Alarm/>
+          },
+          {
+            path:'modify',
+            element:<Modify/>
           }
         ]
     }])
