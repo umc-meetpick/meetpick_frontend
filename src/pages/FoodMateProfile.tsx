@@ -1,9 +1,11 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useContext } from "react";
 import styled from "styled-components";
 import BasicNavbar from "../components/navbar/BasicNavbar";
 import foodProfileQuery from "../assets/foodProfileQuery";
 import { useChatContext } from "../context/useChatContext";
 import profile2 from "../assets/profileImg/프로필2.png";
+import { FoodProfileInfoContext } from "../context/foodProfileInfo";
+import ToggleListModal from "../components/ToggleListModal";
 
 interface OptionClick{
     option:string;
@@ -11,8 +13,9 @@ interface OptionClick{
 }
 const FoodMateProfile = () =>{
     const {messages, addMessage} = useChatContext();
-    const [currentQueryIndex, setCurrentQueryIndex] = useState(0); // 현재 질문 인덱스를 추적
-
+    const [currentQueryIndex, setCurrentQueryIndex] = useState(0); 
+    const { setGender } = useContext(FoodProfileInfoContext);
+    const [modalOpen, setModalOpen] = useState(false);
     const messageEndRef = useRef<HTMLDivElement>(null);
   
     const scrollToBottom = () => {
@@ -24,8 +27,11 @@ const FoodMateProfile = () =>{
     }, [messages]);
   
     const handleOptionClick = ({option, type}: OptionClick): void => {
-        if (type == "gender"){
+        if (type == "gender" ){
+            setGender(option);
             addMessage({ question: [option], direction: "outgoing" });
+        }else if (type == "major" && option == "있어~"){
+            setModalOpen(true);
         }
         else{
             addMessage({ question: [option], direction: "outgoing" });
@@ -51,12 +57,12 @@ const FoodMateProfile = () =>{
                         {idx + 1 === msg.question.length && msg.direction === "incoming" && (
                             <Img src={profile2} alt="프로필" />
                         )}
-                        <BaseMessage
-                            direction={msg.direction}
-                            $isImg={idx + 1 === msg.question.length && msg.direction === "incoming"}
-                        >
-                            {que}
-                        </BaseMessage>
+                            <BaseMessage
+                                direction={msg.direction}
+                                $isImg={idx + 1 === msg.question.length && msg.direction === "incoming"}
+                            >
+                                {que}
+                            </BaseMessage>
                         </ImageContainer>
                     ))
                     ))}
@@ -74,6 +80,7 @@ const FoodMateProfile = () =>{
                             </>
                         )}
                     </OptionsContainer>
+                    { modalOpen && <ToggleListModal setModalOpen={setModalOpen}/> }
             </Container>
         </>
     )

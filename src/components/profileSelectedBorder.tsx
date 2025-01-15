@@ -32,6 +32,7 @@ const Container = styled.div`
     flex-wrap: nowrap;
     overflow-x:auto;
     overflow-y: hidden;
+    border:1px solid red;
     justify-content: flex-start; 
     margin-bottom: 30px;
     gap:10px;

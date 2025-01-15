@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import styled from "styled-components";
 import SetProfileNavbar from '../../components/navbar/BasicNavbar';
 import ProgressBar from '../../components/progressbar/ProgressBar';
@@ -15,7 +15,7 @@ const SetMajor = () =>{
             <ProfileSelectedBorder input={[nickname,image,studentNum,mbti]}/>
             <Container>
                 <Title>전공을 선택해주세요</Title>
-                <ToggleList/>
+                <ToggleList button={true}/>
             </Container>
         </Wrapper>
     )

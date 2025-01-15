@@ -4,10 +4,19 @@ import { FaChevronDown } from "react-icons/fa6";
 import majorList from '../assets/majorList';
 import { useNavigate } from 'react-router-dom';
 import { ProfileInfoContext } from '../context/profileInfoContext';
+import { FoodProfileInfoContext } from '../context/foodProfileInfo';
 
-const ToggleList: React.FC = () =>{
+interface ToggleListProps {
+    button?: boolean; 
+    multi?: boolean;
+    setModalOpen?: (isOpen: boolean) => void;
+}
+
+const ToggleList: React.FC<ToggleListProps> = ({button, multi, setModalOpen}) =>{
     const navigate = useNavigate();
     const {major, setMajor} = useContext(ProfileInfoContext);
+    const {majors, setMajors} = useContext(FoodProfileInfoContext);
+
     const [openItems, setOpenItems] = useState<number[]>([]);
     const handleToggle = (id: number) => {
         if (openItems.includes(id)) {
@@ -17,7 +26,15 @@ const ToggleList: React.FC = () =>{
         }
     };
     const handleMajor = (major:string) =>{
-        setMajor(major)
+        if (multi) {
+            if (majors.includes(major)) {
+                setMajors(majors.filter((m) => m !== major));
+            } else {
+                setMajors([...majors, major]);
+            }
+        } else {
+            setMajor(major);
+        }
     };
     return(
         <>
@@ -30,14 +47,22 @@ const ToggleList: React.FC = () =>{
                     </Toggle>
                     {openItems.includes(item.id) && (
                         item.majors.map((maj, index) => (
-                            <Detail key={`major-${item.id}-${index}`} onClick={()=>handleMajor(maj)} $isSelected={major===maj}>
+                            <Detail 
+                                key={`major-${item.id}-${index}`} 
+                                onClick={()=>handleMajor(maj)} 
+                                $isSelected={multi ? majors.includes(maj) : major===maj}
+                            >
                                 {maj}
                             </Detail>
                         ))
                     )}
                 </div>
             ))}
-            <Btn onClick={()=>navigate("/setProfile/hobby")}>다음</Btn>
+            {button ? (
+                <Btn onClick={()=>navigate("/setProfile/hobby")}>다음</Btn>
+            ) : (
+                <Btn onClick={()=>setModalOpen?.(false)}>저장</Btn>
+            )}
             </Container>
         </>
     )
@@ -50,6 +75,7 @@ const Container = styled.div`
     margin-top:20px;
     max-height: calc(100vh - 150px);
     position:relative;
+    border:1px solid red;
 `;
 const Toggle = styled.button<{$isOpened:boolean;}>`
     width:312px;
@@ -90,6 +116,7 @@ const Btn = styled.button`
     background-color:#E7F2FE;
     border-radius:100px;
     margin-top:43px;
+    margin-bottom:20px;
     border:none;
     &:focus {
         outline: none;
