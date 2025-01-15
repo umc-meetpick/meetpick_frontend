@@ -260,7 +260,7 @@ const Modify = () => {
                         width="136px"
                         color="#686868"
                     />
-                    <ModifyButton text="전공 ›"
+                    <ModifyButton text="전공 "
                         $backgroundColor="#EAF4FF"
                         width="136px"
                         color="#686868"
