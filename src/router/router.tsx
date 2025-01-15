@@ -21,6 +21,8 @@ import SetContact from '../pages/setProfilePages/setContact';
 import Application from '../pages/applicationPages/Application1';
 import Alarm from '../pages/alarmPages/alarm';
 import Modify from '../pages/modifyPages/Modify';
+import Recommend from '../pages/recommendPages/Recommend1';
+
 
 const router = createBrowserRouter([
     {
@@ -103,6 +105,10 @@ const router = createBrowserRouter([
           {
             path:'modify',
             element:<Modify/>
+          },
+          {
+            path:'recommend',
+            element:<Recommend/>
           }
         ]
     }])
