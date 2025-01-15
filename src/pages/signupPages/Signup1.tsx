@@ -79,6 +79,7 @@ const Signup1 = () => {
               <GrayButtonContainer>
                 <DropdownButton
                   text={selectedYear || "연도 ∨"}
+                  width="100px"
                   options={[
                     "1990","1991","1992","1993","1994","1995","1996","1997","1998","1999","2000",
                     "2001","2002","2003","2004","2005","2006","2007","2008","2009","2010","2011",
@@ -88,11 +89,13 @@ const Signup1 = () => {
                 />
                 <DropdownButton
                   text={selectedMonth || "월 ∨"}
+                  width="100px"
                   options={["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]}
                   onSelect={(option) => setSelectedMonth(option)}
                 />
                 <DropdownButton
                   text={selectedDate || "일 ∨"}
+                  width="100px"
                   options={[
                     "1","2","3","4","5","6","7","8","9","10",
                     "11","12","13","14","15","16","17","18","19","20",
@@ -113,6 +116,7 @@ const Signup1 = () => {
               <GrayButtonContainer>
                 <DropdownButton
                   text={selectedGrade || "학번 ∨"}
+                  width="100px"
                   options={["10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20","21","22","23","24","25"]}
                   onSelect={(option) => setSelectedGrade(option)}
                 />

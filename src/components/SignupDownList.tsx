@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 interface DropdownButtonProps {
   text: string; // 버튼 텍스트
-  width?: string; // 버튼 너비
+  width: string; // 버튼 너비
   options?: string[]; // 드롭다운 옵션 리스트
   $isSelected?: boolean; // 선택된 버튼 여부
   onSelect?: (selected: string) => void; // 리스트 선택 시 이벤트
@@ -11,7 +11,7 @@ interface DropdownButtonProps {
 
 const DropdownButton: React.FC<DropdownButtonProps> = ({
   text,
-  width = "110px",
+  width,
   options = [],
   $isSelected = false,
   onSelect,
@@ -34,7 +34,7 @@ const DropdownButton: React.FC<DropdownButtonProps> = ({
         {text}
       </StyledButton>
       {isOpen && options.length > 0 && (
-        <DropdownList>
+        <DropdownList $width ={width}>
           {options.map((option, index) => (
             <DropdownItem key={index} onClick={() => handleOptionClick(option)}>
               {option}
@@ -73,7 +73,7 @@ const StyledButton = styled.button<{ $isSelected?: boolean }>`
   }
 `;
 
-const DropdownList = styled.ul`
+const DropdownList = styled.ul<{$width : string}>`
   position: absolute;
   left: 0;
   margin-top:5px;
@@ -82,7 +82,7 @@ const DropdownList = styled.ul`
   border: 1.5px solid #cecece;
   list-style: none;
   z-index: 1;
-  width: 108px;
+  width: ${({ $width }) => `calc(${Number($width.replace('px', '')) - 4}px)`};
 
   max-height: 100px; /* 리스트의 최대 높이를 설정 */
   overflow-y: scroll; /* 내용이 많을 경우 스크롤 활성화 */
