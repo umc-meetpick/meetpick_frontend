@@ -1,18 +1,26 @@
 const foodProfileQuery = [
     {
-      "question": ["안녕!","오늘 뭐 먹고 싶어?"],
+      "question": ["[닉네임]님 안녕하세요!","혼밥에서 구제해줄 메이트를 찾고계신가요?","[닉네임]님이 원하는 메이트를 작성해주시면 찾아 드릴게요!"],
       "direction": "incoming",
-      "options": ["밥", "빵", "면"]
+      "options": ["좋아!"]
     },
     {
-      "question": ["음료는?"],
+      "question": ["어떤 분이랑 밥을 함께 드시고 싶나요?"],
       "direction": "incoming",
-      "options": ["커피", "주스", "물"]
+      "options": ["남성", "여성", "상관없어!"],
+      "type": "gender"
     },
     {
-        "question": ["오늘 뭐 보고고 싶어?"],
+        "question": ["아하! 알겠습니다", "전공멘트"],
         "direction": "incoming",
-        "options": ["드라마", "영화", "방송"]
-      },
+        "options": ["있어~", "상관없어!"],
+        "type": "major"
+    },
+    {
+      "question": ["원하시는 학번의 메이트가 있으실까요?"],
+      "direction": "incoming",
+      "options": ["동기", "선배", "후배", "상관없음"],
+      "type": "studentNum"
+    },
   ]
   export default foodProfileQuery;
