@@ -5,7 +5,8 @@ import foodProfileQuery from "../assets/foodProfileQuery";
 import { useChatContext } from "../context/useChatContext";
 import profile2 from "../assets/profileImg/프로필2.png";
 import { FoodProfileInfoContext } from "../context/foodProfileInfo";
-import ToggleListModal from "../components/ToggleListModal";
+import ToggleListModal from "../components/modal/ToggleListModal";
+import SelectNumModal from "../components/modal/selectNumModal";
 
 interface OptionClick{
     option:string;
@@ -14,10 +15,10 @@ interface OptionClick{
 const FoodMateProfile = () =>{
     const {messages, addMessage} = useChatContext();
     const [currentQueryIndex, setCurrentQueryIndex] = useState(0); 
-    const { setGender } = useContext(FoodProfileInfoContext);
+    const { setGender, majors, ageRange } = useContext(FoodProfileInfoContext);
     const [modalOpen, setModalOpen] = useState(false);
+    const [modalOpenS, setModalOpenS] = useState(false);
     const messageEndRef = useRef<HTMLDivElement>(null);
-  
     const scrollToBottom = () => {
       messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
     };
@@ -25,26 +26,50 @@ const FoodMateProfile = () =>{
     useEffect(() => {
       scrollToBottom();
     }, [messages]);
-  
+
+    useEffect(() => {
+        if ( !modalOpen && majors.length > 0) {
+            addMessage({ question: [majors.join(",") + "!"], direction: "outgoing" });
+            nextOption(); 
+        }
+    }, [ modalOpen, majors]);
+
+    useEffect(() => {
+        if ( !modalOpenS && ageRange.length > 0) {
+            addMessage({ question: [ageRange.join("~") + "살 사이 메이트면 좋겠어"], direction: "outgoing" });
+            nextOption(); 
+        }
+    }, [ modalOpen, ageRange]);
+      
     const handleOptionClick = ({option, type}: OptionClick): void => {
         if (type == "gender" ){
             setGender(option);
             addMessage({ question: [option], direction: "outgoing" });
-        }else if (type == "major" && option == "있어~"){
-            setModalOpen(true);
+        }else if (type == "major"){
+            if(option == "있어~")
+                setModalOpen(true); 
+        }else if (type == "studentNum" && option != "상관없음"){
+            addMessage({ question: [option+"로 부탁해~"], direction: "outgoing" });
+        }else if (type == "age"){
+            setModalOpenS(true); 
         }
         else{
             addMessage({ question: [option], direction: "outgoing" });
         }
+        
+        if (!((type == "major" && option == "있어~") || type == "age"))
+            nextOption();
+    };
+    const nextOption = () =>{
         const nextQueryIndex = currentQueryIndex + 1;
         setCurrentQueryIndex(-1); 
-        if (nextQueryIndex < foodProfileQuery.length) {
-        setTimeout(()=>{
-            addMessage({ question: foodProfileQuery[nextQueryIndex].question, direction: "incoming" });
-            setCurrentQueryIndex(nextQueryIndex); 
-        },500);
+        if (nextQueryIndex < foodProfileQuery.length && !modalOpen) {
+            setTimeout(() => {
+                addMessage({ question: foodProfileQuery[nextQueryIndex].question, direction: "incoming" });
+                setCurrentQueryIndex(nextQueryIndex); 
+            },500);
         }
-    };
+    }
     return(
         <>
             <BasicNavbar title="혼밥 MATE"></BasicNavbar>
@@ -81,6 +106,13 @@ const FoodMateProfile = () =>{
                         )}
                     </OptionsContainer>
                     { modalOpen && <ToggleListModal setModalOpen={setModalOpen}/> }
+                    { modalOpenS && 
+                        <SelectNumModal 
+                            setModalOpen={setModalOpenS} 
+                            title="혼밥 메이트 나이"
+                            min={20}
+                            max={28}
+                        /> }
             </Container>
         </>
     )

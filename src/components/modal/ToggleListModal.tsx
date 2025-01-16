@@ -1,8 +1,9 @@
-import ProfileSelectedBorder from "./profileSelectedBorder";
-import ToggleList from "./ToggleList";
+import ProfileSelectedBorder from "../profileSelectedBorder";
+import ToggleList from "../ToggleList";
 import styled from "styled-components";
 import { useContext } from "react";
-import { FoodProfileInfoContext } from "../context/foodProfileInfo";
+import { FoodProfileInfoContext } from "../../context/foodProfileInfo";
+
 interface ToggleListModalProps {
     setModalOpen: (isOpen: boolean) => void;
 }
@@ -12,10 +13,10 @@ const ToggleListModal: React.FC<ToggleListModalProps> = ({setModalOpen}) =>{
     return(
         <Background>
             <Container>
-                <div>
-                    <ProfileSelectedBorder input={[...majors]}/>
-                </div>
-                <ToggleList multi={true} setModalOpen={setModalOpen}/>
+                <Selected>
+                    <ProfileSelectedBorder input={[...majors]} multi/>
+                </Selected>
+                <ToggleList multi={true} setModalOpen={setModalOpen} />
             </Container>
         </Background>
     )
@@ -31,17 +32,21 @@ const Background = styled.div`
     left: 0;
 `;
 const Container = styled.div`
-    width: 393px;
-    height: 65%
-    padding-top:30px;
-    border: 1px solid green;
+    width: calc(100vw); 
+    max-width: 393px; 
+    height: calc(100vh - 200px);
+    border: 1px solid white;
     background-color: white;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     position: absolute;
-    bottom:75px;
-    overflow-y:auto;
+    bottom: 75px;
+    overflow-y: auto;
     border-radius: 30px 30px 0 0;
+`;
+const Selected= styled.div`
+    margin-top: calc(-100vh + 850px);
+    height:30px;
 `;

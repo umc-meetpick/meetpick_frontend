@@ -61,7 +61,9 @@ const ToggleList: React.FC<ToggleListProps> = ({button, multi, setModalOpen}) =>
             {button ? (
                 <Btn onClick={()=>navigate("/setProfile/hobby")}>다음</Btn>
             ) : (
-                <Btn onClick={()=>setModalOpen?.(false)}>저장</Btn>
+
+                <Btn2 onClick={()=>setModalOpen?.(false)}>저장</Btn2>
+
             )}
             </Container>
         </>
@@ -75,7 +77,6 @@ const Container = styled.div`
     margin-top:20px;
     max-height: calc(100vh - 150px);
     position:relative;
-    border:1px solid red;
 `;
 const Toggle = styled.button<{$isOpened:boolean;}>`
     width:312px;
@@ -115,6 +116,21 @@ const Btn = styled.button`
     font-weight:600;
     background-color:#E7F2FE;
     border-radius:100px;
+    margin-top:43px;
+    margin-bottom:20px;
+    border:none;
+    &:focus {
+        outline: none;
+        border:none;
+    }
+`;
+const Btn2 = styled.button`
+    width:312px;
+    height:48px;
+    color:#326DC1;
+    font-size:15px;
+    font-weight:600;
+    background-color:#E7F2FE;
     margin-top:43px;
     margin-bottom:20px;
     border:none;

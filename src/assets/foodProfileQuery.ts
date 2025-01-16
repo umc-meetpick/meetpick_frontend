@@ -22,5 +22,11 @@ const foodProfileQuery = [
       "options": ["동기", "선배", "후배", "상관없음"],
       "type": "studentNum"
     },
+    {
+      "question": ["원하시는 나이의 메이트가 있으면 말씀해주세요!"],
+      "direction": "incoming",
+      "options": ["메이트 나이 설정하기"],
+      "type": "age"
+    },
   ]
   export default foodProfileQuery;
