@@ -28,5 +28,47 @@ const foodProfileQuery = [
       "options": ["메이트 나이 설정하기"],
       "type": "age"
     },
+    {
+      "question": [ "성격 멘트"],
+      "direction": "incoming",
+      "options": ["활기찬", "조용한","상관없어!"],
+      "type": "mbti-EI"
+    },
+    {
+      "question": [ "성격 멘트"],
+      "direction": "incoming",
+      "options": ["현실적", "창의적","상관없어!"],
+      "type": "mbti-SN"
+    },
+    {
+      "question": [ "성격 멘트"],
+      "direction": "incoming",
+      "options": ["객관적", "공감 만땅","상관없어!"],
+      "type": "mbti-TF"
+    },
+    {
+      "question": [ "성격 멘트"],
+      "direction": "incoming",
+      "options": ["체게적", "유동적","상관없어!"],
+      "type": "mbti-JP"
+    },
+    {
+      "question": [ "취미 멘트"],
+      "direction": "incoming",
+      "options": ["같으면 좋겠어","상관없어!"],
+      "type": "hobby"
+    },
+    {
+      "question": [ "네, 알겠습니다!", "메이트와 함께하고 싶은 요일을 선택해주세요!"],
+      "direction": "incoming",
+      "options": ["월", "화", "수", "목", "금"],
+      "type": "date"
+    },
+    {
+      "question": [ "이제 메이트와 함께하고 싶은 시간대 선택해주세요!"],
+      "direction": "incoming",
+      "options": ["점심", "저녁", "둘 다"],
+      "type": "date"
+    },
   ]
   export default foodProfileQuery;

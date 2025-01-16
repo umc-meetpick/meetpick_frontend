@@ -10,6 +10,8 @@ interface FoodProfileInfoContextType {
     setStudentNum: (studentNum: string) => void;
     ageRange: number[];
     setAgeRange: (ageRange: number[]) => void;
+    mbtiList: string[];
+    setMbtiList: (mbtiList: string[]) => void;
     mbti: string;
     setMbti: (mbti: string) => void;
     hobby: string[];
@@ -32,6 +34,8 @@ const defaultValue: FoodProfileInfoContextType = {
     setStudentNum: () => {},
     ageRange: [],
     setAgeRange: () => {},
+    mbtiList: [],
+    setMbtiList: () => {},
     mbti: "",
     setMbti: () => {},
     hobby: [],
@@ -56,6 +60,7 @@ export function FoodProfileContextProvider({children}:FoodProfileContextProvider
     const [majors, setMajors] = useState<string[]>([]);
     const [studentNum, setStudentNum] = useState<string>("");
     const [ageRange, setAgeRange] = useState<number[]>([])
+    const [mbtiList, setMbtiList] = useState<string[]>([]);
     const [mbti, setMbti] = useState<string>("");
     const [hobby, setHobby] = useState<string[]>([]);
     const [contactType, setContactType] = useState<string>("");
@@ -72,6 +77,8 @@ export function FoodProfileContextProvider({children}:FoodProfileContextProvider
                 setStudentNum,
                 ageRange,
                 setAgeRange,
+                mbtiList,
+                setMbtiList,
                 mbti,
                 setMbti,
                 hobby,

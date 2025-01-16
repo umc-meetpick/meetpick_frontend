@@ -15,7 +15,7 @@ interface OptionClick{
 const FoodMateProfile = () =>{
     const {messages, addMessage} = useChatContext();
     const [currentQueryIndex, setCurrentQueryIndex] = useState(0); 
-    const { setGender, majors, ageRange } = useContext(FoodProfileInfoContext);
+    const { setGender, majors, studentNum, setStudentNum, ageRange, mbtiList, setMbtiList } = useContext(FoodProfileInfoContext);
     const [modalOpen, setModalOpen] = useState(false);
     const [modalOpenS, setModalOpenS] = useState(false);
     const messageEndRef = useRef<HTMLDivElement>(null);
@@ -37,6 +37,7 @@ const FoodMateProfile = () =>{
     useEffect(() => {
         if ( !modalOpenS && ageRange.length > 0) {
             addMessage({ question: [ageRange.join("~") + "살 사이 메이트면 좋겠어"], direction: "outgoing" });
+            addMessage({ question: [ageRange.join("~") + `살 ${studentNum} 메이트를 찾고 계시군요!`], direction: "incoming" });
             nextOption(); 
         }
     }, [ modalOpen, ageRange]);
@@ -49,9 +50,28 @@ const FoodMateProfile = () =>{
             if(option == "있어~")
                 setModalOpen(true); 
         }else if (type == "studentNum" && option != "상관없음"){
+            setStudentNum(option);
             addMessage({ question: [option+"로 부탁해~"], direction: "outgoing" });
         }else if (type == "age"){
             setModalOpenS(true); 
+        }else if (type?.includes("mbti") && option != "상관없어!"){
+            if (type?.includes("EI")){
+                const EI = ( option == "활기찬" )  ? "E" : "I";
+                setMbtiList([...mbtiList,EI]);
+                addMessage({ question: [option+" 사람이 좋아!"], direction: "outgoing" });
+            }else{
+                if (type?.includes("SN")){
+                    const SN = ( option == "현실적" )  ? "S" : "N";
+                    setMbtiList([...mbtiList,SN]);
+                }else if (type?.includes("TF")){
+                    const TF = ( option == "객관적" )  ? "T" : "F";
+                    setMbtiList([...mbtiList,TF]);
+                }else if (type?.includes("TF")){
+                    const JP = ( option == "체계적" )  ? "J" : "P";
+                    setMbtiList([...mbtiList,JP]);
+                }
+                addMessage({ question: [option+"인 사람이 좋아!"], direction: "outgoing" });
+            }
         }
         else{
             addMessage({ question: [option], direction: "outgoing" });

@@ -35,7 +35,6 @@ const SelectNumModal : React.FC<ToggleListModalProps> = ({setModalOpen, title, m
                     <MinMax>
                         <div>{min}</div> 
                         <div>{max}</div> 
-                        <div>{value}</div> 
                     </MinMax>
                 </SliderStyle>
                 <Btn onClick={handleSave}>적용</Btn>
