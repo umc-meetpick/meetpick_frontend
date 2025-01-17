@@ -1,6 +1,9 @@
 import React,{useEffect, useState} from "react";
 import styled from "styled-components";
 import { Icon } from "@iconify/react";
+import RecommendImage from "../../assets/images/Recommend.png";
+import RecommendBox from "../../components/RecommendBox";
+
 
 const Recommend = () => {
 
@@ -37,18 +40,42 @@ const Recommend = () => {
             <Content>
                 {activeTab === "recommendList" && (
                     <RecommendationSection>
-                        {/* 추천 리스트 UI */}
-                        <Image src="path_to_first_image.png" alt="추천 리스트 이미지" />
-                        <Description>[메티닝 프로필 구성하러 가기]</Description>
+                        <StyledImage src={RecommendImage} alt="추천 리스트 이미지" />
+                        <Description>[<Name>베티</Name>님 프로필 구경하러 가기]</Description>
                     </RecommendationSection>
                 )}
                 {activeTab === "fullList" && (
                     <FullListSection>
-                        {/* 전체 리스트 UI */}
-                        <Card>추천 카드 1</Card>
-                        <Card>추천 카드 2</Card>
-                        <Card>추천 카드 3</Card>
+                        <RecommendBox text="베티"
+                        number1="0"
+                        number2="1"
+                        $backgroundColor="#EEF5FD"
+                        width="160px"
+                        color="#5D5D5D"
+                    />
+                    <RecommendBox text="마음이 숭숭"
+                        number1="2"
+                        number2="4"
+                        $backgroundColor="#C0E5FF"
+                        width="160px"
+                        color="#5D5D5D"
+                    />
+                    <RecommendBox text="제이든"
+                        number1="0"
+                        number2="3"
+                        $backgroundColor="#EEF5FD"
+                        width="160px"
+                        color="#5D5D5D"
+                    />
+                    <RecommendBox text="디아"
+                        number1="2"
+                        number2="4"
+                        $backgroundColor="#C0E5FF"
+                        width="160px"
+                        color="#5D5D5D"
+                    />
                     </FullListSection>
+                    
                 )}
             </Content>
         </>
@@ -121,33 +148,31 @@ const Tab = styled.button<{ active: boolean }>`
 
 const Content = styled.div`
     margin-top: 20px;
+    padding: 0 25px;
+    display:flex;
+    justify-content:center;
 `;
 
 const RecommendationSection = styled.div`
     text-align: center;
 `;
 
-const Image = styled.img`
-    width: 100px;
-    height: 100px;
-    margin: 20px auto;
+const StyledImage = styled.img`
+    width: 240px;
+    height: 240px;
 `;
 
 const Description = styled.p`
-    font-size: 14px;
+    font-size: 20px;
     color: #555;
+    display:flex;
+    justify-content:center;
+    align-items:center;
 `;
 
 const FullListSection = styled.div`
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-`;
+    gap: 23px;
 
-const Card = styled.div`
-    padding: 20px;
-    background-color: #f5f5f5;
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
 `;
