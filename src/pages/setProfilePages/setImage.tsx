@@ -17,7 +17,7 @@ const SetImage = () =>{
     }
     return(
         <>
-            <SetProfileNavbar title={"프로필 작성"}/>
+            <SetProfileNavbar title={"프로필 작성"} before={true}/>
             <ProgressBar progress={28}/>
             <ProfileSelectedBorder input={[nickname]}/>
             <Container>

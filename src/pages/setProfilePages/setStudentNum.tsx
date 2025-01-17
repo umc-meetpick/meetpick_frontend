@@ -1,18 +1,18 @@
-import React, { useState, useContext} from "react"
+import { useState, useContext} from "react"
 import SetProfileNavbar from '../../components/navbar/BasicNavbar';
 import ProgressBar from '../../components/progressbar/ProgressBar';
 import styled from "styled-components";
 import MoveNextRoundBtn from "../../components/button/MoveNextRoundBtn";
 import { ProfileInfoContext } from '../../context/profileInfoContext';
 import ProfileSelectedBorder from "../../components/profileSelectedBorder";
-import GrayBottomInput from "../../components/GrayBottomInput";
+import GrayBottomInput from "../../components/input/GrayBottomInput";
 
 const SetStudentNum = () =>{
     const [inputValue, setInputValue] = useState("");
     const {nickname, image, studentNum, setStudentNum} = useContext(ProfileInfoContext);
     return(
         <>
-            <SetProfileNavbar title={"프로필 작성"}/>
+            <SetProfileNavbar title={"프로필 작성"} before={true}/>
             <ProgressBar progress={40}/>
             <ProfileSelectedBorder input={[nickname,image]}/>
             <Container>

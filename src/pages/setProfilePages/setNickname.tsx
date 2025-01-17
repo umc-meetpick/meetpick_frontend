@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import SetProfileNavbar from '../../components/navbar/BasicNavbar';
 import ProgressBar from '../../components/progressbar/ProgressBar';
 import styled from 'styled-components';
-import GrayBottomInput from '../../components/GrayBottomInput';
+import GrayBottomInput from '../../components/input/GrayBottomInput';
 import { PiWarningCircle } from "react-icons/pi";
 import { FaRegCircleCheck } from "react-icons/fa6";
 import MoveNextRoundBtn from "../../components/button/MoveNextRoundBtn"

@@ -18,7 +18,7 @@ const SetHobby = () =>{
     };
     return(
         <>
-            <SetProfileNavbar title={"프로필 작성"}/>
+            <SetProfileNavbar title={"프로필 작성"}  before={true}/>
             <ProgressBar progress={85}/>
             <ProfileSelectedBorder input={[nickname,image,studentNum,mbti, major]}/>
             <Container>

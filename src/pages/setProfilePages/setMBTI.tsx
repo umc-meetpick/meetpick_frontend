@@ -11,7 +11,7 @@ const SetMBTI = () =>{
     const {nickname, image, studentNum, mbti} = useContext(ProfileInfoContext);
     return(
         <>
-            <SetProfileNavbar title={"프로필 작성"}/>
+            <SetProfileNavbar title={"프로필 작성"} before={true}/>
             <ProgressBar progress={55}/>
             <ProfileSelectedBorder input={[nickname,image,studentNum]}/>
             <Container>

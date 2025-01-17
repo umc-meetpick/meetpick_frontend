@@ -7,6 +7,7 @@ import profile2 from "../assets/profileImg/프로필2.png";
 import { FoodProfileInfoContext } from "../context/foodProfileInfo";
 import ToggleListModal from "../components/modal/ToggleListModal";
 import SelectNumModal from "../components/modal/selectNumModal";
+import ChatingInput from "../components/input/ChatingInput";
 
 interface OptionClick{
     option:string;
@@ -18,6 +19,7 @@ const FoodMateProfile = () =>{
     const { setGender, majors, studentNum, setStudentNum, ageRange, mbtiList, setMbtiList } = useContext(FoodProfileInfoContext);
     const [modalOpen, setModalOpen] = useState(false);
     const [modalOpenS, setModalOpenS] = useState(false);
+    const [chatDisable, setChatDisable] = useState(true);
     const messageEndRef = useRef<HTMLDivElement>(null);
     const scrollToBottom = () => {
       messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -36,8 +38,8 @@ const FoodMateProfile = () =>{
 
     useEffect(() => {
         if ( !modalOpenS && ageRange.length > 0) {
-            addMessage({ question: [ageRange.join("~") + "살 사이 메이트면 좋겠어"], direction: "outgoing" });
-            addMessage({ question: [ageRange.join("~") + `살 ${studentNum} 메이트를 찾고 계시군요!`], direction: "incoming" });
+            addMessage({ question: [ `${ ageRange[0] == ageRange[1] ? ageRange[0] : ageRange.join("~") }살 메이트면 좋겠어`], direction: "outgoing" });
+            addMessage({ question: [ `${ ageRange[0] == ageRange[1] ? ageRange[0] : ageRange.join("~") }살 메이트를 찾고 계시군요!`], direction: "incoming" });
             nextOption(); 
         }
     }, [ modalOpen, ageRange]);
@@ -92,27 +94,27 @@ const FoodMateProfile = () =>{
     }
     return(
         <>
-            <BasicNavbar title="혼밥 MATE"></BasicNavbar>
+            <BasicNavbar title="혼밥 메이트 찾기" bell={true}></BasicNavbar>
             <Container>
                 <StyledMainContainer>
-                <MessagesContainer>
-                    {messages.map((msg, index) => (
-                    msg.question.map((que, idx) => (
-                        <ImageContainer key={`${index}-${idx}`}>
-                        {idx + 1 === msg.question.length && msg.direction === "incoming" && (
-                            <Img src={profile2} alt="프로필" />
-                        )}
-                            <BaseMessage
-                                direction={msg.direction}
-                                $isImg={idx + 1 === msg.question.length && msg.direction === "incoming"}
-                            >
-                                {que}
-                            </BaseMessage>
-                        </ImageContainer>
-                    ))
-                    ))}
-                </MessagesContainer>
-                <div ref={messageEndRef} />
+                    <MessagesContainer>
+                        {messages.map((msg, index) => (
+                        msg.question.map((que, idx) => (
+                            <ImageContainer key={`${index}-${idx}`}>
+                            {idx + 1 === msg.question.length && msg.direction === "incoming" && (
+                                <Img src={profile2} alt="프로필" />
+                            )}
+                                <BaseMessage
+                                    direction={msg.direction}
+                                    $isImg={idx + 1 === msg.question.length && msg.direction === "incoming"}
+                                >
+                                    {que}
+                                </BaseMessage>
+                            </ImageContainer>
+                        ))
+                        ))}
+                    </MessagesContainer>
+                    <div ref={messageEndRef} />
                 </StyledMainContainer>
                 <OptionsContainer>
                         {currentQueryIndex >=0 && foodProfileQuery[currentQueryIndex]?.options && (
@@ -125,6 +127,7 @@ const FoodMateProfile = () =>{
                             </>
                         )}
                     </OptionsContainer>
+                    <ChatingInput disable={chatDisable}/>
                     { modalOpen && <ToggleListModal setModalOpen={setModalOpen}/> }
                     { modalOpenS && 
                         <SelectNumModal 
@@ -151,7 +154,6 @@ const StyledMainContainer = styled.div`
     height: 65%;
     overflow-x: hidden;
     overflow-y: auto;
-    border:1px solid red;
     *{
         font-size:13px;
         color: black;
@@ -171,7 +173,7 @@ const OptionsContainer = styled.div`
     display: flex;
     flex-wrap:wrap;
     justify-content: center;
-    margin-top: 70px;
+    margin-top: calc( 100vh * 0.05);
     gap:10px;
 `;
 const BaseMessage = styled.div<{ direction: string, $isImg : boolean }>`

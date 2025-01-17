@@ -29,25 +29,25 @@ const foodProfileQuery = [
       "type": "age"
     },
     {
-      "question": [ "성격 멘트"],
+      "question": [ "성격 멘트 EI"],
       "direction": "incoming",
       "options": ["활기찬", "조용한","상관없어!"],
       "type": "mbti-EI"
     },
     {
-      "question": [ "성격 멘트"],
+      "question": [ "성격 멘트 SN"],
       "direction": "incoming",
       "options": ["현실적", "창의적","상관없어!"],
       "type": "mbti-SN"
     },
     {
-      "question": [ "성격 멘트"],
+      "question": [ "성격 멘트 TF"],
       "direction": "incoming",
       "options": ["객관적", "공감 만땅","상관없어!"],
       "type": "mbti-TF"
     },
     {
-      "question": [ "성격 멘트"],
+      "question": [ "성격 멘트 JP"],
       "direction": "incoming",
       "options": ["체게적", "유동적","상관없어!"],
       "type": "mbti-JP"
