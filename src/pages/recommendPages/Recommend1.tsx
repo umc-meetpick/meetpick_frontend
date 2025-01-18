@@ -46,28 +46,32 @@ const Recommend = () => {
                 )}
                 {activeTab === "fullList" && (
                     <FullListSection>
-                        <RecommendBox text="베티"
+                        <RecommendBox text1="베티"
+                        text2="#여성 #23살 #20학번"
                         number1="0"
                         number2="1"
                         $backgroundColor="#EEF5FD"
                         width="160px"
                         color="#5D5D5D"
                     />
-                    <RecommendBox text="마음이 숭숭"
+                    <RecommendBox text1="마음이 숭숭"
+                        text2="#여성 #22살 #24학번"
                         number1="2"
                         number2="4"
                         $backgroundColor="#C0E5FF"
                         width="160px"
                         color="#5D5D5D"
                     />
-                    <RecommendBox text="제이든"
+                    <RecommendBox text1="제이든"
+                        text2="#남성 #27살 #18학번"
                         number1="0"
                         number2="3"
                         $backgroundColor="#EEF5FD"
                         width="160px"
                         color="#5D5D5D"
                     />
-                    <RecommendBox text="디아"
+                    <RecommendBox text1="디아"
+                        text2="#여성 #21살 #23학번"
                         number1="2"
                         number2="4"
                         $backgroundColor="#C0E5FF"
