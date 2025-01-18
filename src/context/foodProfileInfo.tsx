@@ -14,14 +14,14 @@ interface FoodProfileInfoContextType {
     setMbtiList: (mbtiList: string[]) => void;
     mbti: string;
     setMbti: (mbti: string) => void;
+    menuList: string[];
+    setMenuList: (menuLsit: string[]) => void;
+    peopleNum: number;
+    setPeopleNum: (peoplenum: number) => void;
     hobby: string[];
     setHobby: (hobby: string[]) => void;
-    contactType: string;
-    setContactType: (contactType: string) => void;
-    contact: string;
-    setContact: (contact: string) => void;
-    mbtiArray: string[];
-    setMbtiArray: (hobby: string[]) => void;
+    ment: string;
+    setMent: (ment: string) => void;
   }
 
 // 초기값 설정
@@ -38,14 +38,14 @@ const defaultValue: FoodProfileInfoContextType = {
     setMbtiList: () => {},
     mbti: "",
     setMbti: () => {},
+    menuList: [],
+    setMenuList: () => {},
+    peopleNum: 0,
+    setPeopleNum: () => {},
     hobby: [],
     setHobby: () => {},
-    contactType: "",
-    setContactType: () => {},
-    contact: "",
-    setContact: () => {},
-    mbtiArray:[],
-    setMbtiArray: () => {},
+    ment: "",
+    setMent: () => {},
   };
 
   
@@ -62,10 +62,10 @@ export function FoodProfileContextProvider({children}:FoodProfileContextProvider
     const [ageRange, setAgeRange] = useState<number[]>([])
     const [mbtiList, setMbtiList] = useState<string[]>([]);
     const [mbti, setMbti] = useState<string>("");
+    const [menuList, setMenuList] = useState<string[]>([]);
+    const [peopleNum, setPeopleNum] = useState<number>(0);
     const [hobby, setHobby] = useState<string[]>([]);
-    const [contactType, setContactType] = useState<string>("");
-    const [contact, setContact] = useState<string>("");
-    const [mbtiArray, setMbtiArray] = useState<string[]>([]);
+    const [ment, setMent] = useState<string>("");
     return(
         <FoodProfileInfoContext.Provider
             value={{
@@ -81,14 +81,14 @@ export function FoodProfileContextProvider({children}:FoodProfileContextProvider
                 setMbtiList,
                 mbti,
                 setMbti,
+                menuList,
+                setMenuList,
+                peopleNum,
+                setPeopleNum,
                 hobby,
                 setHobby,
-                contactType,
-                setContactType,
-                contact,
-                setContact,
-                mbtiArray,
-                setMbtiArray
+                ment,
+                setMent,
             }}
         >
             {children}

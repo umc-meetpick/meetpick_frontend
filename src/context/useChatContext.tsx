@@ -3,7 +3,7 @@ import foodProfileQuery from "../assets/foodProfileQuery"; // 질문 데이터 �
 
 // Message 타입 정의
 interface Message {
-  question: string[];
+  question?: string[];
   direction: "incoming" | "outgoing"; // 방향을 제한하여 오류 방지
 }
 

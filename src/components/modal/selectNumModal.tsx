@@ -8,16 +8,22 @@ interface ToggleListModalProps {
     title:string;
     min:number;
     max:number;
+    isRange?:boolean
 }
 
-const SelectNumModal : React.FC<ToggleListModalProps> = ({setModalOpen, title, min, max})  =>{
-    const { setAgeRange } = useContext(FoodProfileInfoContext);
-    const [value, setValue] = useState([20, 80]); 
+const SelectNumModal : React.FC<ToggleListModalProps> = ({setModalOpen, title, min, max, isRange})  =>{
+    const { setAgeRange, setPeopleNum } = useContext(FoodProfileInfoContext);
+    const [value, setValue] = useState<number | number[]>(isRange ? [min, max] : min);
+
     const handleChange = (newValue: number | number[]) => {
         setValue(newValue as number[]);  // 배열 형태로 상태 업데이트
     };
     const handleSave = () =>{
-        setAgeRange(value);
+        if (isRange){
+            setAgeRange(value as number[])
+        }else{
+            setPeopleNum(value as number);
+        }
         setModalOpen(false)
     };
     return(

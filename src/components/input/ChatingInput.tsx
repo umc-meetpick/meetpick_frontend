@@ -1,15 +1,20 @@
 import styled from "styled-components";
 import { FaPaperPlane } from "react-icons/fa";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { FoodProfileInfoContext } from "../../context/foodProfileInfo";
 
 interface ChatingInputProps{
     disable:boolean;
+    setChatDisable: (disable: boolean) => void; 
 }
 
-const ChatingInput = ({disable}:ChatingInputProps) =>{
+const ChatingInput = ({disable, setChatDisable}:ChatingInputProps) =>{
     const [value, setValue] = useState("");
+    const { setMent } = useContext(FoodProfileInfoContext);
     const handleSendBtn = () =>{
-
+        setMent(value);
+        setValue("");
+        setChatDisable(true);
     };
     return(
         <>
