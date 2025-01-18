@@ -53,6 +53,9 @@ const Recommend = () => {
                         $backgroundColor="#EEF5FD"
                         width="160px"
                         color="#5D5D5D"
+                        detail1="한식"
+                        detail2="여성만"
+                        detail3="23~25살"
                     />
                     <RecommendBox text1="마음이 숭숭"
                         text2="#여성 #22살 #24학번"
@@ -61,6 +64,9 @@ const Recommend = () => {
                         $backgroundColor="#C0E5FF"
                         width="160px"
                         color="#5D5D5D"
+                        detail1="여성만"
+                        detail2="선배"
+                        detail3="24살"
                     />
                     <RecommendBox text1="제이든"
                         text2="#남성 #27살 #18학번"
@@ -69,6 +75,8 @@ const Recommend = () => {
                         $backgroundColor="#EEF5FD"
                         width="160px"
                         color="#5D5D5D"
+                        detail1="한식, 양식, 중식"
+                        detail2="25~28살"
                     />
                     <RecommendBox text1="디아"
                         text2="#여성 #21살 #23학번"
@@ -77,6 +85,10 @@ const Recommend = () => {
                         $backgroundColor="#C0E5FF"
                         width="160px"
                         color="#5D5D5D"
+                        detail1="양식, 일식"
+                        detail2="여성만"
+                        detail3="선배, 동기"
+                        detail4="20~21살"
                     />
                     </FullListSection>
                     

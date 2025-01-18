@@ -15,6 +15,10 @@ interface ButtonProps {
   color?: string;
   disabled?: boolean;
   onClick?: () => void;
+  detail1?:string;
+  detail2?:string;
+  detail3?:string;
+  detail4?:string;
 }
 
 const RecommendBox: React.FC<ButtonProps> = ({
@@ -27,6 +31,10 @@ const RecommendBox: React.FC<ButtonProps> = ({
   color = "black",
   disabled = false,
   onClick,
+  detail1,
+  detail2,
+  detail3,
+  detail4,
 }) => {
   return (
     <StyledButton
@@ -50,7 +58,12 @@ const RecommendBox: React.FC<ButtonProps> = ({
           {text2}
         </ThirdLine>
         <FourthLine>
-            
+          <StyledBox>
+                {detail1 && <Box>{detail1}</Box>}
+                {detail2 && <Box>{detail2}</Box>}
+                {detail3 && <Box>{detail3}</Box>}
+                {detail4 && <Box>{detail4}</Box>}
+          </StyledBox>
         </FourthLine>
     </StyledButton>
   );
@@ -131,6 +144,30 @@ const FourthLine = styled.div`
     background-color:rgba(255, 255, 255, 0.60);
     border-radius:10px;
     justify-content:center;
+`
+
+const StyledBox = styled.div`
+  display:flex;
+  max-width:136px;
+  flex-wrap: wrap; /* 줄바꿈을 허용 */
+  margin:4px;
+  gap:5px;
+`
+const Box = styled.div`
+  border-radius: 100px;
+  background: #78C2FE;
+  font-family: "Pretendard Variable";
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 500;
+  width:auto;
+  padding:2px 7px;
+  color:white;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  
 `
 
 export default RecommendBox;

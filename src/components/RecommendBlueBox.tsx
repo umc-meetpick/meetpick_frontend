@@ -9,23 +9,31 @@ interface TextProps {
   }
   
   const RecommendBlueBox: React.FC<TextProps> = ({
-    text1,
+    text1="null",
     text2,
     text3,
-    text4
+    text4=null
   }) => {
     return (
-        <StyledBox>
-            <Box>{text1}</Box>
-            <Box>{text2}</Box>
-            <Box>{text3}</Box>
-            <Box>{text4}</Box>
-        </StyledBox>
+        <Wrapper>
+            <StyledBox>
+                {text1 && <Box>{text1}</Box>}
+                {text2 && <Box>{text2}</Box>}
+            </StyledBox>
+            <StyledBox>
+                {text3 && <Box>{text3}</Box>}
+                {text4 && <Box>{text4}</Box>}
+            </StyledBox>
+        </Wrapper>
     );
   };
   
-const StyledBox = styled.div`
+
+const Wrapper = styled.div` 
   display:flex;
+`
+const StyledBox = styled.div`
+  
 `
 const Box = styled.div`
   border-radius: 100px;
@@ -34,5 +42,13 @@ const Box = styled.div`
   font-size: 11px;
   font-style: normal;
   font-weight: 500;
+  width:auto;
+  padding:2px 8px;
+  color:white;
+  margin:3.5px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  
 `
 export default RecommendBlueBox;
