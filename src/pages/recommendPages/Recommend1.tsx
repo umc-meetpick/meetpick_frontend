@@ -4,20 +4,29 @@ import { Icon } from "@iconify/react";
 import RecommendImage from "../../assets/images/Recommend.png";
 import RecommendBox from "../../components/RecommendBox";
 import DropdownButton from "../../components/SignupDownList";
+import { recommendData, RecommendDataType } from "../../data/recommendData";
 
 
 const Recommend = () => {
 
     const [activeTab, setActiveTab] = useState("recommendList"); // 현재 활성화된 탭 상태 
+    const [selectedGender, setSelectedGender] = useState<string | null>(null);
+    const [selectedTime, setSelectedTime] = useState<string | null>(null);
+    const [selectedGrade, setSelectedGrade] = useState<string | null>(null);
+       
 
     const handleTabClick = (tab:string) => {
         setActiveTab(tab);
     };
 
-      const [selectedGender, setSelectedGender] = useState<string | null>(null);
-      const [selectedTime, setSelectedTime] = useState<string | null>(null);
-      const [selectedGrade, setSelectedGrade] = useState<string | null>(null);
-       
+    // recommendData를 사용해 필터링 
+    const filteredData = recommendData.filter(
+        (item) =>
+          (selectedGender === null || item.gender === selectedGender) &&
+          (selectedGrade === null || item.grade === selectedGrade)
+      );
+      
+
 
     return (
         <>
@@ -57,8 +66,8 @@ const Recommend = () => {
                                 height="35px"
                                 text={selectedGrade || "학번 "}
                                 width="80px"
-                                options={["10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20","21","22","23","24","25"]}
-                                onSelect={(option) => setSelectedGrade(`${option}학번`)}
+                                options={["10학번", "11학번", "12학번", "13학번", "14학번", "15학번", "16학번", "17학번", "18학번", "19학번", "20학번","21학번","22학번","23학번","24학번","25학번"]}
+                                onSelect={(option) => setSelectedGrade(option)}
                                 />
                                 <DropdownButton
                                 height="35px"
@@ -76,50 +85,22 @@ const Recommend = () => {
                                 />
                         </List>
                         <FullListSection>
-                            <RecommendBox text1="베티"
-                            text2="#여성 #23살 #20학번"
-                            number1="0"
-                            number2="1"
-                            $backgroundColor="#EEF5FD"
-                            width="160px"
-                            color="#5D5D5D"
-                            detail1="한식"
-                            detail2="여성만"
-                            detail3="23~25살"
-                        />
-                        <RecommendBox text1="마음이 숭숭"
-                            text2="#여성 #22살 #24학번"
-                            number1="2"
-                            number2="4"
-                            $backgroundColor="#C0E5FF"
-                            width="160px"
-                            color="#5D5D5D"
-                            detail1="여성만"
-                            detail2="선배"
-                            detail3="24살"
-                        />
-                        <RecommendBox text1="제이든"
-                            text2="#남성 #27살 #18학번"
-                            number1="0"
-                            number2="3"
-                            $backgroundColor="#EEF5FD"
-                            width="160px"
-                            color="#5D5D5D"
-                            detail1="한식, 양식, 중식"
-                            detail2="25~28살"
-                        />
-                        <RecommendBox text1="디아"
-                            text2="#여성 #21살 #23학번"
-                            number1="2"
-                            number2="4"
-                            $backgroundColor="#C0E5FF"
-                            width="160px"
-                            color="#5D5D5D"
-                            detail1="양식, 일식"
-                            detail2="여성만"
-                            detail3="선배, 동기"
-                            detail4="20~21살"
-                        />
+                        {filteredData.map((data, index) => (
+                            <RecommendBox
+                            key={index}
+                            text1={data.text1}
+                            text2={data.text2}
+                            number1={data.number1}
+                            number2={data.number2}
+                            $backgroundColor={data.$backgroundColor}
+                            width={data.width}
+                            color={data.color}
+                            detail1={data.detail1}
+                            detail2={data.detail2}
+                            detail3={data.detail3}
+                            detail4={data.detail4}
+                            />
+                        ))}
                         </FullListSection>
                     </Wrapper>
                 )}
