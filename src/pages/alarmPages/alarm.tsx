@@ -31,7 +31,8 @@ const Alarm = () => {
         <>
             <BasicNavbar title="알림" />
             <Container>
-                <DropdownButton color="black" text={selectedCategory || "카테고리 ∨"} 
+                <DropdownButton color="black" text={selectedCategory || "카테고리 ∨"}
+                height="35px" 
                 width="110px"
                 options ={["밥", "운동", "공부", "공동구매"]}
                 onSelect = {(option) => setSelectedCategory(option)}

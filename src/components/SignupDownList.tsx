@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 interface DropdownButtonProps {
   text: string; // 버튼 텍스트
+  height:string;
   width: string; // 버튼 너비
   options?: string[]; // 드롭다운 옵션 리스트
   color?:string;
@@ -12,6 +13,7 @@ interface DropdownButtonProps {
 
 const DropdownButton: React.FC<DropdownButtonProps> = ({
   text,
+  height,
   width,
   options = [],
   $isSelected = false,
@@ -32,7 +34,7 @@ const DropdownButton: React.FC<DropdownButtonProps> = ({
 
   return (
     <Container>
-      <StyledButton $color={color} style={{ width}} $isSelected={$isSelected} onClick={toggleDropdown} >
+      <StyledButton $color={color} $height = {height} style={{ width}} $isSelected={$isSelected} onClick={toggleDropdown} >
         {text}
       </StyledButton>
       {isOpen && options.length > 0 && (
@@ -55,8 +57,8 @@ const Container = styled.div`
   display: inline-block;
 `;
 
-const StyledButton = styled.button<{ $isSelected?: boolean; $color?:string }>`
-  height: 40px;
+const StyledButton = styled.button<{ $isSelected?: boolean; $color?:string; $height:string }>`
+  height: ${({ $height }) => $height || "40px"}; /* 전달받은 height를 적용하고 기본값 설정 */
   border: 2px solid #CECECE;
   border-radius: 20px;
   font-size: 14px;
@@ -66,7 +68,7 @@ const StyledButton = styled.button<{ $isSelected?: boolean; $color?:string }>`
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  padding: 0 15px;
+  padding: 0 10px;
   margin-right: 10px;
   box-sizing: border-box;
 

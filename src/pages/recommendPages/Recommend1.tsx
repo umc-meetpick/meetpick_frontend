@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Icon } from "@iconify/react";
 import RecommendImage from "../../assets/images/Recommend.png";
 import RecommendBox from "../../components/RecommendBox";
+import DropdownButton from "../../components/SignupDownList";
 
 
 const Recommend = () => {
@@ -12,6 +13,11 @@ const Recommend = () => {
     const handleTabClick = (tab:string) => {
         setActiveTab(tab);
     };
+
+      const [selectedGender, setSelectedGender] = useState<string | null>(null);
+      const [selectedTime, setSelectedTime] = useState<string | null>(null);
+      const [selectedGrade, setSelectedGrade] = useState<string | null>(null);
+       
 
     return (
         <>
@@ -45,53 +51,77 @@ const Recommend = () => {
                     </RecommendationSection>
                 )}
                 {activeTab === "fullList" && (
-                    <FullListSection>
-                        <RecommendBox text1="베티"
-                        text2="#여성 #23살 #20학번"
-                        number1="0"
-                        number2="1"
-                        $backgroundColor="#EEF5FD"
-                        width="160px"
-                        color="#5D5D5D"
-                        detail1="한식"
-                        detail2="여성만"
-                        detail3="23~25살"
-                    />
-                    <RecommendBox text1="마음이 숭숭"
-                        text2="#여성 #22살 #24학번"
-                        number1="2"
-                        number2="4"
-                        $backgroundColor="#C0E5FF"
-                        width="160px"
-                        color="#5D5D5D"
-                        detail1="여성만"
-                        detail2="선배"
-                        detail3="24살"
-                    />
-                    <RecommendBox text1="제이든"
-                        text2="#남성 #27살 #18학번"
-                        number1="0"
-                        number2="3"
-                        $backgroundColor="#EEF5FD"
-                        width="160px"
-                        color="#5D5D5D"
-                        detail1="한식, 양식, 중식"
-                        detail2="25~28살"
-                    />
-                    <RecommendBox text1="디아"
-                        text2="#여성 #21살 #23학번"
-                        number1="2"
-                        number2="4"
-                        $backgroundColor="#C0E5FF"
-                        width="160px"
-                        color="#5D5D5D"
-                        detail1="양식, 일식"
-                        detail2="여성만"
-                        detail3="선배, 동기"
-                        detail4="20~21살"
-                    />
-                    </FullListSection>
-                    
+                    <Wrapper>
+                        <List>
+                            <DropdownButton
+                                height="35px"
+                                text={selectedGrade || "학번 "}
+                                width="80px"
+                                options={["10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20","21","22","23","24","25"]}
+                                onSelect={(option) => setSelectedGrade(`${option}학번`)}
+                                />
+                                <DropdownButton
+                                height="35px"
+                                text={selectedGender || "성별 "}
+                                width="80px"
+                                options={["여성", "남성"]}
+                                onSelect={(option) => setSelectedGender(option)}
+                                />
+                                <DropdownButton
+                                height="35px"
+                                text={selectedTime || "시간대"}
+                                width="120px"
+                                options={["00:00~2:00", "2:00~4:00", "4:00~6:00", "6:00~8:00", "8:00~10:00", "10:00~12:00", "12:00~14:00", "14:00~16:00", "16:00~18:00", "18:00~20:00", "20:00~22:00", "22:00~24:00"]}
+                                onSelect={(option) => setSelectedTime(`${option}시`)}
+                                />
+                        </List>
+                        <FullListSection>
+                            <RecommendBox text1="베티"
+                            text2="#여성 #23살 #20학번"
+                            number1="0"
+                            number2="1"
+                            $backgroundColor="#EEF5FD"
+                            width="160px"
+                            color="#5D5D5D"
+                            detail1="한식"
+                            detail2="여성만"
+                            detail3="23~25살"
+                        />
+                        <RecommendBox text1="마음이 숭숭"
+                            text2="#여성 #22살 #24학번"
+                            number1="2"
+                            number2="4"
+                            $backgroundColor="#C0E5FF"
+                            width="160px"
+                            color="#5D5D5D"
+                            detail1="여성만"
+                            detail2="선배"
+                            detail3="24살"
+                        />
+                        <RecommendBox text1="제이든"
+                            text2="#남성 #27살 #18학번"
+                            number1="0"
+                            number2="3"
+                            $backgroundColor="#EEF5FD"
+                            width="160px"
+                            color="#5D5D5D"
+                            detail1="한식, 양식, 중식"
+                            detail2="25~28살"
+                        />
+                        <RecommendBox text1="디아"
+                            text2="#여성 #21살 #23학번"
+                            number1="2"
+                            number2="4"
+                            $backgroundColor="#C0E5FF"
+                            width="160px"
+                            color="#5D5D5D"
+                            detail1="양식, 일식"
+                            detail2="여성만"
+                            detail3="선배, 동기"
+                            detail4="20~21살"
+                        />
+                        </FullListSection>
+                    </Wrapper>
                 )}
             </Content>
         </>
@@ -192,3 +222,10 @@ const FullListSection = styled.div`
     gap: 23px;
 
 `;
+const List = styled.div`
+    margin-bottom:10px;
+`   
+
+const Wrapper = styled.div`
+
+`
