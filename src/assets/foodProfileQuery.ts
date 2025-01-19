@@ -58,16 +58,10 @@ const foodProfileQuery = [
       "type": "hobby"
     },
     {
-      "question": [ "네 알겠습니다! 😊", "메이트와 함께하고 싶은 요일을 선택해주세요!"],
+      "question": [ "네 알겠습니다! 😊", "메이트와 함께하고 싶은 요일과 시간대를 모두 선택해주세요!"],
       "direction": "incoming",
-      "options": ["월", "화", "수", "목", "금"],
+      "options": ["시간대 설정하기"],
       "type": "date"
-    },
-    {
-      "question": [ "이제 메이트와 함께하고 싶은 시간대 선택해주세요!"],
-      "direction": "incoming",
-      "options": ["점심", "저녁", "둘 다"],
-      "type": "time"
     },
     {
       "question": [ "[닉네임]님과 맞는 시간대의 메이트를 찾아드릴게요", "메이트와 어떤 음식을 드시고 싶으세요?"],

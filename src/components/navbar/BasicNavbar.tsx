@@ -26,7 +26,8 @@ const BasicNavbar: React.FC<TitleProps> = ({title, before, bell}) =>{
 export default BasicNavbar
 
 const Container = styled.div`
-    width:393px;
+    width:100%;
+    max-width:393px;
     height:60px;
     background-color:white;
     display:flex;
@@ -36,12 +37,12 @@ const Container = styled.div`
 const IconPosition = styled.div`
     position:relative;
     top:20px;
-    left:-120px;
+    left:-20%;
 `;
 const IconPosition2 = styled.div`
     position:relative;
     top:20px;
-    left:100px;
+    left:20%;
 `;
 const Title = styled.div`
     font-size:17px;

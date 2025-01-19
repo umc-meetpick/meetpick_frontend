@@ -1,9 +1,11 @@
 import { Outlet } from "react-router-dom";
 import styled from "styled-components";
 import BottomNavBar from '../components/navbar/BottomNavBar';
+import { useState, useEffect } from "react";
 
 const Main=styled.div`
-  width:393px;
+  width: calc(100vw); 
+  max-width: 393px; 
   height:100vh;
   margin: 0 auto;
   display: flex;
@@ -22,12 +24,27 @@ const ContentWrapper = styled.div`
 `;
 
 const RootLayout = () => {
+    const [keyboardOpen, setKeyboardOpen] = useState(false);
+    useEffect(() => {
+      const handleResize = () => {
+        const isSmallViewport = window.innerHeight < 400; 
+        console.log(window.innerHeight);
+        setKeyboardOpen(isSmallViewport);
+      };
+    
+      window.addEventListener("resize", handleResize);
+    
+      return () => {
+        window.removeEventListener("resize", handleResize);
+      };
+    }, []);
+    
     return (
       <Main>
         <ContentWrapper>
           <Outlet />
         </ContentWrapper>
-        <BottomNavBar />
+        { !keyboardOpen &&  <BottomNavBar /> }
       </Main>
     );
 };

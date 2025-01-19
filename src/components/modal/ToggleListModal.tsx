@@ -24,7 +24,8 @@ const ToggleListModal: React.FC<ToggleListModalProps> = ({setModalOpen}) =>{
 export default ToggleListModal;
 
 const Background = styled.div`
-    width:393px;
+    width:100%;
+    max-width:393px;
     height: 100%;
     background-color:rgba(0,0,0,0.2);
     position: fixed;

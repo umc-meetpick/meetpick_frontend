@@ -8,6 +8,8 @@ import { FoodProfileInfoContext } from "../context/foodProfileInfo";
 import ToggleListModal from "../components/modal/ToggleListModal";
 import SelectNumModal from "../components/modal/selectNumModal";
 import ChatingInput from "../components/input/ChatingInput";
+import { useNavigate } from "react-router-dom";
+import SetDateTimeModal from "../components/modal/SetDateTimeModal";
 
 interface OptionClick{
     option:string;
@@ -16,12 +18,17 @@ interface OptionClick{
 const FoodMateProfile = () =>{
     const {messages, addMessage} = useChatContext();
     const [currentQueryIndex, setCurrentQueryIndex] = useState(0); 
-    const { setGender, majors, studentNum, setStudentNum, ageRange, mbtiList, setMbtiList, peopleNum, ment } = useContext(FoodProfileInfoContext);
+    const { setGender, majors, studentNum, setStudentNum, ageRange, mbtiList, setMbtiList, dateTime, peopleNum, ment } = useContext(FoodProfileInfoContext);
     const [modalOpen, setModalOpen] = useState(false);
     const [modalOpenS, setModalOpenS] = useState(false);
     const [modalOpenS2, setModalOpenS2] = useState(false);
+    const [modalOpenD, setModalOpenD] = useState(false);
     const [chatDisable, setChatDisable] = useState(true);
     const messageEndRef = useRef<HTMLDivElement>(null);
+    const timerRef = useRef<number | null>(null);
+    const [keyboardOpen, setKeyboardOpen] = useState(false);
+    const navigate = useNavigate();
+
     const scrollToBottom = () => {
       messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
     };
@@ -40,7 +47,6 @@ const FoodMateProfile = () =>{
     useEffect(() => {
         if (mbtiList.length === 4) {
           addMessage({ question: [mbtiList.join("")], direction: "outgoing" });
-          //nextOption(); 
         }
       }, [mbtiList]);
 
@@ -58,6 +64,18 @@ const FoodMateProfile = () =>{
             nextOption(); 
         }
     }, [ modalOpenS2, peopleNum]);
+
+    useEffect(() => {
+        if (!modalOpenD && Object.keys(dateTime).length > 0) {
+            Object.entries(dateTime).forEach(([date, times]) => {
+                addMessage({
+                    question: [`${date}: ${times.join(", ")}`],
+                    direction: "outgoing"
+                });
+            });
+            nextOption();
+        }
+    }, [modalOpenD, dateTime]);
       
     useEffect(() => {
         if ( chatDisable && ment.length > 0){
@@ -65,6 +83,40 @@ const FoodMateProfile = () =>{
             nextOption(); ``
         }
     }, [ chatDisable, ment])
+
+    useEffect(() => {
+        const hasWaveEmoji = messages.some((msg) =>
+            msg.question?.includes("👋")
+        );
+
+        if (hasWaveEmoji) {
+            if (timerRef.current) {
+                clearTimeout(timerRef.current);
+            }
+            timerRef.current = setTimeout(() => {
+                navigate("/waitForMate"); 
+            }, 5000);
+        }
+        return () => {
+            if (timerRef.current) {
+                clearTimeout(timerRef.current);
+            }
+        };
+    }, [messages, navigate]);
+
+    useEffect(() => {
+        const handleResize = () => {
+          const isSmallViewport = window.innerHeight < 400; 
+          console.log(window.innerHeight);
+          setKeyboardOpen(isSmallViewport);
+        };
+      
+        window.addEventListener("resize", handleResize);
+      
+        return () => {
+          window.removeEventListener("resize", handleResize);
+        };
+      }, []);
 
     const handleOptionClick = ({option, type}: OptionClick): void => {
         if (type == "gender" ){
@@ -95,7 +147,9 @@ const FoodMateProfile = () =>{
         }else if (type == "hobby" && option == "같으면 좋겠어"){
             //같을경우
             addMessage({ question: [option], direction: "outgoing" });
-        } else if (type == "menu"){
+        } else if (type == "date"){
+            setModalOpenD(true);
+        }else if (type == "menu"){
             if (option != "기타"){
                 addMessage({ question: [option+"이 먹고싶어!"], direction: "outgoing" });
             }else{
@@ -110,7 +164,7 @@ const FoodMateProfile = () =>{
             addMessage({ question: [option], direction: "outgoing" });
         }
         
-        if (!((type == "major" && option != "상관없어!") || (type == "age" && option != "상관없어") || type == "peopleNum"))
+        if (!((type == "major" && option != "상관없어!") || (type == "age" && option != "상관없어") || type == "date" || type == "peopleNum"))
             nextOption();
     };
     const nextOption = () =>{
@@ -130,25 +184,25 @@ const FoodMateProfile = () =>{
                 <StyledMainContainer>
                     <MessagesContainer>
                         {messages.map((msg, index) => (
-                        msg.question?.map((que, idx) => (
-                            <ImageContainer key={`${index}-${idx}`}>
-                                {idx + 1 === msg.question?.length && msg.direction === "incoming" && (
-                                    <Img src={profile1} alt="프로필" />
-                                )}
-                                {
-                                    que == "👋" ? (
-                                        <ByeImoticon> {que}</ByeImoticon>
-                                    ) : (
-                                        <BaseMessage
-                                            direction={msg.direction}
-                                            $isImg={idx + 1 === msg.question?.length && msg.direction === "incoming"}
-                                        >
-                                        {que}
-                                    </BaseMessage>
-                                    )
-                                }
-                            </ImageContainer>
-                        ))
+                            msg.question?.map((que, idx) => (
+                                <ImageContainer key={`${index}-${idx}`}>
+                                    {idx + 1 === msg.question?.length && msg.direction === "incoming" && (
+                                        <Img src={profile1} alt="프로필" />
+                                    )}
+                                    {
+                                        que == "👋" ? (
+                                            <ByeImoticon> {que}</ByeImoticon>
+                                        ) : (
+                                            <BaseMessage
+                                                direction={msg.direction}
+                                                $isImg={idx + 1 === msg.question?.length && msg.direction === "incoming"}
+                                            >
+                                            {que}
+                                        </BaseMessage>
+                                        )
+                                    }
+                                </ImageContainer>
+                            ))
                         ))}
                     </MessagesContainer>
                     <div ref={messageEndRef} />
@@ -161,7 +215,9 @@ const FoodMateProfile = () =>{
                                     <Button 
                                         key={idx} 
                                         onClick={() => handleOptionClick({option, type: foodProfileQuery[currentQueryIndex]?.type})}
-                                        $ismodal={ (foodProfileQuery[currentQueryIndex]?.type == "age" && option != "상관없어") || foodProfileQuery[currentQueryIndex]?.type == "peopleNum"}
+                                        $ismodal={ (foodProfileQuery[currentQueryIndex]?.type == "age" && option != "상관없어") 
+                                            || foodProfileQuery[currentQueryIndex]?.type == "date" 
+                                            || foodProfileQuery[currentQueryIndex]?.type == "peopleNum"}
                                     >
                                         {option}
                                     </Button>
@@ -169,7 +225,7 @@ const FoodMateProfile = () =>{
                             </>
                         )}
                     </OptionsContainer>
-                    <ChatingInput disable={chatDisable} setChatDisable={setChatDisable}/>
+                    <ChatingInput disable={chatDisable} setChatDisable={setChatDisable} keyboard={keyboardOpen}/>
                     { modalOpen && <ToggleListModal setModalOpen={setModalOpen}/> }
                     { modalOpenS && 
                         <SelectNumModal 
@@ -187,6 +243,11 @@ const FoodMateProfile = () =>{
                             max={5}
                             isRange={false}
                         /> }
+                    { modalOpenD && 
+                        <SetDateTimeModal
+                            title="혼밥 메이트 시간대"
+                            setModalOpen={setModalOpenD}
+                        />}
             </Container>
         </>
     )
@@ -194,7 +255,8 @@ const FoodMateProfile = () =>{
 export default FoodMateProfile;
 
 const Container = styled.div`
-    width:393px;
+    width: calc(100vw); 
+    max-width: 393px; 
     height:calc(100vh - 100px);
     position:fixed;
     top:60px;
@@ -225,6 +287,7 @@ const OptionsContainer = styled.div`
     flex-wrap:wrap;
     justify-content: center;
     margin-top: calc( 100vh * 0.05);
+    margin-bottom: calc( 100vh * 0.1);
     gap:10px;
 `;
 const FoodMent = styled.div`

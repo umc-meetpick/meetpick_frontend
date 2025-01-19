@@ -22,6 +22,8 @@ interface FoodProfileInfoContextType {
     setHobby: (hobby: string[]) => void;
     ment: string;
     setMent: (ment: string) => void;
+    dateTime: { [key: string]: string[] };
+    setDateTime: (dateTime: { [key: string]: string[] }) => void;
   }
 
 // 초기값 설정
@@ -46,6 +48,8 @@ const defaultValue: FoodProfileInfoContextType = {
     setHobby: () => {},
     ment: "",
     setMent: () => {},
+    dateTime: {},
+    setDateTime: () => {},
   };
 
   
@@ -66,6 +70,8 @@ export function FoodProfileContextProvider({children}:FoodProfileContextProvider
     const [peopleNum, setPeopleNum] = useState<number>(0);
     const [hobby, setHobby] = useState<string[]>([]);
     const [ment, setMent] = useState<string>("");
+    const [dateTime, setDateTime] = useState<{ [key: string]: string[] }>({});
+
     return(
         <FoodProfileInfoContext.Provider
             value={{
@@ -89,6 +95,8 @@ export function FoodProfileContextProvider({children}:FoodProfileContextProvider
                 setHobby,
                 ment,
                 setMent,
+                dateTime,
+                setDateTime,
             }}
         >
             {children}
