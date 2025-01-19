@@ -163,7 +163,7 @@ const Box = styled.div`
   width:auto;
   padding:2px 7px;
   color:white;
-
+  height:14px;
   display:flex;
   justify-content:center;
   align-items:center;
