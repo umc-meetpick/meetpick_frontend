@@ -12,7 +12,7 @@ const SetHobby = () =>{
     const handleChoose = (content:string) =>{
         if (hobby.includes(content)){
             setHobby(hobby.filter(h => h !== content));
-        }else if(hobby.length<3){
+        }else if(hobby.length<5){
             setHobby([... hobby, content])
         }
     };
@@ -22,7 +22,7 @@ const SetHobby = () =>{
             <ProgressBar progress={85}/>
             <ProfileSelectedBorder input={[nickname,image,studentNum,mbti, major]}/>
             <Container>
-                <Title>취미를 선택해주세요(3개까지)</Title>
+                <Title>취미를 선택해주세요(5개까지)</Title>
                 <HobbyWrapper>
                     {hobbyList.map((content,index)=>(
                         <Border 
