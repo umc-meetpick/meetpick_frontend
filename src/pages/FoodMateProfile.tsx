@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef, useContext } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import BasicNavbar from "../components/navbar/BasicNavbar";
 import foodProfileQuery from "../assets/foodProfileQuery";
 import { useChatContext } from "../context/useChatContext";
@@ -18,12 +18,14 @@ interface OptionClick{
 const FoodMateProfile = () =>{
     const {messages, addMessage} = useChatContext();
     const [currentQueryIndex, setCurrentQueryIndex] = useState(0); 
-    const { setGender, majors, studentNum, setStudentNum, ageRange, mbtiList, setMbtiList, dateTime, peopleNum, ment } = useContext(FoodProfileInfoContext);
+    const { setGender, majors, studentNum, setStudentNum, ageRange, mbtiList, setMbtiList, 
+            menuList, setMenuList, extraMenu, dateTime, peopleNum, ment } = useContext(FoodProfileInfoContext);
     const [modalOpen, setModalOpen] = useState(false);
     const [modalOpenS, setModalOpenS] = useState(false);
     const [modalOpenS2, setModalOpenS2] = useState(false);
     const [modalOpenD, setModalOpenD] = useState(false);
     const [chatDisable, setChatDisable] = useState(true);
+    const [selectedMenu, setSelectedMenu] = useState<string[]>([]);
     const messageEndRef = useRef<HTMLDivElement>(null);
     const timerRef = useRef<number | null>(null);
     const [keyboardOpen, setKeyboardOpen] = useState(false);
@@ -78,6 +80,33 @@ const FoodMateProfile = () =>{
     }, [modalOpenD, dateTime]);
       
     useEffect(() => {
+        if (chatDisable && selectedMenu.includes("기타") && extraMenu.length > 0) {
+            const updatedMenuList = [...selectedMenu.filter(m => m !== "기타"), extraMenu];
+            setMenuList(updatedMenuList);
+        }
+    }, [chatDisable, selectedMenu, extraMenu]);
+
+    useEffect(()=>{
+        if (selectedMenu.includes("기타")){
+            setChatDisable(false);
+        }else{
+            setMenuList(selectedMenu);
+        }
+    },[selectedMenu])
+
+    const handleMenuList = (menu:string) =>{
+        if (selectedMenu.includes(menu)){
+            setSelectedMenu(selectedMenu.filter(m => m !== menu));
+        }else{
+            setSelectedMenu([...selectedMenu, menu]);
+        }
+    };
+    const saveMenu = () =>{
+        addMessage({ question: [menuList.join(", ")+" 먹고 싶어!"], direction: "outgoing" });
+        setSelectedMenu([]);
+        nextOption(); 
+    };
+    useEffect(() => {
         if ( chatDisable && ment.length > 0){
             addMessage({ question: [ment], direction: "outgoing" });
             nextOption(); ``
@@ -95,7 +124,7 @@ const FoodMateProfile = () =>{
             }
             timerRef.current = setTimeout(() => {
                 navigate("/waitForMate"); 
-            }, 5000);
+            }, 3000);
         }
         return () => {
             if (timerRef.current) {
@@ -149,13 +178,6 @@ const FoodMateProfile = () =>{
             addMessage({ question: [option], direction: "outgoing" });
         } else if (type == "date"){
             setModalOpenD(true);
-        }else if (type == "menu"){
-            if (option != "기타"){
-                addMessage({ question: [option+"이 먹고싶어!"], direction: "outgoing" });
-            }else{
-
-                addMessage({ question: [option+"로 부탁해~"], direction: "outgoing" });
-            }
         }else if (type == "peopleNum"){
             setModalOpenS2(true); 
             setChatDisable(false);
@@ -164,7 +186,7 @@ const FoodMateProfile = () =>{
             addMessage({ question: [option], direction: "outgoing" });
         }
         
-        if (!((type == "major" && option != "상관없어!") || (type == "age" && option != "상관없어") || type == "date" || type == "peopleNum"))
+        if (!((type == "major" && option != "상관없어!") || (type == "age" && option != "상관없어") || type == "date" || type == "menu"|| type == "peopleNum"))
             nextOption();
     };
     const nextOption = () =>{
@@ -207,17 +229,25 @@ const FoodMateProfile = () =>{
                     </MessagesContainer>
                     <div ref={messageEndRef} />
                 </StyledMainContainer>
-                { foodProfileQuery[currentQueryIndex]?.type == "menu" && <FoodMent>원하는 음식 종류를 모두 선택해주세요!</FoodMent>}
-                <OptionsContainer>
+                { foodProfileQuery[currentQueryIndex]?.type == "menu" && 
+                    <FoodMent>{selectedMenu.includes("기타") ? "기타 음식들은 채팅으로 입력해주세요" : "원하는 음식 종류를 모두 선택해주세요!"}</FoodMent>
+                }
+                <OptionsContainer $isMenu={foodProfileQuery[currentQueryIndex]?.type == "menu"}>
                         {currentQueryIndex >=0 && foodProfileQuery[currentQueryIndex]?.options && (
                             <>
                                 {foodProfileQuery[currentQueryIndex].options.map((option, idx) => (
                                     <Button 
                                         key={idx} 
-                                        onClick={() => handleOptionClick({option, type: foodProfileQuery[currentQueryIndex]?.type})}
+                                        onClick={
+                                            foodProfileQuery[currentQueryIndex]?.type != "menu" ?
+                                            () => handleOptionClick({option, type: foodProfileQuery[currentQueryIndex]?.type}) :
+                                            ()=>handleMenuList(option)
+                                        }
+                        
                                         $ismodal={ (foodProfileQuery[currentQueryIndex]?.type == "age" && option != "상관없어") 
                                             || foodProfileQuery[currentQueryIndex]?.type == "date" 
                                             || foodProfileQuery[currentQueryIndex]?.type == "peopleNum"}
+                                        $isSelected={selectedMenu.includes(option)}
                                     >
                                         {option}
                                     </Button>
@@ -225,7 +255,10 @@ const FoodMateProfile = () =>{
                             </>
                         )}
                     </OptionsContainer>
-                    <ChatingInput disable={chatDisable} setChatDisable={setChatDisable} keyboard={keyboardOpen}/>
+                    { foodProfileQuery[currentQueryIndex]?.type == "menu" && 
+                            <FoodBtn onClick={()=>saveMenu()}>다음으로</FoodBtn>
+                    }
+                    <ChatingInput disable={chatDisable} setChatDisable={setChatDisable} keyboard={keyboardOpen} isExtra={selectedMenu.includes("기타")}/>
                     { modalOpen && <ToggleListModal setModalOpen={setModalOpen}/> }
                     { modalOpenS && 
                         <SelectNumModal 
@@ -264,7 +297,7 @@ const Container = styled.div`
 `;
 const StyledMainContainer = styled.div`
     width: 393px;
-    height: 60%;
+    height: 55%;
     overflow-x: hidden;
     overflow-y: auto;
     *{
@@ -282,13 +315,23 @@ const ImageContainer= styled.div`
     align-items: flex-start;
     margin-bottom: 10px;
 `;
-const OptionsContainer = styled.div`
-    display: flex;
-    flex-wrap:wrap;
-    justify-content: center;
-    margin-top: calc( 100vh * 0.05);
-    margin-bottom: calc( 100vh * 0.1);
-    gap:10px;
+const OptionsContainer = styled.div<{ $isMenu: boolean }>`
+    ${({ $isMenu }) =>
+        $isMenu
+            ? css`
+                  display: grid;
+                  grid-template-columns: repeat(3, 1fr);
+                  gap: 10px;
+                  padding: 20px;
+              `
+            : css`
+                  display: flex;
+                  flex-wrap: wrap;
+                  justify-content: center;
+                  margin-top: calc(100vh * 0.05);
+                  margin-bottom: calc(100vh * 0.1);
+                  gap: 10px;
+              `}
 `;
 const FoodMent = styled.div`
     font-size:13px;
@@ -320,7 +363,6 @@ const BaseMessage = styled.div<{ direction: string, $isImg : boolean }>`
         word-wrap: break-word;
         line-height: 1.6;
     }
-
     border-radius: 15px;
     position: relative;
     background-color: white;
@@ -345,15 +387,24 @@ const Img = styled.img`
     margin-top:30px;
     transform: scaleX(-1);
 `;
-const Button = styled.button<{$ismodal: boolean}>`
-    background-color: ${({$ismodal})=> $ismodal ? "#38ABFF" : "white"};
-    color: ${({$ismodal})=> $ismodal ? "white" : "black"};
-    border:none;
+const Button = styled.button<{$ismodal: boolean, $isSelected:boolean}>`
+    background-color: ${({$ismodal, $isSelected})=> $ismodal ? "#38ABFF" : ($isSelected ? "#EFF3FE" : "white")};
+    color: ${({$ismodal, $isSelected})=> $ismodal ? "white" : ($isSelected ? "#007AFF" : "black")};
+    border: ${({$isSelected})=>$isSelected ? "1px solid #007AFF" : "none"};
     border-radius:100px;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2); 
     &:focus {
         outline: none;
     }
+`;
+const FoodBtn = styled.button`
+    background-color: #38ABFF;
+    color: white;
+    border-radius:100px;
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 180px;
 `;
 const ByeImoticon = styled.div`
     font-size:50px;

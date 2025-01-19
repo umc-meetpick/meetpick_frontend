@@ -7,15 +7,16 @@ interface ChatingInputProps{
     disable:boolean;
     setChatDisable: (disable: boolean) => void; 
     keyboard: boolean;
+    isExtra?: boolean;
 }
 
-const ChatingInput = ({disable, setChatDisable, keyboard}:ChatingInputProps) =>{
+const ChatingInput = ({disable, setChatDisable, keyboard, isExtra}:ChatingInputProps) =>{
     const [value, setValue] = useState("");
-    const { setMent } = useContext(FoodProfileInfoContext);
+    const { setMent, setExtraMenu } = useContext(FoodProfileInfoContext);
     const isSmallViewport = window.innerHeight < 600; 
 
     const handleSendBtn = () =>{
-        setMent(value);
+        isExtra ? setExtraMenu(value) : setMent(value);
         setValue("");
         setChatDisable(true);
     };
@@ -32,8 +33,11 @@ const ChatingInput = ({disable, setChatDisable, keyboard}:ChatingInputProps) =>{
             <IconPosition 
                 onClick={handleSendBtn}
                 $keyboard={keyboard}
-            >
+                $isExtra={isExtra}
+            >{
+                isExtra ? "저장" :
                 <FaPaperPlane size={20}/>
+            }
             </IconPosition>
         </>
     )
@@ -55,14 +59,15 @@ const Input = styled.textarea<{$keyboard:boolean, $isSmallView:boolean}>`
         outline: none;
     }
 `;
-const IconPosition = styled.div<{$keyboard:boolean}>`
+const IconPosition = styled.div<{$keyboard:boolean, $isExtra?:boolean}>`
     position:fixed;
     bottom:${({$keyboard})=> $keyboard ? "10px" : "90px"};
-    left: calc(100vw * 0.9);
-    width:30px;
+    left: calc(100vw * 0.85);
+    width:${({$isExtra})=> $isExtra ? "40px" : "30px"};
     heignt:36px;
-    border-radius:100%;
-    padding: 5px 0;
+    border-radius:${({$isExtra})=> $isExtra ? "20px" : "100%"};
+    padding: ${({$isExtra})=> $isExtra ? "0px" : "5px 0"};
+    border: ${({$isExtra})=> $isExtra ? "1px solid #AAAAAA" : "none"};
     padding-left:5px;
     background-color: #F2F2F2;
     color: #AAAAAA;

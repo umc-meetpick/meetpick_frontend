@@ -16,6 +16,8 @@ interface FoodProfileInfoContextType {
     setMbti: (mbti: string) => void;
     menuList: string[];
     setMenuList: (menuLsit: string[]) => void;
+    extraMenu: string;
+    setExtraMenu: (extraMenu: string) => void;
     peopleNum: number;
     setPeopleNum: (peoplenum: number) => void;
     hobby: string[];
@@ -42,6 +44,8 @@ const defaultValue: FoodProfileInfoContextType = {
     setMbti: () => {},
     menuList: [],
     setMenuList: () => {},
+    extraMenu: "",
+    setExtraMenu: () => {},
     peopleNum: 0,
     setPeopleNum: () => {},
     hobby: [],
@@ -67,6 +71,7 @@ export function FoodProfileContextProvider({children}:FoodProfileContextProvider
     const [mbtiList, setMbtiList] = useState<string[]>([]);
     const [mbti, setMbti] = useState<string>("");
     const [menuList, setMenuList] = useState<string[]>([]);
+    const [extraMenu, setExtraMenu] =useState<string>("");
     const [peopleNum, setPeopleNum] = useState<number>(0);
     const [hobby, setHobby] = useState<string[]>([]);
     const [ment, setMent] = useState<string>("");
@@ -89,6 +94,8 @@ export function FoodProfileContextProvider({children}:FoodProfileContextProvider
                 setMbti,
                 menuList,
                 setMenuList,
+                extraMenu,
+                setExtraMenu,
                 peopleNum,
                 setPeopleNum,
                 hobby,
