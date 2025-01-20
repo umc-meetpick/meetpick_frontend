@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { AiOutlineCheck } from "react-icons/ai"; // 체크 아이콘 추가
+import { Icon } from "@iconify/react";
 
 interface SignupProgressbarProps {
     currentStep: number; // 현재 단계
@@ -21,7 +22,7 @@ interface SignupProgressbarProps {
               <Circle $isActive={$isActive} $isCompleted={$isCompleted}>
                 {$isCompleted ? (
                   <IconWrapper>
-                    <AiOutlineCheck />
+                    <Icon icon="fe:check" width="20px"/>
                   </IconWrapper>
                 ) : (
                   index + 1
@@ -73,7 +74,7 @@ const Circle = styled.div<{ $isActive: boolean; $isCompleted: boolean }>`
   
 `;
 const Line = styled.div<{ $isActive: boolean }>`
-  width: 12.5px;
+  width: 10px;
   height: 3px;
   background-color: ${({ $isActive }) => ($isActive ? "#0287F4" : "#E5E5E5")};
   transition: background-color 0.3s;

@@ -35,7 +35,7 @@ const Signup3 = () => {
                   text="매칭을 위한 프로필 작성하러가기"
                   $backgroundColor="#E7F2FE"
                   width="312px"
-                  color="#326DC1"
+                  color="#0069FF"
                   onClick={handleNext}
               />
               <SignupButton
@@ -67,7 +67,7 @@ const EntireContainer = styled.div`
   flex-direction: column;
   justify-content:center;
   align-items:center;
-  padding:0 40.5px;
+  padding:45px 40.5px;
   font-family: "Pretendard Variable";
 `
 const Text = styled.div`
@@ -79,14 +79,14 @@ const Text = styled.div`
 
 const Text1 = styled.p`
     font-size:20px;
-    margin:20px 0 5px 0;
-    font-weight:bold;
+    margin:10px 0 5px 0;
+    font-weight: 600;
 `
 
 const Text2 =styled.p`
     font-size:16px;
-    margin-bottom:30px;
-    margin-top:10px;
+    margin-bottom: 45px;
+    margin-top:5px;
 `
 
 const ImageContainer = styled.div`
