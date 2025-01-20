@@ -185,6 +185,7 @@ const BellIcon = styled(Icon)`
     position: absolute; /* 절대 위치 설정 */
     right: 20px; /* 오른쪽 여백 설정 */
     color: #000;
+    top:26px;
 `;
 
 const Message = styled.p`
