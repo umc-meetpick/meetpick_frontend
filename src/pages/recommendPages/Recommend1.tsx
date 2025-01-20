@@ -81,7 +81,9 @@ const Recommend = () => {
                                             <EmojiBubble3><Gender>{slide.gender}</Gender></EmojiBubble3>
                                             <EmojiBubble4><Hobby>{slide.hobby}</Hobby></EmojiBubble4>
                                         </Emoji>
-                                        <StyledImage src={RecommendImage} alt={`${slide.name} 이미지`} />
+                                        <Link to="/application">
+                                            <StyledImage src={RecommendImage} alt={`${slide.name} 이미지`} />
+                                        </Link>
                                         <TapIcon icon="hugeicons:tap-05"/>
                                         <Description>
                                             [<Name>{slide.name}</Name>
