@@ -1,12 +1,19 @@
 import React,{useEffect, useState} from "react";
 import styled from "styled-components";
 import { Icon } from "@iconify/react";
-import RecommendImage from "../../assets/images/Recommend.png";
 import RecommendBox from "../../components/RecommendBox";
 import DropdownButton from "../../components/SignupDownList";
 import { recommendData} from "../../data/recommendData";
+import RecommendImage from "../../assets/images/Recommend.png";
 import emojiImage from "../../assets/images/EmojiBubble.png"
+import {Swiper, SwiperSlide} from "swiper/react";
+import SwiperCore from 'swiper';
+import { Pagination } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import { slidesData } from "../../data/slidesData"
 
+SwiperCore.use([Pagination]);
 
 const Recommend = () => {
 
@@ -27,7 +34,6 @@ const Recommend = () => {
           (selectedGrade === null || item.grade === selectedGrade)
       );
       
-
 
     return (
         <>
@@ -56,22 +62,33 @@ const Recommend = () => {
             <Content>
                 {activeTab === "recommendList" && (
                     <RecommendationSection>
-                        <Emoji>
-                            <EmojiBubble1>
-                                
-                            </EmojiBubble1>
-                            <EmojiBubble2>
-                                
-                            </EmojiBubble2>
-                            <EmojiBubble3>
-                                
-                            </EmojiBubble3>
-                            <EmojiBubble4>
-                                                       
-                            </EmojiBubble4>
-                        </Emoji>
-                        <StyledImage src={RecommendImage} alt="추천 리스트 이미지" />
-                        <Description>[<Name>베티</Name>님 프로필 구경하러 가기]</Description>
+                        <Swiper
+                        spaceBetween={50}
+                        slidesPerView={1}
+                        modules={[Pagination]}
+                        pagination={{clickable:true}}
+                        >
+                            
+                            {slidesData.map((slide) => (
+                                <SwiperSlide key={slide.id}>
+                                    <SlideContent>
+                                        <Emoji>
+                                            <EmojiBubble1><Grade>{slide.grade}</Grade></EmojiBubble1>
+                                            <EmojiBubble2><Food>{slide.food}</Food></EmojiBubble2>
+                                            <EmojiBubble3><Gender>{slide.gender}</Gender></EmojiBubble3>
+                                            <EmojiBubble4><Hobby>{slide.hobby}</Hobby></EmojiBubble4>
+                                        </Emoji>
+                                        <StyledImage src={RecommendImage} alt={`${slide.name} 이미지`} />
+                                        <TapIcon icon="hugeicons:tap-05"/>
+                                        <Description>
+                                            [<Name>{slide.name}</Name>
+                                            {slide.description}]
+                                        </Description>
+                                        
+                                    </SlideContent>
+                                </SwiperSlide>
+                                ))}
+                        </Swiper>
                         <Text>👀옆으로 밀어서 원하는 메이트를 찾아보세요!</Text>
                     </RecommendationSection>
                 )}
@@ -126,6 +143,21 @@ const Recommend = () => {
 };
 
 export default Recommend;
+
+
+
+const SlideContent = styled.div`
+  display: flex; /* 플렉스 컨테이너 */
+  flex-direction: column; /* 세로 정렬 */
+  align-items: center; /* 가로 축 중앙 정렬 */
+  justify-content: center; /* 세로 축 중앙 정렬 */
+  width: 100%; /* 슬라이드 너비를 100%로 설정 */
+  height: 100%; /* 슬라이드 높이도 100% */
+  box-sizing: border-box; /* 패딩, 테두리를 포함한 박스 크기 계산 */
+  padding: 20px; /* 내부 여백 */
+  background-color: #ffffff; /* 기본 배경색 */
+`;
+
 
 const Top = styled.div`
     display: flex;
@@ -198,26 +230,31 @@ const Content = styled.div`
 
 
 const StyledImage = styled.img`
-width: 240px;
-height: 240px;
-`;
+    width: 217px;
+    height: 217px;
+    box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.05), 0px 6px 16px 0px rgba(0, 0, 0, 0.05), 0px 9px 28px 0px rgba(0, 0, 0, 0.05);
+    border-radius: 200px;
+    border: 1px solid #F2F2F2;
+    background: #FCFCFC;
+`
 
 const Description = styled.p`
-font-size: 20px;
-color: #555;
-display:flex;
-justify-content:center;
-align-items:center;
+    font-size: 20px;
+    color: #555;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin-top:0;
 `;
 
 const FullListSection = styled.div`
-display: grid;
+    display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 23px;
 
 `;
 const List = styled.div`
-margin-bottom:10px;
+    margin-bottom:10px;
 `   
 
 const Wrapper = styled.div`
@@ -225,18 +262,19 @@ const Wrapper = styled.div`
 `
 
 const Text=styled.p`
-display:flex;
-justify-content:center;
-color:#69707E;
-font-size:14px;
-align-items:center;
-margin-top:70px;
+    display:flex;
+    justify-content:center;
+    color:#69707E;
+    font-size:14px;
+    align-items:center;
+    margin-top:30px;
 `
 
 const RecommendationSection = styled.div`
     text-align: center;
     position: relative; /* EmojiBubble의 기준점이 되도록 설정 */
     margin-top:40px;
+    max-width:393px;
 `;
 
 const Emoji = styled.div`
@@ -250,27 +288,27 @@ const Emoji = styled.div`
 
 const EmojiBubble1 = styled.div`
   position: absolute;
-  width: 65px;
-  height: 65px;
+  width: 70px;
+  height: 70px;
   font-size: 50px;
   background-image: url(${emojiImage});
   background-size: cover;
   background-position: center;
-  top: 80px; /* 상단 위치 */
-  left:-40px;
+  top: 40px; /* 상단 위치 */
+  left:-45px;
   transform:scaleX(-1);
   z-index:1;
 `;
 
 const EmojiBubble2 = styled.div`
   position: absolute;
-  width: 65px;
-  height: 65px;
+  width: 70px;
+  height: 70px;
   font-size: 50px;
   background-image: url(${emojiImage});
   background-size: cover;
   background-position: center;
-  top: 10px;
+  top: -22px;
   left: 32px; /* 우측 위치 */
   transform: scaleX(-1) rotate(-10deg); /* 좌우 반전 및 회전 */
   z-index:1;
@@ -278,14 +316,14 @@ const EmojiBubble2 = styled.div`
 
 const EmojiBubble3 = styled.div`
   position: absolute;
-  width: 65px;
-  height: 65px;
+  width: 70px;
+  height:70px;
   font-size: 50px;
   background-image: url(${emojiImage});
   background-size: cover;
   background-position: center;
   bottom: 50px; /* 하단 위치 */
-  top: 10px;
+  top: -22px;
   right: 32px; /* 우측 위치 */
   transform: rotate(-10deg); /* 회전 */
   z-index:1;
@@ -293,14 +331,67 @@ const EmojiBubble3 = styled.div`
 
 const EmojiBubble4 = styled.div`
   position: absolute;
-  width: 65px;
-  height: 65px;
+  width: 70px;
+  height: 70px;
   font-size: 50px;
   background-image: url(${emojiImage});
   background-size: cover;
   background-position: center;
   bottom: 20px; /* 하단 위치 */
-  right: -40px; /* 우측 위치 */
-  top:80px;
+  right: -45px; /* 우측 위치 */
+  top:40px;
   z-index:1;
 `;
+
+const Grade = styled.p`
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:12px;
+    transform : scaleX(-1);
+    height:35px;
+    color:#636D77;
+    font-family: "Pretendard Variable";
+    font-weight:bold;
+`
+const Food = styled.p`
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:12px;
+    transform : scaleX(-1) rotate(-10deg);
+    height:35px;
+    color:#636D77;
+    font-family: "Pretendard Variable";
+    font-weight:bold;
+`
+const Gender = styled.p`
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:12px;
+    transform : rotate(10deg);
+    height:35px;
+    color:#636D77;
+    font-family: "Pretendard Variable";
+    font-weight:bold;
+`
+const Hobby = styled.p`
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:12px;
+    height:35px;
+    color:#636D77;
+    font-family: "Pretendard Variable";
+    font-weight:bold;
+`
+
+const TapIcon = styled(Icon)`
+    width: 35px; /* 아이콘 너비 */
+    height: 50px; /* 아이콘 높이 */
+    color: #7C7C7C; /* 아이콘 색상 */
+    position:relative;
+    right:-90px;
+    top:-25px;
+`
