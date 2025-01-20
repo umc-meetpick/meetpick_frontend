@@ -12,6 +12,7 @@ import { Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { slidesData } from "../../data/slidesData"
+import { Link } from "react-router-dom";
 
 SwiperCore.use([Pagination]);
 
@@ -39,7 +40,9 @@ const Recommend = () => {
         <>
             <Top>
                 <Title>혼밥 구제 MATE</Title>
-                <BellIcon icon="ci:bell" width="24" height="24" />
+                <Link to ='/alarm'>
+                    <BellIcon icon="ci:bell" width="24" height="24" />
+                </Link>
             </Top>
             <Message>
                 <Name>베티</Name>
