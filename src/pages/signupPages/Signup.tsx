@@ -83,18 +83,20 @@ const Signup = () => {
           </SecondAgree>
         </AgreeList>
         <ButtonContainer>
+          <Link to ='/login'>
           <SignupButton
             text="이전"
             $backgroundColor="#F5F5F5"
-            width="150px"
+            width="140px"
             color="black"
             onClick={() => console.log("이전 버튼 클릭")}
           />
+          </Link>
           <Link to={areRequiredChecked ? "/Signup1" : "#"}>
             <SignupButton
               text="다음"
               $backgroundColor={areRequiredChecked ? "#E7F2FE" : "#E0E0E0"}
-              width="150px"
+              width="140px"
               color={areRequiredChecked ? "#326DC1" : "#A0A0A0"}
               disabled={!areRequiredChecked}
               onClick={() => {

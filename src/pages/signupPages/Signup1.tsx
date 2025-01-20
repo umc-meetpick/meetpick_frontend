@@ -22,6 +22,10 @@ const Signup1 = () => {
     console.log("다음으로 버튼 클릭");
   };
 
+  const handlePrevious = () => {
+    console.log("이전 버튼 클릭");
+  };
+
   // 이름 입력 핸들러
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
@@ -31,6 +35,8 @@ const Signup1 = () => {
   const handleGenderClick = (gender: string) => {
     setSelectedGender(selectedGender === gender ? null : gender);
   };
+
+  
 
   return (
     <>
@@ -127,18 +133,31 @@ const Signup1 = () => {
               </GrayButtonContainer>
             </>
           )}
-          {/* 모든 단계가 완료되면 다음 버튼 활성화 */}
-          {name&&selectedGender&&selectedYear&&selectedMonth&&selectedDate &&selectedGrade &&(
-            <Link to="/Signup2">
-            <SignupButton
-              text="다음으로"
-              $backgroundColor="#E7F2FE"
-              width="312px"
-              color="#326DC1"
-              disabled={!selectedGrade} // 학번이 선택되지 않으면 비활성화
-              onClick={handleNext}
-            />
-          </Link>
+        
+
+              {/* 모든 단계가 완료되면 다음 버튼 활성화 */}
+              {name&&selectedGender&&selectedYear&&selectedMonth&&selectedDate &&selectedGrade &&(
+                <ButtonContainer>
+                  <Link to="/Signup">
+                  <SignupButton
+                    text="이전"
+                    $backgroundColor="#F5F5F5"
+                    width="140px"
+                    color="black"
+                    onClick={handlePrevious}
+                  />
+                  </Link>
+                  <Link to="/Signup2">
+                  <SignupButton
+                    text="다음"
+                    $backgroundColor="#E7F2FE"
+                    width="140px"
+                    color="#326DC1"
+                    disabled={!selectedGrade} // 학번이 선택되지 않으면 비활성화
+                    onClick={handleNext}
+                  />
+                  </Link>
+                </ButtonContainer>
           )}
           
         </Container>
@@ -174,4 +193,13 @@ const GrayButtonContainer = styled.div`
 const Title = styled.div`
   display: flex;
   align-items: center;
+`;
+
+
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 5px;
+  gap:5px;
 `;

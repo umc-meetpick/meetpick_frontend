@@ -90,7 +90,7 @@ const Signup2 = () => {
               <SignupButton
                 text="이전"
                 $backgroundColor="#F5F5F5"
-                width="150px"
+                width="140px"
                 color="black"
                 onClick={handlePrevious}
               />
@@ -99,7 +99,7 @@ const Signup2 = () => {
               <SignupButton
                 text="다음"
                 $backgroundColor="#E7F2FE"
-                width="150px"
+                width="140px"
                 color="#326DC1"
                 onClick={handleNext}
               />
