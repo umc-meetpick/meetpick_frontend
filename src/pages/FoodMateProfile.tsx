@@ -136,7 +136,6 @@ const FoodMateProfile = () =>{
     useEffect(() => {
         const handleResize = () => {
           const isSmallViewport = window.innerHeight < 400; 
-          console.log(window.innerHeight);
           setKeyboardOpen(isSmallViewport);
         };
       
@@ -219,8 +218,8 @@ const FoodMateProfile = () =>{
                                                 direction={msg.direction}
                                                 $isImg={idx + 1 === msg.question?.length && msg.direction === "incoming"}
                                             >
-                                            {que}
-                                        </BaseMessage>
+                                                {que}
+                                            </BaseMessage>
                                         )
                                     }
                                 </ImageContainer>
@@ -296,8 +295,9 @@ const Container = styled.div`
     background: linear-gradient(to bottom, #F1F8FF, #D1E8FF);
 `;
 const StyledMainContainer = styled.div`
-    width: 393px;
-    height: 55%;
+    width: calc(100vw); 
+    max-width: 393px; 
+    height: ${window.innerHeight > 700 ? '60%' : '55%'};
     overflow-x: hidden;
     overflow-y: auto;
     *{
@@ -323,6 +323,12 @@ const OptionsContainer = styled.div<{ $isMenu: boolean }>`
                   grid-template-columns: repeat(3, 1fr);
                   gap: 10px;
                   padding: 20px;
+                  overflow-y:auto;
+                  *{
+                    font-size:14px;
+                    padding:10px;
+                    width: calc(100vw * 0.25)
+                  }
               `
             : css`
                   display: flex;
@@ -355,7 +361,6 @@ const BaseMessage = styled.div<{ direction: string, $isImg : boolean }>`
     display: flex;
     align-items: center; 
     div{
-        border:1px solid red;
         display: -webkit-box;
         -webkit-box-orient: vertical;
         -webkit-line-clamp: 2;
@@ -404,7 +409,8 @@ const FoodBtn = styled.button`
     position: fixed;
     left: 50%;
     transform: translateX(-50%);
-    bottom: 180px;
+    bottom: calc(100vh * 0.08 + 80px);
+    z-index:100;
 `;
 const ByeImoticon = styled.div`
     font-size:50px;

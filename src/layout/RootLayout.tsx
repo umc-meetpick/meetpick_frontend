@@ -24,20 +24,21 @@ const ContentWrapper = styled.div`
 `;
 
 const RootLayout = () => {
-    const [keyboardOpen, setKeyboardOpen] = useState(false);
-    useEffect(() => {
-      const handleResize = () => {
-        const isSmallViewport = window.innerHeight < 400; 
-        console.log(window.innerHeight);
-        setKeyboardOpen(isSmallViewport);
-      };
-    
-      window.addEventListener("resize", handleResize);
-    
-      return () => {
-        window.removeEventListener("resize", handleResize);
-      };
-    }, []);
+  const [keyboardOpen, setKeyboardOpen] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const isSmallViewport = window.innerHeight < 400; 
+      setKeyboardOpen(isSmallViewport);
+    };
+
+    handleResize(); // 초기 실행
+    window.addEventListener('resize', handleResize); // 이벤트 리스너 추가
+
+    return () => {
+      window.removeEventListener('resize', handleResize); // 이벤트 리스너 정리
+    };
+  }, []);
     
     return (
       <Main>

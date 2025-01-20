@@ -13,7 +13,7 @@ interface ChatingInputProps{
 const ChatingInput = ({disable, setChatDisable, keyboard, isExtra}:ChatingInputProps) =>{
     const [value, setValue] = useState("");
     const { setMent, setExtraMenu } = useContext(FoodProfileInfoContext);
-    const isSmallViewport = window.innerHeight < 600; 
+    const isSmallViewport = window.innerHeight < 650; 
 
     const handleSendBtn = () =>{
         isExtra ? setExtraMenu(value) : setMent(value);
@@ -34,6 +34,7 @@ const ChatingInput = ({disable, setChatDisable, keyboard, isExtra}:ChatingInputP
                 onClick={handleSendBtn}
                 $keyboard={keyboard}
                 $isExtra={isExtra}
+                $isSmallView={isSmallViewport}
             >{
                 isExtra ? "저장" :
                 <FaPaperPlane size={20}/>
@@ -50,7 +51,7 @@ const Input = styled.textarea<{$keyboard:boolean, $isSmallView:boolean}>`
     height:${({$isSmallView})=> $isSmallView ? "30px" : "63px"};
     border:none;
     position:fixed;
-    bottom:${({$keyboard})=> $keyboard ? "0px" : "80px"};
+    bottom:${({$keyboard, $isSmallView})=> $keyboard ? "0px" : ($isSmallView ? "80px" : "90px")};
     padding: 10px; 
     line-height: 1.5;
     text-align: left;
@@ -59,9 +60,9 @@ const Input = styled.textarea<{$keyboard:boolean, $isSmallView:boolean}>`
         outline: none;
     }
 `;
-const IconPosition = styled.div<{$keyboard:boolean, $isExtra?:boolean}>`
+const IconPosition = styled.div<{$keyboard:boolean, $isExtra?:boolean, $isSmallView:boolean}>`
     position:fixed;
-    bottom:${({$keyboard})=> $keyboard ? "10px" : "90px"};
+    bottom:${({$keyboard, $isSmallView})=> $keyboard ? "0px" : ($isSmallView ? "80px" : "90px")};
     left: calc(100vw * 0.85);
     width:${({$isExtra})=> $isExtra ? "40px" : "30px"};
     heignt:36px;
