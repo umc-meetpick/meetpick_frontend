@@ -68,6 +68,7 @@ const EntireContainer = styled.div`
   justify-content:center;
   align-items:center;
   padding:0 40.5px;
+  font-family: "Pretendard Variable";
 `
 const Text = styled.div`
     display:flex;

@@ -52,9 +52,9 @@ const Signup2 = () => {
       <EntireContainer>
         <Text>학교를 인증해주세요!</Text>
         <Container>
-          <SignupInputContainer>
+          <SignupInputContainer1>
             <SignupInput placeholder={"재학 중인 학교"} />
-          </SignupInputContainer>
+          </SignupInputContainer1>
           <SignupInputContainer>
             <SignupInput
               placeholder="학교 이메일"
@@ -127,6 +127,7 @@ const EntireContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0 40.5px;
+  font-family: "Pretendard Variable";
 `;
 
 const ButtonContainer = styled.div`
@@ -157,5 +158,9 @@ const ErrorText = styled.p`
 `;
 
 const SignupInputContainer = styled.div`
-  margin-bottom: 45px;
+  margin-bottom: 30px;
+`;
+
+const SignupInputContainer1 = styled.div`
+  margin-bottom: 50px;
 `;

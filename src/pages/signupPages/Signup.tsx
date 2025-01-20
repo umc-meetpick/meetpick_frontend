@@ -121,7 +121,8 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center; /* 세로 중앙 정렬 */
   align-items: center; /* 가로 중앙 정렬 */
-  padding: 0 35px;
+  padding: 35px 35px;
+  font-family: "Pretendard Variable";
 `;
 
 const ButtonContainer = styled.div`

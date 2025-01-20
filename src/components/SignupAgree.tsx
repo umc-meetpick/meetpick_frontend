@@ -80,7 +80,6 @@ const ViewButton = styled.a`
   font-size: 15px;
   color: #000000;
   cursor: pointer;
-  margin-left: 6px;
+  margin-left: 15px;
   border-bottom: 1.5px solid #000000;
-  font-weight:bold;
 `;

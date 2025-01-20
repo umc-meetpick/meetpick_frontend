@@ -11,6 +11,7 @@ const Main=styled.div`
   display: flex;
   flex-direction: column;
   position: relative; /* 상대적 위치 지정 */
+  font-family: "Pretendard Variable";
 `;
 
 const ContentWrapper = styled.div`

@@ -37,7 +37,7 @@ const Recommend = () => {
       
 
     return (
-        <>
+        <Container>
             <Top>
                 <Title>혼밥 구제 MATE</Title>
                 <Link to ='/alarm'>
@@ -143,13 +143,15 @@ const Recommend = () => {
                     </Wrapper>
                 )}
             </Content>
-        </>
+        </Container>
     );
 };
 
 export default Recommend;
 
-
+const Container = styled.div`
+    font-family: "Pretendard Variable";
+`
 
 const SlideContent = styled.div`
   display: flex; /* 플렉스 컨테이너 */
@@ -172,6 +174,7 @@ const Top = styled.div`
     padding: 25px 20px; /* 여백 설정 */
     font-size: 17px;
     font-weight: bold;
+    font-family: "Pretendard Variable";
 `;
 
 const Title = styled.p`
@@ -179,6 +182,7 @@ const Title = styled.p`
     font-size: 17px;
     color: #000;
     margin: 0; /* 여백 제거 */
+    font-family: "Pretendard Variable";
 `;
 
 const BellIcon = styled(Icon)`
@@ -193,14 +197,16 @@ const Message = styled.p`
     padding-left:30px;
     font-size:14px;
     margin:5px;
+    font-family: "Pretendard Variable";
 `
 const Name = styled.p`
     font-weight:bold;
     margin:5px 0;
+    font-family: "Pretendard Variable";
 `
 const Comment = styled.p `
     margin:5px 0;
-
+    font-family: "Pretendard Variable";
 `
 
 const Tabs = styled.div`
@@ -208,6 +214,7 @@ const Tabs = styled.div`
     justify-content: center;
     gap: 10px;
     border-bottom:4px solid #F3F3F3;
+    font-family: "Pretendard Variable";
 `;
 
 const Tab = styled.button<{ active: boolean }>`
@@ -232,6 +239,7 @@ const Content = styled.div`
     padding:0;
     display:flex;
     justify-content:center;
+    font-family: "Pretendard Variable";
 `;
 
 

@@ -75,6 +75,7 @@ const Container = styled.div`
     justify-content: flex-end;
     align-items: center;
     margin: 10px 20px 25px 0;
+    font-family: "Pretendard Variable";
 `;
 const Container2 = styled. div`
     display:flex;
@@ -84,6 +85,7 @@ const AlertList = styled.div`
     flex-direction: column;
     gap: 15px;
     margin: 0 20px;
+    font-family: "Pretendard Variable";
 `;
 
 const AlertItem = styled.div`

@@ -312,7 +312,7 @@ export default Modify;
 
 
 const Wrapper = styled. div`
-
+    font-family: "Pretendard Variable";
 `
 const OriginProfile = styled.div`
     padding:0 38px 25px 38px;
