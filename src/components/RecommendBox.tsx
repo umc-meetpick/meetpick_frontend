@@ -1,7 +1,7 @@
 import React,{useState} from "react";
 import styled from "styled-components";
 import { Icon } from "@iconify/react";
-import RecommendImage1 from "../assets/images/Recommend1.png";
+import RecommendImage from "../assets/images/Recommend3.png";
 
 interface ButtonProps {
   text1: string;
@@ -65,7 +65,7 @@ const RecommendBox: React.FC<ButtonProps> = ({
             />
         </FirstLine>
         <SecondLine>
-            <StyledImage src={RecommendImage1} alt="추천 리스트 이미지" />
+            <StyledImage src={RecommendImage} alt="추천 리스트 이미지" />
             <Nickname>{text1}</Nickname>
             <Keyword1>{text2}</Keyword1>
             <Keyword2>{text3}</Keyword2>
@@ -118,8 +118,8 @@ const SecondLine = styled.div`
 const StyledImage = styled.img`
     width:39px;
     height:39px;
-    border: 1px solid #CECECE;
-    border-radius:50%;
+    border-radius: 100px;
+    border: 1px solid #F1F1F1;
 `
 const PersonText = styled.div`
     background-color:#0096FF;

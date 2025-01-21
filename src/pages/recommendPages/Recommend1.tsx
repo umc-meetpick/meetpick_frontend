@@ -5,7 +5,7 @@ import RecommendBox from "../../components/RecommendBox";
 import DropdownButton from "../../components/SignupDownList";
 import { recommendData} from "../../data/recommendData";
 import RecommendImage from "../../assets/images/Recommend.png";
-import emojiImage from "../../assets/images/EmojiBubble.png"
+import emojiImage from "../../assets/images/SpeechBubble1.png"
 import {Swiper, SwiperSlide} from "swiper/react";
 import SwiperCore from 'swiper';
 import { Pagination } from 'swiper/modules';
@@ -131,11 +131,19 @@ const Recommend = () => {
                                 />
                                 <DropdownButton
                                 height="35px"
-                                text={selectedDate || "요일 ∨"}
+                                text={selectedDate || "시간 ∨"}
                                 width="80px"
                                 options={["월","화","수","목","금","토","일"]}
                                 onSelect={(option) => setSelectedDate(option)}
                                 />
+                                <DropdownButton
+                                height="35px"
+                                text={selectedDate || "음식 종류 ∨"}
+                                width="80px"
+                                options={["월","화","수","목","금","토","일"]}
+                                onSelect={(option) => setSelectedDate(option)}
+                                />
+                                
                         </List>
                         <FullListSection>
                         {filteredData.map((data, index) => (
@@ -292,6 +300,7 @@ const List = styled.div`
     margin-bottom:10px;
     max-width:360px;
     display:flex;
+    z-index:999;
 `   
 
 const Wrapper = styled.div`
@@ -325,8 +334,8 @@ const Emoji = styled.div`
 
 const EmojiBubble1 = styled.div`
   position: absolute;
-  width: 70px;
-  height: 70px;
+  width: 90px;
+  height: 90px;
   font-size: 50px;
   background-image: url(${emojiImage});
   background-size: cover;
@@ -339,8 +348,8 @@ const EmojiBubble1 = styled.div`
 
 const EmojiBubble2 = styled.div`
   position: absolute;
-  width: 70px;
-  height: 70px;
+  width: 90px;
+  height: 90px;
   font-size: 50px;
   background-image: url(${emojiImage});
   background-size: cover;
@@ -353,8 +362,8 @@ const EmojiBubble2 = styled.div`
 
 const EmojiBubble3 = styled.div`
   position: absolute;
-  width: 70px;
-  height:70px;
+  width: 90px;
+  height:90px;
   font-size: 50px;
   background-image: url(${emojiImage});
   background-size: cover;
@@ -368,8 +377,8 @@ const EmojiBubble3 = styled.div`
 
 const EmojiBubble4 = styled.div`
   position: absolute;
-  width: 70px;
-  height: 70px;
+  width: 90px;
+  height: 90px;
   font-size: 50px;
   background-image: url(${emojiImage});
   background-size: cover;

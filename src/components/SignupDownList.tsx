@@ -70,6 +70,7 @@ const StyledButton = styled.button<{ $isSelected?: boolean; $color?:string; $hei
   cursor: pointer;
   margin-right: 10px;
   box-sizing: border-box;
+  z-index:9999;
 
   &:hover {
     border-color: #007aff;
