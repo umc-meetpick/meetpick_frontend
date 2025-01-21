@@ -1,8 +1,7 @@
-import React from "react";
+import React,{useState} from "react";
 import styled from "styled-components";
 import { Icon } from "@iconify/react";
 import RecommendImage1 from "../assets/images/Recommend1.png";
-
 
 interface ButtonProps {
   text1: string;
@@ -37,6 +36,13 @@ const RecommendBox: React.FC<ButtonProps> = ({
   detail3,
   detail4,
 }) => {
+
+  const [isIconClicked, setIsIconClicked] = useState(false); // 아이콘 클릭 상태 관리 
+
+  const handleIconClick=() => {
+    setIsIconClicked(!isIconClicked); // 클릭 시 상태 토글
+  }
+
   return (
     <StyledButton
       $backgroundColor={$backgroundColor}
@@ -49,7 +55,14 @@ const RecommendBox: React.FC<ButtonProps> = ({
     >  
         <FirstLine>
             <PersonText>{number1}/{number2}명</PersonText>
-            <StyledIcon icon="solar:heart-linear" width="20" height="20" color="#A5B0BB"/>
+            <StyledIcon 
+            icon= {isIconClicked? "si:heart-fill": "si:heart-line"}
+            width="20"
+            height="20" 
+            $isClicked = {isIconClicked}
+            onClick = {handleIconClick}
+            
+            />
         </FirstLine>
         <SecondLine>
             <StyledImage src={RecommendImage1} alt="추천 리스트 이미지" />
@@ -155,8 +168,10 @@ const Box = styled.div`
   
 `
 
-const StyledIcon = styled(Icon)`
-  
+const StyledIcon = styled(Icon)<{$isClicked: boolean}>`
+  cursor:pointer;
+  color: ${({ $isClicked }) => ($isClicked ? "#FF3D40" : "#A5B0BB")};
+
 `
 
 const Keyword1 = styled.p`

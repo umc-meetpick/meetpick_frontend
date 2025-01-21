@@ -97,7 +97,7 @@ export interface RecommendDataType {
         text3: "#23학번 #ESFJ",
         number1: "1",
         number2: "3",
-        $backgroundColor: "#EEF5FD",
+        $backgroundColor: "#C0E5FF",
         width: "160px",
         color: "#5D5D5D",
         detail1: "한식",
