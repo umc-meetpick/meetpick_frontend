@@ -42,7 +42,7 @@ const FoodMateProfile = () =>{
 
     useEffect(() => {
         if ( !modalOpen && majors.length > 0) {
-            addMessage({ question: [majors.join(",") + "!"], direction: "outgoing" });
+            addMessage({ question: [majors.join(", ") + "!"], direction: "outgoing" });
             nextOption(); 
         }
     }, [ modalOpen, majors]);
@@ -231,6 +231,7 @@ const FoodMateProfile = () =>{
                                             <BaseMessage
                                                 direction={msg.direction}
                                                 $isImg={idx + 1 === msg.question?.length && msg.direction === "incoming"}
+                                                $length={que.length}
                                             >
                                                 {que}
                                             </BaseMessage>
@@ -268,7 +269,7 @@ const FoodMateProfile = () =>{
                             </>
                         )}
                     </OptionsContainer>
-                    { foodProfileQuery[currentQueryIndex]?.type == "menu" && 
+                    { foodProfileQuery[currentQueryIndex]?.type == "menu" && menuList.length > 0 &&
                             <FoodBtn onClick={()=>saveMenu()} $isSmall={window.innerHeight <700}>다음으로</FoodBtn>
                     }
                     <ChatingInput disable={chatDisable} setChatDisable={setChatDisable} keyboard={keyboardOpen} isExtra={selectedMenu.includes("기타")}/>
@@ -311,7 +312,7 @@ const Container = styled.div`
 const StyledMainContainer = styled.div`
     width: calc(100vw); 
     max-width: 393px; 
-    height: ${window.innerHeight > 700 ? '60%' : '55%'};
+    height: ${window.innerHeight > 700 ? '60%' : '60%'};
     overflow-x: hidden;
     overflow-y: auto;
     *{
@@ -360,9 +361,9 @@ const FoodMent = styled.div`
     justify-content:center;
     color:black;
 `;
-const BaseMessage = styled.div<{ direction: string, $isImg : boolean }>`
+const BaseMessage = styled.div<{ direction: string, $isImg : boolean, $length:number }>`
     width:180px;
-    height: 35px;
+    height: ${({$length})=> $length < 17 ? "35px" : `${$length + 15}px`};
     padding: 12px 15px;
     margin: 10px;
     margin-left: ${({ direction, $isImg }) =>
@@ -419,11 +420,11 @@ const Button = styled.button<{$ismodal: boolean, $isSelected:boolean}>`
 const FoodBtn = styled.button<{$isSmall:boolean;}>`
     background-color: #38ABFF;
     color: white;
-    border-radius:100px;
+    border-radius:4px;
     position: fixed;
     left: 50%;
     transform: translateX(-50%);
-    bottom: ${({$isSmall})=>$isSmall ? "calc(100vh * 0.15)" : "calc(100vh * 0.08 + 70px)"};
+    bottom: ${({$isSmall})=>$isSmall ? "calc(100vh * 0.1)" : "calc(100vh * 0.08 + 80px)"};
     z-index:100;
 `;
 const ByeImoticon = styled.div`

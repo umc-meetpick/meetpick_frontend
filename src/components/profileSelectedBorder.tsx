@@ -20,6 +20,7 @@ const ProfileSelectedBorder:React.FC<SelectedProps> = ({input, multi}) =>{
             }
         }
     };
+    
     return(
         <Container>
             {input.map((item, index) => {
