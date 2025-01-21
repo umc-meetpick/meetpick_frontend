@@ -33,6 +33,7 @@ const Container = styled.div`
     display:flex;
     justify-content: center;
     align-item:center;
+    font-family: "Pretendard Variable";
 `;
 const IconPosition = styled.div`
     position:relative;

@@ -46,6 +46,7 @@ const Container = styled.div`
     margin: 0 auto;
     width:80%;
     height:300px;
+    font-family: "Pretendard Variable";
 `;
 const Title = styled.div`
     font-size:21px;

@@ -308,6 +308,7 @@ const Container = styled.div`
     position:fixed;
     top:60px;
     background: linear-gradient(to bottom, #F1F8FF, #D1E8FF);
+    font-family: "Pretendard Variable";
 `;
 const StyledMainContainer = styled.div`
     width: calc(100vw); 

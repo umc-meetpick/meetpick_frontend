@@ -60,6 +60,7 @@ const Container = styled.div`
     margin: 0 auto;
     width:320px;
     height:300px;
+    font-family: "Pretendard Variable";
 `;
 const Title = styled.div`
     margin-top:60px;
