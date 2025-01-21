@@ -6,12 +6,13 @@ import MoveNextRoundBtn from "../../components/button/MoveNextRoundBtn";
 import { ProfileInfoContext } from '../../context/profileInfoContext';
 import ProfileSelectedBorder from "../../components/profileSelectedBorder";
 import RadioWrapper from "../../components/RadioWrapper";
+import MoveToPrevBtn from "../../components/button/moveToPrevBtn";
 
 const SetMBTI = () =>{
     const {nickname, image, studentNum, mbti} = useContext(ProfileInfoContext);
     return(
         <>
-            <SetProfileNavbar title={"프로필 작성"} before={true}/>
+            <SetProfileNavbar title={"프로필 작성"}/>
             <ProgressBar progress={55}/>
             <ProfileSelectedBorder input={[nickname,image,studentNum]}/>
             <Container>
@@ -32,7 +33,10 @@ const SetMBTI = () =>{
                     </MbtiWrapper>
                 }
             </Container>
-            <MoveNextRoundBtn nextPage={"/setProfile/major"} />
+            <BtnContainer>
+                <MoveToPrevBtn/>
+                <MoveNextRoundBtn nextPage={"/setProfile/major"} width={160}/>
+            </BtnContainer>
         </>
     )
 }
@@ -75,4 +79,8 @@ const Mbti = styled.div`
     color:#007AFF;
     height:23px;
     line-height:23px;
+`;
+const BtnContainer = styled.div`
+    width:80%;
+    margin: 0 auto;
 `;

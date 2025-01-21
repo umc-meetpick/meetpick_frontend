@@ -10,7 +10,7 @@ const SetMajor = () =>{
     const {nickname, image, studentNum, mbti} = useContext(ProfileInfoContext);
     return(
         <Wrapper>
-            <SetProfileNavbar title={"프로필 작성"} before={true}/>
+            <SetProfileNavbar title={"프로필 작성"}/>
             <ProgressBar progress={70}/>
             <ProfileSelectedBorder input={[nickname,image,studentNum,mbti]}/>
             <Container>

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import { useState, useContext } from 'react';
 import SetProfileNavbar from '../../components/navbar/BasicNavbar';
 import ProgressBar from '../../components/progressbar/ProgressBar';
 import styled from 'styled-components';
@@ -7,6 +7,7 @@ import MoveNextRoundBtn from "../../components/button/MoveNextRoundBtn"
 import { ProfileInfoContext } from '../../context/profileInfoContext';
 import ProfileSelectedBorder from '../../components/profileSelectedBorder';
 import SelectToggle from '../../components/SelectToggle';
+import MoveToPrevBtn from '../../components/button/moveToPrevBtn';
 
 const SetContact= () => {
     const {nickname, image, studentNum, mbti, major, hobby, setContactType, setContact} = useContext(ProfileInfoContext);
@@ -20,7 +21,7 @@ const SetContact= () => {
     };
     return (
         <>
-            <SetProfileNavbar title={"프로필 작성"}  before={true}/>
+            <SetProfileNavbar title={"프로필 작성"}/>
             <ProgressBar progress={100}/>
             <ProfileSelectedBorder input={[nickname,image,studentNum,mbti, major, ...hobby]}/>
             <Container>
@@ -35,7 +36,15 @@ const SetContact= () => {
                     onChange={(e)=>setInputValue(e.target.value)} 
                 />
             </Container>
-            <MoveNextRoundBtn nextPage={"/"} title="메이트 찾으러 가기" onClick={()=>{setContact(inputValue)}}/>
+            <BtnContainer>
+                <MoveToPrevBtn/>
+                <MoveNextRoundBtn 
+                    nextPage={"/setProfile/contact"} 
+                    title="메이트 찾으러 가기" 
+                    onClick={()=>{setContact(inputValue)}} 
+                    width={160}
+                />
+            </BtnContainer>
         </>
     );
 };
@@ -60,4 +69,8 @@ const Title = styled.div`
 `;
 const Space = styled.div`
     height:80px;
+`;
+const BtnContainer = styled.div`
+    width:80%;
+    margin: 0 auto;
 `;

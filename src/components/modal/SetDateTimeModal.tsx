@@ -9,7 +9,7 @@ interface SetDateTimeModalProps {
     setModalOpen: (isOpen: boolean) => void;
 }
 interface Selected {
-    [key: string]: string[]; // 키는 string, 값은 string[] 배열
+    [key: string]: string[];
 }
 
 const SetDateTimeModal: React.FC<SetDateTimeModalProps> = ({title, setModalOpen}) =>{
@@ -19,7 +19,8 @@ const SetDateTimeModal: React.FC<SetDateTimeModalProps> = ({title, setModalOpen}
     const dates = ["월", "화", "수", "목", "금"];
     const lunchTimes = ["11:00", "12:00", "13:00", "14:00", "15:00", "16:00"]
     const dinnerTimes = ["17:00", "18:00", "19:00", "20:00", "21:00", "22:00"]
-    
+    const isSmall = window.innerHeight < 700; 
+
     const handleDateClick = (date: string) => {
         setSelectedDate(date);
         setSelected((prev) => {
@@ -38,6 +39,7 @@ const SetDateTimeModal: React.FC<SetDateTimeModalProps> = ({title, setModalOpen}
         });
     };
 
+
     const handleTimeClick = (date: string, time: string) => {
         if (!selected[date]) return; 
 
@@ -49,21 +51,22 @@ const SetDateTimeModal: React.FC<SetDateTimeModalProps> = ({title, setModalOpen}
                     [date]: times.filter((t) => t !== time),
                 };
             }
+            const updatedTimes = [...times, time].sort(); 
+
             return {
                 ...prev,
-                [date]: [...times, time],
+                [date]: updatedTimes,
             };
         });
-    };
+    };  
 
     const handleSend = () =>{
         setDateTime({...dateTime, ...selected});
-        console.log(dateTime)
         setModalOpen(false);
     }
     return(
         <Background>
-            <Container>
+            <Container $isSmall={isSmall}>
                 <Title>{title}</Title>
                 <InputWrapper>
                     <SubTitle>요일</SubTitle>
@@ -131,7 +134,7 @@ const SetDateTimeModal: React.FC<SetDateTimeModalProps> = ({title, setModalOpen}
                     onClick={handleSend}
                     disabled={!(selected[selectedDate]?.length > 0)}
                 >
-                    {selectedDate && selected[selectedDate].length > 0  ? "선택 완료" : "요일과 시간을 선택해주세요"  }
+                    {selectedDate && selected[selectedDate]?.length > 0  ? "선택 완료" : "요일과 시간을 선택해주세요"  }
                 </Btn>
             </Container>
         </Background>
@@ -148,17 +151,17 @@ const Background = styled.div`
     top: 0;
     left: 0;
 `;
-const Container = styled.div`
+const Container = styled.div<{$isSmall:boolean}>`
     width: calc(100vw); 
     max-width: 393px; 
-    height: calc(100vh - 150px);
+    height: ${({$isSmall})=> $isSmall ? "calc(100vh * 0.9)" : "calc(100vh - 150px)"};
     border: 1px solid white;
     background-color: white;
     display: flex;
     flex-direction: column;
     align-items: center;
     position: absolute;
-    bottom: 75px;
+    bottom: ${({$isSmall})=>$isSmall ? "0px" : "75px"};
     overflow-y: auto;
     border-radius: 30px 30px 0 0;
 `;

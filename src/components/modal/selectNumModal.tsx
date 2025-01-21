@@ -14,6 +14,7 @@ interface ToggleListModalProps {
 const SelectNumModal : React.FC<ToggleListModalProps> = ({setModalOpen, title, min, max, isRange})  =>{
     const { setAgeRange, setPeopleNum } = useContext(FoodProfileInfoContext);
     const [value, setValue] = useState<number | number[]>(isRange ? [min, max] : min);
+    const isSmall = window.innerHeight < 700; 
 
     const handleChange = (newValue: number | number[]) => {
         setValue(newValue as number[]);  // 배열 형태로 상태 업데이트
@@ -28,7 +29,7 @@ const SelectNumModal : React.FC<ToggleListModalProps> = ({setModalOpen, title, m
     };
     return(
         <Background>
-            <Container>
+            <Container $isSmall={isSmall}>
                 <Title>{title}</Title>
                 <SliderStyle>
                     <Slider
@@ -58,7 +59,7 @@ const Background = styled.div`
     top: 0;
     left: 0;
 `;
-const Container = styled.div`
+const Container = styled.div<{$isSmall:boolean;}>`
     width: calc(100vw); 
     max-width: 393px; 
     height: 400px;
@@ -68,7 +69,7 @@ const Container = styled.div`
     flex-direction: column;
     align-items: center;
     position: absolute;
-    bottom: 75px;
+    bottom: ${({$isSmall})=>$isSmall ? "0px" : "75px"};
     border-radius: 30px 30px 0 0;
 `;
 const Title= styled.div`

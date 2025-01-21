@@ -6,6 +6,7 @@ import { ProfileInfoContext } from '../../context/profileInfoContext';
 import ProfileSelectedBorder from "../../components/profileSelectedBorder";
 import hobbyList from "../../assets/hobbyList";
 import MoveNextRoundBtn from "../../components/button/MoveNextRoundBtn";
+import MoveToPrevBtn from "../../components/button/moveToPrevBtn";
 
 const SetHobby = () =>{
     const {nickname, image, studentNum, mbti, major, hobby, setHobby} = useContext(ProfileInfoContext);
@@ -18,7 +19,7 @@ const SetHobby = () =>{
     };
     return(
         <>
-            <SetProfileNavbar title={"프로필 작성"}  before={true}/>
+            <SetProfileNavbar title={"프로필 작성"}/>
             <ProgressBar progress={85}/>
             <ProfileSelectedBorder input={[nickname,image,studentNum,mbti, major]}/>
             <Container>
@@ -37,7 +38,10 @@ const SetHobby = () =>{
                     }
                 </HobbyWrapper> 
             </Container>
-            <MoveNextRoundBtn nextPage={"/setProfile/contact"} />
+            <BtnContainer>
+                <MoveToPrevBtn/>
+                <MoveNextRoundBtn nextPage={"/setProfile/contact"} width={160}/>
+            </BtnContainer>
         </>
     )
 }
@@ -81,4 +85,8 @@ const Border = styled.button<{ $length: number, $isSelected:boolean}>`
         border: ${({$isSelected})=> $isSelected ? "1px solid #007AFF" : "1px solid #CECECE"};
         outline: none;
     }
+`;
+const BtnContainer = styled.div`
+    width:80%;
+    margin: 0 auto;
 `;

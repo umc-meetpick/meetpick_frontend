@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import styled from "styled-components";
 import BottomNavBar from '../components/navbar/BottomNavBar';
-import { useState, useEffect } from "react";
+import { useChatContext } from "../context/useChatContext";
 
 const Main=styled.div`
   width: calc(100vw); 
@@ -24,28 +24,15 @@ const ContentWrapper = styled.div`
 `;
 
 const RootLayout = () => {
-  const [keyboardOpen, setKeyboardOpen] = useState(false);
-
-  useEffect(() => {
-    const handleResize = () => {
-      const isSmallViewport = window.innerHeight < 400; 
-      setKeyboardOpen(isSmallViewport);
-    };
-
-    handleResize(); // 초기 실행
-    window.addEventListener('resize', handleResize); // 이벤트 리스너 추가
-
-    return () => {
-      window.removeEventListener('resize', handleResize); // 이벤트 리스너 정리
-    };
-  }, []);
+  const isSmallViewport = window.innerHeight < 700; 
+  const {messages} = useChatContext();
     
     return (
       <Main>
         <ContentWrapper>
           <Outlet />
         </ContentWrapper>
-        { !keyboardOpen &&  <BottomNavBar /> }
+        { !(isSmallViewport && messages.length>0) &&  <BottomNavBar /> }
       </Main>
     );
 };

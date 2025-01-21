@@ -1,5 +1,4 @@
 import { createContext, useContext, useState, ReactNode } from "react";
-import foodProfileQuery from "../assets/foodProfileQuery"; // 질문 데이터 가져오기
 
 // Message 타입 정의
 interface Message {
@@ -11,6 +10,7 @@ interface Message {
 type ChatContextType = {
   messages: Message[];
   addMessage: (message: Message) => void;
+  resetMessages: () => void; 
 };
 
 const ChatContext = createContext<ChatContextType | undefined>(undefined);
@@ -29,17 +29,19 @@ interface ChatProviderProps {
 }
 
 export const ChatProvider = ({ children }: ChatProviderProps) => {
-  const [messages, setMessages] = useState<Message[]>([
-    { question: foodProfileQuery[0].question, direction: foodProfileQuery[0].direction as "incoming" | "outgoing"}
-  ]);
+  const [messages, setMessages] = useState<Message[]>([]);
 
   // 메시지 추가 함수
   const addMessage = (message: Message) => {
     setMessages((prevMessages) => [...prevMessages, message]);
   };
 
+  const resetMessages = () => {
+    setMessages([]);
+  };
+
   return (
-    <ChatContext.Provider value={{ messages, addMessage }}>
+    <ChatContext.Provider value={{ messages, addMessage, resetMessages }}>
       {children}
     </ChatContext.Provider>
   );

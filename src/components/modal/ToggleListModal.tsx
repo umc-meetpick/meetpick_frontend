@@ -10,11 +10,17 @@ interface ToggleListModalProps {
 
 const ToggleListModal: React.FC<ToggleListModalProps> = ({setModalOpen}) =>{
     const { majors } = useContext(FoodProfileInfoContext);
+    const isSmall = window.innerHeight < 700; 
+
     return(
         <Background>
-            <Container>
+            <Container $isSmall={isSmall}>
                 <Selected>
-                    <ProfileSelectedBorder input={[...majors]} multi/>
+                    {
+                        majors.length == 0 ? 
+                        <div> 원하는 전공을 모두 선택해주세요! </div> :
+                        <ProfileSelectedBorder input={[...majors]} multi/>
+                    }
                 </Selected>
                 <ToggleList multi={true} setModalOpen={setModalOpen} />
             </Container>
@@ -32,7 +38,7 @@ const Background = styled.div`
     top: 0;
     left: 0;
 `;
-const Container = styled.div`
+const Container = styled.div<{$isSmall:boolean;}>`
     width: calc(100vw); 
     max-width: 393px; 
     height: calc(100vh - 200px);
@@ -43,7 +49,7 @@ const Container = styled.div`
     justify-content: center;
     align-items: center;
     position: absolute;
-    bottom: 75px;
+    bottom: ${({$isSmall})=>$isSmall ? "0px" : "75px"};
     overflow-y: auto;
     border-radius: 30px 30px 0 0;
 `;

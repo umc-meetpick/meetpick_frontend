@@ -16,7 +16,7 @@ interface OptionClick{
     type?: string;
 }
 const FoodMateProfile = () =>{
-    const {messages, addMessage} = useChatContext();
+    const {messages, addMessage, resetMessages} = useChatContext();
     const [currentQueryIndex, setCurrentQueryIndex] = useState(0); 
     const { setGender, majors, studentNum, setStudentNum, ageRange, mbtiList, setMbtiList, 
             menuList, setMenuList, extraMenu, dateTime, peopleNum, ment } = useContext(FoodProfileInfoContext);
@@ -28,6 +28,7 @@ const FoodMateProfile = () =>{
     const [selectedMenu, setSelectedMenu] = useState<string[]>([]);
     const messageEndRef = useRef<HTMLDivElement>(null);
     const timerRef = useRef<number | null>(null);
+    const hasRun = useRef(false);
     const [keyboardOpen, setKeyboardOpen] = useState(false);
     const navigate = useNavigate();
 
@@ -123,6 +124,7 @@ const FoodMateProfile = () =>{
                 clearTimeout(timerRef.current);
             }
             timerRef.current = setTimeout(() => {
+                resetMessages();
                 navigate("/waitForMate"); 
             }, 3000);
         }
@@ -134,17 +136,29 @@ const FoodMateProfile = () =>{
     }, [messages, navigate]);
 
     useEffect(() => {
+        if (!hasRun.current) {
+          hasRun.current = true; 
+          if (messages.length === 0) {
+            addMessage({
+              question: foodProfileQuery[0].question,
+              direction: foodProfileQuery[0].direction as "incoming" | "outgoing",
+            });
+          }
+        }
+      }, [messages, addMessage, foodProfileQuery]);
+
+    useEffect(() => {
         const handleResize = () => {
-          const isSmallViewport = window.innerHeight < 400; 
-          setKeyboardOpen(isSmallViewport);
+            const isSmallViewport = window.innerHeight < 400; 
+            setKeyboardOpen(isSmallViewport);
         };
-      
+        
         window.addEventListener("resize", handleResize);
-      
+        
         return () => {
-          window.removeEventListener("resize", handleResize);
+            window.removeEventListener("resize", handleResize);
         };
-      }, []);
+    }, []);
 
     const handleOptionClick = ({option, type}: OptionClick): void => {
         if (type == "gender" ){
@@ -231,7 +245,7 @@ const FoodMateProfile = () =>{
                 { foodProfileQuery[currentQueryIndex]?.type == "menu" && 
                     <FoodMent>{selectedMenu.includes("기타") ? "기타 음식들은 채팅으로 입력해주세요" : "원하는 음식 종류를 모두 선택해주세요!"}</FoodMent>
                 }
-                <OptionsContainer $isMenu={foodProfileQuery[currentQueryIndex]?.type == "menu"}>
+                <OptionsContainer $isMenu={foodProfileQuery[currentQueryIndex]?.type == "menu"} $isSmall={window.innerHeight <700}>
                         {currentQueryIndex >=0 && foodProfileQuery[currentQueryIndex]?.options && (
                             <>
                                 {foodProfileQuery[currentQueryIndex].options.map((option, idx) => (
@@ -255,7 +269,7 @@ const FoodMateProfile = () =>{
                         )}
                     </OptionsContainer>
                     { foodProfileQuery[currentQueryIndex]?.type == "menu" && 
-                            <FoodBtn onClick={()=>saveMenu()}>다음으로</FoodBtn>
+                            <FoodBtn onClick={()=>saveMenu()} $isSmall={window.innerHeight <700}>다음으로</FoodBtn>
                     }
                     <ChatingInput disable={chatDisable} setChatDisable={setChatDisable} keyboard={keyboardOpen} isExtra={selectedMenu.includes("기타")}/>
                     { modalOpen && <ToggleListModal setModalOpen={setModalOpen}/> }
@@ -315,8 +329,8 @@ const ImageContainer= styled.div`
     align-items: flex-start;
     margin-bottom: 10px;
 `;
-const OptionsContainer = styled.div<{ $isMenu: boolean }>`
-    ${({ $isMenu }) =>
+const OptionsContainer = styled.div<{ $isMenu: boolean , $isSmall:boolean}>`
+    ${({ $isMenu, $isSmall}) =>
         $isMenu
             ? css`
                   display: grid;
@@ -334,7 +348,7 @@ const OptionsContainer = styled.div<{ $isMenu: boolean }>`
                   display: flex;
                   flex-wrap: wrap;
                   justify-content: center;
-                  margin-top: calc(100vh * 0.05);
+                  margin-top: ${$isSmall ? "calc(100vh * 0.15)" : "calc(100vh * 0.05)"};
                   margin-bottom: calc(100vh * 0.1);
                   gap: 10px;
               `}
@@ -402,14 +416,14 @@ const Button = styled.button<{$ismodal: boolean, $isSelected:boolean}>`
         outline: none;
     }
 `;
-const FoodBtn = styled.button`
+const FoodBtn = styled.button<{$isSmall:boolean;}>`
     background-color: #38ABFF;
     color: white;
     border-radius:100px;
     position: fixed;
     left: 50%;
     transform: translateX(-50%);
-    bottom: calc(100vh * 0.08 + 80px);
+    bottom: ${({$isSmall})=>$isSmall ? "calc(100vh * 0.15)" : "calc(100vh * 0.08 + 70px)"};
     z-index:100;
 `;
 const ByeImoticon = styled.div`

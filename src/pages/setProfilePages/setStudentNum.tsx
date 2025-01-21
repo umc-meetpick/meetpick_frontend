@@ -6,13 +6,14 @@ import MoveNextRoundBtn from "../../components/button/MoveNextRoundBtn";
 import { ProfileInfoContext } from '../../context/profileInfoContext';
 import ProfileSelectedBorder from "../../components/profileSelectedBorder";
 import GrayBottomInput from "../../components/input/GrayBottomInput";
+import MoveToPrevBtn from "../../components/button/moveToPrevBtn";
 
 const SetStudentNum = () =>{
     const [inputValue, setInputValue] = useState("");
     const {nickname, image, studentNum, setStudentNum} = useContext(ProfileInfoContext);
     return(
         <>
-            <SetProfileNavbar title={"프로필 작성"} before={true}/>
+            <SetProfileNavbar title={"프로필 작성"}/>
             <ProgressBar progress={40}/>
             <ProfileSelectedBorder input={[nickname,image]}/>
             <Container>
@@ -20,7 +21,10 @@ const SetStudentNum = () =>{
                 <SubInfo>숫자만 입력해주세요! ex) 22학번 → 22</SubInfo>
                 <GrayBottomInput value={inputValue || String(studentNum).slice(0, 2)} onChange={(e)=>{setInputValue(e.target.value)}}/>
             </Container>
-            <MoveNextRoundBtn nextPage={"/setProfile/mbti"} onClick={()=>{setStudentNum(inputValue+"학번")}}/>
+            <BtnContainer>
+                <MoveToPrevBtn/>
+                <MoveNextRoundBtn nextPage={"/setProfile/mbti"} onClick={()=>{setStudentNum(inputValue+"학번")}} width={160}/>
+            </BtnContainer>
         </>
     )
 }
@@ -47,4 +51,8 @@ const SubInfo = styled.div`
     font-size:14px;
     color:#838383;
     margin-bottom:40px;
+`;
+const BtnContainer = styled.div`
+    width:80%;
+    margin: 0 auto;
 `;

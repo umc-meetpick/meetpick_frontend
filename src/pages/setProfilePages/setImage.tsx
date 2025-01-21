@@ -8,6 +8,7 @@ import profile2 from "../../assets/profileImg/프로필2.png";
 import profile3 from "../../assets/profileImg/프로필3.png";
 import { ProfileInfoContext } from '../../context/profileInfoContext';
 import ProfileSelectedBorder from "../../components/profileSelectedBorder";
+import MoveToPrevBtn from "../../components/button/moveToPrevBtn";
 
 const SetImage = () =>{
     const {nickname, setImage, imgNum, setImgNum} = useContext(ProfileInfoContext);
@@ -17,7 +18,7 @@ const SetImage = () =>{
     }
     return(
         <>
-            <SetProfileNavbar title={"프로필 작성"} before={true}/>
+            <SetProfileNavbar title={"프로필 작성"}/>
             <ProgressBar progress={28}/>
             <ProfileSelectedBorder input={[nickname]}/>
             <Container>
@@ -31,7 +32,10 @@ const SetImage = () =>{
                     <ProfileRound src={profile3} alt="프로필3" $isSelected={6==imgNum} onClick={()=>handleSelected(6, profile3)}/>
                 </ImageWrapper>
             </Container>
-            <MoveNextRoundBtn nextPage={"/setProfile/studentNum"}/>
+            <BtnContainer>
+                <MoveToPrevBtn/>
+                <MoveNextRoundBtn nextPage={"/setProfile/studentNum"} width={160}/>
+            </BtnContainer>
         </>
     )
 }
@@ -40,7 +44,7 @@ export default SetImage
 const Container = styled.div`
     margin-top:100px;
     margin: 0 auto;
-    width:320px;
+    width:80%;
     height:300px;
 `;
 const Title = styled.div`
@@ -63,4 +67,8 @@ const ProfileRound = styled.img<{$isSelected: boolean}>`
     height:80px;
     border:${({$isSelected}) => ($isSelected ? "1px solid #007AFF" : "1px solid #CECECE")};
     border-radius:100px;
+`;
+const BtnContainer = styled.div`
+    width:80%;
+    margin: 0 auto;
 `;
