@@ -79,7 +79,7 @@ export interface RecommendDataType {
     {
         text1: "베티",
         text2: "#여성 #22살",
-        text3: "24학번 #ISFP",
+        text3: "#24학번 #ISFP",
         number1: "4",
         number2: "5",
         $backgroundColor: "#EEF5FD",
@@ -94,7 +94,7 @@ export interface RecommendDataType {
       {
         text1: "미기",
         text2: "#여성 #23살",
-        text3: "23학번 #ESFJ",
+        text3: "#23학번 #ESFJ",
         number1: "1",
         number2: "3",
         $backgroundColor: "#EEF5FD",
