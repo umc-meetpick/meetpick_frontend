@@ -2,12 +2,12 @@ import React from "react";
 import styled from "styled-components";
 import { Icon } from "@iconify/react";
 import RecommendImage1 from "../assets/images/Recommend1.png";
-import RecommendBlueBox from "./RecommendBlueBox";
 
 
 interface ButtonProps {
   text1: string;
   text2:string;
+  text3:string;
   number1:string;
   number2:string;
   $backgroundColor?: string;
@@ -24,6 +24,7 @@ interface ButtonProps {
 const RecommendBox: React.FC<ButtonProps> = ({
   text1,
   text2,
+  text3,
   number1,
   number2,
   $backgroundColor = "#E3F2FD", // 기본값 설정
@@ -47,16 +48,16 @@ const RecommendBox: React.FC<ButtonProps> = ({
       onClick={disabled ? undefined : onClick}
     >  
         <FirstLine>
-            <Icon icon="si:heart-fill" width="20" height="20" color="#FC0F13"/>
-            <ButtonText>{text1}</ButtonText>
-            <PersonText>{number1}/{number2}</PersonText>
+            <PersonText>{number1}/{number2}명</PersonText>
+            <StyledIcon icon="solar:heart-linear" width="20" height="20" color="#A5B0BB"/>
         </FirstLine>
         <SecondLine>
             <StyledImage src={RecommendImage1} alt="추천 리스트 이미지" />
+            <Nickname>{text1}</Nickname>
+            <Keyword1>{text2}</Keyword1>
+            <Keyword2>{text3}</Keyword2>
         </SecondLine>
-        <ThirdLine>
-          {text2}
-        </ThirdLine>
+    
         <FourthLine>
           <StyledBox>
                 {detail1 && <Box>{detail1}</Box>}
@@ -85,20 +86,7 @@ const StyledButton = styled.button<{
   border-radius: 5px;
   font-size: 13px;
   cursor: pointer;
-  justify-content: space-between; /* 텍스트와 화살표 사이 간격 */
-  padding: 0 9px; /* 버튼 내부 여백 */
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-`;
-
-const ButtonText = styled.span`
-  display:flex;
-  justify-content:center;
-  font-weight:bold;
-  font-size:13px;
-  color:#5D5D5D;
+  padding: 7px; /* 버튼 내부 여백 */
 `;
 
 const FirstLine = styled.div`
@@ -109,14 +97,9 @@ const FirstLine = styled.div`
 `
 const SecondLine = styled.div`
     margin-top:5px;
-`
-
-const ThirdLine = styled.p`
-  display:flex;
-  justify-content:center;
-  font-size:10px;
-  color:#5D5D5D;
-  margin:3px 0 7px 0;
+    display:flex;
+    position:relative;
+    
 `
 
 const StyledImage = styled.img`
@@ -126,15 +109,17 @@ const StyledImage = styled.img`
     border-radius:50%;
 `
 const PersonText = styled.div`
-    background-color:#D1ECFF;
-    width:34px;
-    height:23px;
-    border-radius:10px;
-    color:#454545;
+    background-color:#0096FF;
+    width:33px;
+    height:15px;
+    border-radius:100px;
+    color:white;
     display:flex;
     justify-content:center;
     align-items:center;
-    font-size:10px;
+    font-size:11px;
+    font-weight: 400;
+    padding:2px 5px;
 `
 
 const FourthLine = styled.div`
@@ -144,6 +129,8 @@ const FourthLine = styled.div`
     background-color:rgba(255, 255, 255, 0.60);
     border-radius:10px;
     justify-content:center;
+    margin-top:25px;
+    padding:0 5px;
 `
 
 const StyledBox = styled.div`
@@ -152,6 +139,7 @@ const StyledBox = styled.div`
   flex-wrap: wrap; /* 줄바꿈을 허용 */
   margin:4px;
   gap:5px;
+  justify-content:flex-start;
 `
 const Box = styled.div`
   border-radius: 100px;
@@ -161,13 +149,40 @@ const Box = styled.div`
   font-style: normal;
   font-weight: 500;
   width:auto;
-  padding:2px 7px;
+  padding:2px 8px;
   color:white;
   height:14px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
   
 `
 
+const StyledIcon = styled(Icon)`
+  
+`
+
+const Keyword1 = styled.p`
+  position:absolute;
+  left:50px;
+  color:#565656;
+  top:20px;
+  font-size:11px;
+  font-weight: 400;
+`
+
+const Keyword2 = styled.p`
+  position:absolute;
+  left:50px;
+  color:#565656;
+  top:35px;
+  font-size:11px;
+  font-weight: 400;
+`
+
+const Nickname = styled.p`
+  margin-left: 10px;
+  font-weight: 600;
+  font-size:14px;
+  position:absolute;
+  left:40px;
+  top:-5px;
+`
 export default RecommendBox;

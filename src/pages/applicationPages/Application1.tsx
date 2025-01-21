@@ -7,7 +7,6 @@ import ApplicationGrayButton from "../../components/button/ApplicationGrayButton
 import ApplicationGrayBox from "../../components/ApplicationGrayBox";
 import { IoHeart } from "react-icons/io5";
 import { FaCheck } from "react-icons/fa6";
-import { IoAlertCircle } from "react-icons/io5";
 
 const Application = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -48,7 +47,7 @@ const Application = () => {
 
     return (
         <>
-            <BasicNavbar title ="제이시의 프로필"/>
+            <BasicNavbar title ="제이시의 프로필" before = {true}/>
             <Wrapper>
                 <ImageContainer>
                     <StyledImage src={ApplicationImage} alt="회원가입 완료 이미지" />
@@ -105,11 +104,15 @@ const Application = () => {
                 <ApplicationGrayBox text1="학번" text2="20학번" width="152px" />
             </Mate1>
             <Mate1>
+                <ApplicationGrayBox text1="나이" text2="무관" width="152px" />
+                <ApplicationGrayBox text1="전공" text2="IT 계열" width="152px" />
+            </Mate1>
+            <Mate1>
                 <ApplicationGrayBox text1="MBTI" text2="활기찬, 객관적" width="152px" />
                 <ApplicationGrayBox text1="음식" text2="한식, 일식" width="152px" />
             </Mate1>
             <Mate1>
-                <ApplicationGrayBox text1="시간대" text2="11:00~ / 12:00~ / 13:00~" width="318px"/>
+                <ApplicationGrayBox text1="요일 및 시간대" text2="11:00~ / 12:00~ / 13:00~" width="318px"/>
             </Mate1>
             <Mate1>
                 <ApplicationGrayBox text1="하고 싶은 말" text2="맛난 거 먹어유~" width="318px"/>
@@ -190,6 +193,7 @@ const Mate1 =styled.div`
   justify-content:center;
   padding:0 37.5px;
   gap:14px;
+  margin-bottom:3px;
 `
 const Text1 = styled.p`
   display:flex;

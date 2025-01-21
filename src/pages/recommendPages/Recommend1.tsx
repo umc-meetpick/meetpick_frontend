@@ -22,6 +22,7 @@ const Recommend = () => {
     const [selectedGender, setSelectedGender] = useState<string | null>(null);
     const [selectedTime, setSelectedTime] = useState<string | null>(null);
     const [selectedGrade, setSelectedGrade] = useState<string | null>(null);
+    const [selectedDate, setSelectedDate] = useState<string | null>(null);
        
 
     const handleTabClick = (tab:string) => {
@@ -46,7 +47,7 @@ const Recommend = () => {
             </Top>
             <Message>
                 <Name>베티</Name>
-                <Comment>님을 원하는 혼밥 메이트를 찾아보세요😉</Comment>
+                <Comment>님을 원하는 혼밥 메이트를 찾아보세요<Icon icon="fluent-color:food-20" width="20" height="20" /></Comment>
             </Message>
             <Tabs>
                 <Tab
@@ -102,24 +103,38 @@ const Recommend = () => {
                         <List>
                             <DropdownButton
                                 height="35px"
-                                text={selectedGrade || "학번 "}
+                                text={selectedGrade || "학번 ∨"}
                                 width="80px"
                                 options={["10학번", "11학번", "12학번", "13학번", "14학번", "15학번", "16학번", "17학번", "18학번", "19학번", "20학번","21학번","22학번","23학번","24학번","25학번"]}
                                 onSelect={(option) => setSelectedGrade(option)}
                                 />
                                 <DropdownButton
                                 height="35px"
-                                text={selectedGender || "성별 "}
+                                text={selectedGender || "성별 ∨ "}
                                 width="80px"
                                 options={["여성", "남성"]}
                                 onSelect={(option) => setSelectedGender(option)}
                                 />
                                 <DropdownButton
                                 height="35px"
-                                text={selectedTime || "시간대"}
-                                width="120px"
-                                options={["00:00~2:00", "2:00~4:00", "4:00~6:00", "6:00~8:00", "8:00~10:00", "10:00~12:00", "12:00~14:00", "14:00~16:00", "16:00~18:00", "18:00~20:00", "20:00~22:00", "22:00~24:00"]}
-                                onSelect={(option) => setSelectedTime(`${option}시`)}
+                                text={selectedTime || "시간 ∨"}
+                                width="80px"
+                                options={["점심","저녁"]}
+                                onSelect={(option) => setSelectedTime(option)}
+                                />
+                                <DropdownButton
+                                height="35px"
+                                text={selectedDate || "요일 ∨"}
+                                width="80px"
+                                options={["월","화","수","목","금","토","일"]}
+                                onSelect={(option) => setSelectedDate(option)}
+                                />
+                                <DropdownButton
+                                height="35px"
+                                text={selectedDate || "요일 ∨"}
+                                width="80px"
+                                options={["월","화","수","목","금","토","일"]}
+                                onSelect={(option) => setSelectedDate(option)}
                                 />
                         </List>
                         <FullListSection>
@@ -128,6 +143,7 @@ const Recommend = () => {
                             key={index}
                             text1={data.text1}
                             text2={data.text2}
+                            text3={data.text3}
                             number1={data.number1}
                             number2={data.number2}
                             $backgroundColor={data.$backgroundColor}
@@ -198,15 +214,19 @@ const Message = styled.p`
     font-size:14px;
     margin:5px;
     font-family: "Pretendard Variable";
+    align-items:center;
 `
 const Name = styled.p`
     font-weight:bold;
-    margin:5px 0;
     font-family: "Pretendard Variable";
+    display:flex;
+    align-items:center;
 `
 const Comment = styled.p `
-    margin:5px 0;
     font-family: "Pretendard Variable";
+    display:flex;
+    align-items:center;
+
 `
 
 const Tabs = styled.div`
@@ -264,15 +284,18 @@ const Description = styled.p`
 const FullListSection = styled.div`
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 23px;
+    gap: 12px;
+    padding: 0 30px;
 
 `;
 const List = styled.div`
     margin-bottom:10px;
+    max-width:360px;
+    display:flex;
 `   
 
 const Wrapper = styled.div`
-
+    font-family: "Pretendard Variable";
 `
 
 const Text=styled.p`

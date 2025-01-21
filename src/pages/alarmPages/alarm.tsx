@@ -33,7 +33,7 @@ const Alarm = () => {
             <Container>
                 <DropdownButton color="black" text={selectedCategory || "카테고리 ∨"}
                 height="35px" 
-                width="110px"
+                width="100px"
                 options ={["밥", "운동", "공부", "공동구매"]}
                 onSelect = {(option) => setSelectedCategory(option)}
                 />

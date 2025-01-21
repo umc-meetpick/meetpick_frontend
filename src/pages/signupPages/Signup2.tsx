@@ -66,7 +66,7 @@ const Signup2 = () => {
             />
             <BottomText>
               <BsDot size="15px" color="#34A3FD" />
-              반드시 학교 도메인 이메일로 인증해주세요! ex) ooooo@soogsil.ac.kr
+              반드시 학교 도메인 이메일로 인증해주세요!<br/>ex) ooooo@soogsil.ac.kr
             </BottomText>
             {emailError && <ErrorText><MdErrorOutline/>{emailError}</ErrorText>}
           </SignupInputContainer>

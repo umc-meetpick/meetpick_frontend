@@ -68,7 +68,6 @@ const StyledButton = styled.button<{ $isSelected?: boolean; $color?:string; $hei
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  padding: 0 10px;
   margin-right: 10px;
   box-sizing: border-box;
 
