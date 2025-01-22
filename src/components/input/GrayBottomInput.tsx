@@ -7,16 +7,19 @@ interface GrayBottomInputProps {
     placeholder?: string;
 }
 
-const GrayBottomInput: React.FC< GrayBottomInputProps> = (({ value, onChange, placeholder }) =>{
-    return(
-        <Input
-            value={value}
-            onChange={onChange}
-            placeholder={placeholder || "입력"}
-        />
-    )
-}
-)
+const GrayBottomInput = React.forwardRef<HTMLInputElement, GrayBottomInputProps>(
+    ({ value, onChange, placeholder }, ref) => {
+        return (
+            <Input
+                ref={ref}
+                value={value}
+                onChange={onChange}
+                placeholder={placeholder || "입력"}
+            />
+        );
+    }
+);
+
 export default GrayBottomInput;
 
 const Input = styled.input`
