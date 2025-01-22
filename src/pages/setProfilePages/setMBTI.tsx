@@ -10,11 +10,12 @@ import MoveToPrevBtn from "../../components/button/MoveToPrevBtn";
 
 const SetMBTI = () =>{
     const {nickname, image, studentNum, mbti} = useContext(ProfileInfoContext);
+    const stdnum = String(studentNum)+"학번";
     return(
         <>
             <SetProfileNavbar title={"프로필 작성"}/>
             <ProgressBar progress={55}/>
-            <ProfileSelectedBorder input={[nickname,image,studentNum]}/>
+            <ProfileSelectedBorder input={[nickname,image, stdnum]}/>
             <Container>
                 <Title>MBTI를 알려주세요!</Title>
                 <RadioGrid>

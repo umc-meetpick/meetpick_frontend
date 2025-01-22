@@ -13,6 +13,7 @@ const SetContact= () => {
     const {nickname, image, studentNum, mbti, major, hobby, setContactType, setContact} = useContext(ProfileInfoContext);
     const [inputValue, setInputValue] = useState("");
     const options = ["카카오톡 ID", "오픈채팅 링크", "전화번호"]
+    const stdnum = String(studentNum)+"학번";
 
     const handleSelectChange = (selectedOption: { value: string; label: string } | null)  => {
         if (selectedOption) {
@@ -23,7 +24,7 @@ const SetContact= () => {
         <>
             <SetProfileNavbar title={"프로필 작성"}/>
             <ProgressBar progress={100}/>
-            <ProfileSelectedBorder input={[nickname,image,studentNum,mbti, major, ...hobby]}/>
+            <ProfileSelectedBorder input={[nickname,image,stdnum,mbti, major, ...hobby]}/>
             <Container>
                 <Title>
                     매칭 시 상대에게 전달할<br/>
@@ -39,7 +40,7 @@ const SetContact= () => {
             <BtnContainer>
                 <MoveToPrevBtn/>
                 <MoveNextRoundBtn 
-                    nextPage={"/setProfile/contact"} 
+                    nextPage={"/"} 
                     title="메이트 찾으러 가기" 
                     onClick={()=>{setContact(inputValue)}} 
                     width={160}

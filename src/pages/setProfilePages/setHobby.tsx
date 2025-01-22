@@ -10,6 +10,7 @@ import MoveToPrevBtn from "../../components/button/MoveToPrevBtn";
 
 const SetHobby = () =>{
     const {nickname, image, studentNum, mbti, major, hobby, setHobby} = useContext(ProfileInfoContext);
+    const stdnum = String(studentNum)+"학번";
     const handleChoose = (content:string) =>{
         if (hobby.includes(content)){
             setHobby(hobby.filter(h => h !== content));
@@ -21,7 +22,7 @@ const SetHobby = () =>{
         <>
             <SetProfileNavbar title={"프로필 작성"}/>
             <ProgressBar progress={85}/>
-            <ProfileSelectedBorder input={[nickname,image,studentNum,mbti, major]}/>
+            <ProfileSelectedBorder input={[nickname,image,stdnum,mbti, major]}/>
             <Container>
                 <Title>취미를 선택해주세요(5개까지)</Title>
                 <HobbyWrapper>

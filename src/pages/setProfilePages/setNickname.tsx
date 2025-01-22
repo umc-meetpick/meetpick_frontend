@@ -28,6 +28,7 @@ const SetNickName: React.FC = () => {
     });
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setValue("nickname", e.target.value, { shouldValidate: true });
+        setNickName(e.target.value);
     };
 
     const onSubmit = (data: { nickname: string }) => {
@@ -54,6 +55,7 @@ const SetNickName: React.FC = () => {
                 </Title>
                 <SubInfo>공백 제외 한글, 영문 10자까지 가능</SubInfo>
                 <GrayBottomInput
+                    value={nickname}
                     {...register("nickname")}
                     onChange={handleInputChange}
                 />
@@ -79,7 +81,7 @@ const SetNickName: React.FC = () => {
                         )
                     )}
             </Container>
-            <MoveNextRoundBtn nextPage={"/setProfile/image"} disable={nickname==""}/>
+            <MoveNextRoundBtn nextPage={"/setProfile/image"} disable={isDupilicate}/>
         </>
     );
 };

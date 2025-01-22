@@ -8,8 +8,8 @@ interface ProfileInfoContextType {
     setImgNum : (imgNum: number) => void;
     image: string;
     setImage: (image: string) => void;
-    studentNum: string;
-    setStudentNum: (studentNum: string) => void;
+    studentNum: number;
+    setStudentNum: (studentNum: number) => void;
     mbti: string;
     setMbti: (mbti: string) => void;
     major: string;
@@ -32,7 +32,7 @@ const defaultValue: ProfileInfoContextType = {
     setImgNum: () => {},
     image: "",
     setImage: () => {},
-    studentNum: "",
+    studentNum: 0,
     setStudentNum: () => {},
     mbti: "",
     setMbti: () => {},
@@ -59,7 +59,7 @@ export function ProfileContextProvider({children}:ProfileContextProviderProps){
     const [nickname, setNickName] = useState<string>("");
     const [imgNum, setImgNum] = useState<number>(0);
     const [image, setImage] = useState<string>("");
-    const [studentNum, setStudentNum] = useState<string>("");
+    const [studentNum, setStudentNum] = useState<number>(0);
     const [mbti, setMbti] = useState<string>("");
     const [major, setMajor] = useState<string>("");
     const [hobby, setHobby] = useState<string[]>([]);
