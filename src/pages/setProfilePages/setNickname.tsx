@@ -7,19 +7,42 @@ import { PiWarningCircle } from "react-icons/pi";
 import { FaRegCircleCheck } from "react-icons/fa6";
 import MoveNextRoundBtn from "../../components/button/MoveNextRoundBtn"
 import { ProfileInfoContext } from '../../context/profileInfoContext';
+import {useForm} from 'react-hook-form';
+import * as yup from 'yup';
+import {yupResolver} from '@hookform/resolvers/yup';
 
 const SetNickName: React.FC = () => {
-    const [inputValue, setInputValue] = useState("");
-    const [btnClicked, setBtnClicked] =useState(false);
     const [isDupilicate, setIsDupilicate] = useState(false);
-    
+    const [btnClicked, setBtnClicked] = useState(false);
     const {nickname, setNickName} = useContext(ProfileInfoContext);
-    const handleDupilicate = () =>{
-        setBtnClicked(true)
-        if(!isDupilicate){
-            setNickName(inputValue);
+
+    const schema = yup.object().shape({
+        nickname: yup
+        .string()
+        .matches(/^[a-zA-Z가-힣]+$/, "공백 제외 한글, 영문만 입력 가능합니다.")
+        .max(10, "10자 이내로 작성해주세요.")
+        .required("닉네임을 입력해주세요."),
+    })
+    const { register, handleSubmit, formState: { errors }, setValue } = useForm({
+        resolver: yupResolver(schema),
+    });
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setValue("nickname", e.target.value, { shouldValidate: true });
+    };
+
+    const onSubmit = (data: { nickname: string }) => {
+        if (!errors.nickname){
+            // 서버에 닉네임 중복 여부 확인 요청
+            const isDuplicateCheck = false; // 서버 결과 가정
+            setIsDupilicate(isDuplicateCheck);
+            setBtnClicked(true);
+
+            if (!isDuplicateCheck) {
+                setNickName(data.nickname);
+            }
         }
-    }
+    };
+
     return (
         <>
             <SetProfileNavbar title={"프로필 작성"}/>
@@ -31,25 +54,32 @@ const SetNickName: React.FC = () => {
                 </Title>
                 <SubInfo>공백 제외 한글, 영문 10자까지 가능</SubInfo>
                 <GrayBottomInput
-                    value={inputValue||nickname} 
-                    onChange={(e)=>setInputValue(e.target.value)} 
+                    {...register("nickname")}
+                    onChange={handleInputChange}
                 />
-                <DupilicateBtn onClick={handleDupilicate}>중복확인</DupilicateBtn>
-                {btnClicked && (
-                    isDupilicate ? (
-                        <Warning $isRed={isDupilicate}>
+                <DupilicateBtn onClick={handleSubmit(onSubmit)}>중복확인</DupilicateBtn>
+                {errors.nickname ? (
+                        <Warning $isRed={true}>
                             <PiWarningCircle color={"#DB1818"} style={{ marginTop: "5px"}}/>
-                            <div>이미 존재하는 닉네임입니다.</div>
+                            <div>{errors.nickname?.message}</div>
                         </Warning>
-                    ):(
-                        <Warning $isRed={isDupilicate}>
-                            <FaRegCircleCheck color={"#007AFF"} style={{ marginTop: "5px"}}/>
-                            <div>사용 가능한 닉네임입니다.</div>
-                        </Warning>
-                    )
-                )}
+                    ) : (
+                        btnClicked && (
+                            isDupilicate ? (
+                                <Warning $isRed={isDupilicate}>
+                                    <PiWarningCircle color={"#DB1818"} style={{ marginTop: "5px"}}/>
+                                    <div>이미 존재하는 닉네임입니다.</div>
+                                </Warning>
+                            ) : (
+                                <Warning $isRed={isDupilicate}>
+                                    <FaRegCircleCheck color={"#007AFF"} style={{ marginTop: "5px"}}/>
+                                    <div>사용 가능한 닉네임입니다.</div>
+                                </Warning>
+                            )
+                        )
+                    )}
             </Container>
-            <MoveNextRoundBtn nextPage={"/setProfile/image"}/>
+            <MoveNextRoundBtn nextPage={"/setProfile/image"} disable={nickname==""}/>
         </>
     );
 };
@@ -103,7 +133,7 @@ const Warning = styled.div<{ $isRed?: boolean }>`
     margin-top:10px;
     display:flex;
     font-size:14px;
-    width:200px;
+    width:100%;
     height:24px;
     line-height:24px;
     div{

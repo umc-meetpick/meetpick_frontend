@@ -2,20 +2,21 @@ import React from "react";
 import styled from "styled-components";
 
 interface GrayBottomInputProps {
-    value: string;
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    value?: string;
+    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
     placeholder?: string;
 }
 
-const GrayBottomInput: React.FC<GrayBottomInputProps> = ({ value, onChange}) =>{
+const GrayBottomInput: React.FC< GrayBottomInputProps> = (({ value, onChange, placeholder }) =>{
     return(
         <Input
             value={value}
             onChange={onChange}
-            placeholder="입력"
+            placeholder={placeholder || "입력"}
         />
     )
 }
+)
 export default GrayBottomInput;
 
 const Input = styled.input`

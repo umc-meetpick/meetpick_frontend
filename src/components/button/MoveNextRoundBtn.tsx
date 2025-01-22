@@ -7,9 +7,10 @@ interface MoveNextRoundBtnProps {
     title?: string;
     onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void; 
     width?: number;
+    disable?: boolean;
   }
 
-const MoveNextRoundBtn:  React.FC<MoveNextRoundBtnProps>= ({nextPage, title, onClick, width}) =>{
+const MoveNextRoundBtn:  React.FC<MoveNextRoundBtnProps>= ({nextPage, title, onClick, width, disable}) =>{
     const navigate = useNavigate();
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         if (onClick) {
@@ -18,7 +19,14 @@ const MoveNextRoundBtn:  React.FC<MoveNextRoundBtnProps>= ({nextPage, title, onC
         navigate(nextPage); 
       };
     return(
-        <Btn onClick={handleClick} $width={width || 312} $title={title?.length || 0}>{title ? title : "다음"}</Btn>
+        <Btn 
+            onClick={handleClick} 
+            $width={width || 312} 
+            $title={title?.length || 0}
+            disabled={disable || false}
+        >
+            {title ? title : "다음"}
+        </Btn>
     )
 }
 export default MoveNextRoundBtn
