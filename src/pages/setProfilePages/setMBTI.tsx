@@ -6,7 +6,7 @@ import MoveNextRoundBtn from "../../components/button/MoveNextRoundBtn";
 import { ProfileInfoContext } from '../../context/profileInfoContext';
 import ProfileSelectedBorder from "../../components/profileSelectedBorder";
 import RadioWrapper from "../../components/RadioWrapper";
-import MoveToPrevBtn from "../../components/button/moveToPrevBtn";
+import MoveToPrevBtn from "../../components/button/MoveToPrevBtn";
 
 const SetMBTI = () =>{
     const {nickname, image, studentNum, mbti} = useContext(ProfileInfoContext);
@@ -47,6 +47,7 @@ const Container = styled.div`
     margin: 0 auto;
     width:320px;
     height:450px;
+    font-family: "Pretendard Variable";
 `;
 const Title = styled.div`
     font-size:21px;

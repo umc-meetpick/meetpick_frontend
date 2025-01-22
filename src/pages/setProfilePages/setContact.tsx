@@ -7,7 +7,7 @@ import MoveNextRoundBtn from "../../components/button/MoveNextRoundBtn"
 import { ProfileInfoContext } from '../../context/profileInfoContext';
 import ProfileSelectedBorder from '../../components/profileSelectedBorder';
 import SelectToggle from '../../components/SelectToggle';
-import MoveToPrevBtn from '../../components/button/moveToPrevBtn';
+import MoveToPrevBtn from '../../components/button/MoveToPrevBtn';
 
 const SetContact= () => {
     const {nickname, image, studentNum, mbti, major, hobby, setContactType, setContact} = useContext(ProfileInfoContext);
@@ -55,7 +55,7 @@ const Container = styled.div`
     margin-top:100px;
     margin: 0 auto;
     width:320px;
-    height:350px;
+    height: calc(100vh * 0.4);
     font-family: "Pretendard Variable";
 `;
 const Title = styled.div`
@@ -69,7 +69,7 @@ const Title = styled.div`
     margin-bottom:60px;
 `;
 const Space = styled.div`
-    height:80px;
+    height: calc(100vh * 0.05);
 `;
 const BtnContainer = styled.div`
     width:80%;

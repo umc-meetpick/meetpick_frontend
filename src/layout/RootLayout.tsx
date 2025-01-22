@@ -25,6 +25,7 @@ const ContentWrapper = styled.div`
 
 const RootLayout = () => {
   const isSmallViewport = window.innerHeight < 700; 
+  const isKeyBoard = window.innerHeight < 400; 
   const {messages} = useChatContext();
     
     return (
@@ -32,7 +33,7 @@ const RootLayout = () => {
         <ContentWrapper>
           <Outlet />
         </ContentWrapper>
-        { !(isSmallViewport && messages.length>0) &&  <BottomNavBar /> }
+        { !((isSmallViewport && messages.length>0)||isKeyBoard) &&  <BottomNavBar /> }
       </Main>
     );
 };

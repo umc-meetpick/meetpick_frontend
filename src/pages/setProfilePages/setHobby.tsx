@@ -6,7 +6,7 @@ import { ProfileInfoContext } from '../../context/profileInfoContext';
 import ProfileSelectedBorder from "../../components/profileSelectedBorder";
 import hobbyList from "../../assets/hobbyList";
 import MoveNextRoundBtn from "../../components/button/MoveNextRoundBtn";
-import MoveToPrevBtn from "../../components/button/moveToPrevBtn";
+import MoveToPrevBtn from "../../components/button/MoveToPrevBtn";
 
 const SetHobby = () =>{
     const {nickname, image, studentNum, mbti, major, hobby, setHobby} = useContext(ProfileInfoContext);

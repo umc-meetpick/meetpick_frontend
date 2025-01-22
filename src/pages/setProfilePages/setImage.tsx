@@ -8,7 +8,7 @@ import profile2 from "../../assets/profileImg/프로필2.png";
 import profile3 from "../../assets/profileImg/프로필3.png";
 import { ProfileInfoContext } from '../../context/profileInfoContext';
 import ProfileSelectedBorder from "../../components/profileSelectedBorder";
-import MoveToPrevBtn from "../../components/button/moveToPrevBtn";
+import MoveToPrevBtn from "../../components/button/MoveToPrevBtn";
 
 const SetImage = () =>{
     const {nickname, setImage, imgNum, setImgNum} = useContext(ProfileInfoContext);

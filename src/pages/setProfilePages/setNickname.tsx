@@ -10,8 +10,9 @@ import { ProfileInfoContext } from '../../context/profileInfoContext';
 
 const SetNickName: React.FC = () => {
     const [inputValue, setInputValue] = useState("");
-    const [btnClicked, setBtnClicked] =useState(false)
-    const [isDupilicate, setIsDupilicate] = useState(false)
+    const [btnClicked, setBtnClicked] =useState(false);
+    const [isDupilicate, setIsDupilicate] = useState(false);
+    
     const {nickname, setNickName} = useContext(ProfileInfoContext);
     const handleDupilicate = () =>{
         setBtnClicked(true)
@@ -59,7 +60,7 @@ const Container = styled.div`
     margin-top:100px;
     margin: 0 auto;
     width:320px;
-    height:300px;
+    height: calc(100vh * 0.4);
     font-family: "Pretendard Variable";
 `;
 const Title = styled.div`

@@ -5,7 +5,7 @@ import majorList from '../assets/majorList';
 import { useNavigate } from 'react-router-dom';
 import { ProfileInfoContext } from '../context/profileInfoContext';
 import { FoodProfileInfoContext } from '../context/foodProfileInfo';
-import MoveToPrevBtn from './button/moveToPrevBtn';
+import MoveToPrevBtn from './button/MoveToPrevBtn';
 interface ToggleListProps {
     button?: boolean; 
     multi?: boolean;

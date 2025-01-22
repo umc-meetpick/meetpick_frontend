@@ -6,7 +6,7 @@ import MoveNextRoundBtn from "../../components/button/MoveNextRoundBtn";
 import { ProfileInfoContext } from '../../context/profileInfoContext';
 import ProfileSelectedBorder from "../../components/profileSelectedBorder";
 import GrayBottomInput from "../../components/input/GrayBottomInput";
-import MoveToPrevBtn from "../../components/button/moveToPrevBtn";
+import MoveToPrevBtn from "../../components/button/MoveToPrevBtn";
 
 const SetStudentNum = () =>{
     const [inputValue, setInputValue] = useState("");
@@ -34,7 +34,8 @@ const Container = styled.div`
     margin-top:100px;
     margin: 0 auto;
     width:320px;
-    height:300px;
+    height: calc(100vh * 0.4);
+    font-family: "Pretendard Variable";
 `;
 const Title = styled.div`
     font-size:21px;

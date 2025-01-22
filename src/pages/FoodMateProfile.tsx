@@ -313,7 +313,7 @@ const Container = styled.div`
 const StyledMainContainer = styled.div`
     width: calc(100vw); 
     max-width: 393px; 
-    height: ${window.innerHeight > 700 ? '60%' : '60%'};
+    height: ${window.innerHeight > 700 ? '65%' : '60%'};
     overflow-x: hidden;
     overflow-y: auto;
     *{
