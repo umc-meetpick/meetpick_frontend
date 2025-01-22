@@ -42,9 +42,10 @@ const SetStudentNum = () =>{
         setStudentNum(parseInt(data.studentNum));
     };
     useEffect(()=>{
-        setStnum(String(studentNum));
+        if (studentNum != 0)
+            setStnum(String(studentNum));
     },[])
-    
+
     return(
         <>
             <SetProfileNavbar title={"프로필 작성"}/>

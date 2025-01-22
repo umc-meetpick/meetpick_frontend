@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import styled from "styled-components";
 import { FaChevronDown } from "react-icons/fa6";
 import majorList from '../assets/majorList';
@@ -16,8 +16,9 @@ const ToggleList: React.FC<ToggleListProps> = ({button, multi, setModalOpen}) =>
     const navigate = useNavigate();
     const {major, setMajor} = useContext(ProfileInfoContext);
     const {majors, setMajors} = useContext(FoodProfileInfoContext);
-    const [selectedAll, setSelectedAll] = useState<string[]>([]);
     const [openItems, setOpenItems] = useState<number[]>([]);
+    const [selectedMajors, setSelectedMajors] = useState<string[]>([]); 
+    
     const handleToggle = (id: number) => {
         if (openItems.includes(id)) {
             setOpenItems(openItems.filter(itemId => itemId !== id));
@@ -28,40 +29,29 @@ const ToggleList: React.FC<ToggleListProps> = ({button, multi, setModalOpen}) =>
     const handleMajor = (major:string, college:string, all:string[]) =>{
         if (multi) {
             if (major === "all") {
-                if (selectedAll.includes(college)){
-                    setMajors(majors.filter((m) => !all.includes(m)));
-                    setSelectedAll(selectedAll.filter((m) => m !== college));
+                if (majors.includes(college)){
+                    setMajors(majors.filter((m) => m !== college));
+                    setSelectedMajors(selectedMajors.filter((m) => !all.includes(m)));
                 }else{
-                    setSelectedAll([...selectedAll, college]);
-                    const newMajors = all.filter((m) => !majors.includes(m));
-                    setMajors([...majors, ...newMajors]); 
+                    setMajors([...majors.filter((m) => !all.includes(m)), college]); 
+                    setSelectedMajors([...selectedMajors, ...all.filter((m) => !selectedMajors.includes(m))]);
                 }
             }else{
-                if (majors.includes(major)) {
-                    setMajors(majors.filter((m) => m !== major));
-                } else {
-                    setMajors([...majors, major]);
+                if (!majors.includes(college)){
+                    if (majors.includes(major)) {
+                        setMajors(majors.filter((m) => m !== major));
+                        setSelectedMajors(selectedMajors.filter((m) => m !== major));
+                    } else {
+                        setSelectedMajors([...selectedMajors,major]);
+                        setMajors([...majors, major]);
+                    }
                 }
             }
         } else {
             setMajor(major);
         }
     };
-    useEffect(() => {
-        const updatedSelectedAll = majorList.reduce((acc: string[], curr) => {
-            const { college, majors: collegeMajors } = curr;
     
-            if (collegeMajors.every((m) => majors.includes(m)) && !acc.includes(college)) {
-                acc.push(college);
-            } else if (!collegeMajors.every((m) => majors.includes(m)) && acc.includes(college)) {
-                acc = acc.filter((c) => c !== college);
-            }
-    
-            return acc;
-        }, []);
-    
-        setSelectedAll(updatedSelectedAll);
-    }, [majors, majorList]);
     return(
         <>
             <Container>
@@ -76,7 +66,7 @@ const ToggleList: React.FC<ToggleListProps> = ({button, multi, setModalOpen}) =>
                             {multi && 
                                 <Detail 
                                     onClick={()=>handleMajor("all", item.college, item.majors)} 
-                                    $isSelected={selectedAll.includes(item.college)}
+                                    $isSelected={majors.includes(item.college)}
                                 >
                                     {`${item.college} 전체`}
                                 </Detail>
@@ -85,7 +75,7 @@ const ToggleList: React.FC<ToggleListProps> = ({button, multi, setModalOpen}) =>
                                 <Detail
                                     key={`major-${item.id}-${index}`}
                                     onClick={() => handleMajor(maj, item.college, item.majors)}
-                                    $isSelected={multi ? majors.includes(maj) : major === maj}
+                                    $isSelected={multi ? selectedMajors.includes(maj) : major === maj}
                                 >
                                     {maj}
                                 </Detail>
