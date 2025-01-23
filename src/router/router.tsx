@@ -1,4 +1,3 @@
-import React from 'react';
 import {createBrowserRouter} from "react-router-dom";
 import RootLayout from "../layout/RootLayout";
 import HomePage from "../pages/HomePage"
@@ -8,6 +7,7 @@ import Login from "../pages/Login"
 import Signup from "../pages/signupPages/Signup"
 import MatchingPage from "../pages/Matching";
 import MyPage from "../pages/MyPage";
+import ViewAll from "../pages/ViewAll"
 import Signup1 from '../pages/signupPages/Signup1';
 import Signup2 from '../pages/signupPages/Signup2';
 import Signup3 from '../pages/signupPages/Signup3';
@@ -22,7 +22,8 @@ import Application from '../pages/applicationPages/Application1';
 import Alarm from '../pages/alarmPages/alarm';
 import Modify from '../pages/modifyPages/Modify';
 import Recommend from '../pages/recommendPages/Recommend1';
-
+import FoodMateProfile from '../pages/FoodMateProfile';
+import WaitForMate from "../pages/waitForMate";
 
 const router = createBrowserRouter([
     {
@@ -49,6 +50,10 @@ const router = createBrowserRouter([
           {
             path:'my',
             element:<MyPage/>
+          },
+          {
+            path:'view-all',
+            element:<ViewAll/>
           },
           {
             path:'matching',
@@ -109,6 +114,14 @@ const router = createBrowserRouter([
           {
             path:'recommend',
             element:<Recommend/>
+          },
+          {
+            path:'foodMateProfile',
+            element:<FoodMateProfile/>
+          },
+          {
+            path:'waitForMate',
+            element:<WaitForMate/>
           }
         ]
     }])

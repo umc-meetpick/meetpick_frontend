@@ -1,7 +1,7 @@
-import React from 'react';
 import { Outlet } from "react-router-dom";
 import styled from "styled-components";
 import BottomNavBar from '../components/navbar/BottomNavBar';
+import { useChatContext } from "../context/useChatContext";
 
 const Main=styled.div`
   width: calc(100vw); 
@@ -25,12 +25,16 @@ const ContentWrapper = styled.div`
 `;
 
 const RootLayout = () => {
+  const isSmallViewport = window.innerHeight < 700; 
+  const isKeyBoard = window.innerHeight < 400; 
+  const {messages} = useChatContext();
+    
     return (
       <Main>
         <ContentWrapper>
           <Outlet />
         </ContentWrapper>
-        <BottomNavBar />
+        { !((isSmallViewport && messages.length>0)||isKeyBoard) &&  <BottomNavBar /> }
       </Main>
     );
 };

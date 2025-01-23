@@ -39,6 +39,7 @@ const IconPosition = styled.div`
     position:relative;
     top:20px;
     left:-25%;
+
 `;
 const IconPosition2 = styled.div`
     position:relative;
