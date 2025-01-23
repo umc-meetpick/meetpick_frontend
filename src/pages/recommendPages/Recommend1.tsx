@@ -23,6 +23,13 @@ const Recommend = () => {
     const [selectedTime, setSelectedTime] = useState<string | null>(null);
     const [selectedGrade, setSelectedGrade] = useState<string | null>(null);
     const [selectedDate, setSelectedDate] = useState<string | null>(null);
+    
+    const [currentSlide, setCurrentSlide] = useState(slidesData[0]); // 현재 슬라이트 상태 관리
+
+    const handleSlideChange = (swiper : any) => {
+        const activeIndex = swiper.activeIndex;
+        setCurrentSlide(slidesData[activeIndex]); // 슬라이드가 변경되면 상태 업데이트 
+    }
        
 
     const handleTabClick = (tab:string) => {
@@ -66,35 +73,35 @@ const Recommend = () => {
             <Content>
                 {activeTab === "recommendList" && (
                     <RecommendationSection>
+                        <Emoji>
+                                <EmojiBubble1></EmojiBubble1>
+                                <EmojiBubble2></EmojiBubble2>
+                                <EmojiBubble3></EmojiBubble3>
+                                <EmojiBubble4></EmojiBubble4>
+                        </Emoji>
                         <Swiper
-                        spaceBetween={50}
-                        slidesPerView={1}
+                        spaceBetween={30}
+                        slidesPerView={1.7}
                         modules={[Pagination]}
                         pagination={{clickable:true}}
+                        onSlideChange={handleSlideChange} // 슬라이드 변경 이벤트 핸들러
+                        centeredSlides={true}
                         >
-                            
-                            {slidesData.map((slide) => (
-                                <SwiperSlide key={slide.id}>
+                            {slidesData.map((slidesData) => (
+                                
+                                <SwiperSlide key={slidesData.id}>
                                     <SlideContent>
-                                        <Emoji>
-                                            <EmojiBubble1><Grade>{slide.grade}</Grade></EmojiBubble1>
-                                            <EmojiBubble2><Food>{slide.food}</Food></EmojiBubble2>
-                                            <EmojiBubble3><Gender>{slide.gender}</Gender></EmojiBubble3>
-                                            <EmojiBubble4><Hobby>{slide.hobby}</Hobby></EmojiBubble4>
-                                        </Emoji>
                                         <Link to="/application">
-                                            <StyledImage src={RecommendImage} alt={`${slide.name} 이미지`} />
+                                            <StyledImage src={RecommendImage} alt={`${slidesData.name} 이미지`} />
                                         </Link>
-                                        <TapIcon icon="hugeicons:tap-05"/>
-                                        <Description>
-                                            [<Name>{slide.name}</Name>
-                                            {slide.description}]
-                                        </Description>
-                                        
                                     </SlideContent>
                                 </SwiperSlide>
                                 ))}
                         </Swiper>
+                        <Description>
+                            [<Name>{currentSlide.name}</Name>
+                            {currentSlide.description}]
+                        </Description>
                         <Text>👀옆으로 밀어서 원하는 메이트를 찾아보세요!</Text>
                     </RecommendationSection>
                 )}
@@ -272,12 +279,13 @@ const Content = styled.div`
 
 
 const StyledImage = styled.img`
-    width: 217px;
-    height: 217px;
+    width: 206px;
+    height: 206px;
     box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.05), 0px 6px 16px 0px rgba(0, 0, 0, 0.05), 0px 9px 28px 0px rgba(0, 0, 0, 0.05);
     border-radius: 200px;
     border: 1px solid #F2F2F2;
     background: #FCFCFC;
+    margin-bottom:40px;
 `
 
 const Description = styled.p`
@@ -330,6 +338,7 @@ const Emoji = styled.div`
     margin: 0 auto;
     display:flex;
     padding-top:70px;
+    z-index:9999;
 `;
 
 const EmojiBubble1 = styled.div`
@@ -341,7 +350,7 @@ const EmojiBubble1 = styled.div`
   background-size: cover;
   background-position: center;
   top: 40px; /* 상단 위치 */
-  left:-45px;
+  left:-50px;
   transform:scaleX(-1);
   z-index:1;
 `;
@@ -384,7 +393,7 @@ const EmojiBubble4 = styled.div`
   background-size: cover;
   background-position: center;
   bottom: 20px; /* 하단 위치 */
-  right: -45px; /* 우측 위치 */
+  right: -50px; /* 우측 위치 */
   top:40px;
   z-index:1;
 `;
