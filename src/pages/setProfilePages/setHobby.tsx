@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import styled from "styled-components";
 import SetProfileNavbar from '../../components/navbar/BasicNavbar';
 import ProgressBar from '../../components/progressbar/ProgressBar';
@@ -6,13 +6,15 @@ import { ProfileInfoContext } from '../../context/profileInfoContext';
 import ProfileSelectedBorder from "../../components/profileSelectedBorder";
 import hobbyList from "../../assets/hobbyList";
 import MoveNextRoundBtn from "../../components/button/MoveNextRoundBtn";
+import MoveToPrevBtn from "../../components/button/MoveToPrevBtn";
 
 const SetHobby = () =>{
     const {nickname, image, studentNum, mbti, major, hobby, setHobby} = useContext(ProfileInfoContext);
+    const stdnum = String(studentNum)+"학번";
     const handleChoose = (content:string) =>{
         if (hobby.includes(content)){
             setHobby(hobby.filter(h => h !== content));
-        }else if(hobby.length<3){
+        }else if(hobby.length<5){
             setHobby([... hobby, content])
         }
     };
@@ -20,9 +22,9 @@ const SetHobby = () =>{
         <>
             <SetProfileNavbar title={"프로필 작성"}/>
             <ProgressBar progress={85}/>
-            <ProfileSelectedBorder input={[nickname,image,studentNum,mbti, major]}/>
+            <ProfileSelectedBorder input={[nickname,image,stdnum,mbti, major]}/>
             <Container>
-                <Title>취미를 선택해주세요(3개까지)</Title>
+                <Title>취미를 선택해주세요(5개까지)</Title>
                 <HobbyWrapper>
                     {hobbyList.map((content,index)=>(
                         <Border 
@@ -37,7 +39,10 @@ const SetHobby = () =>{
                     }
                 </HobbyWrapper> 
             </Container>
-            <MoveNextRoundBtn nextPage={"/setProfile/contact"} />
+            <BtnContainer>
+                <MoveToPrevBtn/>
+                <MoveNextRoundBtn nextPage={"/setProfile/contact"} width={160}/>
+            </BtnContainer>
         </>
     )
 }
@@ -48,6 +53,7 @@ const Container = styled.div`
     margin: 0 auto;
     width:320px;
     height:450px;
+    font-family: "Pretendard Variable";
 `;
 const Title = styled.div`
     font-size:21px;
@@ -81,4 +87,8 @@ const Border = styled.button<{ $length: number, $isSelected:boolean}>`
         border: ${({$isSelected})=> $isSelected ? "1px solid #007AFF" : "1px solid #CECECE"};
         outline: none;
     }
+`;
+const BtnContainer = styled.div`
+    width:80%;
+    margin: 0 auto;
 `;

@@ -1,15 +1,16 @@
-import React from 'react';
 import { Outlet } from "react-router-dom";
 import styled from "styled-components";
 import BottomNavBar from '../components/navbar/BottomNavBar';
+import { useChatContext } from "../context/useChatContext";
 
 const Main=styled.div`
-    width:393px;
-    height:100vh;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    position: relative; /* 상대적 위치 지정 */
+  width: calc(100vw); 
+  max-width: 393px; 
+  height:100vh;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  position: relative; /* 상대적 위치 지정 */
 `;
 
 const ContentWrapper = styled.div`
@@ -23,12 +24,16 @@ const ContentWrapper = styled.div`
 `;
 
 const RootLayout = () => {
+  const isSmallViewport = window.innerHeight < 700; 
+  const isKeyBoard = window.innerHeight < 400; 
+  const {messages} = useChatContext();
+    
     return (
       <Main>
         <ContentWrapper>
           <Outlet />
         </ContentWrapper>
-        <BottomNavBar />
+        { !((isSmallViewport && messages.length>0)||isKeyBoard) &&  <BottomNavBar /> }
       </Main>
     );
 };

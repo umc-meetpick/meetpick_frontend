@@ -35,7 +35,8 @@ export default BottomNavBar;
 const BottomNav = styled.div`
   position: fixed;
   bottom: 0;
-  width: 393px;
+  width:100%;
+  max-width: 393px;
   height: 80px;
   display: flex;
   justify-content: space-around;
@@ -56,9 +57,9 @@ const NavItem = styled.div`
 `
 
 const Title = styled.p`
-    margin: 5px 0 0;
-    font-size: 12px;
-    text-align:center;
+  margin: 5px 0 0;
+  font-size: 12px;
+  text-align:center;
 `
 const StyledLink = styled(Link)`
   display: flex;

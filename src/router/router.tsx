@@ -1,4 +1,3 @@
-import React from 'react';
 import {createBrowserRouter} from "react-router-dom";
 import RootLayout from "../layout/RootLayout";
 import HomePage from "../pages/HomePage"
@@ -18,6 +17,8 @@ import SetMBTI from '../pages/setProfilePages/setMBTI';
 import SetMajor from '../pages/setProfilePages/setMajor';
 import SetHobby from '../pages/setProfilePages/setHobby';
 import SetContact from '../pages/setProfilePages/setContact';
+import FoodMateProfile from '../pages/FoodMateProfile';
+import WaitForMate from "../pages/waitForMate";
 
 const router = createBrowserRouter([
     {
@@ -88,6 +89,14 @@ const router = createBrowserRouter([
           {
             path:'setProfile/contact',
             element:<SetContact/>
+          },
+          {
+            path:'foodMateProfile',
+            element:<FoodMateProfile/>
+          },
+          {
+            path:'waitForMate',
+            element:<WaitForMate/>
           }
         ]
     }])
