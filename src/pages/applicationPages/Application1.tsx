@@ -101,21 +101,24 @@ const Application = () => {
             </Mate>
             <Mate1>
                 <ApplicationGrayBox text1="성별" text2="무관" width="152px" />
-                <ApplicationGrayBox text1="학번" text2="20학번" width="152px" />
+                <ApplicationGrayBox text1="나이/학번" text2="22살/동기" width="152px" />
             </Mate1>
             <Mate1>
-                <ApplicationGrayBox text1="나이" text2="무관" width="152px" />
+                <ApplicationGrayBox text1="음식 종류" text2="한식, 일식" width="152px" />
+                <ApplicationGrayBox text1="인원수" text2="0/3" width="152px" />
+            </Mate1>
+            <Mate1>
                 <ApplicationGrayBox text1="전공" text2="IT 계열" width="152px" />
+                <ApplicationGrayBox text1="MBTI" text2="ExxJ" width="152px" />
             </Mate1>
             <Mate1>
-                <ApplicationGrayBox text1="MBTI" text2="활기찬, 객관적" width="152px" />
-                <ApplicationGrayBox text1="음식" text2="한식, 일식" width="152px" />
+                <ApplicationGrayBox text1="취미" text2="명상, 축구, 바이올린" width="318px"/>
             </Mate1>
             <Mate1>
-                <ApplicationGrayBox text1="요일 및 시간대" text2="11:00~ / 12:00~ / 13:00~" width="318px"/>
+                <ApplicationGrayBox text1="시간대" text2="월 12:00 / 화 15:00" width="318px"/>
             </Mate1>
             <Mate1>
-                <ApplicationGrayBox text1="하고 싶은 말" text2="맛난 거 먹어유~" width="318px"/>
+                <ApplicationGrayBox text1="하고 싶은 말" text2="맛난 거 먹어요~" width="318px"/>
             </Mate1>
             <Button2>
                 <ApplicationButton style={buttonStyle} onClick={handleOpenModal}>
