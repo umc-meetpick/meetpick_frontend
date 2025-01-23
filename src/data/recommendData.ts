@@ -13,6 +13,8 @@ export interface RecommendDataType {
     detail4?: string;
     gender: string;
     grade: string;
+    time? :string;
+    date?:string;
   }
   
   export const recommendData: RecommendDataType[] = [
@@ -30,6 +32,8 @@ export interface RecommendDataType {
       detail3: "23~25살",
       gender: "여성",
       grade: "20학번",
+      time:"점심",
+      date:"토"
     },
     {
       text1: "마음이 숭숭",
@@ -45,6 +49,8 @@ export interface RecommendDataType {
       detail3: "24살",
       gender: "여성",
       grade: "24학번",
+      time:"저녁",
+      date:"수"
     },
     {
       text1: "제이든",
@@ -59,6 +65,8 @@ export interface RecommendDataType {
       detail2: "25~28살",
       gender: "남성",
       grade: "18학번",
+      time : "저녁",
+      date: "화"
     },
     {
       text1: "디아",
@@ -75,6 +83,8 @@ export interface RecommendDataType {
       detail4: "20~21살",
       gender: "여성",
       grade: "23학번",
+      time:"점심",
+      date:"월"
     },
     {
         text1: "베티",
@@ -90,6 +100,8 @@ export interface RecommendDataType {
         detail3: "23~25살",
         gender: "여성",
         grade: "20학번",
+        time:"점심",
+        date:"목"
       },
       {
         text1: "미기",
@@ -105,6 +117,8 @@ export interface RecommendDataType {
         detail3: "23~25살",
         gender: "남성",
         grade: "23학번",
+        time:"점심",
+        date:"수"
       },
       {
         text1: "피기",
@@ -119,6 +133,8 @@ export interface RecommendDataType {
         detail2:"남성만",
         gender: "남성",
         grade: "19학번",
+        time:"저녁",
+        date:"금"
       },
   ];
   

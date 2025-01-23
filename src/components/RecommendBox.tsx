@@ -90,7 +90,6 @@ const StyledButton = styled.button<{
   number1:string;
   number2:string;
 }>`
-  position:relative;
   background-color: ${({ $backgroundColor }) => $backgroundColor};
   width: ${({ width }) => width};
   color: ${({ color }) => color};
@@ -100,6 +99,7 @@ const StyledButton = styled.button<{
   font-size: 13px;
   cursor: pointer;
   padding: 7px; /* 버튼 내부 여백 */
+  z-index:1;
 `;
 
 const FirstLine = styled.div`

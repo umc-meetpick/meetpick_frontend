@@ -13,6 +13,7 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import { slidesData } from "../../data/slidesData"
 import { Link } from "react-router-dom";
+import FoodMateList from "../../data/foodmateoption";
 
 SwiperCore.use([Pagination]);
 
@@ -23,24 +24,39 @@ const Recommend = () => {
     const [selectedTime, setSelectedTime] = useState<string | null>(null);
     const [selectedGrade, setSelectedGrade] = useState<string | null>(null);
     const [selectedDate, setSelectedDate] = useState<string | null>(null);
-    
     const [currentSlide, setCurrentSlide] = useState(slidesData[0]); // 현재 슬라이트 상태 관리
+ 
 
     const handleSlideChange = (swiper : any) => {
         const activeIndex = swiper.activeIndex;
         setCurrentSlide(slidesData[activeIndex]); // 슬라이드가 변경되면 상태 업데이트 
+        
     }
-       
 
     const handleTabClick = (tab:string) => {
         setActiveTab(tab);
+    };
+
+    const handleSelect = (option: string, value :string) => {
+        //console.log(`선택된 옵션: ${option}, 값: ${value}`);
+        if (option === "학번") {
+            setSelectedGrade(value);
+        } else if (option === "성별") {
+            setSelectedGender(value);
+        } else if (option === "시간") {
+            setSelectedTime(value);
+        } else if (option === "요일") {
+            setSelectedDate(value);
+        }
     };
 
     // recommendData를 사용해 필터링 
     const filteredData = recommendData.filter(
         (item) =>
           (selectedGender === null || item.gender === selectedGender) &&
-          (selectedGrade === null || item.grade === selectedGrade)
+          (selectedGrade === null || item.grade === selectedGrade) &&
+          (selectedTime === null || item.time === selectedTime) &&
+          (selectedDate === null || item.date === selectedDate)
       );
       
 
@@ -91,86 +107,68 @@ const Recommend = () => {
                                 
                                 <SwiperSlide key={slidesData.id}>
                                     <SlideContent>
-                                        <Link to="/application">
-                                            <StyledImage src={RecommendImage} alt={`${slidesData.name} 이미지`} />
-                                        </Link>
+                                        <StyledImage src={RecommendImage} alt={`${slidesData.name} 이미지`} />
                                     </SlideContent>
                                 </SwiperSlide>
                                 ))}
                         </Swiper>
-                        <Description>
-                            [<Name>{currentSlide.name}</Name>
-                            {currentSlide.description}]
+                        <Link to ='/application'>
+                        <Description> 
+                            <Name>{currentSlide.name}</Name>님 프로필 구경하러가기
                         </Description>
+                        </Link>
                         <Text>👀옆으로 밀어서 원하는 메이트를 찾아보세요!</Text>
                     </RecommendationSection>
                 )}
                 {activeTab === "fullList" && (
                     <Wrapper>
                         <List>
-                            <DropdownButton
-                                height="35px"
-                                text={selectedGrade || "학번 ∨"}
-                                width="80px"
-                                options={["10학번", "11학번", "12학번", "13학번", "14학번", "15학번", "16학번", "17학번", "18학번", "19학번", "20학번","21학번","22학번","23학번","24학번","25학번"]}
-                                onSelect={(option) => setSelectedGrade(option)}
-                                />
-                                <DropdownButton
-                                height="35px"
-                                text={selectedGender || "성별 ∨ "}
-                                width="80px"
-                                options={["여성", "남성"]}
-                                onSelect={(option) => setSelectedGender(option)}
-                                />
-                                <DropdownButton
-                                height="35px"
-                                text={selectedTime || "시간 ∨"}
-                                width="80px"
-                                options={["점심","저녁"]}
-                                onSelect={(option) => setSelectedTime(option)}
-                                />
-                                <DropdownButton
-                                height="35px"
-                                text={selectedDate || "요일 ∨"}
-                                width="80px"
-                                options={["월","화","수","목","금","토","일"]}
-                                onSelect={(option) => setSelectedDate(option)}
-                                />
-                                <DropdownButton
-                                height="35px"
-                                text={selectedDate || "시간 ∨"}
-                                width="80px"
-                                options={["월","화","수","목","금","토","일"]}
-                                onSelect={(option) => setSelectedDate(option)}
-                                />
-                                <DropdownButton
-                                height="35px"
-                                text={selectedDate || "음식 종류 ∨"}
-                                width="80px"
-                                options={["월","화","수","목","금","토","일"]}
-                                onSelect={(option) => setSelectedDate(option)}
-                                />
-                                
+                            <Swiper
+                            spaceBetween={0.1} // 각 슬라이드 사이 간격
+                            slidesPerView="auto" // 자동으로 여러 슬라이드 표시
+                            freeMode={true} // 자유롭게 드래그 가능
+                            
+                            >
+                                {FoodMateList.map((item)=> (
+                                    <SwiperSlide key={item.id} style={{width:"auto"}}>
+                                        <DropdownButton
+                                        height="35px"
+                                        text={
+                                            item.option === "성별" && selectedGender ? selectedGender
+                                                : item.option === "학번" && selectedGrade ? selectedGrade
+                                                : item.option === "시간" && selectedTime ? selectedTime
+                                                : item.option === "요일" && selectedDate ? selectedDate
+                                                : `${item.option} ∨`
+                                        }
+                                        width="90px"
+                                        options={item.lists} // FoodMateList의 options 전달
+                                        onSelect={(option) => handleSelect(item.option, option)} // 선택 이벤트 핸들러
+                                        />
+                                    </SwiperSlide>
+                                ))}
+                            </Swiper>
+                            
                         </List>
                         <FullListSection>
-                        {filteredData.map((data, index) => (
-                            <RecommendBox
-                            key={index}
-                            text1={data.text1}
-                            text2={data.text2}
-                            text3={data.text3}
-                            number1={data.number1}
-                            number2={data.number2}
-                            $backgroundColor={data.$backgroundColor}
-                            width={data.width}
-                            color={data.color}
-                            detail1={data.detail1}
-                            detail2={data.detail2}
-                            detail3={data.detail3}
-                            detail4={data.detail4}
-                            />
-                        ))}
+                            {filteredData.map((data, index) => (
+                                <RecommendBox
+                                key={index}
+                                text1={data.text1}
+                                text2={data.text2}
+                                text3={data.text3}
+                                number1={data.number1}
+                                number2={data.number2}
+                                $backgroundColor={data.$backgroundColor}
+                                width={data.width}
+                                color={data.color}
+                                detail1={data.detail1}
+                                detail2={data.detail2}
+                                detail3={data.detail3}
+                                detail4={data.detail4}
+                                />
+                            ))}
                         </FullListSection>
+                       
                     </Wrapper>
                 )}
             </Content>
@@ -180,8 +178,10 @@ const Recommend = () => {
 
 export default Recommend;
 
+
 const Container = styled.div`
     font-family: "Pretendard Variable";
+    position:relative;
 `
 
 const SlideContent = styled.div`
@@ -275,6 +275,7 @@ const Content = styled.div`
     display:flex;
     justify-content:center;
     font-family: "Pretendard Variable";
+    overflow:visible;
 `;
 
 
@@ -289,30 +290,34 @@ const StyledImage = styled.img`
 `
 
 const Description = styled.p`
-    font-size: 20px;
+    font-size: 15px;
+    font-weight: 700;
     color: #555;
     display:flex;
     justify-content:center;
     align-items:center;
     margin-top:0;
+    text-decoration-line: underline;
 `;
 
 const FullListSection = styled.div`
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
-    padding: 0 30px;
-
+    padding:0 30px;
+    background-color:none;
 `;
 const List = styled.div`
     margin-bottom:10px;
     max-width:360px;
     display:flex;
-    z-index:999;
+    padding-left:30px;
+    padding-right:5px;
 `   
 
 const Wrapper = styled.div`
     font-family: "Pretendard Variable";
+    width: 100%; /* 부모 요소의 너비 */
 `
 
 const Text=styled.p`
@@ -397,56 +402,3 @@ const EmojiBubble4 = styled.div`
   top:40px;
   z-index:1;
 `;
-
-const Grade = styled.p`
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-size:12px;
-    transform : scaleX(-1);
-    height:35px;
-    color:#636D77;
-    font-family: "Pretendard Variable";
-    font-weight:bold;
-`
-const Food = styled.p`
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-size:12px;
-    transform : scaleX(-1) rotate(-10deg);
-    height:35px;
-    color:#636D77;
-    font-family: "Pretendard Variable";
-    font-weight:bold;
-`
-const Gender = styled.p`
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-size:12px;
-    transform : rotate(10deg);
-    height:35px;
-    color:#636D77;
-    font-family: "Pretendard Variable";
-    font-weight:bold;
-`
-const Hobby = styled.p`
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-size:12px;
-    height:35px;
-    color:#636D77;
-    font-family: "Pretendard Variable";
-    font-weight:bold;
-`
-
-const TapIcon = styled(Icon)`
-    width: 35px; /* 아이콘 너비 */
-    height: 50px; /* 아이콘 높이 */
-    color: #7C7C7C; /* 아이콘 색상 */
-    position:relative;
-    right:-90px;
-    top:-25px;
-`

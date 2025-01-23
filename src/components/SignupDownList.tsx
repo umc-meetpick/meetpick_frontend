@@ -55,6 +55,7 @@ export default DropdownButton;
 const Container = styled.div`
   position: relative;
   display: inline-block;
+
 `;
 
 const StyledButton = styled.button<{ $isSelected?: boolean; $color?:string; $height:string }>`
@@ -70,7 +71,9 @@ const StyledButton = styled.button<{ $isSelected?: boolean; $color?:string; $hei
   cursor: pointer;
   margin-right: 10px;
   box-sizing: border-box;
-  z-index:9999;
+  font-size: 13px;
+  padding:0;
+  
 
   &:hover {
     border-color: #007aff;
@@ -85,12 +88,11 @@ const DropdownList = styled.ul<{$width : string}>`
   background: white;
   border: 1.5px solid #cecece;
   list-style: none;
-  z-index: 1;
   width: ${({ $width }) => `calc(${Number($width.replace('px', '')) - 4}px)`};
 
   max-height: 100px; /* 리스트의 최대 높이를 설정 */
   overflow-y: scroll; /* 내용이 많을 경우 스크롤 활성화 */
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.27); /* 드롭다운 전체에 그림자 추가 */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.27); /* 드롭다운 전체에 그림자 추가 */\
   
 `;
 
@@ -103,9 +105,8 @@ const DropdownItem = styled.li`
   text-align:center;
   color:black;
   font-size:13px;
-
   &:hover{
     background-color:#F5F5F5;
   }
-
+  
 `;
