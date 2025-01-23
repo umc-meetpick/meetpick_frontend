@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { MeetPickText } from '../components/MeetPickText'; 
 import { FaComment } from "react-icons/fa";
 import loginbackground from '../assets/images/loginImage.png';
 

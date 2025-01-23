@@ -1,132 +1,95 @@
 import React from 'react';
 import styled from "styled-components";
-import { MeetPickText } from '../components/MeetPickText'; 
-import { Icon } from "@iconify/react";
-import { GoArrowRight } from "react-icons/go";
+import Background from '../assets/background/HomeBackground'; 
+import Slider from '../components/Slider'; 
 import { IoSearchOutline } from "react-icons/io5";
 import { useNavigate } from 'react-router-dom'; // useNavigate import 추가
-import emojiImage from '../assets/images/EmojiBubble.png';
 import mateImage from '../assets/images/MateImage.png'
-import GroupEmoji from '../components/GroupIcon';
+import logoImage from '../assets/images/MeetPickLogo.png'
+import characterImage from '../assets/homeImg/homeImage.png'
+import thinkingface from '../assets/homeImg/thinking.png'
+import fire from '../assets/homeImg/fire.png'
+import CategotyContainer from '../container/CategoryContainer';
+
 
 
 const Wrapper = styled.div`
+  position: relative; /* 배경 위에 다른 콘텐츠를 올리기 위해 필요 */
   font-family: "Pretendard Variable", sans-serif;
   text-align: center;
-  padding: 20px;
-  background-color: #ffffff;
+  overflow: hidden; /* 배경이 Wrapper를 넘어가지 않도록 설정 */
+`;
+
+
+const Content = styled.div`
+  position: relative; /* 배경 위에 콘텐츠를 배치하기 위해 설정 */
+  z-index: 1; /* 배경보다 위에 표시 */
 `;
 
 const Navbar = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
+  padding: 10px 10px;
 `;
 
-const LoginButton = styled.button`
-  padding: 5px 20px;
-  border: 1px solid #a5a5a5;
-  background-color: white;
-  color: #a5a5a5;
-  border-radius: 50px;
+const LogoIcon = styled.img`
+  width: 137px;
+  height: 37px;    
+  object-fit: cover;
+`;
+
+const LoginText = styled.p`
+  color: #000;
   cursor: pointer;
-  font-size: 14px;
-  &:hover {
-    background-color: #e5e5e5;
-  }
+  font-size: 15px;
+  text-decoration: underline;
+  font-family: "Pretendard Variable";
+`;
+
+const MainTitleImage = styled.img`
+  position: absolute;
+  top: 120px;
+  right: 30px;
+  width: 80px; /* 이미지 크기 */
+  height: 60px;
+  object-fit: cover;
 `;
 
 const MainTitle = styled.h1`
-  font-size: 28px;
+  font-size: 32px;
   color: #000;
-  margin: 10px 0 5px 0; /* 위쪽, 아래쪽 여백을 설정 */
+  margin: 112px 0 10px 0; /* 위쪽, 아래쪽 여백을 설정 */
   font-family: "Pretendard Variable";
   font-weight: 700;
 `;
 
 const SubTitle = styled.p`
-    font-size: 20px;
-    color: #454545;
-    margin-top: 5px; /* 상단 여백을 줄여서 간격 좁힘 */
-    margin-bottom: 40px;
-    font-family: "Pretendard Variable";
-    font-weight: 400;
+  font-size: 20px;
+  color: #454545;
+  margin-top: 5px; /* 상단 여백을 줄여서 간격 좁힘 */
+  margin-bottom: 165px;
+  font-family: "Pretendard Variable";
+  font-weight: 500;  
 `;
 
-
-const EmojiContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;  /* 수직 정렬 */
-  gap: 20px;
-  margin: 20px 0;
-  flex-wrap: wrap;  /* 여러 줄로 배치되도록 설정 */
-  position: relative;
-`;
-
-const EmojiBubble1 = styled.div`
-  width: 90px;
-  height: 91px;
-  font-size: 50px;
-  padding: 10px;
-
-  background-image: url(${emojiImage}); /* 이미지 경로 변경 */
-  background-size: cover; /* 이미지 크기를 요소에 맞게 조정 */
-  background-position: center; /* 이미지가 중앙에 오도록 설정 */
-
-  position: absolute;
-  top: 0px; /* 상단 위치 */
-  left: 50px; /* 왼쪽 위치 */
-`;
-
-const EmojiBubble2 = styled.div`
-  width: 90px;
-  height: 91px;
-  position: absolute;
-  top: 50px;
-  left: 170px;
-  font-size: 50px;
-  padding: 10px;
-
-  background-image: url(${emojiImage}); /* 이미지 경로 변경 */
-  background-size: cover; /* 이미지 크기를 요소에 맞게 조정 */
-  background-position: center; /* 이미지가 중앙에 오도록 설정 */
-  transform: scaleX(-1); /* 좌우 반전 */
-`;
-
-const EmojiBubble3 = styled.div`
-  width: 90px;
-  height: 91px;
-  position: absolute;
-  top: 150px;
-  left: 50px;
-  font-size: 50px;
-  padding: 10px;
-
-  background-image: url(${emojiImage}); /* 이미지 경로 변경 */
-  background-size: cover; /* 이미지 크기를 요소에 맞게 조정 */
-  background-position: center; /* 이미지가 중앙에 오도록 설정 */
-`;
-
-const EmojiBubble4 = styled.div`
-  width: 90px;
-  height: 91px;
-  position: absolute;
-  top: 200px;
-  left: 170px;
-  font-size: 45px;
-  padding: 10px;
-
-  background-image: url(${emojiImage}); /* 이미지 경로 변경 */
-  background-size: cover; /* 이미지 크기를 요소에 맞게 조정 */
-  background-position: center; /* 이미지가 중앙에 오도록 설정 */
-  transform: scaleX(-1); /* 좌우 반전 */
+const SearchText = styled.p`
+  margin-top: 152px;
+  font-size: 18px;
+  font-family: "Pretendard Variable";
+  font-weight: 700;
+  color: #3D434D;
+  display: inline-flex; /* 텍스트와 이미지를 한 줄로 배치 */
+  align-items: center;
+  span {
+    color: #1A6AFF;
+  }
+  img {
+    margin-right: 8px; /* 이미지와 텍스트 간격 */
+  }
 `;
 
 const SearchBar = styled.div`
-  margin: 20px 0;
-  margin-top: 350px; /* SearchBar가 더 아래로 내려가게 수정 */
   justify-content: center; /* 가운데 정렬 */
   align-items: center; /* 세로 가운데 정렬 */
   position: relative;
@@ -134,23 +97,38 @@ const SearchBar = styled.div`
 
 const SearchInput = styled.input`
   width: 65%;
-  max-width: 500px;
-  padding: 12px;
+  max-width: 300px;
+  padding: 13px;
+  background: #F5F9FD;
   border: 1.5px solid #b2b2b2;
   border-radius: 50px;
   outline: none;
   font-family: "Pretendard Variable";
-  font-size: 14px;
-  text-align: center; /* 입력 내용도 가운데 정렬 */
+  font-size: 16px;
+  text-align: left; /* 입력 내용도 가운데 정렬 */
   position: relative; /* 상대 위치 설정 */
-  padding-right: 30px; /* 아이콘을 위한 여백 */
+  padding-left: 43px; /* 아이콘을 위한 여백 */
+`;
+
+const IconWrapper = styled.div`
+  position: absolute;
+  top: 8%; /* 세로 가운데 정렬 */
+  right: 50px;
+  width: 34px; /* 배경 원의 너비 */
+  height: 34px; /* 배경 원의 높이 */
+  border-radius: 50%; /* 원형 모양으로 설정 */
+  background-color: #1A6AFF; /* 배경 색상 */
+  display: flex;
+  justify-content: center; /* 가로로 중앙 정렬 */
+  align-items: center; /* 세로로 중앙 정렬 */
+  flex-shrink: 0; /* 크기 변하지 않도록 설정 */
 `;
 
 const SearchIcon = styled(IoSearchOutline)`
-  position: absolute; /* 아이콘을 input의 상대 위치에 배치 */
-  top: 13px;
-  left: 260px; /* 아이콘의 위치를 검색 입력의 왼쪽으로 이동 */
-  color: #888;
+  width: 22px; /* 아이콘 크기 */
+  height: 22px; /* 아이콘 크기 */
+
+  color: #fff;
 `;
 
 const NoticeText = styled.p`
@@ -167,20 +145,29 @@ const NoticeText = styled.p`
 const CategorySection = styled.div`
   margin-top: 40px;
   text-align: left;
-  padding: 0 20px;
+  padding: 0 35px;
 `;
 
 const SectionTitle = styled.h2`
   font-size: 18px;
-  font-weight: bold;
+  font-weight: 700;
   color: #000;
+  font-family: "Pretendard Variable";
+  align-items: center; /* 이미지와 텍스트 세로 정렬 */
+  display: inline-flex; /* 텍스트와 이미지를 한 줄로 배치 */
+  span {
+    color: #1A6AFF;
+  }
+  
+  img {
+    margin-left: 1px; /* 이미지와 텍스트 간격 */
+  }
 `;
 
 const CategoryTabs = styled.div`
   display: flex;
   gap: 10px;
-  margin: 20px 0;
-  justify-content: center;
+  justify-content: left;
 `;
 
 
@@ -191,11 +178,13 @@ const CategoryTab = styled.button`
   border-radius: 50px;
   cursor: pointer;
   font-size: 14px;
+  font-weight: 500;
   font-family: "Pretendard Variable";
   color: #000000;
 
-  border: ${(props) => (props.active ? "1px solid #007aff" : "1px solid #d9d9d9")};
-  color: ${(props) => (props.active ? "#007aff" : "#000")};
+  border: ${(props) => (props.active ? "1px solid #1A6AFF" : "1px solid #F0F0FF")};
+  color: ${(props) => (props.active ? "#FFFFFF" : "#373E4B")};
+  background-color: ${(props) => (props.active ? "#1A6AFF" : "#ffffff")};
   cursor: pointer;
   font-size: 14px;
 `;
@@ -207,94 +196,46 @@ const MateCard = styled.div`
   padding: 5px;
   margin: 20px 0;
   display: flex;
-  align-items: center;
+  align-items: left;
+  flex-direction: column; /* 세로로 배치 */
 `;
 
 const MateCardInfo = styled.div`
-  margin-left: 15px;
-  
+  margin-left: 3px;
+  align-items: center;
+  width: 100%;
+  display: flex; /* 가로로 정렬 */
+  justify-content: flex-start; /* 왼쪽 정렬 */
+  flex-direction: row; /* 이미지와 설명을 가로로 배치 */
 `;
 
 const MateCardTitle = styled.h3`
   font-family: "Pretendard Variable";
   font-size: 16px;
-  margin-bottom: 8px;
+  margin-bottom: 5px;
+  margin-left: 10px;
+  text-align: left; /* 제목을 왼쪽 정렬 */
+`;
+
+const MateImage = styled.img`
+    margin-right: 10px;
+    margin-bottom: 15px;
+    border-radius: 100px;
+    width: 60px;
+    height: 60px;
 `;
 
 const MateCardDesc = styled.p`
   font-family: "Pretendard Variable";
   font-size: 14px;
   color: #555;
+  display: inline-block; /* 이미지와 같은 줄에 배치 */
 `;
-
-const ExtraSections = styled.div`
-  display: flex;
-  justify-content: space-between;
-  gap: 20px; /* 두 카드 사이의 간격 */
-  margin-top: 40px;
-  padding: 0 15px;
-`;
-
-const MateImage = styled.img`
-    margin-left: 10px;
-    margin-bottom: 50px;
-    border: 1px solid #d9d9d9;
-    border-radius: 100px;
-    width: 40px;
-    height: 40px;
-`;
-
-const ExtraCard1 = styled.div`
-  flex: 1; /* 카드가 동일한 크기를 가지도록 설정 */
-  width: 80%;
-  height: 120px;
-  background-color: #d2edfd;
-  border-radius: 11px;
-  padding: 14px;
-  text-align: left;
-   position: relative; /* 자식 요소 위치를 조정하기 위해 상대 위치 설정 */
-`;
-
-const ExtraCard2 = styled.div`
-  flex: 1; /* 카드가 동일한 크기를 가지도록 설정 */
-  width: 80%;
-  height: 120px;
-  background-color: #f7f7f7;
-  border-radius: 11px;
-  padding: 14px;
-  text-align: left;
-  position: relative; /* 자식 요소 위치를 조정하기 위해 상대 위치 설정 */
-`;
-
-const Rectangle = styled.div`
-  position: absolute;
-  bottom: 10px; /* 카드 하단으로 10px 떨어짐 */
-  right: 10px; /* 카드 오른쪽으로 10px 떨어짐 */
-  width: 30px;
-  height: 30px;
-  background-color: #ffffff;
-  border-radius: 100px;
-  display: flex;
-  justify-content: center;
-  align-items: center; /* 아이콘을 중앙에 배치 */
-`;
-
-const ExtraCardTitle = styled.h3`
-  font-size: 15px;
-  margin-bottom: 5px;
-  color: #333;
-`;
-
-const ExtraCardDesc = styled.p`
-  font-size: 11px;
-  color: #555;
-`;
-
 
 const Footer = styled.div`
-  margin-top: 40px;
+  margin-top: 103px;
+  margin-bottom: 122px;
   padding: 10px;
-  border-top: 1.5px solid #c7c7c7;
   border-bottom: 1.5px solid #c7c7c7;
   font-size: 13px;
   color: #4c4c4c;
@@ -312,76 +253,58 @@ const HomePage = () => {
         navigate('/login');
     };
 
-  return (
-    <Wrapper>
-      <Navbar>
-        <MeetPickText/>
-        <LoginButton onClick={handleLoginClick}>로그인</LoginButton>
-      </Navbar>
-      <MainTitle>
-        새로운 대학 MATE
-      </MainTitle>
-      <SubTitle>
-        이젠 MeetPick에서 만나봐!
-      </SubTitle>
-      <EmojiContainer>
-        <EmojiBubble1>
-            <Icon icon="fluent-color:food-20" width="40" height="40" />
-        </EmojiBubble1>
-        <EmojiBubble2>
-            <Icon icon="fluent-color:sport-16" width="40" height="40" />
-        </EmojiBubble2>
-        <EmojiBubble3>
-            <Icon icon="fluent-color:edit-24" width="40" height="40" />
-        </EmojiBubble3>
-        <EmojiBubble4>
-            <GroupEmoji/>                       
-        </EmojiBubble4>
-      </EmojiContainer>
-      <SearchBar>
-        <SearchInput type="text" placeholder="우리 학교 MATE 둘러보기" />
-        <SearchIcon />
-        <NoticeText>이미 계정이 있다면? <span onClick={handleLoginClick}>로그인하기</span> </NoticeText>
-      </SearchBar>
-      <CategorySection>
-        <SectionTitle>Pick! 실시간 메이트 찾아보기 🔥</SectionTitle>
-        <CategoryTabs>
-          <CategoryTab active>혼밥</CategoryTab>
-          <CategoryTab>운동</CategoryTab>
-          <CategoryTab>공부</CategoryTab>
-          <CategoryTab>공동구매</CategoryTab>
-        </CategoryTabs>
-        <MateCard>
-          <MateImage src={mateImage} alt="mate profile" /> 
-          <MateCardInfo>
-            <MateCardTitle>중앙대학교 디아</MateCardTitle>
-            <MateCardDesc>
-              좋아하는 음식 취향 성별 등을 카테고리로... 찾아봐!
-            </MateCardDesc>
-          </MateCardInfo>
-        </MateCard>
-      </CategorySection>
-      <ExtraSections>
-        <ExtraCard1>
-          <ExtraCardTitle>메이트 성공 후기</ExtraCardTitle>
-          <ExtraCardDesc>메이트 성공 후기가 궁금하다면?</ExtraCardDesc>
-          <Rectangle>
-            <GoArrowRight size="20" />
-          </Rectangle>
-        </ExtraCard1>
-        <ExtraCard2>
-          <ExtraCardTitle>공지사항...?</ExtraCardTitle>
-          <ExtraCardDesc>서비스 관련 주요 공지사항 확인</ExtraCardDesc>
-          <Rectangle>
-            <GoArrowRight size="20" />
-          </Rectangle>
-        </ExtraCard2>
-      </ExtraSections>
-      <Footer>
-        <span>이용약관</span>
-        <span>개인정보처리방침</span>
-      </Footer>
-    </Wrapper>
+
+
+    return (
+      <Wrapper>
+          <Background /> {/* 배경 삽입 */}
+          <Content>
+              <Navbar>
+                  <LogoIcon src={logoImage} />
+                  <LoginText onClick={handleLoginClick}>로그인</LoginText>
+              </Navbar>
+              <MainTitleImage src={characterImage} alt="Main title image" />
+              <MainTitle>새로운 대학 메이트</MainTitle>
+              <SubTitle>이젠 밋픽에서 만나봐!</SubTitle>
+              <CategotyContainer />
+              <SearchText><img src={thinkingface} alt="Search text image" style={{ width: '30px', height: '30px' }} />우리 학교&nbsp;<span>메이트</span>가 궁금하다면?</SearchText>
+              <SearchBar>
+                  <SearchInput type="text" placeholder="학교명 검색" />
+                  <IconWrapper>
+                    <SearchIcon />
+                  </IconWrapper>
+                  <NoticeText>이미 계정이 있다면? <span onClick={handleLoginClick}>로그인하기</span></NoticeText>
+              </SearchBar>
+              <CategorySection>
+                  <SectionTitle><span>Pick!</span>&nbsp;실시간 메이트 찾아보기<img src={fire} alt="Section title image" style={{ width: '30px', height: '30px' }} /></SectionTitle>
+                  <CategoryTabs>
+                      <CategoryTab active>혼밥</CategoryTab>
+                      <CategoryTab>운동</CategoryTab>
+                      <CategoryTab>공부</CategoryTab>
+                      <CategoryTab>전체</CategoryTab>
+                  </CategoryTabs>
+                  <Slider>
+                    {[1, 2, 3, 4].map((_, index) => (
+                      <div key={index}>
+                        <MateCard>
+                          <MateCardTitle>중앙대학교 메이트 {index + 1}</MateCardTitle>
+                          <MateCardInfo>
+                            <MateImage src={mateImage} alt="mate profile" />
+                            <MateCardDesc>
+                              좋아하는 음식 취향 성별 등을 카테고리로... 찾아봐!
+                            </MateCardDesc>
+                          </MateCardInfo>
+                        </MateCard>
+                      </div>
+                    ))}
+                  </Slider>
+              </CategorySection>
+              <Footer>
+                  <span>이용약관</span>
+                  <span>개인정보처리방침</span>
+              </Footer>
+          </Content>
+      </Wrapper>
   );
 };
 
