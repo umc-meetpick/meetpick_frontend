@@ -1,4 +1,4 @@
-import React, { useState, useContext} from "react"
+import { useContext} from "react"
 import SetProfileNavbar from '../../components/navbar/BasicNavbar';
 import ProgressBar from '../../components/progressbar/ProgressBar';
 import styled from "styled-components";
@@ -6,14 +6,16 @@ import MoveNextRoundBtn from "../../components/button/MoveNextRoundBtn";
 import { ProfileInfoContext } from '../../context/profileInfoContext';
 import ProfileSelectedBorder from "../../components/profileSelectedBorder";
 import RadioWrapper from "../../components/RadioWrapper";
+import MoveToPrevBtn from "../../components/button/MoveToPrevBtn";
 
 const SetMBTI = () =>{
     const {nickname, image, studentNum, mbti} = useContext(ProfileInfoContext);
+    const stdnum = String(studentNum)+"학번";
     return(
         <>
             <SetProfileNavbar title={"프로필 작성"}/>
             <ProgressBar progress={55}/>
-            <ProfileSelectedBorder input={[nickname,image,studentNum]}/>
+            <ProfileSelectedBorder input={[nickname,image, stdnum]}/>
             <Container>
                 <Title>MBTI를 알려주세요!</Title>
                 <RadioGrid>
@@ -32,7 +34,10 @@ const SetMBTI = () =>{
                     </MbtiWrapper>
                 }
             </Container>
-            <MoveNextRoundBtn nextPage={"/setProfile/major"} />
+            <BtnContainer>
+                <MoveToPrevBtn/>
+                <MoveNextRoundBtn nextPage={"/setProfile/major"} width={160}/>
+            </BtnContainer>
         </>
     )
 }
@@ -43,6 +48,7 @@ const Container = styled.div`
     margin: 0 auto;
     width:320px;
     height:450px;
+    font-family: "Pretendard Variable";
 `;
 const Title = styled.div`
     font-size:21px;
@@ -75,4 +81,8 @@ const Mbti = styled.div`
     color:#007AFF;
     height:23px;
     line-height:23px;
+`;
+const BtnContainer = styled.div`
+    width:80%;
+    margin: 0 auto;
 `;
