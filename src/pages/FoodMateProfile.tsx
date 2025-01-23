@@ -125,7 +125,7 @@ const FoodMateProfile = () =>{
             }
             timerRef.current = setTimeout(() => {
                 resetMessages();
-                navigate("/waitForMate"); 
+                navigate("/waitForMate",{state:"혼밥"}); 
             }, 3000);
         }
         return () => {

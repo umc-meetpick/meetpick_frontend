@@ -65,8 +65,8 @@ const ToggleList: React.FC<ToggleListProps> = ({button, multi, setModalOpen}) =>
                         <>  
                             {multi && 
                                 <Detail 
-                                    onClick={()=>handleMajor("all", item.college, item.majors)} 
-                                    $isSelected={majors.includes(item.college)}
+                                    onClick={()=>handleMajor("all", item.college+" 전체", item.majors)} 
+                                    $isSelected={majors.includes(item.college+" 전체")}
                                 >
                                     {`${item.college} 전체`}
                                 </Detail>
@@ -74,7 +74,7 @@ const ToggleList: React.FC<ToggleListProps> = ({button, multi, setModalOpen}) =>
                             {item.majors.map((maj, index) => (
                                 <Detail
                                     key={`major-${item.id}-${index}`}
-                                    onClick={() => handleMajor(maj, item.college, item.majors)}
+                                    onClick={() => handleMajor(maj, item.college+" 전체", item.majors)}
                                     $isSelected={multi ? selectedMajors.includes(maj) : major === maj}
                                 >
                                     {maj}

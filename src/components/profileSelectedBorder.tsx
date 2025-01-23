@@ -59,7 +59,7 @@ const Border = styled.div<{ $length: number, $multi: boolean }>`
     font-weight:400;
     text-align:center;
     line-height:28px;
-    width: ${({ $length }: { $length: number }) => ($length > 0 ? `${$length*13+15}px` : "30px")};
+    width: ${({ $length }: { $length: number }) => ($length > 0 ? `${$length*13}px` : "30px")};
     height:28px;
     border: ${({$multi})=> $multi ? "1px solid #007AFD" : "1px solid #1B98FF"};
     background-color: ${({$multi})=> $multi ? "#EAF6FF" : "#ECF6FF"};

@@ -15,7 +15,7 @@ const ToggleListModal: React.FC<ToggleListModalProps> = ({setModalOpen}) =>{
     return(
         <Background>
             <Container $isSmall={isSmall}>
-                <Selected>
+                <Selected $isSmall={isSmall}>
                     {
                         majors.length == 0 ? 
                         <div> 원하는 전공을 모두 선택해주세요! </div> :
@@ -41,7 +41,7 @@ const Background = styled.div`
 const Container = styled.div<{$isSmall:boolean;}>`
     width: calc(100vw); 
     max-width: 393px; 
-    height: calc(100vh - 200px);
+    height: calc(100vh * 0.8);
     border: 1px solid white;
     background-color: white;
     display: flex;
@@ -53,7 +53,7 @@ const Container = styled.div<{$isSmall:boolean;}>`
     overflow-y: auto;
     border-radius: 30px 30px 0 0;
 `;
-const Selected= styled.div`
-    margin-top: calc(-100vh + 850px);
+const Selected= styled.div<{$isSmall:boolean;}>`
+    margin-top: ${({$isSmall})=>$isSmall ? "70px" : "0px"};
     height:30px;
 `;
