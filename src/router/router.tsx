@@ -18,6 +18,10 @@ import SetMBTI from '../pages/setProfilePages/setMBTI';
 import SetMajor from '../pages/setProfilePages/setMajor';
 import SetHobby from '../pages/setProfilePages/setHobby';
 import SetContact from '../pages/setProfilePages/setContact';
+import Application from '../pages/applicationPages/Application1';
+import Alarm from '../pages/alarmPages/alarm';
+import Modify from '../pages/modifyPages/Modify';
+import Recommend from '../pages/recommendPages/Recommend1';
 import FoodMateProfile from '../pages/FoodMateProfile';
 import WaitForMate from "../pages/waitForMate";
 
@@ -94,6 +98,22 @@ const router = createBrowserRouter([
           {
             path:'setProfile/contact',
             element:<SetContact/>
+          },
+          {
+            path:'application',
+            element:<Application/>
+          },
+          {
+            path:'alarm',
+            element:<Alarm/>
+          },
+          {
+            path:'modify',
+            element:<Modify/>
+          },
+          {
+            path:'recommend',
+            element:<Recommend/>
           },
           {
             path:'foodMateProfile',

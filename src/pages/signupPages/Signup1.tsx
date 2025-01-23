@@ -22,6 +22,10 @@ const Signup1 = () => {
     console.log("다음으로 버튼 클릭");
   };
 
+  const handlePrevious = () => {
+    console.log("이전 버튼 클릭");
+  };
+
   // 이름 입력 핸들러
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
@@ -31,6 +35,8 @@ const Signup1 = () => {
   const handleGenderClick = (gender: string) => {
     setSelectedGender(selectedGender === gender ? null : gender);
   };
+
+  
 
   return (
     <>
@@ -78,7 +84,9 @@ const Signup1 = () => {
               </Title>
               <GrayButtonContainer>
                 <DropdownButton
+                  height="40px"
                   text={selectedYear || "연도 ∨"}
+                  width="90px"
                   options={[
                     "1990","1991","1992","1993","1994","1995","1996","1997","1998","1999","2000",
                     "2001","2002","2003","2004","2005","2006","2007","2008","2009","2010","2011",
@@ -87,12 +95,16 @@ const Signup1 = () => {
                   onSelect={(option) => setSelectedYear(option)}
                 />
                 <DropdownButton
+                  height="40px"
                   text={selectedMonth || "월 ∨"}
+                  width="90px"
                   options={["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]}
                   onSelect={(option) => setSelectedMonth(option)}
                 />
                 <DropdownButton
+                  height="40px"
                   text={selectedDate || "일 ∨"}
+                  width="90px"
                   options={[
                     "1","2","3","4","5","6","7","8","9","10",
                     "11","12","13","14","15","16","17","18","19","20",
@@ -112,25 +124,40 @@ const Signup1 = () => {
               </Title>
               <GrayButtonContainer>
                 <DropdownButton
+                  height="40px"
                   text={selectedGrade || "학번 ∨"}
+                  width="90px"
                   options={["10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20","21","22","23","24","25"]}
                   onSelect={(option) => setSelectedGrade(option)}
                 />
               </GrayButtonContainer>
             </>
           )}
-          {/* 모든 단계가 완료되면 다음 버튼 활성화 */}
-          {name&&selectedGender&&selectedYear&&selectedMonth&&selectedDate &&selectedGrade &&(
-            <Link to="/Signup2">
-            <SignupButton
-              text="다음으로"
-              $backgroundColor="#E7F2FE"
-              width="312px"
-              color="#326DC1"
-              disabled={!selectedGrade} // 학번이 선택되지 않으면 비활성화
-              onClick={handleNext}
-            />
-          </Link>
+        
+
+              {/* 모든 단계가 완료되면 다음 버튼 활성화 */}
+              {name&&selectedGender&&selectedYear&&selectedMonth&&selectedDate &&selectedGrade &&(
+                <ButtonContainer>
+                  <Link to="/Signup">
+                  <SignupButton
+                    text="이전"
+                    $backgroundColor="#F5F5F5"
+                    width="140px"
+                    color="black"
+                    onClick={handlePrevious}
+                  />
+                  </Link>
+                  <Link to="/Signup2">
+                  <SignupButton
+                    text="다음"
+                    $backgroundColor="#E7F2FE"
+                    width="140px"
+                    color="#326DC1"
+                    disabled={!selectedGrade} // 학번이 선택되지 않으면 비활성화
+                    onClick={handleNext}
+                  />
+                  </Link>
+                </ButtonContainer>
           )}
           
         </Container>
@@ -155,15 +182,25 @@ const EntireContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0 40.5px;
+  font-family: "Pretendard Variable";
 `;
 
 const GrayButtonContainer = styled.div`
   display: flex;
   margin-top: 10px;
-  margin-bottom: 50px;
+  margin-bottom: 40px;
 `;
 
 const Title = styled.div`
   display: flex;
   align-items: center;
+`;
+
+
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 5px;
+  gap:5px;
 `;
