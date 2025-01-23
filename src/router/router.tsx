@@ -24,6 +24,8 @@ import Modify from '../pages/modifyPages/Modify';
 import Recommend from '../pages/recommendPages/Recommend1';
 import FoodMateProfile from '../pages/FoodMateProfile';
 import WaitForMate from "../pages/waitForMate";
+import React from "react";
+
 
 const router = createBrowserRouter([
     {

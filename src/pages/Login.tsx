@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { FaComment } from "react-icons/fa";
+import logoImage from '../assets/images/MeetPickLogo.png'
 import loginbackground from '../assets/images/loginImage.png';
 
 const TopNavbar = styled.div`
@@ -9,6 +10,12 @@ const TopNavbar = styled.div`
     display: flex; /* Flexbox로 설정 */
     align-items: center; /* 세로로 중앙 정렬 */
     padding: 10px 20px;
+`;
+
+const LogoIcon = styled.img`
+  width: 137px;
+  height: 37px;    
+  object-fit: cover;
 `;
 
 const PageWrapper = styled.div`
@@ -88,7 +95,7 @@ const SignUpText = styled.p`
 const Login = () => {
     return (
         <><TopNavbar>
-            <MeetPickText />
+            <LogoIcon src={logoImage} />
         </TopNavbar>
         <PageWrapper>
         <BackgroundImage src={loginbackground} alt="Login background" />
