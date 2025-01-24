@@ -24,6 +24,7 @@ const Recommend = () => {
     const [selectedTime, setSelectedTime] = useState<string | null>(null);
     const [selectedGrade, setSelectedGrade] = useState<string | null>(null);
     const [selectedDate, setSelectedDate] = useState<string | null>(null);
+    const [selectedFood, setSelectedFood] = useState<string|null>(null);
     const [currentSlide, setCurrentSlide] = useState(slidesData[0]); // 현재 슬라이트 상태 관리
  
 
@@ -47,6 +48,8 @@ const Recommend = () => {
             setSelectedTime(value);
         } else if (option === "요일") {
             setSelectedDate(value);
+        } else if (option == "음식 종류") {
+            setSelectedFood(value);
         }
     };
 
@@ -56,7 +59,8 @@ const Recommend = () => {
           (selectedGender === null || item.gender === selectedGender) &&
           (selectedGrade === null || item.grade === selectedGrade) &&
           (selectedTime === null || item.time === selectedTime) &&
-          (selectedDate === null || item.date === selectedDate)
+          (selectedDate === null || item.date === selectedDate) &&
+          (selectedFood === null || item.food === selectedFood)
       );
       
 
@@ -127,7 +131,6 @@ const Recommend = () => {
                             spaceBetween={0.1} // 각 슬라이드 사이 간격
                             slidesPerView="auto" // 자동으로 여러 슬라이드 표시
                             freeMode={true} // 자유롭게 드래그 가능
-                            
                             >
                                 {FoodMateList.map((item)=> (
                                     <SwiperSlide key={item.id} style={{width:"auto"}}>
@@ -138,6 +141,7 @@ const Recommend = () => {
                                                 : item.option === "학번" && selectedGrade ? selectedGrade
                                                 : item.option === "시간" && selectedTime ? selectedTime
                                                 : item.option === "요일" && selectedDate ? selectedDate
+                                                : item.option === "음식 종류" && selectedFood ? selectedFood
                                                 : `${item.option} ∨`
                                         }
                                         width="90px"
@@ -147,8 +151,8 @@ const Recommend = () => {
                                     </SwiperSlide>
                                 ))}
                             </Swiper>
-                            
                         </List>
+                       
                         <FullListSection>
                             {filteredData.map((data, index) => (
                                 <RecommendBox
@@ -168,7 +172,6 @@ const Recommend = () => {
                                 />
                             ))}
                         </FullListSection>
-                       
                     </Wrapper>
                 )}
             </Content>
@@ -275,7 +278,6 @@ const Content = styled.div`
     display:flex;
     justify-content:center;
     font-family: "Pretendard Variable";
-    overflow:visible;
 `;
 
 
@@ -306,6 +308,9 @@ const FullListSection = styled.div`
     gap: 12px;
     padding:0 30px;
     background-color:none;
+    position:absolute;
+    top:270px;
+    z-index:-1;
 `;
 const List = styled.div`
     margin-bottom:10px;
@@ -313,6 +318,7 @@ const List = styled.div`
     display:flex;
     padding-left:30px;
     padding-right:5px;
+    height:300px;
 `   
 
 const Wrapper = styled.div`

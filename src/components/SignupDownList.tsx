@@ -89,7 +89,7 @@ const DropdownList = styled.ul<{$width : string}>`
   border: 1.5px solid #cecece;
   list-style: none;
   width: ${({ $width }) => `calc(${Number($width.replace('px', '')) - 4}px)`};
-
+  z-index:999;
   max-height: 100px; /* 리스트의 최대 높이를 설정 */
   overflow-y: scroll; /* 내용이 많을 경우 스크롤 활성화 */
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.27); /* 드롭다운 전체에 그림자 추가 */\
