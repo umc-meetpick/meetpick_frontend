@@ -23,8 +23,8 @@ import Alarm from '../pages/alarmPages/alarm';
 import Modify from '../pages/modifyPages/Modify';
 import Recommend from '../pages/recommendPages/Recommend1';
 import FoodMateProfile from '../pages/FoodMateProfile';
-import WaitForMate from "../pages/waitForMate";
-import React from "react";
+import ExerciseMateProfile from "../pages/ExerciseMateProfile";
+import WaitForMate from "../pages/WaitForMate";
 
 
 const router = createBrowserRouter([
@@ -120,6 +120,10 @@ const router = createBrowserRouter([
           {
             path:'foodMateProfile',
             element:<FoodMateProfile/>
+          },
+          {
+            path:'exerciseMateProfile',
+            element:<ExerciseMateProfile/>
           },
           {
             path:'waitForMate',

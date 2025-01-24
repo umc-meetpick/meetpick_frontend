@@ -2,21 +2,33 @@ import styled from "styled-components";
 import { FaPaperPlane } from "react-icons/fa";
 import { useState, useContext } from "react";
 import { FoodProfileInfoContext } from "../../context/foodProfileInfo";
+import { ExerciseProfileInfoContext } from "../../context/exerciseInfoContext";
 
 interface ChatingInputProps{
     disable:boolean;
     setChatDisable: (disable: boolean) => void; 
     keyboard: boolean;
     isExtra?: boolean;
+    save?:string;
+    type:string;
 }
 
-const ChatingInput = ({disable, setChatDisable, keyboard, isExtra}:ChatingInputProps) =>{
+const ChatingInput = ({disable, setChatDisable, keyboard, isExtra, save, type}:ChatingInputProps) =>{
     const [value, setValue] = useState("");
     const { setMent, setExtraMenu } = useContext(FoodProfileInfoContext);
+    const { setExercise, setPlace } = useContext(ExerciseProfileInfoContext);
     const isSmallViewport = window.innerHeight < 700; 
 
     const handleSendBtn = () =>{
-        isExtra ? setExtraMenu(value) : setMent(value);
+        if (type == "food"){
+            isExtra ? setExtraMenu(value) : setMent(value);
+        }else if (type == "exercise"){
+            if (save == "exercise"){
+                setExercise(value);
+            }else if (save == "place"){
+                setPlace(value)
+            }
+        }
         setValue("");
         setChatDisable(true);
     };
