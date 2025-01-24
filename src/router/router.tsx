@@ -23,7 +23,9 @@ import Alarm from '../pages/alarmPages/alarm';
 import Modify from '../pages/modifyPages/Modify';
 import Recommend from '../pages/recommendPages/Recommend1';
 import FoodMateProfile from '../pages/FoodMateProfile';
-import WaitForMate from "../pages/waitForMate";
+import WaitForMate from "../pages/WaitForMate";
+import React from "react";
+
 
 const router = createBrowserRouter([
     {
