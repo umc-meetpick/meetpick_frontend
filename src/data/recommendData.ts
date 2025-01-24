@@ -15,6 +15,7 @@ export interface RecommendDataType {
     grade: string;
     time? :string;
     date?:string;
+    food? :string;
   }
   
   export const recommendData: RecommendDataType[] = [
@@ -33,7 +34,8 @@ export interface RecommendDataType {
       gender: "여성",
       grade: "20학번",
       time:"점심",
-      date:"토"
+      date:"토",
+      food:"한식"
     },
     {
       text1: "마음이 숭숭",
@@ -50,7 +52,8 @@ export interface RecommendDataType {
       gender: "여성",
       grade: "24학번",
       time:"저녁",
-      date:"수"
+      date:"수",
+      food : "양식"
     },
     {
       text1: "제이든",
@@ -66,7 +69,8 @@ export interface RecommendDataType {
       gender: "남성",
       grade: "18학번",
       time : "저녁",
-      date: "화"
+      date: "화",
+      food: "중식"
     },
     {
       text1: "디아",
@@ -84,7 +88,8 @@ export interface RecommendDataType {
       gender: "여성",
       grade: "23학번",
       time:"점심",
-      date:"월"
+      date:"월",
+      food :"베트남식"
     },
     {
         text1: "베티",
@@ -101,7 +106,8 @@ export interface RecommendDataType {
         gender: "여성",
         grade: "20학번",
         time:"점심",
-        date:"목"
+        date:"목",
+        food:"한식"
       },
       {
         text1: "미기",
@@ -118,7 +124,8 @@ export interface RecommendDataType {
         gender: "남성",
         grade: "23학번",
         time:"점심",
-        date:"수"
+        date:"수",
+        food: "한식"
       },
       {
         text1: "피기",
@@ -134,7 +141,8 @@ export interface RecommendDataType {
         gender: "남성",
         grade: "19학번",
         time:"저녁",
-        date:"금"
+        date:"금",
+        food: "일식"
       },
   ];
   
