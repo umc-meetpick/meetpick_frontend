@@ -59,72 +59,194 @@ const Modify = () => {
             <SecondProfile>
                 <Title>2차 프로필</Title>
                 <Buttons>
-                    <Category><Icon icon="fluent-color:food-20" width="15" height="15" />혼밥</Category>
-                    <Category><Icon icon="fluent-color:sport-16" width="15" height="15" />운동</Category>
-                    <Category><Icon icon="fluent-color:edit-24" width="15" height="15" />공부</Category>
+                    <Category
+                    active = {activeButton === "혼밥"}
+                    onClick ={() => handleButtonClick("혼밥")}
+                    >
+                        <Icon icon="fluent-color:food-20" width="15" height="15" />
+                        혼밥
+                    </Category>
+                    <Category
+                    active = {activeButton === "운동"}
+                    onClick ={() => handleButtonClick("운동")}
+                    >
+                        <Icon icon="fluent-color:sport-16" width="15" height="15" />
+                        운동
+                    </Category>
+                    <Category
+                    active = {activeButton === "공부"}
+                    onClick ={() => handleButtonClick("공부")}
+                    >
+                        <Icon icon="fluent-color:edit-24" width="15" height="15" />
+                        공부
+                    </Category>
                 </Buttons>
                 
                 
-                <Button>
-                    <ModifyButton text="성별 "
-                        $backgroundColor="#EAF4FF"
-                        width="136px"
-                        color="#686868"
-                    />
-                    <ModifyButton text="학번 "
-                        $backgroundColor="#EAF4FF"
-                        width="136px"
-                        color="#686868"
-                    />
-                </Button>
-                <Button>
-                    <ModifyButton text="나이 "
-                        $backgroundColor="#EAF4FF"
-                        width="136px"
-                        color="#686868"
-                    />
-                    <ModifyButton text="전공 "
-                        $backgroundColor="#EAF4FF"
-                        width="136px"
-                        color="#686868"
-                    />
-                </Button>
-                <Button>
-                    <ModifyButton text="MBTI "
-                        $backgroundColor="#EAF4FF"
-                        width="136px"
-                        color="#686868"
-                    />
-                    <ModifyButton text="취미 "
-                        $backgroundColor="#EAF4FF"
-                        width="136px"
-                        color="#686868"
-                    />
-                </Button>
-                <Button>
-                    <ModifyButton text="시간대 "
-                        $backgroundColor="#EAF4FF"
-                        width="136px"
-                        color="#686868"
-                    />
-                    <ModifyButton text="음식 종류 "
-                        $backgroundColor="#EAF4FF"
-                        width="136px"
-                        color="#686868"
-                    />
-                </Button>
-                <Button>
-                    <ModifyButton text="인원수 "
-                        $backgroundColor="#EAF4FF"
-                        width="136px"
-                        color="#686868"
-                    />
-                    <ModifyButton text="하고 싶은 말 "
-                        $backgroundColor="#EAF4FF"
-                        width="136px"
-                        color="#686868"
-                    />
-                </Button>
+                {activeButton === "혼밥" && (
+                    <>
+                        <Button>
+                            <ModifyButton text="성별 "
+                                $backgroundColor="#EAF4FF"
+                                width="136px"
+                                color="#686868"
+                            />
+                            <ModifyButton text="학번 "
+                                $backgroundColor="#EAF4FF"
+                                width="136px"
+                                color="#686868"
+                            />
+                         </Button>
+                        <Button>
+                            <ModifyButton text="나이 "
+                                $backgroundColor="#EAF4FF"
+                                width="136px"
+                                color="#686868"
+                            />
+                            <ModifyButton text="전공 "
+                                $backgroundColor="#EAF4FF"
+                                width="136px"
+                                color="#686868"
+                            />
+                        </Button>
+                        <Button>
+                            <ModifyButton text="MBTI "
+                                $backgroundColor="#EAF4FF"
+                                width="136px"
+                                color="#686868"
+                            />
+                            <ModifyButton text="취미 "
+                                $backgroundColor="#EAF4FF"
+                                width="136px"
+                                color="#686868"
+                            />
+                        </Button>
+                        <Button>
+                            <ModifyButton text="시간대 "
+                                $backgroundColor="#EAF4FF"
+                                width="136px"
+                                color="#686868"
+                            />
+                            <ModifyButton text="음식 종류 "
+                                $backgroundColor="#EAF4FF"
+                                width="136px"
+                                color="#686868"
+                            />
+                        </Button>
+                        <Button>
+                            <ModifyButton text="인원수 "
+                                $backgroundColor="#EAF4FF"
+                                width="136px"
+                                color="#686868"
+                            />
+                            <ModifyButton text="하고 싶은 말 "
+                                $backgroundColor="#EAF4FF"
+                                width="136px"
+                                color="#686868"
+                            />
+                        </Button>
+                    </>
+                )}
+                {activeButton === "운동" && (
+                    <>
+                        <Button>
+                            <ModifyButton text="운동 종류 "
+                                $backgroundColor="#EAF4FF"
+                                width="136px"
+                                color="#686868"
+                            />
+                            <ModifyButton text="시간대 "
+                                $backgroundColor="#EAF4FF"
+                                width="136px"
+                                color="#686868"
+                            />
+                         </Button>
+                        <Button>
+                            <ModifyButton text="인원수 "
+                                $backgroundColor="#EAF4FF"
+                                width="136px"
+                                color="#686868"
+                            />
+                            <ModifyButton text="운동장소 "
+                                $backgroundColor="#EAF4FF"
+                                width="136px"
+                                color="#686868"
+                            />
+                        </Button>
+                        <Button>
+                            <ModifyButton text="성별 "
+                                $backgroundColor="#EAF4FF"
+                                width="136px"
+                                color="#686868"
+                            />
+                            <ModifyButton text="학번 "
+                                $backgroundColor="#EAF4FF"
+                                width="136px"
+                                color="#686868"
+                            />
+                        </Button>
+                        <Button>
+                            <ModifyButton text="나이 "
+                                $backgroundColor="#EAF4FF"
+                                width="136px"
+                                color="#686868"
+                            />
+                            <ModifyButton text="전공 "
+                                $backgroundColor="#EAF4FF"
+                                width="136px"
+                                color="#686868"
+                            />
+                        </Button>
+                        <Button>
+                            <ModifyButton text="MBTI "
+                                $backgroundColor="#EAF4FF"
+                                width="136px"
+                                color="#686868"
+                            />
+                            <ModifyButton text="취미 "
+                                $backgroundColor="#EAF4FF"
+                                width="136px"
+                                color="#686868"
+                            />
+                        </Button>
+                        <Button>
+                            <ModifyButton text="하고 싶은 말 "
+                                $backgroundColor="#EAF4FF"
+                                width="136px"
+                                color="#686868"
+                            />
+                        </Button>
+                    </>
+                )}
+                {activeButton === "공부" && (
+                    <>
+                        <Button>
+                            <ModifyButton text="과목 "
+                                $backgroundColor="#EAF4FF"
+                                width="136px"
+                                color="#686868"
+                            />
+                            <ModifyButton text="시간대 "
+                                $backgroundColor="#EAF4FF"
+                                width="136px"
+                                color="#686868"
+                            />
+                         </Button>
+                        <Button>
+                            <ModifyButton text="인원수 "
+                                $backgroundColor="#EAF4FF"
+                                width="136px"
+                                color="#686868"
+                            />
+                            <ModifyButton text="공부장소 "
+                                $backgroundColor="#EAF4FF"
+                                width="136px"
+                                color="#686868"
+                            />
+                        </Button>
+                        
+                    </>
+                )}
             </SecondProfile>
             
             </Wrapper>
@@ -161,15 +283,18 @@ const Button = styled.div`
 const Buttons = styled.div`
     display:flex;
     gap:10px;
+    margin-bottom:10px;
 `
- 
-const Category = styled.button`
-    border:1px solid #E5E6E9;
+
+const Category = styled.button<{ active: boolean }>`
+    border:1px solid ${(props)=> (props.active ? "#1A6AFF" : "#E5E6E9")};
+    background-color: ${(props)=> (props.active ? "#1A6AFF" : "white")};
+    color: ${(props)=> (props.active ? "white" : "black")};
     border-radius:100px;
     width:68px;
     height:32px;
     font-size:13px;
-    font-weight:500;
+    font-weight:400;
     padding:0 5px; 
     margin-bottom:10px;
     display:flex;
