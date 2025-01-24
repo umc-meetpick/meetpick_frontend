@@ -5,17 +5,26 @@ import majorList from '../assets/majorList';
 import { useNavigate } from 'react-router-dom';
 import { ProfileInfoContext } from '../context/profileInfoContext';
 import { FoodProfileInfoContext } from '../context/foodProfileInfo';
+import { ExerciseProfileInfoContext } from '../context/exerciseInfoContext';
 import MoveToPrevBtn from './button/MoveToPrevBtn';
 interface ToggleListProps {
     button?: boolean; 
     multi?: boolean;
     setModalOpen?: (isOpen: boolean) => void;
+    type?:string;
 }
 
-const ToggleList: React.FC<ToggleListProps> = ({button, multi, setModalOpen}) =>{
+const ToggleList: React.FC<ToggleListProps> = ({button, multi, setModalOpen, type}) =>{
     const navigate = useNavigate();
     const {major, setMajor} = useContext(ProfileInfoContext);
-    const {majors, setMajors} = useContext(FoodProfileInfoContext);
+    function useProfileContext(type: string) {
+            if (type === "food") {
+                return useContext(FoodProfileInfoContext);
+            } else {
+                return useContext(ExerciseProfileInfoContext);
+            }
+        }
+    const { majors, setMajors } = useProfileContext(type || "");
     const [openItems, setOpenItems] = useState<number[]>([]);
     const [selectedMajors, setSelectedMajors] = useState<string[]>([]); 
     

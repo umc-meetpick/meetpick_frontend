@@ -15,22 +15,26 @@ interface ChatingInputProps{
 
 const ChatingInput = ({disable, setChatDisable, keyboard, isExtra, save, type}:ChatingInputProps) =>{
     const [value, setValue] = useState("");
-    const { setMent, setExtraMenu } = useContext(FoodProfileInfoContext);
-    const { setExercise, setPlace } = useContext(ExerciseProfileInfoContext);
+    const { setMent: setFoodMent, setExtraMenu } = useContext(FoodProfileInfoContext);
+    const { setExercise, setPlace, setMent: setExerciseMent } = useContext(ExerciseProfileInfoContext);
     const isSmallViewport = window.innerHeight < 700; 
 
     const handleSendBtn = () =>{
-        if (type == "food"){
-            isExtra ? setExtraMenu(value) : setMent(value);
-        }else if (type == "exercise"){
-            if (save == "exercise"){
-                setExercise(value);
-            }else if (save == "place"){
-                setPlace(value)
+        if (value != ""){
+            if (type == "food"){
+                isExtra ? setExtraMenu(value) : setFoodMent(value);
+            }else if (type == "exercise"){
+                if (save == "exercise"){
+                    setExercise(value);
+                }else if (save == "place"){
+                    setPlace(value)
+                }else if (save == "ment"){
+                    setExerciseMent(value)
+                }
             }
+            setValue("");
+            setChatDisable(true);
         }
-        setValue("");
-        setChatDisable(true);
     };
     return(
         <>

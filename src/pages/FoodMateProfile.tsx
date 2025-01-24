@@ -279,7 +279,7 @@ const FoodMateProfile = () =>{
                         isExtra={selectedMenu.includes("기타")}
                         type="food"
                     />
-                    { modalOpen && <ToggleListModal setModalOpen={setModalOpen}/> }
+                    { modalOpen && <ToggleListModal setModalOpen={setModalOpen} type="food"/> }
                     { modalOpenS && 
                         <SelectNumModal 
                             setModalOpen={setModalOpenS} 

@@ -4,7 +4,8 @@ const exerciseProfileQuery = [
         "함께할 운동 메이트를 찾고 있네~",
         "메이트 관련 질문에 앞서 운동 관련 질문 몇가지 준비했어!"],
       "direction": "incoming",
-      "options": ["좋아!"]
+      "options": ["좋아!"],
+      "type": "first"
     },
     {
       "question": ["메이트와 어떤 운동을 함께하고 싶어?"],
@@ -31,17 +32,7 @@ const exerciseProfileQuery = [
         "type": "place"
     },
     {
-        "direction": "incoming",
-        "options": ["있어", "없어"],
-        "type": "extraExercise"
-    },
-    {
-        "direction": "incoming",
-        "options": ["🎳볼링", "🧗🏻클라이밍", "🏓탁구","🏋🏻헬스", "🏃러닝/조깅", "⚽️축구/풋살", "🏀농구", "🏸테니스 /배드민턴", "기타"],
-        "type": "extraExerciseOption"
-    },
-    {
-        "question": ["이제 [닉네임](이)의 완벽한 메이트를 찾기 위한 질문을 할게."],
+        "question": ["응 알겠어 😊","이제 [닉네임](이)의 완벽한 메이트를 찾기 위한 질문을 할게."],
         "direction": "incoming",
         "options": ["좋아!"]
     },
@@ -97,7 +88,7 @@ const exerciseProfileQuery = [
       "type": "mbti-JP"
     },
     {
-      "question": [ "아하 이제 슬슬 알겠다!", "취미는 어땠으면 좋겠어? 비슷한 메이트가 좋을 것 같아?"],
+      "question": [  "취미는 어땠으면 좋겠어? 비슷한 메이트가 좋을 것 같아?"],
       "direction": "incoming",
       "options": ["같으면 좋겠어","상관없어!"],
       "type": "hobby"

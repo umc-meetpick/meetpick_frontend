@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useContext, useMemo } from "react";
+import { useEffect, useState, useRef, useContext } from "react";
 import styled, { css } from "styled-components";
 import BasicNavbar from "../components/navbar/BasicNavbar";
 import exerciseProfileQuery from "../assets/queries/exerciseProfileQuery";
@@ -29,8 +29,7 @@ const ExerciseMateProfile = () =>{
     const timerRef = useRef<number | null>(null);
     const hasRun = useRef(false);
     const [keyboardOpen, setKeyboardOpen] = useState(false);
-    const [manyOptions, setManuOptions] = useState(false);
-    const isManyOptions = useMemo(() => messages.length === 3 || manyOptions, [messages]);
+    const [isManyOptions, setIsManyOptions] = useState(false);
     const [saveType, setSaveType] = useState("");
 
     const navigate = useNavigate();
@@ -53,13 +52,14 @@ const ExerciseMateProfile = () =>{
     useEffect(() => {
         if (mbtiList.length === 4) {
           addMessage({ question: [mbtiList.join("")], direction: "outgoing" });
+          addMessage({ question: ["아하 이제 슬슬 알겠다!"], direction: "incoming" });
         }
       }, [mbtiList]);
 
     useEffect(() => {
         if ( !modalOpenS && ageRange.length > 0) {
             addMessage({ question: [ `${ ageRange[0] == ageRange[1] ? ageRange[0] : ageRange.join("~") }살 메이트면 좋겠어`], direction: "outgoing" });
-            addMessage({ question: [ `${ ageRange[0] == ageRange[1] ? ageRange[0] : ageRange.join("~") }살 ${studentNum} 메이트를 찾고 계시군요!`], direction: "incoming" });
+            addMessage({ question: [ `${ ageRange[0] == ageRange[1] ? ageRange[0] : ageRange.join("~") }살 ${studentNum} 메이트를 찾고 있구나!`], direction: "incoming" });
             nextOption(); 
         }
     }, [ modalOpenS, ageRange]);
@@ -86,6 +86,7 @@ const ExerciseMateProfile = () =>{
     useEffect(()=>{
         if (chatDisable && exercise !== "") {
             addMessage({ question: [`${exercise}`], direction: "outgoing" });
+            setIsManyOptions(false);
             nextOption(); 
         }
     },[exercise])
@@ -94,8 +95,6 @@ const ExerciseMateProfile = () =>{
         if (chatDisable && place!=""){
             setChatDisable(true);
             addMessage({ question: [ `외부시설 / ${place}`], direction: "outgoing" });
-            addMessage({ question: [ "응 알겠어 😊"], direction: "incoming" });
-            addMessage({ question: [ `혹시 ${exercise} 외에도 하고 싶은 운동 있어?`], direction: "incoming" });
             nextOption(); 
         }
     },[place])
@@ -105,7 +104,7 @@ const ExerciseMateProfile = () =>{
             addMessage({ question: [ment], direction: "outgoing" });
             nextOption(); ``
         }
-    }, [ chatDisable, ment])
+    }, [ment])
 
     useEffect(() => {
         const hasWaveEmoji = messages.some((msg) =>
@@ -154,9 +153,17 @@ const ExerciseMateProfile = () =>{
     }, []);
 
     const handleOptionClick = ({option, type}: OptionClick): void => {
-        if (type == "gender" ){
-            setGender(option);
-            addMessage({ question: [option], direction: "outgoing" });
+        if (type == "first"){
+            setIsManyOptions(true);
+        }else if (type == "exercise"){
+            if ( option == "기타"){
+                setChatDisable(false);
+                setSaveType("exercise");
+            }else{
+                setSaveType("");
+                setExercise(option);
+                setChatDisable(true); 
+            }
         }else if (type == "major" && option != "상관없어"){
             setModalOpen(true); 
         }else if (type == "studentNum" && option != "상관없음"){
@@ -164,6 +171,17 @@ const ExerciseMateProfile = () =>{
             addMessage({ question: [option+"로 부탁해~"], direction: "outgoing" });
         }else if (type == "age" && option == "메이트 나이 설정하기"){
             setModalOpenS(true); 
+        }else if (type == "mbti"){
+            addMessage({ question: [option], direction: "outgoing" });
+            if (option == "상관없어"){
+                const nextQueryIndex = currentQueryIndex + 5;
+                if (nextQueryIndex < exerciseProfileQuery.length && !modalOpen ) {
+                    setTimeout(() => {
+                        addMessage({ question: exerciseProfileQuery[nextQueryIndex]?.question, direction: "incoming" });
+                        setCurrentQueryIndex(nextQueryIndex); 
+                    },500);
+                }
+            }
         }else if (type?.includes("mbti") ) {
             if (option == "상관없어!"){
                 setMbtiList([...mbtiList, "x"]);
@@ -179,38 +197,33 @@ const ExerciseMateProfile = () =>{
                 const mbtiValue = mbtiMap[mbtiKey];
                 setMbtiList([...mbtiList, mbtiValue]);
             }
-        }else if (type == "hobby" && option == "같으면 좋겠어"){
-            //같을경우
+        }else if (type == "gender" ){
+            setGender(option);
             addMessage({ question: [option], direction: "outgoing" });
+        }else if (type == "hobby"){
+            if ( option == "같으면 좋겠어"){
+                //같을경우
+                addMessage({ question: [option], direction: "outgoing" })
+            };
+            setChatDisable(false);
+            setSaveType("ment");
         } else if (type == "date"){
             setModalOpenD(true);
         }else if (type == "peopleNum"){
             setModalOpenS2(true); 
-        }else if (type == "exercise"){
-            if ( option == "기타"){
-                setChatDisable(false);
-                setSaveType("exercise");
-            }else{
-                setExercise(option);
-            }
-        }else if (type == "place"){
-            if (option == "외부시설"){
-                setSaveType("place")
-                setChatDisable(false);
-            }else{
-                addMessage({ question: [option], direction: "outgoing" });
-                addMessage({ question: [ "응 알겠어 😊"], direction: "incoming" });
-                addMessage({ question: [ `혹시 ${exercise} 외에도 하고 싶은 운동 있어?`], direction: "incoming" });
-            }
-        }else if (type == "extraExercise" && option == "있어"){
-            setManuOptions(true)
+        }else if (type == "place" && option == "외부시설"){
+            setSaveType("place")
+            setChatDisable(false);
+
         }else{
             addMessage({ question: [option], direction: "outgoing" });
         }
         
         if (!((type == "major" && option != "상관없어") || (type == "exercise") 
             || (type == "place" && option == "외부시설") || (type == "age" && option != "상관없어") 
-            || (type == "extraExercise" && option == "없어") || type == "date" || type == "peopleNum")){
+            || (type == "extraExercise" && option == "없어") || type == "date" || type == "peopleNum"
+            || (type == "mbti" && option == "상관없어")
+            )){
                 nextOption();
             }
     };
@@ -226,7 +239,7 @@ const ExerciseMateProfile = () =>{
     }
     return(
         <>
-            <BasicNavbar title="혼밥 메이트 찾기" bell={true}></BasicNavbar>
+            <BasicNavbar title="운동 메이트 찾기" bell={true}></BasicNavbar>
             <Container>
                 <StyledMainContainer $short={isManyOptions}>
                     <MessagesContainer>
@@ -255,9 +268,6 @@ const ExerciseMateProfile = () =>{
                     </MessagesContainer>
                     <div ref={messageEndRef} />
                 </StyledMainContainer>
-                {/* { exerciseProfileQuery[currentQueryIndex]?.type == "menu" && 
-                    <FoodMent>{selectedMenu.includes("기타") ? "기타 음식들은 채팅으로 입력해주세요" : "원하는 음식 종류를 모두 선택해주세요!"}</FoodMent>
-                } */}
                 <OptionsContainer $isMenu={exerciseProfileQuery[currentQueryIndex]?.type == "menu"} $isSmall={window.innerHeight <700}>
                         {currentQueryIndex >=0 && exerciseProfileQuery[currentQueryIndex]?.options && (
                             <>
@@ -279,9 +289,6 @@ const ExerciseMateProfile = () =>{
                             </>
                         )}
                     </OptionsContainer>
-                    {/* { exerciseProfileQuery[currentQueryIndex]?.type == "menu" && menuList.length > 0 &&
-                            <FoodBtn onClick={()=>saveMenu()} $isSmall={window.innerHeight <700}>다음으로</FoodBtn>
-                    } */}
                     <ChatingInput 
                         disable={chatDisable} 
                         setChatDisable={setChatDisable} 
@@ -289,7 +296,7 @@ const ExerciseMateProfile = () =>{
                         save={saveType}
                         type="exercise"
                     />
-                    { modalOpen && <ToggleListModal setModalOpen={setModalOpen}/> }
+                    { modalOpen && <ToggleListModal setModalOpen={setModalOpen} type="exercise"/> }
                     { modalOpenS && 
                         <SelectNumModal 
                             setModalOpen={setModalOpenS} 
@@ -332,7 +339,6 @@ const Container = styled.div`
 const StyledMainContainer = styled.div<{$short: boolean}>`
     width: calc(100vw); 
     max-width: 393px; 
-    border: 1px solid red;
     height: ${window.innerHeight > 700 ? (({$short}) => $short ?'50%' : '65%'): '60%'};
     overflow-x: hidden;
     overflow-y: auto;
