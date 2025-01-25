@@ -13,11 +13,11 @@ interface ButtonProps {
   width?: string;
   color?: string;
   disabled?: boolean;
-  onClick?: () => void;
   detail1?:string;
   detail2?:string;
   detail3?:string;
   detail4?:string;
+  onClick?: () => void;
 }
 
 const RecommendBox: React.FC<ButtonProps> = ({
@@ -30,17 +30,18 @@ const RecommendBox: React.FC<ButtonProps> = ({
   width = "140px", // 기본값 설정
   color = "black",
   disabled = false,
-  onClick,
   detail1,
   detail2,
   detail3,
   detail4,
+  onClick,
 }) => {
 
   const [isIconClicked, setIsIconClicked] = useState(false); // 아이콘 클릭 상태 관리 
 
   const handleIconClick=() => {
     setIsIconClicked(!isIconClicked); // 클릭 시 상태 토글
+    console.log("아이콘 클릭됨"); // 디버깅 로그
   }
 
   return (
@@ -51,7 +52,7 @@ const RecommendBox: React.FC<ButtonProps> = ({
       width={width}
       color={color}
       disabled={disabled}
-      onClick={disabled ? undefined : onClick}
+      onClick = {disabled? undefined : onClick}
     >  
         <FirstLine>
             <PersonText>{number1}/{number2}명</PersonText>
@@ -99,7 +100,6 @@ const StyledButton = styled.button<{
   font-size: 13px;
   cursor: pointer;
   padding: 7px; /* 버튼 내부 여백 */
-  z-index:1;
 `;
 
 const FirstLine = styled.div`
@@ -165,13 +165,13 @@ const Box = styled.div`
   padding:2px 8px;
   color:white;
   height:14px;
-  
 `
 
 const StyledIcon = styled(Icon)<{$isClicked: boolean}>`
   cursor:pointer;
   color: ${({ $isClicked }) => ($isClicked ? "#FF3D40" : "#A5B0BB")};
 
+  position: relative; /* 위치 속성 확인 */
 `
 
 const Keyword1 = styled.p`

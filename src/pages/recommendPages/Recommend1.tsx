@@ -14,10 +14,13 @@ import 'swiper/css/pagination';
 import { slidesData } from "../../data/slidesData"
 import { Link } from "react-router-dom";
 import FoodMateList from "../../data/foodmateoption";
+import { useSwiper } from "swiper/react";
 
 SwiperCore.use([Pagination]);
 
 const Recommend = () => {
+
+    const swiper = useSwiper();
 
     const [activeTab, setActiveTab] = useState("recommendList"); // 현재 활성화된 탭 상태 
     const [selectedGender, setSelectedGender] = useState<string | null>(null);
@@ -27,6 +30,14 @@ const Recommend = () => {
     const [selectedFood, setSelectedFood] = useState<string|null>(null);
     const [currentSlide, setCurrentSlide] = useState(slidesData[0]); // 현재 슬라이트 상태 관리
  
+
+    const handleDropdownToggle = () => {
+        if (swiper) {
+            swiper.updateAutoHeight(); // Swiper 강제 업데이트
+          } 
+      };
+
+      
 
     const handleSlideChange = (swiper : any) => {
         const activeIndex = swiper.activeIndex;
@@ -131,10 +142,13 @@ const Recommend = () => {
                             spaceBetween={0.1} // 각 슬라이드 사이 간격
                             slidesPerView="auto" // 자동으로 여러 슬라이드 표시
                             freeMode={true} // 자유롭게 드래그 가능
+                            allowTouchMove={true} // 드래그 허용
+                            
                             >
                                 {FoodMateList.map((item)=> (
-                                    <SwiperSlide key={item.id} style={{width:"auto"}}>
+                                    <SwiperSlide key={item.id} style={{width:"auto"} }>
                                         <DropdownButton
+                                        onToggle={handleDropdownToggle}
                                         height="35px"
                                         text={
                                             item.option === "성별" && selectedGender ? selectedGender
@@ -152,11 +166,10 @@ const Recommend = () => {
                                 ))}
                             </Swiper>
                         </List>
-                       
                         <FullListSection>
-                            {filteredData.map((data, index) => (
+                            {filteredData.map((data) => (
                                 <RecommendBox
-                                key={index}
+                                key={data.id}
                                 text1={data.text1}
                                 text2={data.text2}
                                 text3={data.text3}
@@ -169,6 +182,7 @@ const Recommend = () => {
                                 detail2={data.detail2}
                                 detail3={data.detail3}
                                 detail4={data.detail4}
+                                
                                 />
                             ))}
                         </FullListSection>
@@ -310,15 +324,15 @@ const FullListSection = styled.div`
     background-color:none;
     position:absolute;
     top:270px;
-    z-index:-1;
 `;
+
 const List = styled.div`
     margin-bottom:10px;
     max-width:360px;
     display:flex;
     padding-left:30px;
     padding-right:5px;
-    height:300px;
+    background-color:pink;
 `   
 
 const Wrapper = styled.div`
@@ -349,7 +363,7 @@ const Emoji = styled.div`
     margin: 0 auto;
     display:flex;
     padding-top:70px;
-    z-index:9999;
+    z-index:99;
 `;
 
 const EmojiBubble1 = styled.div`
