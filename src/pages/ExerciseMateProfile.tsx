@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef, useContext } from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import BasicNavbar from "../components/navbar/BasicNavbar";
 import exerciseProfileQuery from "../assets/queries/exerciseProfileQuery";
 import { useChatContext } from "../context/useChatContext";
@@ -201,10 +201,7 @@ const ExerciseMateProfile = () =>{
             setGender(option);
             addMessage({ question: [option], direction: "outgoing" });
         }else if (type == "hobby"){
-            if ( option == "같으면 좋겠어"){
-                //같을경우
-                addMessage({ question: [option], direction: "outgoing" })
-            };
+            addMessage({ question: [option], direction: "outgoing" })
             setChatDisable(false);
             setSaveType("ment");
         } else if (type == "date"){
@@ -268,7 +265,7 @@ const ExerciseMateProfile = () =>{
                     </MessagesContainer>
                     <div ref={messageEndRef} />
                 </StyledMainContainer>
-                <OptionsContainer $isMenu={exerciseProfileQuery[currentQueryIndex]?.type == "menu"} $isSmall={window.innerHeight <700}>
+                <OptionsContainer $isSmall={window.innerHeight <700} $short={isManyOptions}>
                         {currentQueryIndex >=0 && exerciseProfileQuery[currentQueryIndex]?.options && (
                             <>
                                 {exerciseProfileQuery[currentQueryIndex].options.map((option, idx) => (
@@ -339,7 +336,7 @@ const Container = styled.div`
 const StyledMainContainer = styled.div<{$short: boolean}>`
     width: calc(100vw); 
     max-width: 393px; 
-    height: ${window.innerHeight > 700 ? (({$short}) => $short ?'50%' : '65%'): '60%'};
+    height: ${window.innerHeight > 700 ? (({$short}) => $short ?'50%' : '65%'): (({$short}) => $short ?'55%' : '60%')};
     overflow-x: hidden;
     overflow-y: auto;
     *{
@@ -357,29 +354,14 @@ const ImageContainer= styled.div`
     align-items: flex-start;
     margin-bottom: 10px;
 `;
-const OptionsContainer = styled.div<{ $isMenu: boolean , $isSmall:boolean}>`
-    ${({ $isMenu, $isSmall}) =>
-        $isMenu
-            ? css`
-                  display: grid;
-                  grid-template-columns: repeat(3, 1fr);
-                  gap: 10px;
-                  padding: 20px;
-                  overflow-y:auto;
-                  *{
-                    font-size:14px;
-                    padding:10px;
-                    width: calc(100vw * 0.25)
-                  }
-              `
-            : css`
-                  display: flex;
-                  flex-wrap: wrap;
-                  justify-content: center;
-                  margin-top: ${$isSmall ? "calc(100vh * 0.15)" : "calc(100vh * 0.05)"};
-                  margin-bottom: calc(100vh * 0.1);
-                  gap: 10px;
-              `}
+const OptionsContainer = styled.div<{ $isSmall: boolean; $short: boolean }>`
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; 
+    gap: 10px;  
+    margin-top: ${({ $isSmall, $short }) =>
+        $isSmall ? ($short ? "70px" : "calc(100vh * 0.15)") : "calc(100vh * 0.05)"};
+    margin-bottom: calc(100vh * 0.1); 
 `;
 const BaseMessage = styled.div<{ direction: string, $isImg : boolean, $length:number }>`
     width:180px;

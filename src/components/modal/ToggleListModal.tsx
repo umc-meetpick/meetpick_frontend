@@ -63,6 +63,6 @@ const Container = styled.div<{$isSmall:boolean;}>`
     border-radius: 30px 30px 0 0;
 `;
 const Selected= styled.div<{$isSmall:boolean;}>`
-    margin-top: ${({$isSmall})=>$isSmall ? "7   0px" : "0px"};
+    margin-top: ${({$isSmall})=>$isSmall ? "70px" : "0px"};
     height:30px;
 `;
