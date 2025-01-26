@@ -2,7 +2,7 @@ import React,{useEffect, useState} from "react";
 import styled from "styled-components";
 import { Icon } from "@iconify/react";
 import RecommendBox from "../../components/RecommendBox";
-import DropdownButton from "../../components/SignupDownList";
+import DropdownButton from "../../components/RecommendDownList";
 import { recommendData} from "../../data/recommendData";
 import RecommendImage from "../../assets/images/Recommend.png";
 import emojiImage from "../../assets/images/SpeechBubble1.png"
@@ -31,8 +31,9 @@ const Recommend = () => {
     const [currentSlide, setCurrentSlide] = useState(slidesData[0]); // 현재 슬라이트 상태 관리
  
 
-    const handleDropdownToggle = () => {
-        if (swiper) {
+    const handleDropdownHeight= (isOpen:boolean) => {
+        console.log("선택 ", isOpen);
+        if (isOpen && swiper) {
             swiper.updateAutoHeight(); // Swiper 강제 업데이트
           } 
       };
@@ -148,7 +149,6 @@ const Recommend = () => {
                                 {FoodMateList.map((item)=> (
                                     <SwiperSlide key={item.id} style={{width:"auto"} }>
                                         <DropdownButton
-                                        onToggle={handleDropdownToggle}
                                         height="35px"
                                         text={
                                             item.option === "성별" && selectedGender ? selectedGender
@@ -161,6 +161,7 @@ const Recommend = () => {
                                         width="90px"
                                         options={item.lists} // FoodMateList의 options 전달
                                         onSelect={(option) => handleSelect(item.option, option)} // 선택 이벤트 핸들러
+                                        onToggle={handleDropdownHeight} // Dropdown 열릴 때 handleDropdownToggle 실행
                                         />
                                     </SwiperSlide>
                                 ))}
@@ -332,7 +333,6 @@ const List = styled.div`
     display:flex;
     padding-left:30px;
     padding-right:5px;
-    background-color:pink;
 `   
 
 const Wrapper = styled.div`
