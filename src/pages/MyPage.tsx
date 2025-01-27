@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Icon } from '@iconify/react';
+import { IoCloseOutline } from "react-icons/io5";
 import { PiBell } from "react-icons/pi";
 import { BsChevronRight } from "react-icons/bs";
 import { GoArrowRight } from "react-icons/go";
@@ -243,11 +244,19 @@ const ButtonGroup: React.FC = () => {
 
 // Main Component
 const MyPage = () => {
-
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const navigate = useNavigate();
 
     const handleViewAllClick = () => {
-      navigate('/view-all'); // Replace '/view-all' with the correct path
+      navigate('/viewRequest'); // Replace '/viewRequest' with the correct path
+    };
+
+    const handleOpenModal = () => {
+      setIsModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+      setIsModalOpen(false);
     };
 
   return (
@@ -289,7 +298,7 @@ const MyPage = () => {
                     <MateInfo>남성, 20학번, 23살</MateInfo>
                     <MateInfo>경영학부</MateInfo>
                     </MatchInfo>
-                    <ChevronButton />
+                    <ChevronButton onClick={handleOpenModal} />
                 </MatchCardHeader>
                 <ButtonGroup />
             </MatchCard>
@@ -306,8 +315,238 @@ const MyPage = () => {
           고객센터 <span><GoArrowRight size={16}/></span>
         </FooterItem2>
       </FooterMenu>
+
+
+      {/* Modal */}
+      <Modal isOpen={isModalOpen} onClose={handleCloseModal} />
     </Container>
   );
 };
 
 export default MyPage;
+
+
+// Modal Overlay
+const ModalOverlay = styled.div`
+  width: calc(100vw); 
+  max-width: 393px; 
+  height:100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+`;
+
+// Modal Container
+const ModalContainer = styled.div`
+  width: calc(100vw); 
+  max-width: 240px; 
+  background: white;
+  max-height: calc(100vh - 200px); /* BottomNavBar 높이를 제외한 공간 */
+  margin: 0 auto;
+  border-radius: 10px;
+  overflow-y: auto; 
+  padding: 40px 50px 30px 50px;
+  position: relative;
+
+  /* 스크롤바 숨기기 */
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Edge */
+  }
+  -ms-overflow-style: none; /* IE, Edge */
+  scrollbar-width: none; /* Firefox */
+`;
+
+const ModalHeader = styled.div`
+  display: flex;
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 25px;
+  margin-left: 80px;
+  text-align: center;
+`;
+
+const CloseButton = styled.div`
+  display: absolute;
+  position: absolute;
+  right: 23px;
+  font-size: 18px;
+  cursor: pointer;
+`;
+
+const DetailedProfileImage = styled.img`
+  width: 72px;
+  height: 72px;
+  border: 1px solid #DCDCDC;
+  border-radius: 50%;
+  margin: 0 auto;
+  display: block;
+`;
+
+const DetailedProfileName = styled.div`
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 20px;
+`;
+
+// Detailed Profile Content
+const ProfileDetails = styled.div`
+  justify-content: space-between;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 20px;
+`;
+
+const ProfileDetailItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  display: flex;
+  gap: 3px;
+  width: calc(50% - 10px); /* 두 개씩 정렬 */
+  
+  &:nth-child(1), &:nth-child(8) { /* 나이·학번, 하고 싶은 말 */
+    width: 100%; /* 한 칸에 꽉 차게 */
+  }
+`;
+
+const ProfileDetailLabel = styled.span`
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #007AFF;
+`;
+
+const TagContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 8px;
+  flex-wrap: wrap; /* 넘치면 줄 바꿈 */
+  width: 120%; /* 부모 영역 꽉 채우기 */
+  justify-content: flex-start; /* 왼쪽 정렬 */
+`;
+
+// Tag Item
+const TagItem = styled.div`
+  height: 24px;
+  display: inline-flex;
+  padding: 0px 15px 0px 15px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100px;
+  border: 1px solid #CECECE;
+  font-size: 13px;
+  font-weight: 400;
+  color: #000;
+  background-color: white;
+  white-space: nowrap;
+`;
+
+const LargeTagItem = styled(TagItem)`
+  width: 193px;
+  height: 56px;
+  border-radius: 5px;
+  justify-content: flex-start; /* 왼쪽 정렬 */
+  font-size: 14px;
+`;
+
+
+interface ModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+// Modal Component
+const Modal = ({ isOpen, onClose }: ModalProps) => {
+  if (!isOpen) return null;
+
+  return (
+    <ModalOverlay>
+      <ModalContainer>
+        <ModalHeader>
+          상세 프로필
+          <CloseButton onClick={onClose}><IoCloseOutline size={24}/></CloseButton>
+        </ModalHeader>
+        <DetailedProfileImage      
+          src={MateProfileImg}
+          alt="Detail Profile"
+          />
+          <DetailedProfileName>제이시</DetailedProfileName>
+          <ProfileDetails>
+            <ProfileDetailItem>
+              <ProfileDetailLabel>나이 · 학번</ProfileDetailLabel>
+              <TagContainer>
+                <TagItem>23살</TagItem>
+                <TagItem>20학번</TagItem>
+              </TagContainer>
+            </ProfileDetailItem>
+            <ProfileDetailItem>
+              <ProfileDetailLabel>성별</ProfileDetailLabel>
+              <TagContainer>
+                <TagItem>남성</TagItem>
+              </TagContainer>
+            </ProfileDetailItem>
+            <ProfileDetailItem>
+              <ProfileDetailLabel>전공</ProfileDetailLabel>
+              <TagContainer>
+                <TagItem>경영학부</TagItem>
+              </TagContainer>
+            </ProfileDetailItem>
+            <ProfileDetailItem>
+              <ProfileDetailLabel>MBTI</ProfileDetailLabel>
+              <TagContainer>
+                <TagItem>ISFP</TagItem>
+              </TagContainer>
+            </ProfileDetailItem>
+            <ProfileDetailItem>
+              <ProfileDetailLabel>취미</ProfileDetailLabel>
+              <TagContainer>
+                <TagItem>명상</TagItem>
+                <TagItem>바둑</TagItem>
+              </TagContainer>
+            </ProfileDetailItem>
+            <ProfileDetailItem>
+              <ProfileDetailLabel>음식 종류</ProfileDetailLabel>
+              <TagContainer>
+                <TagItem>일식</TagItem>
+              </TagContainer>
+            </ProfileDetailItem>
+            <ProfileDetailItem>
+              <ProfileDetailLabel>요일 및 시간</ProfileDetailLabel>
+              <TagContainer>
+                <TagItem>월 17시</TagItem>
+                <TagItem>화 12시</TagItem>
+              </TagContainer>
+            </ProfileDetailItem>            
+            <ProfileDetailItem>
+              <ProfileDetailLabel>하고 싶은 말</ProfileDetailLabel>
+              <TagContainer>
+                <LargeTagItem>밥 맛있게 먹겨용!</LargeTagItem>
+              </TagContainer>
+            </ProfileDetailItem>
+          </ProfileDetails>
+        <ButtonGroupContainer>
+          <AcceptButton onClick={() => console.log("수락 버튼 클릭")} 
+          borderRadius='5px'
+          fontSize='14px'
+          fontWeight='600'
+          width='117px'
+          height='35px'/>
+          <RejectButton onClick={() => console.log("거절 버튼 클릭")} 
+          borderRadius='5px'
+          fontSize='14px'
+          fontWeight='600'
+          width='117px'
+          height='35px'/>
+        </ButtonGroupContainer>
+      </ModalContainer>
+    </ModalOverlay>
+  );
+};
