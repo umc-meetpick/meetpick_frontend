@@ -171,6 +171,7 @@ const Recommend = () => {
                             {filteredData.map((data) => (
                                 <RecommendBox
                                 key={data.id}
+                                id={data.id}
                                 text1={data.text1}
                                 text2={data.text2}
                                 text3={data.text3}

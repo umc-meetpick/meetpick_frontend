@@ -1,9 +1,10 @@
-import React,{useState} from "react";
+import React,{useState, useEffect} from "react";
 import styled from "styled-components";
 import { Icon } from "@iconify/react";
 import RecommendImage from "../assets/images/Recommend3.png";
 
 interface ButtonProps {
+  id:number;
   text1: string;
   text2:string;
   text3:string;
@@ -21,6 +22,7 @@ interface ButtonProps {
 }
 
 const RecommendBox: React.FC<ButtonProps> = ({
+  id,
   text1,
   text2,
   text3,
@@ -37,11 +39,24 @@ const RecommendBox: React.FC<ButtonProps> = ({
   onClick,
 }) => {
 
-  const [isIconClicked, setIsIconClicked] = useState(false); // 아이콘 클릭 상태 관리 
+  const [isIconClicked, setIsIconClicked] = useState<boolean>(() => {
+    const savedState = localStorage.getItem(`heart_${id}`);
+    return savedState ? JSON.parse(savedState) : false;
+  }); 
 
+  useEffect(() => {
+    const savedState = localStorage.getItem(`heart_${id}`);
+    if(savedState) {
+      setIsIconClicked(JSON.parse(savedState)); // JSON을 불러와 상태 업데이트 
+    }
+  },[id]);
+
+  // 하트를 클릭하면 상태를 토글하고 로컬 스토리지에 저장 
   const handleIconClick=() => {
     setIsIconClicked(!isIconClicked); // 클릭 시 상태 토글
-    console.log("아이콘 클릭됨"); // 디버깅 로그
+    //console.log("아이콘 클릭됨"); // 디버깅 로그
+    const newState = !isIconClicked;
+    localStorage.setItem(`heart_${id}`, JSON.stringify(newState));
   }
 
   return (
