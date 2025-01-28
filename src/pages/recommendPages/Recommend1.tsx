@@ -21,7 +21,7 @@ SwiperCore.use([Pagination]);
 const Recommend = () => {
 
     const swiper = useSwiper();
-
+    
     const [activeTab, setActiveTab] = useState("recommendList"); // 현재 활성화된 탭 상태 
     const [selectedGender, setSelectedGender] = useState<string | null>(null);
     const [selectedTime, setSelectedTime] = useState<string | null>(null);
@@ -29,7 +29,9 @@ const Recommend = () => {
     const [selectedDate, setSelectedDate] = useState<string | null>(null);
     const [selectedFood, setSelectedFood] = useState<string|null>(null);
     const [currentSlide, setCurrentSlide] = useState(slidesData[0]); // 현재 슬라이트 상태 관리
- 
+    
+    // recommendData에서 현재 슬라이드에 해당하는 데이터 찾기 
+    const currentRecommend = slidesData.find(data => data.id === currentSlide.id);
 
     const handleDropdownHeight= (isOpen:boolean) => {
         console.log("선택 ", isOpen);
@@ -106,10 +108,11 @@ const Recommend = () => {
                 {activeTab === "recommendList" && (
                     <RecommendationSection>
                         <Emoji>
-                                <EmojiBubble1></EmojiBubble1>
-                                <EmojiBubble2></EmojiBubble2>
-                                <EmojiBubble3></EmojiBubble3>
-                                <EmojiBubble4></EmojiBubble4>
+                            <EmojiBubble1><BubbleText1>{currentRecommend?.grade || "기본 텍스트"}</BubbleText1></EmojiBubble1>
+                            <EmojiBubble2><BubbleText2>{currentRecommend?.food || "기본 텍스트"}</BubbleText2></EmojiBubble2>
+                            <EmojiBubble3><BubbleText3>{currentRecommend?.gender || "기본 텍스트"}</BubbleText3></EmojiBubble3>
+                            <EmojiBubble4><BubbleText4>{currentRecommend?.hobby || "기본 텍스트"}</BubbleText4></EmojiBubble4>
+
                         </Emoji>
                         <Swiper
                         spaceBetween={30}
@@ -197,6 +200,62 @@ const Recommend = () => {
 
 export default Recommend;
 
+const BubbleText1 = styled.p`
+    color:#636D77;
+    font-size: 12px;
+    font-weight: 600;
+    transform:scaleX(-1);
+    display:flex;
+    text-align:center;
+    align-items:center;
+    justify-content:center;
+    height:75px;
+    margin:0;
+    padding:0 20px;
+    width:60px;
+`
+const BubbleText2 = styled.p`
+    color:#636D77;
+    font-size: 12px;
+    font-weight: 600;
+    transform:scaleX(-1) rotate(-10deg);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    height:75px;
+    padding:3px 22px 0 22px;
+    margin:0;
+    width:53px;
+`
+
+const BubbleText3 = styled.p`
+    color:#636D77;
+    font-size: 12px;
+    font-weight: 600;
+    transform : rotate(10deg);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    height:75px;
+    margin:0;
+    padding:0 20px;
+    width:60px;
+`
+const BubbleText4 = styled.p`
+    color:#636D77;
+    font-size: 12px;
+    font-weight: 600;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    height:75px;
+    margin:0;
+    padding:0 20px;
+    width:60px;
+`
 
 const Container = styled.div`
     font-family: "Pretendard Variable";
@@ -379,6 +438,7 @@ const EmojiBubble1 = styled.div`
   left:-50px;
   transform:scaleX(-1);
   z-index:1;
+
 `;
 
 const EmojiBubble2 = styled.div`
