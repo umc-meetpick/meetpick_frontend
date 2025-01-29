@@ -18,7 +18,7 @@ import { useSwiper } from "swiper/react";
 
 SwiperCore.use([Pagination]);
 
-const Recommend = () => {
+const FoodRecommend = () => {
 
     const swiper = useSwiper();
     
@@ -205,7 +205,7 @@ const Recommend = () => {
     );
 };
 
-export default Recommend;
+export default FoodRecommend;
 
 const BubbleText1 = styled.p`
     color:#636D77;

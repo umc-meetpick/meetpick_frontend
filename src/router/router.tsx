@@ -21,9 +21,10 @@ import SetContact from '../pages/setProfilePages/setContact';
 import Application from '../pages/applicationPages/Application1';
 import Alarm from '../pages/alarmPages/alarm';
 import Modify from '../pages/modifyPages/Modify';
-import Recommend from '../pages/recommendPages/Recommend1';
+import FoodRecommend from "../pages/recommendPages/FoodRecommend";
 import FoodMateProfile from '../pages/FoodMateProfile';
 import WaitForMate from "../pages/WaitForMate";
+import ExerciseRecommend from "../pages/recommendPages/ExerciseRecommend";
 import React from "react";
 
 
@@ -114,8 +115,12 @@ const router = createBrowserRouter([
             element:<Modify/>
           },
           {
-            path:'recommend',
-            element:<Recommend/>
+            path:'recommend/food',
+            element:<FoodRecommend/>
+          },
+          {
+            path:'recommend/exercise',
+            element:<ExerciseRecommend/>
           },
           {
             path:'foodMateProfile',
