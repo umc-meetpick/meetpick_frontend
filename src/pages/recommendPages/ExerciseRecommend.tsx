@@ -4,7 +4,7 @@ import { Icon } from "@iconify/react";
 import RecommendBox from "../../components/RecommendBox";
 import DropdownButton from "../../components/RecommendDownList";
 import { recommendData} from "../../data/recommendData";
-import RecommendImage from "../../assets/images/Recommend.png";
+import RecommendImage from "../../assets/images/Recommend4.png";
 import emojiImage from "../../assets/images/SpeechBubble1.png"
 import {Swiper, SwiperSlide} from "swiper/react";
 import SwiperCore from 'swiper';
@@ -13,7 +13,7 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import { slidesData } from "../../data/slidesData"
 import { Link } from "react-router-dom";
-import FoodMateList from "../../data/foodmateoption";
+import ExerciseMateList from "../../data/exercisemateoption";
 import { useSwiper } from "swiper/react";
 
 SwiperCore.use([Pagination]);
@@ -27,7 +27,7 @@ const ExerciseRecommend = () => {
     const [selectedTime, setSelectedTime] = useState<string | null>(null);
     const [selectedGrade, setSelectedGrade] = useState<string | null>(null);
     const [selectedDate, setSelectedDate] = useState<string | null>(null);
-    const [selectedFood, setSelectedFood] = useState<string|null>(null);
+    const [selectedExercise, setSelectedExercise] = useState<string|null>(null);
     const [currentSlide, setCurrentSlide] = useState(slidesData[0]); // 현재 슬라이트 상태 관리
     
     // recommendData에서 현재 슬라이드에 해당하는 데이터 찾기 
@@ -62,8 +62,8 @@ const ExerciseRecommend = () => {
             setSelectedTime(value);
         } else if (option === "요일") {
             setSelectedDate(value);
-        } else if (option == "음식 종류") {
-            setSelectedFood(value);
+        } else if (option == "운동 종류") {
+            setSelectedExercise(value);
         }
     };
 
@@ -74,21 +74,21 @@ const ExerciseRecommend = () => {
           (selectedGrade === null || item.grade === selectedGrade) &&
           (selectedTime === null || item.time === selectedTime) &&
           (selectedDate === null || item.date === selectedDate) &&
-          (selectedFood === null || item.food === selectedFood)
+          (selectedExercise === null || item.food === selectedExercise)
       );
       
 
     return (
         <Container>
             <Top>
-                <Title>혼밥 구제 MATE</Title>
+                <Title>함께! 운동 MATE</Title>
                 <Link to ='/alarm'>
                     <BellIcon icon="ci:bell" width="24" height="24" />
                 </Link>
             </Top>
             <Message>
                 <Name>베티</Name>
-                <Comment>님을 원하는 혼밥 메이트를 찾아보세요<Icon icon="fluent-color:food-20" width="20" height="20" /></Comment>
+                <Comment>님을 위한 운동 메이트를 찾아보세요<Icon icon="fluent-color:sport-16" width="20" height="20"/></Comment>
             </Message>
             <Tabs>
                 <Tab
@@ -150,25 +150,27 @@ const ExerciseRecommend = () => {
                             style={{ paddingRight: "50px" }} // Swiper의 오른쪽 패딩 추가
                             
                             >
-                                {FoodMateList.map((item) => (
+                                {ExerciseMateList.map((item) => (
                                     <SwiperSlide key={item.id} style={{ width: "auto"}}>
                                         <DropdownButton
+                                        left="93px" // 원하는 위치
+                                        top="-119px"  // 원하는 위치
                                         height="33px"
                                         text={
-                                            item.option === "성별" && selectedGender
+                                            item.option === "운동 종류" && selectedGender
+                                            ? selectedGender
+                                            : item.option === "성별" && selectedGender
                                             ? selectedGender
                                             : item.option === "학번" && selectedGrade
                                             ? selectedGrade
-                                            : item.option === "시간" && selectedTime
-                                            ? selectedTime
                                             : item.option === "요일" && selectedDate
                                             ? selectedDate
-                                            : item.option === "음식 종류" && selectedFood
-                                            ? selectedFood
+                                            : item.option === "시간" && selectedTime
+                                            ? selectedTime
                                             : `${item.option} ∨`
                                         }
-                                        width="85px"
-                                        options={item.option === "시간" ? FoodMateList.find((f) => f.option === "시간")?.lists || [] : item.lists || []}
+                                        width="92px"
+                                        options={item.option === "시간" ? ExerciseMateList.find((f) => f.option === "시간")?.lists || [] : item.lists || []}
                                         onSelect={(option) => handleSelect(item.option, option)}
                                         onToggle={handleDropdownHeight}
                                         />

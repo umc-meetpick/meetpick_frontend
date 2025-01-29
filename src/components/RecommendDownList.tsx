@@ -11,6 +11,8 @@ interface DropdownButtonProps {
   $isSelected?: boolean; // 선택된 버튼 여부
   onSelect?: (selected: string) => void; // 리스트 선택 시 이벤트
   onToggle?:(isOpen: boolean) => void; // 드롭다운 열림/닫힘 상태 감지하는 콜백 함수
+  left?:string;
+  top?:string;
 }
 
 const DropdownButton: React.FC<DropdownButtonProps> = ({
@@ -22,6 +24,8 @@ const DropdownButton: React.FC<DropdownButtonProps> = ({
   color="#8B8B8B",
   onSelect,
   onToggle,
+  left,
+  top,
 }) => {
   // 드롭 다운 리스트가 열려있는지 닫혀있는지 나타내는 상태
   const [isOpen, setIsOpen] = useState(false);
@@ -73,7 +77,7 @@ const DropdownButton: React.FC<DropdownButtonProps> = ({
           </DropdownList>
 
           {subOptions && (
-            <DropdownList $width="60px" style={{ left: "86px", top: "-82px" }}>
+            <DropdownList $width="60px" $left={left} $top={top}>
               {subOptions.map((subOption, index) => (
                 <DropdownItem2 key={index} onClick={() => handleSubOptionClick(subOption)}>
                   {subOption}
@@ -124,7 +128,7 @@ const StyledButton = styled.button<{ $isSelected?: boolean; $color?:string; $hei
   }
 `;
 
-const DropdownList = styled.ul<{$width : string}>`
+const DropdownList = styled.ul<{$width : string; $top?: string; $left?: string }>`
   position: relative;
   left: 0;
   margin-top:5px;
@@ -133,7 +137,8 @@ const DropdownList = styled.ul<{$width : string}>`
   border: 1.5px solid #cecece;
   list-style: none;
   width: ${({ $width }) => `calc(${Number($width.replace('px', '')) - 4}px)`};
-
+  top: ${({ $top }) => $top || "0px"};
+  left: ${({ $left }) => $left || "0px"};
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.27); /* 드롭다운 전체에 그림자 추가 */
    
 `;
@@ -145,9 +150,9 @@ const DropdownItem = styled.li`
   cursor: pointer;
   text-align:center;
   color:#6C6C73;
-  font-size:13px;
-  font-weight: 400;
-  padding: 4px 0;
+  font-size:12px;
+  font-weight: 500;
+  padding: 5px 3px;
   &:hover{
     background-color:#F5F5F5;
   }
@@ -159,10 +164,10 @@ const DropdownItem2 = styled.li`
   cursor: pointer;
   text-align:center;
   color:#6C6C73;
-  font-size:13px;
-  font-weight: 400;
+  font-size:12px;
+  font-weight: 500;
   padding: 4px 0;
-  z-index:1000000000000000000000;
+
   &:hover{
     background-color:#F5F5F5;
   }
