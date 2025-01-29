@@ -23,10 +23,10 @@ import Alarm from '../pages/alarmPages/alarm';
 import Modify from "../pages/modifyPages/Modify";
 import FoodRecommend from "../pages/recommendPages/FoodRecommend";
 import FoodMateProfile from '../pages/FoodMateProfile';
+import ExerciseMateProfile from "../pages/ExerciseMateProfile";
 import WaitForMate from "../pages/WaitForMate";
 import ExerciseRecommend from "../pages/recommendPages/ExerciseRecommend";
 import ExerciseApplication from "../pages/applicationPages/exerciseApplication";
-import React from "react";
 
 
 const router = createBrowserRouter([
