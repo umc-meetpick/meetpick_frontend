@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from "react-router-dom";
 import { IoChevronBackOutline } from "react-icons/io5";
-import { GoBell } from "react-icons/go";
+import { Icon } from "@iconify/react";
 
 interface TitleProps{
     title:string;
@@ -17,9 +17,9 @@ const BasicNavbar: React.FC<TitleProps> = ({title, before, bell}) =>{
       };
     return(
         <Container>
-            {before && <IconPosition onClick={handleGoBack}><IoChevronBackOutline size={24}/></IconPosition>}
+            {before && <IconPosition onClick={handleGoBack}><BackIcon icon="mdi:keyboard-arrow-left" width="24" height="24"/></IconPosition>}
             <Title>{title}</Title>
-            {bell && <IconPosition2 onClick={()=>navigate("/alarm")}><GoBell size={24}/></IconPosition2>}
+            {bell && <IconPosition2 onClick={()=>navigate("/alarm")}><BellIcon icon="ci:bell" width="24" height="24" /></IconPosition2>}
         </Container>
     )
 }
@@ -38,13 +38,13 @@ const Container = styled.div`
 const IconPosition = styled.div`
     position:relative;
     top:20px;
-    left:-25%;
+    left:-35%;
 
 `;
 const IconPosition2 = styled.div`
     position:relative;
-    top:20px;
-    left:20%;
+    top:-5px;
+    left:40%;
 `;
 const Title = styled.div`
     font-size:17px;
@@ -52,4 +52,16 @@ const Title = styled.div`
     color:black;
     position:relative;
     top:20px;
+`
+const BellIcon = styled(Icon)`
+    position: absolute; /* 절대 위치 설정 */
+    right: 15px; /* 오른쪽 여백 설정 */
+    color: #000;
+    top:26px;
+`;
+const BackIcon= styled(Icon)`
+    position: absolute; /* 절대 위치 설정 */
+    right: -10px; /* 오른쪽 여백 설정 */
+    color: #000;
+    top:1px;
 `

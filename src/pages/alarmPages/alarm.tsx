@@ -30,7 +30,7 @@ const Alarm = () => {
 
     return (
         <>
-            <BasicNavbar title="알림" />
+            <BasicNavbar title="알림" before={true} bell={true}/>
             <Container>
                 <DropdownButton color="black" text={selectedCategory || "카테고리 ∨"}
                 height="35px" 

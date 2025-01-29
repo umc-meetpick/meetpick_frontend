@@ -289,7 +289,7 @@ const Top = styled.div`
     justify-content: center; /* 중앙 정렬 */
     align-items: center; /* 수직 정렬 */
     position: relative; /* 아이콘의 절대 위치를 설정하기 위해 추가 */
-    padding: 25px 20px; /* 여백 설정 */
+    padding: 20px 20px; /* 여백 설정 */
     font-size: 17px;
     font-weight: bold;
     font-family: "Pretendard Variable";
@@ -305,9 +305,9 @@ const Title = styled.p`
 
 const BellIcon = styled(Icon)`
     position: absolute; /* 절대 위치 설정 */
-    right: 20px; /* 오른쪽 여백 설정 */
+    right: 35px; /* 오른쪽 여백 설정 */
     color: #000;
-    top:26px;
+    top:20px;
 `;
 
 const Message = styled.p`
