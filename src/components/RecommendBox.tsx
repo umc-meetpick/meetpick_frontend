@@ -180,6 +180,9 @@ const Box = styled.div`
   padding:2px 8px;
   color:white;
   height:14px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
 `
 
 const StyledIcon = styled(Icon)<{$isClicked: boolean}>`

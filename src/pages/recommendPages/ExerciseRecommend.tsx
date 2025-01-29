@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { Icon } from "@iconify/react";
 import RecommendBox from "../../components/RecommendBox";
 import DropdownButton from "../../components/RecommendDownList";
-import { recommendData} from "../../data/recommendData";
 import RecommendImage from "../../assets/images/Recommend4.png";
 import emojiImage from "../../assets/images/SpeechBubble1.png"
 import {Swiper, SwiperSlide} from "swiper/react";
@@ -11,7 +10,8 @@ import SwiperCore from 'swiper';
 import { Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
-import { slidesData } from "../../data/slidesData"
+import { ExerciserecommendData } from "../../data/exerciseRecommendData";
+import exerciseSlidesData from "../../data/exerciseSlidesData";
 import { Link } from "react-router-dom";
 import ExerciseMateList from "../../data/exercisemateoption";
 import { useSwiper } from "swiper/react";
@@ -28,10 +28,10 @@ const ExerciseRecommend = () => {
     const [selectedGrade, setSelectedGrade] = useState<string | null>(null);
     const [selectedDate, setSelectedDate] = useState<string | null>(null);
     const [selectedExercise, setSelectedExercise] = useState<string|null>(null);
-    const [currentSlide, setCurrentSlide] = useState(slidesData[0]); // 현재 슬라이트 상태 관리
+    const [currentSlide, setCurrentSlide] = useState(exerciseSlidesData[0]); // 현재 슬라이트 상태 관리
     
     // recommendData에서 현재 슬라이드에 해당하는 데이터 찾기 
-    const currentRecommend = slidesData.find(data => data.id === currentSlide.id);
+    const currentRecommend = exerciseSlidesData.find(data => data.id === currentSlide.id);
 
     const handleDropdownHeight= (isOpen:boolean) => {
         console.log("선택 ", isOpen);
@@ -44,7 +44,7 @@ const ExerciseRecommend = () => {
 
     const handleSlideChange = (swiper : any) => {
         const activeIndex = swiper.activeIndex;
-        setCurrentSlide(slidesData[activeIndex]); // 슬라이드가 변경되면 상태 업데이트 
+        setCurrentSlide(exerciseSlidesData[activeIndex]); // 슬라이드가 변경되면 상태 업데이트 
         
     }
 
@@ -68,7 +68,7 @@ const ExerciseRecommend = () => {
     };
 
     // recommendData를 사용해 필터링 
-    const filteredData = recommendData.filter(
+    const filteredData = ExerciserecommendData.filter(
         (item) =>
           (selectedGender === null || item.gender === selectedGender) &&
           (selectedGrade === null || item.grade === selectedGrade) &&
@@ -109,7 +109,7 @@ const ExerciseRecommend = () => {
                     <RecommendationSection>
                         <Emoji>
                             <EmojiBubble1><BubbleText1>{currentRecommend?.grade || "기본 텍스트"}</BubbleText1></EmojiBubble1>
-                            <EmojiBubble2><BubbleText2>{currentRecommend?.food || "기본 텍스트"}</BubbleText2></EmojiBubble2>
+                            <EmojiBubble2><BubbleText2>{currentRecommend?.exercise || "기본 텍스트"}</BubbleText2></EmojiBubble2>
                             <EmojiBubble3><BubbleText3>{currentRecommend?.gender || "기본 텍스트"}</BubbleText3></EmojiBubble3>
                             <EmojiBubble4><BubbleText4>{currentRecommend?.hobby || "기본 텍스트"}</BubbleText4></EmojiBubble4>
 
@@ -122,7 +122,7 @@ const ExerciseRecommend = () => {
                         onSlideChange={handleSlideChange} // 슬라이드 변경 이벤트 핸들러
                         centeredSlides={true}
                         >
-                            {slidesData.map((slidesData) => (
+                            {exerciseSlidesData.map((slidesData) => (
                                 
                                 <SwiperSlide key={slidesData.id}>
                                     <SlideContent>
@@ -233,9 +233,9 @@ const BubbleText2 = styled.p`
     align-items:center;
     justify-content:center;
     height:75px;
-    padding:3px 22px 0 22px;
+    padding:3px 27px 0 22px;
     margin:0;
-    width:53px;
+    width:45px;
 `
 
 const BubbleText3 = styled.p`
