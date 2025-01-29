@@ -1,10 +1,10 @@
 import { useEffect, useState, useRef, useContext } from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import BasicNavbar from "../components/navbar/BasicNavbar";
-import foodProfileQuery from "../assets/queries/foodProfileQuery";
+import exerciseProfileQuery from "../assets/queries/exerciseProfileQuery";
 import { useChatContext } from "../context/useChatContext";
-import profile1 from "../assets/profileImg/프로필1.png";
-import { FoodProfileInfoContext } from "../context/foodProfileInfo";
+import profile2 from "../assets/profileImg/프로필2.png";
+import { ExerciseProfileInfoContext } from "../context/exerciseInfoContext";
 import ToggleListModal from "../components/modal/ToggleListModal";
 import SelectNumModal from "../components/modal/selectNumModal";
 import ChatingInput from "../components/input/ChatingInput";
@@ -15,21 +15,23 @@ interface OptionClick{
     option:string;
     type?: string;
 }
-const FoodMateProfile = () =>{
+const ExerciseMateProfile = () =>{
     const {messages, addMessage, resetMessages} = useChatContext();
     const [currentQueryIndex, setCurrentQueryIndex] = useState(0); 
     const { setGender, majors, studentNum, setStudentNum, ageRange, mbtiList, setMbtiList, 
-            menuList, setMenuList, extraMenu, dateTime, peopleNum, ment } = useContext(FoodProfileInfoContext);
+            exercise, setExercise, place, dateTime, peopleNum, ment } = useContext(ExerciseProfileInfoContext);
     const [modalOpen, setModalOpen] = useState(false);
     const [modalOpenS, setModalOpenS] = useState(false);
     const [modalOpenS2, setModalOpenS2] = useState(false);
     const [modalOpenD, setModalOpenD] = useState(false);
     const [chatDisable, setChatDisable] = useState(true);
-    const [selectedMenu, setSelectedMenu] = useState<string[]>([]);
     const messageEndRef = useRef<HTMLDivElement>(null);
     const timerRef = useRef<number | null>(null);
     const hasRun = useRef(false);
     const [keyboardOpen, setKeyboardOpen] = useState(false);
+    const [isManyOptions, setIsManyOptions] = useState(false);
+    const [saveType, setSaveType] = useState("");
+
     const navigate = useNavigate();
 
     const scrollToBottom = () => {
@@ -50,13 +52,14 @@ const FoodMateProfile = () =>{
     useEffect(() => {
         if (mbtiList.length === 4) {
           addMessage({ question: [mbtiList.join("")], direction: "outgoing" });
+          addMessage({ question: ["아하 이제 슬슬 알겠다!"], direction: "incoming" });
         }
       }, [mbtiList]);
 
     useEffect(() => {
         if ( !modalOpenS && ageRange.length > 0) {
             addMessage({ question: [ `${ ageRange[0] == ageRange[1] ? ageRange[0] : ageRange.join("~") }살 메이트면 좋겠어`], direction: "outgoing" });
-            addMessage({ question: [ `${ ageRange[0] == ageRange[1] ? ageRange[0] : ageRange.join("~") }살 ${studentNum} 메이트를 찾고 계시군요!`], direction: "incoming" });
+            addMessage({ question: [ `${ ageRange[0] == ageRange[1] ? ageRange[0] : ageRange.join("~") }살 ${studentNum} 메이트를 찾고 있구나!`], direction: "incoming" });
             nextOption(); 
         }
     }, [ modalOpenS, ageRange]);
@@ -80,39 +83,28 @@ const FoodMateProfile = () =>{
         }
     }, [modalOpenD, dateTime]);
       
-    useEffect(() => {
-        if (chatDisable && selectedMenu.includes("기타") && extraMenu.length > 0) {
-            const updatedMenuList = [...selectedMenu.filter(m => m !== "기타"), extraMenu];
-            setMenuList(updatedMenuList);
+    useEffect(()=>{
+        if (chatDisable && exercise !== "") {
+            addMessage({ question: [`${exercise}`], direction: "outgoing" });
+            setIsManyOptions(false);
+            nextOption(); 
         }
-    }, [chatDisable, selectedMenu, extraMenu]);
+    },[exercise])
 
     useEffect(()=>{
-        if (selectedMenu.includes("기타")){
-            setChatDisable(false);
-        }else{
-            setMenuList(selectedMenu);
+        if (chatDisable && place!=""){
+            setChatDisable(true);
+            addMessage({ question: [ `외부시설 / ${place}`], direction: "outgoing" });
+            nextOption(); 
         }
-    },[selectedMenu])
-
-    const handleMenuList = (menu:string) =>{
-        if (selectedMenu.includes(menu)){
-            setSelectedMenu(selectedMenu.filter(m => m !== menu));
-        }else{
-            setSelectedMenu([...selectedMenu, menu]);
-        }
-    };
-    const saveMenu = () =>{
-        addMessage({ question: [menuList.join(", ")+" 먹고 싶어!"], direction: "outgoing" });
-        setSelectedMenu([]);
-        nextOption(); 
-    };
+    },[place])
+    
     useEffect(() => {
         if ( chatDisable && ment.length > 0){
             addMessage({ question: [ment], direction: "outgoing" });
             nextOption(); ``
         }
-    }, [ chatDisable, ment])
+    }, [ment])
 
     useEffect(() => {
         const hasWaveEmoji = messages.some((msg) =>
@@ -125,7 +117,7 @@ const FoodMateProfile = () =>{
             }
             timerRef.current = setTimeout(() => {
                 resetMessages();
-                navigate("/waitForMate",{state:"혼밥"}); 
+                navigate("/waitForMate",{state:"운동"}); 
             }, 3000);
         }
         return () => {
@@ -140,12 +132,12 @@ const FoodMateProfile = () =>{
           hasRun.current = true; 
           if (messages.length === 0) {
             addMessage({
-              question: foodProfileQuery[0].question,
-              direction: foodProfileQuery[0].direction as "incoming" | "outgoing",
+              question: exerciseProfileQuery[0].question,
+              direction: exerciseProfileQuery[0].direction as "incoming" | "outgoing",
             });
           }
         }
-      }, [messages, addMessage, foodProfileQuery]);
+      }, [messages, addMessage, exerciseProfileQuery]);
 
     useEffect(() => {
         const handleResize = () => {
@@ -161,16 +153,35 @@ const FoodMateProfile = () =>{
     }, []);
 
     const handleOptionClick = ({option, type}: OptionClick): void => {
-        if (type == "gender" ){
-            setGender(option);
-            addMessage({ question: [option], direction: "outgoing" });
-        }else if (type == "major" && option != "상관없어!"){
+        if (type == "first"){
+            setIsManyOptions(true);
+        }else if (type == "exercise"){
+            if ( option == "기타"){
+                setChatDisable(false);
+                setSaveType("exercise");
+            }else{
+                setSaveType("");
+                setExercise(option);
+                setChatDisable(true); 
+            }
+        }else if (type == "major" && option != "상관없어"){
             setModalOpen(true); 
         }else if (type == "studentNum" && option != "상관없음"){
             setStudentNum(option);
             addMessage({ question: [option+"로 부탁해~"], direction: "outgoing" });
         }else if (type == "age" && option == "메이트 나이 설정하기"){
             setModalOpenS(true); 
+        }else if (type == "mbti"){
+            addMessage({ question: [option], direction: "outgoing" });
+            if (option == "상관없어"){
+                const nextQueryIndex = currentQueryIndex + 5;
+                if (nextQueryIndex < exerciseProfileQuery.length && !modalOpen ) {
+                    setTimeout(() => {
+                        addMessage({ question: exerciseProfileQuery[nextQueryIndex]?.question, direction: "incoming" });
+                        setCurrentQueryIndex(nextQueryIndex); 
+                    },500);
+                }
+            }
         }else if (type?.includes("mbti") ) {
             if (option == "상관없어!"){
                 setMbtiList([...mbtiList, "x"]);
@@ -186,43 +197,54 @@ const FoodMateProfile = () =>{
                 const mbtiValue = mbtiMap[mbtiKey];
                 setMbtiList([...mbtiList, mbtiValue]);
             }
-        }else if (type == "hobby" && option == "같으면 좋겠어"){
-            //같을경우
+        }else if (type == "gender" ){
+            setGender(option);
             addMessage({ question: [option], direction: "outgoing" });
+        }else if (type == "hobby"){
+            addMessage({ question: [option], direction: "outgoing" })
+            setChatDisable(false);
+            setSaveType("ment");
         } else if (type == "date"){
             setModalOpenD(true);
         }else if (type == "peopleNum"){
             setModalOpenS2(true); 
+        }else if (type == "place" && option == "외부시설"){
+            setSaveType("place")
             setChatDisable(false);
-        }
-        else{
+
+        }else{
             addMessage({ question: [option], direction: "outgoing" });
         }
         
-        if (!((type == "major" && option != "상관없어!") || (type == "age" && option != "상관없어") || type == "date" || type == "menu"|| type == "peopleNum"))
-            nextOption();
+        if (!((type == "major" && option != "상관없어") || (type == "exercise") 
+            || (type == "place" && option == "외부시설") || (type == "age" && option != "상관없어") 
+            || (type == "extraExercise" && option == "없어") || type == "date" || type == "peopleNum"
+            || (type == "mbti" && option == "상관없어")
+            )){
+                nextOption();
+            }
     };
     const nextOption = () =>{
         const nextQueryIndex = currentQueryIndex + 1;
         setCurrentQueryIndex(-1); 
-        if (nextQueryIndex < foodProfileQuery.length && !modalOpen ) {
+        if (nextQueryIndex < exerciseProfileQuery.length && !modalOpen ) {
             setTimeout(() => {
-                addMessage({ question: foodProfileQuery[nextQueryIndex]?.question, direction: "incoming" });
+                addMessage({ question: exerciseProfileQuery[nextQueryIndex]?.question, direction: "incoming" });
                 setCurrentQueryIndex(nextQueryIndex); 
             },500);
         }
     }
     return(
         <>
-            <BasicNavbar title="혼밥 메이트 찾기" bell={true}></BasicNavbar>
+            <BasicNavbar title="운동 메이트 찾기" bell={true}></BasicNavbar>
             <Container>
-                <StyledMainContainer>
+                <StyledMainContainer $short={isManyOptions}>
                     <MessagesContainer>
                         {messages.map((msg, index) => (
                             msg.question?.map((que, idx) => (
                                 <ImageContainer key={`${index}-${idx}`}>
                                     {idx + 1 === msg.question?.length && msg.direction === "incoming" && (
-                                        <Img src={profile1} alt="프로필" />
+                                        <Img src={profile2} alt="프로필" />
                                     )}
                                     {
                                         que == "👋" ? (
@@ -243,25 +265,20 @@ const FoodMateProfile = () =>{
                     </MessagesContainer>
                     <div ref={messageEndRef} />
                 </StyledMainContainer>
-                { foodProfileQuery[currentQueryIndex]?.type == "menu" && 
-                    <FoodMent>{selectedMenu.includes("기타") ? "기타 음식들은 채팅으로 입력해주세요" : "원하는 음식 종류를 모두 선택해주세요!"}</FoodMent>
-                }
-                <OptionsContainer $isMenu={foodProfileQuery[currentQueryIndex]?.type == "menu"} $isSmall={window.innerHeight <700}>
-                        {currentQueryIndex >=0 && foodProfileQuery[currentQueryIndex]?.options && (
+                <OptionsContainer $isSmall={window.innerHeight <700} $short={isManyOptions}>
+                        {currentQueryIndex >=0 && exerciseProfileQuery[currentQueryIndex]?.options && (
                             <>
-                                {foodProfileQuery[currentQueryIndex].options.map((option, idx) => (
+                                {exerciseProfileQuery[currentQueryIndex].options.map((option, idx) => (
                                     <Button 
                                         key={idx} 
                                         onClick={
-                                            foodProfileQuery[currentQueryIndex]?.type != "menu" ?
-                                            () => handleOptionClick({option, type: foodProfileQuery[currentQueryIndex]?.type}) :
-                                            ()=>handleMenuList(option)
+                                            () => handleOptionClick({option, type: exerciseProfileQuery[currentQueryIndex]?.type}) 
                                         }
                         
-                                        $ismodal={ (foodProfileQuery[currentQueryIndex]?.type == "age" && option != "상관없어") 
-                                            || foodProfileQuery[currentQueryIndex]?.type == "date" 
-                                            || foodProfileQuery[currentQueryIndex]?.type == "peopleNum"}
-                                        $isSelected={selectedMenu.includes(option)}
+                                        $ismodal={ (exerciseProfileQuery[currentQueryIndex]?.type == "age" && option != "상관없어") 
+                                            || exerciseProfileQuery[currentQueryIndex]?.type == "date" 
+                                            || exerciseProfileQuery[currentQueryIndex]?.type == "peopleNum"}
+                                        $isSelected={exerciseProfileQuery[currentQueryIndex]?.type == "age" && option != "상관없어"}
                                     >
                                         {option}
                                     </Button>
@@ -269,46 +286,43 @@ const FoodMateProfile = () =>{
                             </>
                         )}
                     </OptionsContainer>
-                    { foodProfileQuery[currentQueryIndex]?.type == "menu" && menuList.length > 0 &&
-                            <FoodBtn onClick={()=>saveMenu()} $isSmall={window.innerHeight <700}>다음으로</FoodBtn>
-                    }
                     <ChatingInput 
                         disable={chatDisable} 
                         setChatDisable={setChatDisable} 
                         keyboard={keyboardOpen} 
-                        isExtra={selectedMenu.includes("기타")}
-                        type="food"
+                        save={saveType}
+                        type="exercise"
                     />
-                    { modalOpen && <ToggleListModal setModalOpen={setModalOpen} type="food"/> }
+                    { modalOpen && <ToggleListModal setModalOpen={setModalOpen} type="exercise"/> }
                     { modalOpenS && 
                         <SelectNumModal 
                             setModalOpen={setModalOpenS} 
-                            title="혼밥 메이트 나이"
+                            title="운동 메이트 나이"
                             min={20}
                             max={28}
                             isRange={true}
-                            type="food"
+                            type="exercise"
                         /> }
                     { modalOpenS2 && 
                         <SelectNumModal 
                             setModalOpen={setModalOpenS2} 
-                            title="혼밥 메이트 인원수"
+                            title="운동 메이트 인원수"
                             min={1}
-                            max={5}
+                            max={22}
                             isRange={false}
-                            type="food"
+                            type="exercise"
                         /> }
                     { modalOpenD && 
                         <SetDateTimeModal
-                            title="혼밥 메이트 시간대"
+                            title="운동 메이트 시간대"
                             setModalOpen={setModalOpenD}
-                            type="food"
+                            type="exercise"
                         />}
             </Container>
         </>
     )
 }
-export default FoodMateProfile;
+export default ExerciseMateProfile;
 
 const Container = styled.div`
     width: calc(100vw); 
@@ -319,10 +333,10 @@ const Container = styled.div`
     background: linear-gradient(to bottom, #F1F8FF, #D1E8FF);
     font-family: "Pretendard Variable";
 `;
-const StyledMainContainer = styled.div`
+const StyledMainContainer = styled.div<{$short: boolean}>`
     width: calc(100vw); 
     max-width: 393px; 
-    height: ${window.innerHeight > 700 ? '65%' : '60%'};
+    height: ${window.innerHeight > 700 ? (({$short}) => $short ?'50%' : '65%'): (({$short}) => $short ?'55%' : '60%')};
     overflow-x: hidden;
     overflow-y: auto;
     *{
@@ -340,36 +354,14 @@ const ImageContainer= styled.div`
     align-items: flex-start;
     margin-bottom: 10px;
 `;
-const OptionsContainer = styled.div<{ $isMenu: boolean , $isSmall:boolean}>`
-    ${({ $isMenu, $isSmall}) =>
-        $isMenu
-            ? css`
-                  display: grid;
-                  grid-template-columns: repeat(3, 1fr);
-                  gap: 10px;
-                  padding: 0px 20px;
-                  overflow-y:auto;
-                  *{
-                    font-size:14px;
-                    padding:10px;
-                    width: calc(min(100vw * 0.25, 100px));
-                  }
-              `
-            : css`
-                  display: flex;
-                  flex-wrap: wrap;
-                  justify-content: center;
-                  margin-top: ${$isSmall ? "calc(100vh * 0.15)" : "calc(100vh * 0.05)"};
-                  margin-bottom: calc(100vh * 0.1);
-                  gap: 10px;
-              `}
-`;
-const FoodMent = styled.div`
-    font-size:13px;
-    font-weight:400;
-    display:flex;
-    justify-content:center;
-    color:black;
+const OptionsContainer = styled.div<{ $isSmall: boolean; $short: boolean }>`
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; 
+    gap: 10px;  
+    margin-top: ${({ $isSmall, $short }) =>
+        $isSmall ? ($short ? "70px" : "calc(100vh * 0.15)") : "calc(100vh * 0.05)"};
+    margin-bottom: calc(100vh * 0.1); 
 `;
 const BaseMessage = styled.div<{ direction: string, $isImg : boolean, $length:number }>`
     width:180px;
@@ -426,16 +418,6 @@ const Button = styled.button<{$ismodal: boolean, $isSelected:boolean}>`
     &:focus {
         outline: none;
     }
-`;
-const FoodBtn = styled.button<{$isSmall:boolean;}>`
-    background-color: #38ABFF;
-    color: white;
-    border-radius:4px;
-    position: fixed;
-    left: calc(min(100vw * 0.5, 200px));
-    transform: translateX(-50%);
-    bottom: ${({$isSmall})=>$isSmall ? "calc(100vh * 0.1)" : "calc(100vh * 0.08 + 80px)"};
-    z-index:100;
 `;
 const ByeImoticon = styled.div`
     font-size:50px;

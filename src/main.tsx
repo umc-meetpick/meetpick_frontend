@@ -5,13 +5,16 @@ import App from './App.tsx'
 import { ProfileContextProvider } from './context/profileInfoContext.tsx'
 import { ChatProvider } from "./context/useChatContext.tsx"
 import { FoodProfileContextProvider } from './context/foodProfileInfo.tsx'
+import { ExerciseProfileContextProvider } from './context/exerciseInfoContext.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ProfileContextProvider>
       <ChatProvider>
         <FoodProfileContextProvider>
-          <App />
+          <ExerciseProfileContextProvider>
+            <App />
+          </ExerciseProfileContextProvider>
         </FoodProfileContextProvider>
       </ChatProvider>
     </ProfileContextProvider>

@@ -3,17 +3,26 @@ import { LuDot } from "react-icons/lu";
 import { BsXCircleFill } from "react-icons/bs";
 import { useState, useContext } from "react";
 import { FoodProfileInfoContext } from "../../context/foodProfileInfo";
+import { ExerciseProfileInfoContext } from "../../context/exerciseInfoContext";
 
 interface SetDateTimeModalProps {
     title: string;
     setModalOpen: (isOpen: boolean) => void;
+    type: string;
 }
 interface Selected {
     [key: string]: string[];
 }
 
-const SetDateTimeModal: React.FC<SetDateTimeModalProps> = ({title, setModalOpen}) =>{
-    const { dateTime, setDateTime } = useContext(FoodProfileInfoContext);
+const SetDateTimeModal: React.FC<SetDateTimeModalProps> = ({title, setModalOpen, type}) =>{
+    function useProfileContext(type: string) {
+        if (type === "food") {
+            return useContext(FoodProfileInfoContext);
+        } else {
+            return useContext(ExerciseProfileInfoContext);
+        }
+    }
+    const { dateTime, setDateTime } = useProfileContext(type);
     const [selectedDate, setSelectedDate] = useState("");
     const [selected, setSelected] = useState<{ [key: string]: string[] }>({});
     const dates = ["월", "화", "수", "목", "금"];

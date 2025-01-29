@@ -6,13 +6,13 @@ import { useNavigate, useLocation } from "react-router-dom";
 const WaitForMate = () =>{
     const navigate = useNavigate();
     const location = useLocation();
-
+    const param = (location.state == "혼밥") ? "food" : (location.state == "운동" ? "exercise" : "study")
     return(
         <>
             <BasicNavbar title="추천 메이트 찾기" before={true} bell={true}></BasicNavbar>
             <Container>
                 <Img src={profile2} alt="프로필"/>
-                <Btn onClick={()=>navigate('/recommentList')}>{location.state} 메이트 만나러 가기</Btn>
+                <Btn onClick={()=>navigate(`/recommend/${param}`)}>{location.state} 메이트 만나러 가기</Btn>
                 {/* <Div>
                     작성해주신 내용으로 <br/> 
                     메이트를 찾고 있어요~

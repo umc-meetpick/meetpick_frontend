@@ -3,13 +3,22 @@ import ToggleList from "../ToggleList";
 import styled from "styled-components";
 import { useContext } from "react";
 import { FoodProfileInfoContext } from "../../context/foodProfileInfo";
+import { ExerciseProfileInfoContext } from "../../context/exerciseInfoContext";
 
 interface ToggleListModalProps {
     setModalOpen: (isOpen: boolean) => void;
+    type:string;
 }
 
-const ToggleListModal: React.FC<ToggleListModalProps> = ({setModalOpen}) =>{
-    const { majors } = useContext(FoodProfileInfoContext);
+const ToggleListModal: React.FC<ToggleListModalProps> = ({setModalOpen, type}) =>{
+    function useProfileContext(type: string) {
+        if (type === "food") {
+            return useContext(FoodProfileInfoContext);
+        } else {
+            return useContext(ExerciseProfileInfoContext);
+        }
+    }
+    const { majors } = useProfileContext(type);
     const isSmall = window.innerHeight < 700; 
 
     return(
@@ -22,7 +31,7 @@ const ToggleListModal: React.FC<ToggleListModalProps> = ({setModalOpen}) =>{
                         <ProfileSelectedBorder input={[...majors]} multi/>
                     }
                 </Selected>
-                <ToggleList multi={true} setModalOpen={setModalOpen} />
+                <ToggleList multi={true} setModalOpen={setModalOpen} type={type} />
             </Container>
         </Background>
     )

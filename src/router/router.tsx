@@ -132,6 +132,10 @@ const router = createBrowserRouter([
             element:<FoodMateProfile/>
           },
           {
+            path:'exerciseMateProfile',
+            element:<ExerciseMateProfile/>
+          },
+          {
             path:'waitForMate',
             element:<WaitForMate/>
           }

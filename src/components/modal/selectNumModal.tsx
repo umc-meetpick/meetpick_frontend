@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Slider from "@mui/material/Slider";
 import { useState, useContext } from "react";
 import { FoodProfileInfoContext } from "../../context/foodProfileInfo";
+import { ExerciseProfileInfoContext } from "../../context/exerciseInfoContext";
 
 interface ToggleListModalProps {
     setModalOpen: (isOpen: boolean) => void;
@@ -9,10 +10,18 @@ interface ToggleListModalProps {
     min:number;
     max:number;
     isRange?:boolean
+    type: string;
 }
 
-const SelectNumModal : React.FC<ToggleListModalProps> = ({setModalOpen, title, min, max, isRange})  =>{
-    const { setAgeRange, setPeopleNum } = useContext(FoodProfileInfoContext);
+const SelectNumModal : React.FC<ToggleListModalProps> = ({setModalOpen, title, min, max, isRange, type})  =>{
+    function useProfileContext(type:string){
+        if (type == "food"){
+            return useContext(FoodProfileInfoContext);
+        }else{
+            return useContext(ExerciseProfileInfoContext);
+        }
+    }
+    const { setAgeRange, setPeopleNum } = useProfileContext(type)
     const [value, setValue] = useState<number | number[]>(isRange ? [min, max] : min);
     const isSmall = window.innerHeight < 700; 
 
