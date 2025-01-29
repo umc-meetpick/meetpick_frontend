@@ -345,10 +345,9 @@ const OptionsContainer = styled.div<{ $isMenu: boolean , $isSmall:boolean}>`
         $isMenu
             ? css`
                   display: grid;
-                  border:1px solid red;
                   grid-template-columns: repeat(3, 1fr);
                   gap: 10px;
-                  padding: 20px;
+                  padding: 0px 20px;
                   overflow-y:auto;
                   *{
                     font-size:14px;
