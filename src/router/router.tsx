@@ -18,12 +18,14 @@ import SetMBTI from '../pages/setProfilePages/setMBTI';
 import SetMajor from '../pages/setProfilePages/setMajor';
 import SetHobby from '../pages/setProfilePages/setHobby';
 import SetContact from '../pages/setProfilePages/setContact';
-import Application from '../pages/applicationPages/Application1';
+import FoodApplication from "../pages/applicationPages/foodApplication";
 import Alarm from '../pages/alarmPages/alarm';
-import Modify from '../pages/modifyPages/Modify';
-import Recommend from '../pages/recommendPages/Recommend1';
+import Modify from "../pages/modifyPages/Modify";
+import FoodRecommend from "../pages/recommendPages/FoodRecommend";
 import FoodMateProfile from '../pages/FoodMateProfile';
 import WaitForMate from "../pages/WaitForMate";
+import ExerciseRecommend from "../pages/recommendPages/ExerciseRecommend";
+import ExerciseApplication from "../pages/applicationPages/exerciseApplication";
 import React from "react";
 
 
@@ -102,8 +104,12 @@ const router = createBrowserRouter([
             element:<SetContact/>
           },
           {
-            path:'application',
-            element:<Application/>
+            path:'application/food',
+            element:<FoodApplication/>
+          },
+          {
+            path:'application/exercise',
+            element:<ExerciseApplication/>
           },
           {
             path:'alarm',
@@ -114,8 +120,12 @@ const router = createBrowserRouter([
             element:<Modify/>
           },
           {
-            path:'recommend',
-            element:<Recommend/>
+            path:'recommend/food',
+            element:<FoodRecommend/>
+          },
+          {
+            path:'recommend/exercise',
+            element:<ExerciseRecommend/>
           },
           {
             path:'foodMateProfile',

@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from "react-router-dom";
-import { IoChevronBackOutline } from "react-icons/io5";
 import { Icon } from "@iconify/react";
 
 interface TitleProps{
@@ -10,7 +9,7 @@ interface TitleProps{
     bell?:boolean;
 }
 
-const BasicNavbar: React.FC<TitleProps> = ({title, before, bell}) =>{
+const Navbar: React.FC<TitleProps> = ({title, before, bell}) =>{
     const navigate = useNavigate();
     const handleGoBack = () => {
         navigate(-1);
@@ -23,7 +22,7 @@ const BasicNavbar: React.FC<TitleProps> = ({title, before, bell}) =>{
         </Container>
     )
 }
-export default BasicNavbar
+export default Navbar
 
 const Container = styled.div`
     width:100%;
@@ -61,7 +60,7 @@ const BellIcon = styled(Icon)`
 `;
 const BackIcon= styled(Icon)`
     position: absolute; /* 절대 위치 설정 */
-    right: -10px; /* 오른쪽 여백 설정 */
+    right: -40px; /* 오른쪽 여백 설정 */
     color: #000;
     top:1px;
 `

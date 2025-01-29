@@ -50,6 +50,7 @@ const StyledButton = styled.button<{
   justify-content: space-between; /* 텍스트와 화살표 사이 간격 */
   align-items: center; /* 수직 가운데 정렬 */
   padding: 0 10px; /* 버튼 내부 여백 */
+  font-weight:400;
 `;
 
 const ButtonText = styled.span`

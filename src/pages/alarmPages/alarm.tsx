@@ -22,6 +22,7 @@ const Alarm = () => {
     ]); // 더미 데이터
 
 
+
     // 선택된 카테고리 기준으로 알림 필터링
     const filteredAlerts = (!selectedCategory)
         ?alerts
@@ -29,7 +30,7 @@ const Alarm = () => {
 
     return (
         <>
-            <BasicNavbar title="알림" />
+            <BasicNavbar title="알림" before={true} bell={true}/>
             <Container>
                 <DropdownButton color="black" text={selectedCategory || "카테고리 ∨"}
                 height="35px" 
@@ -38,32 +39,32 @@ const Alarm = () => {
                 onSelect = {(option) => setSelectedCategory(option)}
                 />
             </Container>
-            <AlertList>
-                {filteredAlerts.map((alert) => (
-                    <AlertItem key={alert.id}>
-                        <Container2>
-                            <Title>
-                                {alert.category === "밥" && (
-                                    <Icon icon="fluent-color:food-20" width="20" height="20" />
-                                )}
-                                {alert.category === "운동" && (
-                                    <Icon icon="fluent-color:sport-16" width="20" height="20" />
-                                )}
-                                {alert.category === "공부" && (
-                                    <Icon icon="fluent-color:edit-24" width="20" height="20" />
-                                )}
-                                {alert.category === "공동구매" && <GroupEmoji2 />}
-                                <CategoryBadge>{alert.category}</CategoryBadge>
-                            </Title>
-                            <Time>
-                                {alert.title}
-                            </Time>
-                        </Container2>
-                        <Message>{alert.message}</Message>
-                        <DetailLink>자세히 보기 ›</DetailLink>
-                    </AlertItem>
-                ))}
-            </AlertList>
+                <AlertList>
+                    {filteredAlerts.map((alert) => (
+                        <AlertItem key={alert.id}>
+                            <Container2>
+                                <Title>
+                                    {alert.category === "밥" && (
+                                        <Icon icon="fluent-color:food-20" width="20" height="20" />
+                                    )}
+                                    {alert.category === "운동" && (
+                                        <Icon icon="fluent-color:sport-16" width="20" height="20" />
+                                    )}
+                                    {alert.category === "공부" && (
+                                        <Icon icon="fluent-color:edit-24" width="20" height="20" />
+                                    )}
+                                    {alert.category === "공동구매" && <GroupEmoji2 />}
+                                    <CategoryBadge>{alert.category}</CategoryBadge>
+                                </Title>
+                                <Time>
+                                    {alert.title}
+                                </Time>
+                            </Container2>
+                            <Message>{alert.message}</Message>
+                            <DetailLink>자세히 보기 ›</DetailLink>
+                        </AlertItem>
+                    ))}
+                </AlertList>
         </>
     );
 };
@@ -80,13 +81,15 @@ const Container = styled.div`
 const Container2 = styled. div`
     display:flex;
 `
+
 const AlertList = styled.div`
     display: flex;
     flex-direction: column;
     gap: 15px;
-    margin: 0 20px;
     font-family: "Pretendard Variable";
+    margin: 0 20px;
 `;
+
 
 const AlertItem = styled.div`
     display: flex;
