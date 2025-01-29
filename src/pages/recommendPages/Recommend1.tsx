@@ -147,27 +147,34 @@ const Recommend = () => {
                             slidesPerView="auto" // 자동으로 여러 슬라이드 표시
                             freeMode={true} // 자유롭게 드래그 가능
                             allowTouchMove={true} // 드래그 허용
+                            style={{ paddingRight: "50px" }} // Swiper의 오른쪽 패딩 추가
                             
                             >
-                                {FoodMateList.map((item)=> (
-                                    <SwiperSlide key={item.id} style={{width:"auto"} }>
+                                {FoodMateList.map((item) => (
+                                    <SwiperSlide key={item.id} style={{ width: "auto"}}>
                                         <DropdownButton
-                                        height="35px"
+                                        height="33px"
                                         text={
-                                            item.option === "성별" && selectedGender ? selectedGender
-                                                : item.option === "학번" && selectedGrade ? selectedGrade
-                                                : item.option === "시간" && selectedTime ? selectedTime
-                                                : item.option === "요일" && selectedDate ? selectedDate
-                                                : item.option === "음식 종류" && selectedFood ? selectedFood
-                                                : `${item.option} ∨`
+                                            item.option === "성별" && selectedGender
+                                            ? selectedGender
+                                            : item.option === "학번" && selectedGrade
+                                            ? selectedGrade
+                                            : item.option === "시간" && selectedTime
+                                            ? selectedTime
+                                            : item.option === "요일" && selectedDate
+                                            ? selectedDate
+                                            : item.option === "음식 종류" && selectedFood
+                                            ? selectedFood
+                                            : `${item.option} ∨`
                                         }
-                                        width="90px"
-                                        options={item.lists} // FoodMateList의 options 전달
-                                        onSelect={(option) => handleSelect(item.option, option)} // 선택 이벤트 핸들러
-                                        onToggle={handleDropdownHeight} // Dropdown 열릴 때 handleDropdownToggle 실행
+                                        width="85px"
+                                        options={item.option === "시간" ? FoodMateList.find((f) => f.option === "시간")?.lists || [] : item.lists || []}
+                                        onSelect={(option) => handleSelect(item.option, option)}
+                                        onToggle={handleDropdownHeight}
                                         />
                                     </SwiperSlide>
-                                ))}
+                                    ))}
+
                             </Swiper>
                         </List>
                         <FullListSection>
@@ -384,12 +391,12 @@ const FullListSection = styled.div`
     padding:0 30px;
     background-color:none;
     position:absolute;
-    top:270px;
+    top:265px;
 `;
 
 const List = styled.div`
     margin-bottom:10px;
-    max-width:360px;
+    max-width:390px;
     display:flex;
     padding-left:30px;
     padding-right:5px;
@@ -398,6 +405,7 @@ const List = styled.div`
 const Wrapper = styled.div`
     font-family: "Pretendard Variable";
     width: 100%; /* 부모 요소의 너비 */
+    overflow: visible; /* 여기 추가 */
 `
 
 const Text=styled.p`

@@ -5,11 +5,12 @@ interface DropdownButtonProps {
   text: string; // 버튼 텍스트
   height:string;
   width: string; // 버튼 너비
-  options?: string[]; // 드롭다운 옵션 리스트
+  //options는 일반 배열(단순 리스트) 또는 {label, subOptions} 형태의 배열(서브메뉴 지원) 둘 다 받을 수 있음
+  options?: { label: string; subOptions?: string[] }[] | string[];
   color?:string;
   $isSelected?: boolean; // 선택된 버튼 여부
   onSelect?: (selected: string) => void; // 리스트 선택 시 이벤트
-  onToggle?:(isOpen: boolean) => void; // 드롭다운 열림/닫힘 상태 변경 시 호출되는 함수 
+  onToggle?:(isOpen: boolean) => void; // 드롭다운 열림/닫힘 상태 감지하는 콜백 함수
 }
 
 const DropdownButton: React.FC<DropdownButtonProps> = ({
@@ -24,25 +25,35 @@ const DropdownButton: React.FC<DropdownButtonProps> = ({
 }) => {
   // 드롭 다운 리스트가 열려있는지 닫혀있는지 나타내는 상태
   const [isOpen, setIsOpen] = useState(false);
+  // 선택된 1차 옵션의 하위 옵션 리스트 (있을 경우에만 세팅된다.)
+  const [subOptions, setSubOptions] = useState<string[] | null>(null);
 
   // 버튼 클릭시 호출됨
   const toggleDropdown = () => {
     
     const newIsOpen = !isOpen;
     setIsOpen(newIsOpen);
-    console.log("toggleDropdown 호출", isOpen);
+    //console.log("toggleDropdown 호출", isOpen);
     if(onToggle){
       onToggle(newIsOpen); // 상태 변경 시 콜백 호출
     }
   }
-  
-  // 드롭 다운 리스트 항목 클릭시 호출됨
-  const handleOptionClick = (option: string) => {
-    if (onSelect) onSelect(option); // 선택된 항목을 onSelect 함수에 전달
-    setIsOpen(false); // 선택 후 드롭다운 닫기
-    if (onToggle) {
-      onToggle(false); // 드롭다운 닫힘 상태 전달
+  // 첫 번째 메뉴 선택 시
+  const handleOptionClick = (option: string | { label: string; subOptions?: string[] }) => {
+    if (typeof option === "string") {
+      if (onSelect) onSelect(option);
+      setIsOpen(false);
+    } 
+    else {
+      setSubOptions(option.subOptions || null);
     }
+  };
+
+  // 두 번째 서브 메뉴 선택 시
+  const handleSubOptionClick = (subOption: string) => {
+    if (onSelect) onSelect(subOption);
+    setIsOpen(false); // 드롭 다운 닫기 
+    setSubOptions(null); // 서브 메뉴 초기화
   };
 
   return (
@@ -51,19 +62,41 @@ const DropdownButton: React.FC<DropdownButtonProps> = ({
         {text}
       </StyledButton>
       {isOpen && options.length > 0 && (
-        <DropdownList $width ={width}>
-          {options.map((option, index) => (
-            <DropdownItem key={index} onClick={() => handleOptionClick(option)}>
-              {option}
-            </DropdownItem>
-          ))}
-        </DropdownList>
+        <DropdownWrapper>
+          <DropdownList $width={width}>
+            {(options as any[]).map((option, index) => (
+              <DropdownItem key={index} onClick={() => handleOptionClick(option)}>
+                {typeof option === "string" ? option : option.label}
+                {typeof option !== "string" && option.subOptions && <ArrowIcon>›</ArrowIcon>}
+              </DropdownItem>
+            ))}
+          </DropdownList>
+
+          {subOptions && (
+            <DropdownList $width="60px" style={{ left: "86px", top: "-82px" }}>
+              {subOptions.map((subOption, index) => (
+                <DropdownItem2 key={index} onClick={() => handleSubOptionClick(subOption)}>
+                  {subOption}
+                </DropdownItem2>
+              ))}
+            </DropdownList>
+          )}
+        </DropdownWrapper>
       )}
     </Container>
   );
 };
 
 export default DropdownButton;
+
+const ArrowIcon = styled.span`
+  font-size: 16px;
+  color: #555;
+`;
+
+const DropdownWrapper = styled.div`
+  position: relative;
+`;
 
 const Container = styled.div`
   position: relative;
@@ -101,8 +134,6 @@ const DropdownList = styled.ul<{$width : string}>`
   list-style: none;
   width: ${({ $width }) => `calc(${Number($width.replace('px', '')) - 4}px)`};
 
-  max-height: 100px; /* 리스트의 최대 높이를 설정 */
-  overflow-y: scroll; /* 내용이 많을 경우 스크롤 활성화 */
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.27); /* 드롭다운 전체에 그림자 추가 */
    
 `;
@@ -111,12 +142,27 @@ const DropdownItem = styled.li`
   display:flex;
   justify-content:center;
   align-items:center;
-  height: 32px;
   cursor: pointer;
   text-align:center;
-  color:black;
+  color:#6C6C73;
   font-size:13px;
-
+  font-weight: 400;
+  padding: 4px 0;
+  &:hover{
+    background-color:#F5F5F5;
+  }
+`;
+const DropdownItem2 = styled.li`
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  cursor: pointer;
+  text-align:center;
+  color:#6C6C73;
+  font-size:13px;
+  font-weight: 400;
+  padding: 4px 0;
+  z-index:1000000000000000000000;
   &:hover{
     background-color:#F5F5F5;
   }
