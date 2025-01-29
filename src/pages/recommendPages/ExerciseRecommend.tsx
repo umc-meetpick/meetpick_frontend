@@ -74,7 +74,7 @@ const ExerciseRecommend = () => {
           (selectedGrade === null || item.grade === selectedGrade) &&
           (selectedTime === null || item.time === selectedTime) &&
           (selectedDate === null || item.date === selectedDate) &&
-          (selectedExercise === null || item.food === selectedExercise)
+          (selectedExercise === null || item.exercise === selectedExercise)
       );
       
 

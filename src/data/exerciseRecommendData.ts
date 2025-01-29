@@ -16,7 +16,7 @@ export interface RecommendDataType {
     grade: string;
     time? :string;
     date?:string;
-    food? :string;
+    exercise? :string;
   }
   
   export const ExerciserecommendData: RecommendDataType[] = [
@@ -35,9 +35,9 @@ export interface RecommendDataType {
       detail3: "24살",
       gender: "여성",
       grade: "20학번",
-      time:"점심",
+      time:"12:00",
       date:"토",
-      food:"한식"
+      exercise:"축구/풋살"
     },
     {
       id:2,
@@ -54,9 +54,9 @@ export interface RecommendDataType {
       detail3: "24살",
       gender: "여성",
       grade: "24학번",
-      time:"저녁",
+      time:"20:00",
       date:"수",
-      food : "양식"
+      exercise : "클라이밍"
     },
     {
       id:3,
@@ -72,9 +72,9 @@ export interface RecommendDataType {
       detail2: "25~28살",
       gender: "남성",
       grade: "18학번",
-      time : "저녁",
+      time : "19:00",
       date: "화",
-      food: "중식"
+      exercise: "테니스/배드민턴"
     },
     {
       id:4,
@@ -92,9 +92,9 @@ export interface RecommendDataType {
       detail4: "20~21살",
       gender: "여성",
       grade: "23학번",
-      time:"점심",
+      time:"11:00",
       date:"월",
-      food :"베트남식"
+      exercise :"농구"
     },
     {
         id:5,
@@ -111,9 +111,9 @@ export interface RecommendDataType {
         detail3: "24살",
         gender: "여성",
         grade: "20학번",
-        time:"점심",
+        time:"15:00",
         date:"목",
-        food:"한식"
+        exercise:"축구/풋살"
       },
       {
         id:6,
@@ -129,9 +129,9 @@ export interface RecommendDataType {
         detail2: "25~28살",
         gender: "남성",
         grade: "23학번",
-        time:"점심",
+        time:"13:00",
         date:"수",
-        food: "한식"
+        exercise: "축구/풋살"
       },
       {
         id:7,
@@ -143,13 +143,13 @@ export interface RecommendDataType {
         $backgroundColor: "#C0E5FF",
         width: "160px",
         color: "#5D5D5D",
-        detail1: "🏊🏻‍♂️수영",
+        detail1: "🏓탁구",
         detail2:"남성만",
         gender: "남성",
         grade: "19학번",
-        time:"저녁",
+        time:"20:00",
         date:"금",
-        food: "일식"
+        exercise: "탁구"
       },
   ];
   

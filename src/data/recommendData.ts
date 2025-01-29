@@ -35,7 +35,7 @@ export const recommendData: RecommendDataType[] = [
     detail3: "23~25살",
     gender: "여성",
     grade: "20학번",
-    time:"점심",
+    time:"16:00",
     date:"토",
     food:"한식"
   },
@@ -54,7 +54,7 @@ export const recommendData: RecommendDataType[] = [
     detail3: "24살",
     gender: "여성",
     grade: "24학번",
-    time:"저녁",
+    time:"18:00",
     date:"수",
     food : "양식"
   },
@@ -72,7 +72,7 @@ export const recommendData: RecommendDataType[] = [
     detail2: "25~28살",
     gender: "남성",
     grade: "18학번",
-    time : "저녁",
+    time : "20:00",
     date: "화",
     food: "중식"
   },
@@ -92,7 +92,7 @@ export const recommendData: RecommendDataType[] = [
     detail4: "20~21살",
     gender: "여성",
     grade: "23학번",
-    time:"점심",
+    time:"13:00",
     date:"월",
     food :"베트남식"
   },
@@ -111,7 +111,7 @@ export const recommendData: RecommendDataType[] = [
       detail3: "23~25살",
       gender: "여성",
       grade: "20학번",
-      time:"점심",
+      time:"13:00",
       date:"목",
       food:"한식"
     },
@@ -130,7 +130,7 @@ export const recommendData: RecommendDataType[] = [
       detail3: "23~25살",
       gender: "남성",
       grade: "23학번",
-      time:"점심",
+      time:"11:00",
       date:"수",
       food: "한식"
     },
@@ -148,7 +148,7 @@ export const recommendData: RecommendDataType[] = [
       detail2:"남성만",
       gender: "남성",
       grade: "19학번",
-      time:"저녁",
+      time:"19:00",
       date:"금",
       food: "일식"
     },
