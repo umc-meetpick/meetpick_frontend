@@ -345,6 +345,7 @@ const OptionsContainer = styled.div<{ $isMenu: boolean , $isSmall:boolean}>`
         $isMenu
             ? css`
                   display: grid;
+                  border:1px solid red;
                   grid-template-columns: repeat(3, 1fr);
                   gap: 10px;
                   padding: 20px;
@@ -352,7 +353,7 @@ const OptionsContainer = styled.div<{ $isMenu: boolean , $isSmall:boolean}>`
                   *{
                     font-size:14px;
                     padding:10px;
-                    width: calc(100vw * 0.25)
+                    width: calc(min(100vw * 0.25, 100px));
                   }
               `
             : css`
@@ -432,7 +433,7 @@ const FoodBtn = styled.button<{$isSmall:boolean;}>`
     color: white;
     border-radius:4px;
     position: fixed;
-    left: 50%;
+    left: calc(min(100vw * 0.5, 200px));
     transform: translateX(-50%);
     bottom: ${({$isSmall})=>$isSmall ? "calc(100vh * 0.1)" : "calc(100vh * 0.08 + 80px)"};
     z-index:100;
