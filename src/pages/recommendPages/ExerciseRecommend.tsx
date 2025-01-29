@@ -157,8 +157,8 @@ const ExerciseRecommend = () => {
                                         top="-119px"  // 원하는 위치
                                         height="33px"
                                         text={
-                                            item.option === "운동 종류" && selectedGender
-                                            ? selectedGender
+                                            item.option === "운동 종류" && selectedExercise
+                                            ? selectedExercise
                                             : item.option === "성별" && selectedGender
                                             ? selectedGender
                                             : item.option === "학번" && selectedGrade

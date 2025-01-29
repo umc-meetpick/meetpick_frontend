@@ -71,7 +71,7 @@ const DropdownButton: React.FC<DropdownButtonProps> = ({
             {(options as any[]).map((option, index) => (
               <DropdownItem key={index} onClick={() => handleOptionClick(option)}>
                 {typeof option === "string" ? option : option.label}
-                {typeof option !== "string" && option.subOptions && <ArrowIcon>›</ArrowIcon>}
+                {typeof option !== "string" && option.subOptions && <ArrowIcon>&nbsp;&nbsp;&nbsp;›</ArrowIcon>}
               </DropdownItem>
             ))}
           </DropdownList>
@@ -94,8 +94,11 @@ const DropdownButton: React.FC<DropdownButtonProps> = ({
 export default DropdownButton;
 
 const ArrowIcon = styled.span`
-  font-size: 16px;
-  color: #555;
+  font-size: 15px;
+  color: #6C6C73;
+  display:flex;
+  justify-content:center;
+  align-itmes:center;
 `;
 
 const DropdownWrapper = styled.div`
