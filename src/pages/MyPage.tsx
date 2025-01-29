@@ -10,6 +10,7 @@ import MateProfileImg from "../assets/profileImg/프로필3.png"
 import MatchSlider from "../components/Slider"
 import AcceptButton from '../components/button/AcceptButton';
 import RejectButton from '../components/button/RejectButton';
+import { Link } from 'react-router-dom';
 
 // Styled Components
 const Container = styled.div`
@@ -265,7 +266,9 @@ const MyPage = () => {
         <ProfileImage src={ProfileImg} alt="Profile" />
         <ProfileInfo>
             <ProfileName>베티 (나윤빈)</ProfileName>
-            <EditProfileButton>프로필 수정하기 <BsChevronRight /></EditProfileButton>
+            <Link to ="/modify">
+              <EditProfileButton>프로필 수정하기 <BsChevronRight /></EditProfileButton>
+            </Link>
         </ProfileInfo>
       </ProfileSection>
 

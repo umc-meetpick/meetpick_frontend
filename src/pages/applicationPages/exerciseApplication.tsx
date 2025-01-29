@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import BasicNavbar from "../../components/navbar/BasicNavbar";
+import Navbar from "../../components/navbar/Navbar";
 import ApplicationImage from "../../assets/images/Application.png";
 import ApplicationAlert from "../../assets/images/ApplicationAlert.png";
 import ApplicationGrayButton from "../../components/button/ApplicationGrayButton";
@@ -8,7 +8,7 @@ import ApplicationGrayBox from "../../components/ApplicationGrayBox";
 import { IoHeart } from "react-icons/io5";
 import { FaCheck } from "react-icons/fa6";
 
-const Application = () => {
+const ExerciseApplication = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [message, setMessage]= useState<string | null>(null); // 메세지 상태 추가
     const [buttonMessage, setButtonMessage] = useState<string>("메이트 신청하기"); // 버튼에 있는 텍스트
@@ -47,7 +47,7 @@ const Application = () => {
 
     return (
         <>
-            <BasicNavbar title ="제이시의 프로필" before = {true}/>
+            <Navbar title ="제이시의 프로필" before = {true}/>
             <Wrapper>
                 <ImageContainer>
                     <StyledImage src={ApplicationImage} alt="회원가입 완료 이미지" />
@@ -100,22 +100,28 @@ const Application = () => {
                 </Text2>
             </Mate>
             <Mate1>
+                <ApplicationGrayBox text1="운동 종류" text2="⚽ 축구" width="152px" />
+                <ApplicationGrayBox text1="인원수" text2="5/10" width="152px" />
+            </Mate1>
+            <Mate1>
                 <ApplicationGrayBox text1="성별" text2="무관" width="152px" />
-                <ApplicationGrayBox text1="학번" text2="20학번" width="152px" />
+                <ApplicationGrayBox text1="나이 / 학번" text2="22살 / 동기" width="152px" />
             </Mate1>
             <Mate1>
-                <ApplicationGrayBox text1="나이" text2="무관" width="152px" />
                 <ApplicationGrayBox text1="전공" text2="IT 계열" width="152px" />
+                <ApplicationGrayBox text1="MBTI" text2="상관없음" width="152px" />
             </Mate1>
             <Mate1>
-                <ApplicationGrayBox text1="MBTI" text2="활기찬, 객관적" width="152px" />
-                <ApplicationGrayBox text1="음식" text2="한식, 일식" width="152px" />
+                <ApplicationGrayBox text1="취미" text2="상관없음" width="318px"/>
             </Mate1>
             <Mate1>
-                <ApplicationGrayBox text1="요일 및 시간대" text2="11:00~ / 12:00~ / 13:00~" width="318px"/>
+                <ApplicationGrayBox text1="시간대" text2="월 12:00, 13:00, 18:00 / 화 15:00" width="318px"/>
             </Mate1>
             <Mate1>
-                <ApplicationGrayBox text1="하고 싶은 말" text2="맛난 거 먹어유~" width="318px"/>
+                <ApplicationGrayBox text1="운동 장소" text2="외부시설/ 구립체육관" width="318px"/>
+            </Mate1>
+            <Mate1>
+                <ApplicationGrayBox text1="하고 싶은 말" text2="같이 재밌게 해봐요!" width="318px"/>
             </Mate1>
             <Button2>
                 <ApplicationButton style={buttonStyle} onClick={handleOpenModal}>
@@ -153,7 +159,7 @@ const Application = () => {
     )
 }
 
-export default Application;
+export default ExerciseApplication;
 
 const StyledImage = styled.img`
   width: 80px;
@@ -194,6 +200,8 @@ const Mate1 =styled.div`
   padding:0 37.5px;
   gap:14px;
   margin-bottom:3px;
+  font-size:14px;
+  font-weight:600;
 `
 const Text1 = styled.p`
   display:flex;
