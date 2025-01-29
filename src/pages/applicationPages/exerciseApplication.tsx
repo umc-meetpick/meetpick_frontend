@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import BasicNavbar from "../../components/navbar/BasicNavbar";
+import Navbar from "../../components/navbar/Navbar";
 import ApplicationImage from "../../assets/images/Application.png";
 import ApplicationAlert from "../../assets/images/ApplicationAlert.png";
 import ApplicationGrayButton from "../../components/button/ApplicationGrayButton";
@@ -47,7 +47,7 @@ const ExerciseApplication = () => {
 
     return (
         <>
-            <BasicNavbar title ="제이시의 프로필" before = {true}/>
+            <Navbar title ="제이시의 프로필" before = {true}/>
             <Wrapper>
                 <ImageContainer>
                     <StyledImage src={ApplicationImage} alt="회원가입 완료 이미지" />
