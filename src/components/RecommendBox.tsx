@@ -59,6 +59,12 @@ const RecommendBox: React.FC<ButtonProps> = ({
     localStorage.setItem(`heart_${id}`, JSON.stringify(newState));
   }
 
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const toggleExpand =() => {
+    setIsExpanded(!isExpanded);
+  }
+
   return (
     <StyledButton
       $backgroundColor={$backgroundColor}
@@ -67,6 +73,7 @@ const RecommendBox: React.FC<ButtonProps> = ({
       width={width}
       color={color}
       disabled={disabled}
+      $isExpanded ={isExpanded}
       onClick = {disabled? undefined : onClick}
     >  
         <FirstLine>
@@ -87,17 +94,29 @@ const RecommendBox: React.FC<ButtonProps> = ({
             <Keyword2>{text3}</Keyword2>
         </SecondLine>
     
-        <FourthLine>
+        <FourthLine  $isExpanded={isExpanded} onClick={toggleExpand}>
           <StyledBox>
                 {detail1 && <Box>{detail1}</Box>}
                 {detail2 && <Box>{detail2}</Box>}
                 {detail3 && <Box>{detail3}</Box>}
                 {detail4 && <Box>{detail4}</Box>}
           </StyledBox>
+          <StyledArrowIcon 
+            icon={isExpanded ? "akar-icons:chevron-up" : "akar-icons:chevron-down"} 
+            width="20" 
+            height="10"
+          />
         </FourthLine>
     </StyledButton>
   );
 };
+
+const StyledArrowIcon = styled(Icon)`
+    align-self: center;
+    color: #6C6C73;
+    margin-top: 5px;
+    cursor: pointer;
+`;
 
 const StyledButton = styled.button<{
   $backgroundColor: string;
@@ -105,16 +124,18 @@ const StyledButton = styled.button<{
   color: string;
   number1:string;
   number2:string;
+  $isExpanded:boolean;
 }>`
   background-color: ${({ $backgroundColor }) => $backgroundColor};
   width: ${({ width }) => width};
   color: ${({ color }) => color};
-  height: 160px;
+  height: ${({ $isExpanded }) => ($isExpanded ? "auto" : "160px")}; /* 높이 자동 조절 */
   border: none;
   border-radius: 5px;
   font-size: 13px;
   cursor: pointer;
   padding: 7px; /* 버튼 내부 여백 */
+
 `;
 
 const FirstLine = styled.div`
@@ -150,10 +171,10 @@ const PersonText = styled.div`
     padding:2px 5px;
 `
 
-const FourthLine = styled.div`
+const FourthLine = styled.div<{$isExpanded : boolean}>`
     display:flex;
     width :136px;
-    height:48px;
+    height: ${({ $isExpanded }) => ($isExpanded ? "auto" : "48px")}; /* 높이 자동 조절 */
     background-color:rgba(255, 255, 255, 0.60);
     border-radius:10px;
     justify-content:center;
@@ -166,14 +187,15 @@ const StyledBox = styled.div`
   max-width:136px;
   flex-wrap: wrap; /* 줄바꿈을 허용 */
   margin:4px;
-  gap:5px;
+  gap:3px;
   justify-content:flex-start;
+  overflow-y:hidden;
 `
 const Box = styled.div`
   border-radius: 100px;
   background: #78C2FE;
   font-family: "Pretendard Variable";
-  font-size: 11px;
+  font-size: 10px;
   font-style: normal;
   font-weight: 500;
   width:auto;

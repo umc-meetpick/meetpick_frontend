@@ -393,6 +393,7 @@ const FullListSection = styled.div`
     background-color:none;
     position:absolute;
     top:265px;
+    height:auto;
 `;
 
 const List = styled.div`
