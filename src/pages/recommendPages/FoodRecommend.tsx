@@ -131,7 +131,7 @@ const FoodRecommend = () => {
                                 </SwiperSlide>
                                 ))}
                         </Swiper>
-                        <Link to ='/application'>
+                        <Link to ='/application/food'>
                         <Description> 
                             <Name>{currentSlide.name}</Name>님 프로필 구경하러가기
                         </Description>

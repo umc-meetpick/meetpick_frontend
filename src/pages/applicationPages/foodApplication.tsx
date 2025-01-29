@@ -8,7 +8,7 @@ import ApplicationGrayBox from "../../components/ApplicationGrayBox";
 import { IoHeart } from "react-icons/io5";
 import { FaCheck } from "react-icons/fa6";
 
-const Application = () => {
+const FoodApplication = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [message, setMessage]= useState<string | null>(null); // 메세지 상태 추가
     const [buttonMessage, setButtonMessage] = useState<string>("메이트 신청하기"); // 버튼에 있는 텍스트
@@ -156,7 +156,7 @@ const Application = () => {
     )
 }
 
-export default Application;
+export default FoodApplication;
 
 const StyledImage = styled.img`
   width: 80px;

@@ -131,7 +131,7 @@ const ExerciseRecommend = () => {
                                 </SwiperSlide>
                                 ))}
                         </Swiper>
-                        <Link to ='/application'>
+                        <Link to ='/application/exercise'>
                         <Description> 
                             <Name>{currentSlide.name}</Name>님 프로필 구경하러가기
                         </Description>
