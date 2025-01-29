@@ -154,7 +154,7 @@ const FoodRecommend = () => {
                                     <SwiperSlide key={item.id} style={{ width: "auto"}}>
                                         <DropdownButton
                                         left="85px" // 원하는 위치
-                                        top="-85px"  // 원하는 위치
+                                        top="-83px"  // 원하는 위치
                                         height="33px"
                                         text={
                                             item.option === "성별" && selectedGender

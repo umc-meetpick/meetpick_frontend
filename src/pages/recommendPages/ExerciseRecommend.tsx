@@ -154,7 +154,7 @@ const ExerciseRecommend = () => {
                                     <SwiperSlide key={item.id} style={{ width: "auto"}}>
                                         <DropdownButton
                                         left="93px" // 원하는 위치
-                                        top="-119px"  // 원하는 위치
+                                        top="-115px"  // 원하는 위치
                                         height="33px"
                                         text={
                                             item.option === "운동 종류" && selectedExercise
