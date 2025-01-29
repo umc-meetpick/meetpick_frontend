@@ -6,63 +6,63 @@ const foodProfileQuery = [
       "direction": "incoming",
       "options": ["좋아!"]
     },
-    // {
-    //   "question": ["어떤 메이트분과 함께 식사하고 싶으신가요?"],
-    //   "direction": "incoming",
-    //   "options": ["남성", "여성", "상관없어!"],
-    //   "type": "gender"
-    // },
-    // {
-    //     "question": ["오호 그렇군요 ✔️", "어떤 전공의 메이트 분을 찾고 계신가요?"],
-    //     "direction": "incoming",
-    //     "options": ["전공 선택", "상관없어!"],
-    //     "type": "major"
-    // },
-    // {
-    //   "question": ["원하시는 학번의 메이트가 있으실까요?"],
-    //   "direction": "incoming",
-    //   "options": ["동기", "선배", "후배", "상관없음"],
-    //   "type": "studentNum"
-    // },
-    // {
-    //   "question": ["희망하는 메이트의 나이가 있으면 알려주세요!"],
-    //   "direction": "incoming",
-    //   "options": ["메이트 나이 설정하기", "상관없어"],
-    //   "type": "age"
-    // },
-    // {
-    //   "question": [ "함께할 메이트분은 어떤 성격이실까요? 🤔"],
-    //   "direction": "incoming",
-    //   "options": ["활기찬", "조용한","상관없어!"],
-    //   "type": "mbti-EI"
-    // },
-    // {
-    //   "direction": "incoming",
-    //   "options": ["현실적", "창의적","상관없어!"],
-    //   "type": "mbti-SN"
-    // },
-    // {
-    //   "direction": "incoming",
-    //   "options": ["객관적", "공감 만땅","상관없어!"],
-    //   "type": "mbti-TF"
-    // },
-    // {
-    //   "direction": "incoming",
-    //   "options": ["체계적", "유동적","상관없어!"],
-    //   "type": "mbti-JP"
-    // },
-    // {
-    //   "question": [ "아하! 알겠습니다", "그럼, 취미가 [닉네임]님과 비슷한 메이트를 원하세요?"],
-    //   "direction": "incoming",
-    //   "options": ["같으면 좋겠어","상관없어!"],
-    //   "type": "hobby"
-    // },
-    // {
-    //   "question": [ "네 알겠습니다! 😊", "메이트와 함께하고 싶은 요일과 시간대를 모두 선택해주세요!"],
-    //   "direction": "incoming",
-    //   "options": ["시간대 설정하기"],
-    //   "type": "date"
-    // },
+    {
+      "question": ["어떤 메이트분과 함께 식사하고 싶으신가요?"],
+      "direction": "incoming",
+      "options": ["남성", "여성", "상관없어!"],
+      "type": "gender"
+    },
+    {
+        "question": ["오호 그렇군요 ✔️", "어떤 전공의 메이트 분을 찾고 계신가요?"],
+        "direction": "incoming",
+        "options": ["전공 선택", "상관없어!"],
+        "type": "major"
+    },
+    {
+      "question": ["원하시는 학번의 메이트가 있으실까요?"],
+      "direction": "incoming",
+      "options": ["동기", "선배", "후배", "상관없음"],
+      "type": "studentNum"
+    },
+    {
+      "question": ["희망하는 메이트의 나이가 있으면 알려주세요!"],
+      "direction": "incoming",
+      "options": ["메이트 나이 설정하기", "상관없어"],
+      "type": "age"
+    },
+    {
+      "question": [ "함께할 메이트분은 어떤 성격이실까요? 🤔"],
+      "direction": "incoming",
+      "options": ["활기찬", "조용한","상관없어!"],
+      "type": "mbti-EI"
+    },
+    {
+      "direction": "incoming",
+      "options": ["현실적", "창의적","상관없어!"],
+      "type": "mbti-SN"
+    },
+    {
+      "direction": "incoming",
+      "options": ["객관적", "공감 만땅","상관없어!"],
+      "type": "mbti-TF"
+    },
+    {
+      "direction": "incoming",
+      "options": ["체계적", "유동적","상관없어!"],
+      "type": "mbti-JP"
+    },
+    {
+      "question": [ "아하! 알겠습니다", "그럼, 취미가 [닉네임]님과 비슷한 메이트를 원하세요?"],
+      "direction": "incoming",
+      "options": ["같으면 좋겠어","상관없어!"],
+      "type": "hobby"
+    },
+    {
+      "question": [ "네 알겠습니다! 😊", "메이트와 함께하고 싶은 요일과 시간대를 모두 선택해주세요!"],
+      "direction": "incoming",
+      "options": ["시간대 설정하기"],
+      "type": "date"
+    },
     {
       "question": [ "[닉네임]님과 맞는 시간대의 메이트를 찾아드릴게요", "메이트와 어떤 음식을 드시고 싶으세요?"],
       "direction": "incoming",
