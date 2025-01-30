@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Icon } from '@iconify/react';
 import { IoCloseOutline } from "react-icons/io5";
-import { PiBell } from "react-icons/pi";
 import { BsChevronRight } from "react-icons/bs";
 import { GoArrowRight } from "react-icons/go";
 import ProfileImg from "../assets/profileImg/프로필2.png"
@@ -12,46 +11,32 @@ import MatchSlider from "../components/Slider"
 import AcceptButton from '../components/button/AcceptButton';
 import RejectButton from '../components/button/RejectButton';
 import { Link } from 'react-router-dom';
+import BasicNavbar from '../components/navbar/BasicNavbar';
 
 // Styled Components
 const Container = styled.div`
     text-align: left;
-    padding: 15px;
     font-family: 'Pretendard Variable', sans-serif;
     background-color: #fff;
+    padding: 0 20px;
 `;
 
 const Navbar = styled.div`
   width: 100%;
-  height: 60px;
   display: flex;
   align-items: center;
   background-color: white;
   justify-content: center;
   position: relative;
 `;
-
-const Title = styled.div`
-  font-size: 17px;
-  font-weight: 500;
-  color: black;
-`;
-
-const IconPosition = styled.div`
-  position: absolute;
-  right: 20px;
-  font-size: 24px;
-  cursor: pointer;
-`;
-
 const ProfileSection = styled.div`
     margin-top: 20px;
-  background-color: white;
-  padding: 20px;
-  text-align: center;
-  gap: 20px; /* 이미지와 텍스트 사이 간격 */
-  display: flex;
-  flex-direction: row;
+    background-color: white;
+    padding: 20px;
+    text-align: center;
+    gap: 20px; /* 이미지와 텍스트 사이 간격 */
+    display: flex;
+    flex-direction: row;
 `;
 
 
@@ -264,10 +249,7 @@ const MyPage = () => {
     <Container>
       {/* Navbar */}
       <Navbar>
-        <Title>마이페이지</Title>
-        <IconPosition>
-          <PiBell />
-        </IconPosition>
+        <BasicNavbar title ="마이페이지" bell={true}/>
       </Navbar>
 
       {/* Profile Section */}
