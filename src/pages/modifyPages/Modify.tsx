@@ -263,10 +263,12 @@ const Wrapper = styled. div`
 `
 const OriginProfile = styled.div`
     border-bottom: 4px solid #F3F3F3;
+    margin: 0 12px;
 `
 
 const SecondProfile = styled.div`
     font-family: "Pretendard Variable";
+    margin: 0 12px;
 `
 
 const Title = styled.p`
