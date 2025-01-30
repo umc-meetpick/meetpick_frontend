@@ -25,7 +25,8 @@ const BasicNavbar: React.FC<TitleProps> = ({title, before, bell}) =>{
 export default BasicNavbar
 
 const Container = styled.div`
-    width:380px;
+    margin:0 10px;
+    width:360px;
     height:60px;
     background-color:white;
     display:flex;
