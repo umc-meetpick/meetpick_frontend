@@ -14,8 +14,8 @@ const Modify = () => {
 
     return (
         <>
-            <BasicNavbar title = "프로필 수정"/>
             <Wrapper>
+            <BasicNavbar title = "프로필 수정" before={true}/>
             <OriginProfile>
                 <Title>기본 프로필</Title>
                 <Button>
@@ -259,14 +259,14 @@ export default Modify;
 
 const Wrapper = styled. div`
     font-family: "Pretendard Variable";
+    padding:0 30px;
 `
 const OriginProfile = styled.div`
-    padding:0 38px 25px 38px;
     border-bottom: 4px solid #F3F3F3;
 `
 
 const SecondProfile = styled.div`
-    padding:0 38px 25px 38px;
+    font-family: "Pretendard Variable";
 `
 
 const Title = styled.p`

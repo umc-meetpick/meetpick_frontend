@@ -30,9 +30,7 @@ const Alarm = () => {
 
     return (
         <>
-            <Nabvar>
-                <BasicNavbar title="알림" before={true} bell={true}/>
-            </Nabvar>
+            <BasicNavbar title="알림" before={true} bell={true}/>
             <Container>
                 <DropdownButton color="black" text={selectedCategory || "카테고리 ∨"}
                 height="35px" 
@@ -72,11 +70,6 @@ const Alarm = () => {
 };
 
 export default Alarm;
-
-const Nabvar = styled.div`
-    display:flex;
-    justify-content:center;
-`
 
 const Container = styled.div`
     display: flex;

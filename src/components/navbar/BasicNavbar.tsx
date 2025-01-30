@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from "react-router-dom";
+import { IoChevronBackOutline } from "react-icons/io5";
 import { Icon } from "@iconify/react";
 
 interface TitleProps{
@@ -25,8 +26,8 @@ const BasicNavbar: React.FC<TitleProps> = ({title, before, bell}) =>{
 export default BasicNavbar
 
 const Container = styled.div`
-    margin:0 10px;
-    width:360px;
+    width:100%;
+    max-width:393px;
     height:60px;
     background-color:white;
     display:flex;
@@ -54,7 +55,7 @@ const Title = styled.div`
 `
 const BellIcon = styled(Icon)`
     position: absolute; /* 절대 위치 설정 */
-    right: 10px; /* 오른쪽 여백 설정 */
+    right: 15px; /* 오른쪽 여백 설정 */
     color: #000;
     top:26px;
 `;

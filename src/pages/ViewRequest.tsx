@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import ListTabs from "../components/ListTabs";
+import Navbar from "../components/navbar/BasicNavbar"
 import AcceptButton from "../components/button/AcceptButton";
 import RejectButton from "../components/button/RejectButton";
 import SelectToggle from "../components/SelectToggle";
 import mateImg from "../assets/profileImg/프로필3.png"
 import GroupIcon from '../components/GroupIcon'
 import { Icon } from '@iconify/react';
-import BasicNavbar from "../components/navbar/BasicNavbar";
 
 const ViewRequest: React.FC = () => {
   const [mainTab, setMainTab] = useState<string>("매칭 신청");
@@ -141,7 +141,7 @@ const ViewRequest: React.FC = () => {
 
   return (
     <PageContainer>
-        <BasicNavbar title="매칭 신청" before={true} bell={true}></BasicNavbar>
+        <Navbar title="매칭 신청" before={true} bell={true}></Navbar>
         {/* 상단 메인 탭 */}
         <ListTabs
             tabs={["매칭 신청", "매칭 완료"]}
@@ -172,7 +172,7 @@ export default ViewRequest;
 const PageContainer = styled.div`
   font-family: 'Pretendard Variable', sans-serif;
   background-color: #fff;
-  padding: 0 20px;
+  padding: 0 20px 5px 20px;
   display: flex;
   align-items: center;
   flex-direction: column;
