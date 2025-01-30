@@ -45,6 +45,7 @@ const LoginText = styled.p`
   font-size: 15px;
   text-decoration: underline;
   font-family: "Pretendard Variable";
+  margin-right:10px;
 `;
 
 const MainTitleImage = styled.img`
