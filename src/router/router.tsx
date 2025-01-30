@@ -7,7 +7,7 @@ import Login from "../pages/Login"
 import Signup from "../pages/signupPages/Signup"
 import MatchingPage from "../pages/Matching";
 import MyPage from "../pages/MyPage";
-import ViewAll from "../pages/ViewAll"
+import ViewRequest from "../pages/ViewRequest"
 import Signup1 from '../pages/signupPages/Signup1';
 import Signup2 from '../pages/signupPages/Signup2';
 import Signup3 from '../pages/signupPages/Signup3';
@@ -57,8 +57,8 @@ const router = createBrowserRouter([
             element:<MyPage/>
           },
           {
-            path:'view-all',
-            element:<ViewAll/>
+            path:'viewRequest',
+            element:<ViewRequest/>
           },
           {
             path:'matching',
