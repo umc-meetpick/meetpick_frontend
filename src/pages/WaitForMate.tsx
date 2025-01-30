@@ -8,7 +8,7 @@ const WaitForMate = () =>{
     const location = useLocation();
     const param = (location.state == "혼밥") ? "food" : (location.state == "운동" ? "exercise" : "study")
     return(
-        <>
+        <Wrapper>
             <BasicNavbar title="추천 메이트 찾기" before={true} bell={true}></BasicNavbar>
             <Container>
                 <Img src={profile2} alt="프로필"/>
@@ -18,10 +18,14 @@ const WaitForMate = () =>{
                     메이트를 찾고 있어요~
                 </Div> */}
             </Container>
-        </>
+        </Wrapper>
     )
 }
 export default WaitForMate;
+
+const Wrapper = styled.div`
+    padding:0 40px;
+`
 
 const Container = styled.div`
     width:250px;
@@ -55,3 +59,4 @@ const Btn = styled.button`
         border:none;
     }
 `;
+
