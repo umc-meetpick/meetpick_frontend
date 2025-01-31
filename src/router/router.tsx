@@ -28,6 +28,7 @@ import ExerciseRecommend from "../pages/recommendPages/ExerciseRecommend";
 import ExerciseApplication from "../pages/applicationPages/exerciseApplication";
 import ExerciseMateProfile from "../pages/ExerciseMateProfile";
 import StudyRecommend from "../pages/recommendPages/StudyRecommend";
+import StudyApplication from "../pages/applicationPages/studyApplication";
 import React from "react";
 
 
@@ -112,6 +113,10 @@ const router = createBrowserRouter([
           {
             path:'application/exercise',
             element:<ExerciseApplication/>
+          },
+          {
+            path:'application/study',
+            element:<StudyApplication/>
           },
           {
             path:'alarm',
