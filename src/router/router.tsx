@@ -27,6 +27,7 @@ import WaitForMate from "../pages/WaitForMate";
 import ExerciseRecommend from "../pages/recommendPages/ExerciseRecommend";
 import ExerciseApplication from "../pages/applicationPages/exerciseApplication";
 import ExerciseMateProfile from "../pages/ExerciseMateProfile";
+import StudyRecommend from "../pages/recommendPages/StudyRecommend";
 import React from "react";
 
 
@@ -127,6 +128,10 @@ const router = createBrowserRouter([
           {
             path:'recommend/exercise',
             element:<ExerciseRecommend/>
+          },
+          {
+            path:'recommend/study',
+            element:<StudyRecommend/>
           },
           {
             path:'foodMateProfile',
