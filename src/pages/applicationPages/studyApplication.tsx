@@ -109,7 +109,7 @@ const StudyApplication = () => {
             </Mate1>
             <Mate1>
                 <ApplicationGrayBox text1="스터디 횟수" text2="1~2회" width="152px" />
-                <ApplicationGrayBox text1="ㅇ" text2="오프라인" width="152px" />
+                <ApplicationGrayBox text1="온/오프라인" text2="오프라인" width="152px" />
             </Mate1>
             <Mate1>
                 <ApplicationGrayBox text1="성별" text2="무관" width="152px"/>

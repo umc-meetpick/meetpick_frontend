@@ -221,7 +221,19 @@ const Modify = () => {
                 {activeButton === "공부" && (
                     <>
                         <Button>
-                            <ModifyButton text="과목 "
+                            <ModifyButton text="공부 과목 "
+                                $backgroundColor="#EAF4FF"
+                                width="136px"
+                                color="#686868"
+                            />
+                            <ModifyButton text="강의/교수명 "
+                                $backgroundColor="#EAF4FF"
+                                width="136px"
+                                color="#686868"
+                            />
+                         </Button>
+                        <Button>
+                            <ModifyButton text="온/오프라인 "
                                 $backgroundColor="#EAF4FF"
                                 width="136px"
                                 color="#686868"
@@ -231,14 +243,57 @@ const Modify = () => {
                                 width="136px"
                                 color="#686868"
                             />
-                         </Button>
+                        </Button>
                         <Button>
+                            <ModifyButton text="공부 장소 "
+                                $backgroundColor="#EAF4FF"
+                                width="136px"
+                                color="#686868"
+                            />
+                            <ModifyButton text="성별 "
+                                $backgroundColor="#EAF4FF"
+                                width="136px"
+                                color="#686868"
+                            />
+                        </Button>
+                        <Button>
+                            <ModifyButton text="학번 "
+                                $backgroundColor="#EAF4FF"
+                                width="136px"
+                                color="#686868"
+                            />
+                            <ModifyButton text="나이 "
+                                $backgroundColor="#EAF4FF"
+                                width="136px"
+                                color="#686868"
+                            />
+                        </Button>
+                        <Button>
+                            <ModifyButton text="전공 "
+                                $backgroundColor="#EAF4FF"
+                                width="136px"
+                                color="#686868"
+                            />
+                            <ModifyButton text="MBTI "
+                                $backgroundColor="#EAF4FF"
+                                width="136px"
+                                color="#686868"
+                            />
+                        </Button>
+                        <Button>
+                            <ModifyButton text="취미 "
+                                $backgroundColor="#EAF4FF"
+                                width="136px"
+                                color="#686868"
+                            />
                             <ModifyButton text="인원수 "
                                 $backgroundColor="#EAF4FF"
                                 width="136px"
                                 color="#686868"
                             />
-                            <ModifyButton text="공부장소 "
+                        </Button>
+                        <Button>
+                            <ModifyButton text="하고 싶은 말 "
                                 $backgroundColor="#EAF4FF"
                                 width="136px"
                                 color="#686868"
