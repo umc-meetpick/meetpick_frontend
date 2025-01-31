@@ -157,7 +157,7 @@ const StudyRecommend = () => {
                                         top="-115px"  // 원하는 위치
                                         height="33px"
                                         text={
-                                            item.option === "공부과목" && selectedStudy
+                                            item.option === "공부 과목" && selectedStudy
                                             ? selectedStudy
                                             : item.option === "성별" && selectedGender
                                             ? selectedGender
