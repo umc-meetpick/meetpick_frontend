@@ -1,9 +1,25 @@
 import styled from 'styled-components';
+import { useEffect } from 'react';
 import { FaComment } from "react-icons/fa";
 import logoImage from '../assets/images/MeetPickLogo.png'
 import loginbackground from '../assets/images/loginImage.png';
+import { postKakaoAuth } from '../apis/login/postKakaoAuth';
+import.meta.env.VITE_KAKAO_AUTH_URL;
 
 const Login = () => {
+    const handleKakaoLogin = async() =>{
+        window.location.href = import.meta.env.VITE_KAKAO_AUTH_URL;
+    };
+    useEffect(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const authCode = urlParams.get("code");
+        console.log(window.location.search)
+        if (authCode) {
+            console.log(window.location.search)
+            postKakaoAuth(authCode);
+        }
+    }, []);
+ 
     return (
         <>
             <TopNavbar>
@@ -15,7 +31,7 @@ const Login = () => {
                         오늘은 어떤 <span>메이트</span>들이<br/> 기다리고 있을까?
                     </StyledTitle>
                     <BtnWrapper>
-                        <LoginButton> 
+                        <LoginButton onClick = {handleKakaoLogin}> 
                             <StyledFaComment />
                             카카오톡으로 로그인
                         </LoginButton>
@@ -119,3 +135,4 @@ const SignUpText = styled.p`
         font-weight: 400;
     }
 `;
+
