@@ -88,7 +88,7 @@ const StudyRecommend = () => {
             </Top>
             <Message>
                 <Name>베티</Name>
-                <Comment>님을 원하는 혼밥 메이트를 찾아보세요<Icon icon="fluent-color:edit-24" width="20" height="20" /></Comment>
+                <Comment>님을 원하는 공부 메이트를 찾아보세요<Icon icon="fluent-color:edit-24" width="20" height="20" /></Comment>
             </Message>
             <Tabs>
                 <Tab
