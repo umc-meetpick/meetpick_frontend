@@ -62,7 +62,7 @@ const StudyRecommend = () => {
             setSelectedTime(value);
         } else if (option === "요일") {
             setSelectedDate(value);
-        } else if (option == "음식 종류") {
+        } else if (option == "공부 과목") {
             setSelectedStudy(value);
         }
     };
