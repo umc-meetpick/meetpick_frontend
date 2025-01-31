@@ -14,8 +14,10 @@ interface StudyProfileInfoContextType {
     setMbtiList: (mbtiList: string[]) => void;
     mbti: string;
     setMbti: (mbti: string) => void;
-    exercise: string;
-    setExercise: (exercise: string) => void;
+    studyType: string;
+    setStudyType: (studyType: string) => void;
+    subject: string;
+    setSubject:(subject: string) => void;
     place:string;
     setPlace: (place:string) => void;
     peopleNum: number;
@@ -42,8 +44,10 @@ const defaultValue: StudyProfileInfoContextType = {
     setMbtiList: () => {},
     mbti: "",
     setMbti: () => {},
-    exercise: "",
-    setExercise: () => {},
+    studyType: "",
+    setStudyType: () => {},
+    subject:"",
+    setSubject:() => {},
     place: "",
     setPlace: () => {},
     peopleNum: 0,
@@ -70,7 +74,8 @@ export function StudyProfileContextProvider({children}:StudyProfileContextProvid
     const [ageRange, setAgeRange] = useState<number[]>([])
     const [mbtiList, setMbtiList] = useState<string[]>([]);
     const [mbti, setMbti] = useState<string>("");
-    const [exercise, setExercise] = useState<string>("");
+    const [studyType, setStudyType] = useState<string>("");
+    const [subject, setSubject] = useState<string>("");
     const [place, setPlace] = useState<string>("");
     const [peopleNum, setPeopleNum] = useState<number>(0);
     const [hobby, setHobby] = useState<string[]>([]);
@@ -92,8 +97,10 @@ export function StudyProfileContextProvider({children}:StudyProfileContextProvid
                 setMbtiList,
                 mbti,
                 setMbti,
-                exercise,
-                setExercise,
+                studyType,
+                setStudyType,
+                subject,
+                setSubject,
                 place,
                 setPlace,
                 peopleNum,

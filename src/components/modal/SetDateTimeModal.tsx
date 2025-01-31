@@ -4,6 +4,7 @@ import { BsXCircleFill } from "react-icons/bs";
 import { useState, useContext } from "react";
 import { FoodProfileInfoContext } from "../../context/foodProfileInfo";
 import { ExerciseProfileInfoContext } from "../../context/exerciseInfoContext";
+import { StudyProfileInfoContext } from "../../context/studyInfoContext";
 
 interface SetDateTimeModalProps {
     title: string;
@@ -16,16 +17,19 @@ interface Selected {
 
 const SetDateTimeModal: React.FC<SetDateTimeModalProps> = ({title, setModalOpen, type}) =>{
     function useProfileContext(type: string) {
-        if (type === "food") {
+        if (type == "food"){
             return useContext(FoodProfileInfoContext);
-        } else {
+        }else if (type == "exercise"){
             return useContext(ExerciseProfileInfoContext);
+        }else{
+            return useContext(StudyProfileInfoContext);
         }
     }
     const { dateTime, setDateTime } = useProfileContext(type);
     const [selectedDate, setSelectedDate] = useState("");
     const [selected, setSelected] = useState<{ [key: string]: string[] }>({});
     const dates = ["월", "화", "수", "목", "금"];
+    const morningTimes = ["5:00", "6:00", "7:00", "8:00", "9:00", "10:00"]
     const lunchTimes = ["11:00", "12:00", "13:00", "14:00", "15:00", "16:00"]
     const dinnerTimes = ["17:00", "18:00", "19:00", "20:00", "21:00", "22:00"]
     const isSmall = window.innerHeight < 700; 
@@ -91,6 +95,22 @@ const SetDateTimeModal: React.FC<SetDateTimeModalProps> = ({title, setModalOpen,
                         ))}
                     </Date>
                     <hr/>
+                    { type == "study" && 
+                        <>
+                            <SubTitle>아침</SubTitle>
+                            <Time>
+                                {morningTimes.map((morningTime) => (
+                                    <Box2 
+                                        key={morningTime} 
+                                        onClick={()=>handleTimeClick(selectedDate, morningTime)}
+                                        $isSelected={selected[selectedDate]?.includes(morningTime)|| false}
+                                    >
+                                        {morningTime}
+                                    </Box2>
+                                ))}
+                            </Time>
+                        </>
+                    }
                     <SubTitle>점심</SubTitle>
                     <Time>
                         {lunchTimes.map((lunchTime) => (
@@ -115,8 +135,7 @@ const SetDateTimeModal: React.FC<SetDateTimeModalProps> = ({title, setModalOpen,
                             </Box2>
                         ))}
                     </Time>
-                </InputWrapper>
-                { selectedDate && 
+                    { selectedDate && 
                     <Selected>
                         <div>선택한 요일 및 시간정보</div>
                         {Object.entries(selected)?.map(([date, time]) => (
@@ -145,6 +164,7 @@ const SetDateTimeModal: React.FC<SetDateTimeModalProps> = ({title, setModalOpen,
                 >
                     {selectedDate && selected[selectedDate]?.length > 0  ? "선택 완료" : "요일과 시간을 선택해주세요"  }
                 </Btn>
+                </InputWrapper>
             </Container>
         </Background>
     )
@@ -182,7 +202,7 @@ const InputWrapper = styled.div`
 `;
 const Title= styled.div`
     margin-top: 30px;
-    margin-bottom:30px;
+    margin-bottom:10px;
     height:30px;
     font-size:17px;
     font-weight:500;
@@ -232,7 +252,7 @@ const Box2 =  styled.button<{$isSelected:boolean}>`
 `;
 const Selected = styled.div`
     width: 80%;
-    margin-bottom:40px;
+    margin-top:40px;
 `;
 const SelectedContent = styled.div`
     color: #606366;
@@ -247,13 +267,14 @@ const Div = styled.div`
     margin-left: 5%;
 `;
 const Btn = styled.button<{disabled:boolean}>`
-    width: 80%;
+    width: 100%;
     height:48px;
     font-size:15px;
     font-weight:600;
     color: ${({disabled}) => disabled ? "#ADADAD" : "#326DC1"};
     background-color: ${({disabled}) => disabled ? "#F3F4F8" : "#E7F2FE"};
-    margin-bottom:20px;
+    margin-top: 50px;
+    margin-bottom: 50px;
     border:none;
     &:focus {
         outline: none;

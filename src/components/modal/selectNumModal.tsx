@@ -3,6 +3,7 @@ import Slider from "@mui/material/Slider";
 import { useState, useContext } from "react";
 import { FoodProfileInfoContext } from "../../context/foodProfileInfo";
 import { ExerciseProfileInfoContext } from "../../context/exerciseInfoContext";
+import { StudyProfileInfoContext } from "../../context/studyInfoContext";
 
 interface ToggleListModalProps {
     setModalOpen: (isOpen: boolean) => void;
@@ -17,8 +18,10 @@ const SelectNumModal : React.FC<ToggleListModalProps> = ({setModalOpen, title, m
     function useProfileContext(type:string){
         if (type == "food"){
             return useContext(FoodProfileInfoContext);
-        }else{
+        }else if (type == "exercise"){
             return useContext(ExerciseProfileInfoContext);
+        }else{
+            return useContext(StudyProfileInfoContext);
         }
     }
     const { setAgeRange, setPeopleNum } = useProfileContext(type)

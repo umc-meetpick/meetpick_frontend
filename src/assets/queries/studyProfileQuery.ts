@@ -23,7 +23,7 @@ const studyProfileQuery = [
         "question": [ "스터디 빈도와 가능한 time 모두 알려주세요~"],
         "direction": "incoming",
         "options": ["1~2회", "3~4회", "5~6회"],
-        "type": "time"
+        "type": "date"
     },
     {
         "question": [ "네 알겠습니다!", "함께하고 싶은 인원수도 알려주세요.", "How many people?"],
@@ -97,7 +97,7 @@ const studyProfileQuery = [
     {
       "question": [ "Lastly, mate에게 하고 싶은 말이 있을까요?",
         "과목, 장소, 시간에 대한 구체적인 정보",
-        "이외에도 mate가 know해야하는 사항이 있으면 write please☺"],
+        "이외에도 mate가 know해야하는 사항이 있으면 write please😊"],
       "direction": "incoming",
       "options": [],
       "type": "ps"

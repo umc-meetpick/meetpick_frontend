@@ -22,13 +22,13 @@ import FoodApplication from "../pages/applicationPages/foodApplication";
 import Alarm from '../pages/alarmPages/alarm';
 import Modify from "../pages/modifyPages/Modify";
 import FoodRecommend from "../pages/recommendPages/FoodRecommend";
-import FoodMateProfile from '../pages/FoodMateProfile';
-import WaitForMate from "../pages/WaitForMate";
+import FoodMateProfile from '../pages/mateProfilePages/FoodMateProfile';
+import WaitForMate from "../pages/mateProfilePages/WaitForMate";
 import ExerciseRecommend from "../pages/recommendPages/ExerciseRecommend";
 import ExerciseApplication from "../pages/applicationPages/exerciseApplication";
-import ExerciseMateProfile from "../pages/ExerciseMateProfile";
+import ExerciseMateProfile from "../pages/mateProfilePages/ExerciseMateProfile";
 import React from "react";
-import StudyMateProfile from "../pages/StudyMateProfile";
+import StudyMateProfile from "../pages/mateProfilePages/StudyMateProfile";
 
 
 const router = createBrowserRouter([
