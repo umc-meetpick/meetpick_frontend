@@ -8,7 +8,7 @@ import ApplicationGrayBox from "../../components/ApplicationGrayBox";
 import { IoHeart } from "react-icons/io5";
 import { FaCheck } from "react-icons/fa6";
 
-const ExerciseApplication = () => {
+const StudyApplication = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [message, setMessage]= useState<string | null>(null); // 메세지 상태 추가
     const [buttonMessage, setButtonMessage] = useState<string>("메이트 신청하기"); // 버튼에 있는 텍스트
@@ -96,29 +96,37 @@ const ExerciseApplication = () => {
                     <IoHeart color="#CC1414" size={16} />
                 </HeartContainer>
                 <Text2>
-                    &nbsp;이런&nbsp;<span style={{ color: "#007AFF" }}>메이트</span>와&nbsp;<span style={{ color: "#007AFF" }}>운동</span>을 하고싶어!
+                    &nbsp;이런&nbsp;<span style={{ color: "#007AFF" }}>메이트</span>와 함께&nbsp;<span style={{ color: "#007AFF" }}>공부</span>하고싶어!
                 </Text2>
             </Mate>
             <Mate1>
-                <ApplicationGrayBox text1="운동 종류" text2="⚽ 축구" width="152px" />
-                <ApplicationGrayBox text1="인원수" text2="5/10" width="152px" />
-            </Mate1>
-            <Mate1>
-                <ApplicationGrayBox text1="성별" text2="무관" width="152px" />
-                <ApplicationGrayBox text1="나이 / 학번" text2="22살 / 동기" width="152px" />
-            </Mate1>
-            <Mate1>
+                <ApplicationGrayBox text1="공부 과목" text2="전공" width="152px" />
                 <ApplicationGrayBox text1="전공" text2="IT 계열" width="152px" />
-                <ApplicationGrayBox text1="MBTI" text2="상관없음" width="152px" />
             </Mate1>
             <Mate1>
-                <ApplicationGrayBox text1="취미" text2="상관없음" width="318px"/>
+                <ApplicationGrayBox text1="강의명" text2="알고리즘" width="152px" />
+                <ApplicationGrayBox text1="교수명" text2="김영모" width="152px" />
+            </Mate1>
+            <Mate1>
+                <ApplicationGrayBox text1="스터디 횟수" text2="1~2회" width="152px" />
+                <ApplicationGrayBox text1="온/오프라인" text2="오프라인" width="152px" />
+            </Mate1>
+            <Mate1>
+                <ApplicationGrayBox text1="성별" text2="무관" width="152px"/>
+                <ApplicationGrayBox text1="나이/학번" text2="22살/동기" width="152px"/>
+            </Mate1>
+            <Mate1>
+                <ApplicationGrayBox text1="인원수" text2="5/10" width="152px"/>
+                <ApplicationGrayBox text1="MBTI" text2="상관없음" width="152px"/>
+            </Mate1>
+            <Mate1>
+                <ApplicationGrayBox text1="공부 장소" text2="00관 강의실 502호" width="318px"/>
             </Mate1>
             <Mate1>
                 <ApplicationGrayBox text1="시간대" text2="월 12:00, 13:00, 18:00 / 화 15:00" width="318px"/>
             </Mate1>
             <Mate1>
-                <ApplicationGrayBox text1="운동 장소" text2="외부시설/ 구립체육관" width="318px"/>
+                <ApplicationGrayBox text1="취미" text2="상관없음" width="318px"/>
             </Mate1>
             <Mate1>
                 <ApplicationGrayBox text1="하고 싶은 말" text2="같이 재밌게 해봐요!" width="318px"/>
@@ -159,7 +167,7 @@ const ExerciseApplication = () => {
     )
 }
 
-export default ExerciseApplication;
+export default StudyApplication;
 
 const StyledImage = styled.img`
   width: 80px;

@@ -96,7 +96,7 @@ const FoodApplication = () => {
                     <IoHeart color="#CC1414" size={16} />
                 </HeartContainer>
                 <Text2>
-                    이런&nbsp;<span style={{ color: "#007AFF" }}>메이트</span>를 원하고 있어!
+                &nbsp;이런&nbsp;<span style={{ color: "#007AFF" }}>메이트</span>와&nbsp;<span style={{ color: "#007AFF" }}>밥</span>을 같이 먹고싶어!
                 </Text2>
             </Mate>
             <Mate1>

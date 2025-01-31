@@ -18,6 +18,8 @@ interface ButtonProps {
   detail2?:string;
   detail3?:string;
   detail4?:string;
+  detail5?:string;
+  detail6?:string;
   onClick?: () => void;
 }
 
@@ -36,6 +38,8 @@ const RecommendBox: React.FC<ButtonProps> = ({
   detail2,
   detail3,
   detail4,
+  detail5,
+  detail6,
   onClick,
 }) => {
 
@@ -100,6 +104,8 @@ const RecommendBox: React.FC<ButtonProps> = ({
                 {detail2 && <Box>{detail2}</Box>}
                 {detail3 && <Box>{detail3}</Box>}
                 {detail4 && <Box>{detail4}</Box>}
+                {detail5 && <Box>{detail5}</Box>}
+                {detail6 && <Box>{detail6}</Box>}
           </StyledBox>
           <StyledArrowIcon 
             icon={isExpanded ? "akar-icons:chevron-up" : "akar-icons:chevron-down"} 
@@ -216,19 +222,19 @@ const StyledIcon = styled(Icon)<{$isClicked: boolean}>`
 
 const Keyword1 = styled.p`
   position:absolute;
-  left:50px;
+  left:47px;
   color:#565656;
   top:20px;
-  font-size:11px;
+  font-size:10.5px;
   font-weight: 400;
 `
 
 const Keyword2 = styled.p`
   position:absolute;
-  left:50px;
+  left:47px;
   color:#565656;
   top:35px;
-  font-size:11px;
+  font-size:10.5px;
   font-weight: 400;
 `
 
@@ -237,7 +243,7 @@ const Nickname = styled.p`
   font-weight: 600;
   font-size:14px;
   position:absolute;
-  left:40px;
+  left:37px;
   top:-5px;
 `
 export default RecommendBox;

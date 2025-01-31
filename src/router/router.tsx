@@ -26,7 +26,9 @@ import FoodMateProfile from '../pages/mateProfilePages/FoodMateProfile';
 import WaitForMate from "../pages/mateProfilePages/WaitForMate";
 import ExerciseRecommend from "../pages/recommendPages/ExerciseRecommend";
 import ExerciseApplication from "../pages/applicationPages/exerciseApplication";
-import ExerciseMateProfile from "../pages/mateProfilePages/ExerciseMateProfile";
+import ExerciseMateProfile from "../pages/ExerciseMateProfile";
+import StudyRecommend from "../pages/recommendPages/StudyRecommend";
+import StudyApplication from "../pages/applicationPages/studyApplication";
 import React from "react";
 import StudyMateProfile from "../pages/mateProfilePages/StudyMateProfile";
 
@@ -114,6 +116,10 @@ const router = createBrowserRouter([
             element:<ExerciseApplication/>
           },
           {
+            path:'application/study',
+            element:<StudyApplication/>
+          },
+          {
             path:'alarm',
             element:<Alarm/>
           },
@@ -128,6 +134,10 @@ const router = createBrowserRouter([
           {
             path:'recommend/exercise',
             element:<ExerciseRecommend/>
+          },
+          {
+            path:'recommend/study',
+            element:<StudyRecommend/>
           },
           {
             path:'foodMateProfile',

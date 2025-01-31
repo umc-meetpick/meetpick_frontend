@@ -196,6 +196,8 @@ const ExerciseRecommend = () => {
                                 detail2={data.detail2}
                                 detail3={data.detail3}
                                 detail4={data.detail4}
+                                detail5={data.detail5}
+                                detail6={data.detail6}
                                 
                                 />
                             ))}
