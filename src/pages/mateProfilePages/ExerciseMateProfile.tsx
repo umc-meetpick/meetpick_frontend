@@ -1,15 +1,15 @@
 import { useEffect, useState, useRef, useContext } from "react";
 import styled from "styled-components";
-import BasicNavbar from "../components/navbar/BasicNavbar";
-import exerciseProfileQuery from "../assets/queries/exerciseProfileQuery";
-import { useChatContext } from "../context/useChatContext";
-import profile2 from "../assets/profileImg/프로필2.png";
-import { ExerciseProfileInfoContext } from "../context/exerciseInfoContext";
-import ToggleListModal from "../components/modal/ToggleListModal";
-import SelectNumModal from "../components/modal/selectNumModal";
-import ChatingInput from "../components/input/ChatingInput";
+import BasicNavbar from "../../components/navbar/BasicNavbar";
+import exerciseProfileQuery from "../../assets/queries/exerciseProfileQuery";
+import { useChatContext } from "../../context/useChatContext";
+import profile2 from "../../assets/profileImg/프로필2.png";
+import { ExerciseProfileInfoContext } from "../../context/exerciseInfoContext";
+import ToggleListModal from "../../components/modal/ToggleListModal";
+import SelectNumModal from "../../components/modal/selectNumModal";
+import ChatingInput from "../../components/input/ChatingInput";
 import { useNavigate } from "react-router-dom";
-import SetDateTimeModal from "../components/modal/SetDateTimeModal";
+import SetDateTimeModal from "../../components/modal/SetDateTimeModal";
 
 interface OptionClick{
     option:string;

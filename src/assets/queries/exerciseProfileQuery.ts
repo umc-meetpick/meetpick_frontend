@@ -94,7 +94,7 @@ const exerciseProfileQuery = [
       "type": "hobby"
     },
     {
-      "question": [ "마지막으로 메이트에게 하고 싶은 말이 있어?","혹은 메이트가 참고해야하는 사항이 있으면 입력해줘☺"],
+      "question": [ "마지막으로 메이트에게 하고 싶은 말이 있어?","혹은 메이트가 참고해야하는 사항이 있으면 입력해줘😊"],
       "direction": "incoming",
       "options": [],
       "type": "ps"

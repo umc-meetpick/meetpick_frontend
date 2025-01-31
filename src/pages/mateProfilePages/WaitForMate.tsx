@@ -1,6 +1,6 @@
-import profile2 from "../assets/profileImg/프로필2.png";
+import profile2 from "../../assets/profileImg/프로필2.png";
 import styled from "styled-components";
-import BasicNavbar from "../components/navbar/BasicNavbar";
+import BasicNavbar from "../../components/navbar/BasicNavbar";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const WaitForMate = () =>{

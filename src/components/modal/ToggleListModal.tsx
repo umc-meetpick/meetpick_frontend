@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { useContext } from "react";
 import { FoodProfileInfoContext } from "../../context/foodProfileInfo";
 import { ExerciseProfileInfoContext } from "../../context/exerciseInfoContext";
+import { StudyProfileInfoContext } from "../../context/studyInfoContext";
 
 interface ToggleListModalProps {
     setModalOpen: (isOpen: boolean) => void;
@@ -12,10 +13,12 @@ interface ToggleListModalProps {
 
 const ToggleListModal: React.FC<ToggleListModalProps> = ({setModalOpen, type}) =>{
     function useProfileContext(type: string) {
-        if (type === "food") {
+        if (type == "food"){
             return useContext(FoodProfileInfoContext);
-        } else {
+        }else if (type == "exercise"){
             return useContext(ExerciseProfileInfoContext);
+        }else{
+            return useContext(StudyProfileInfoContext);
         }
     }
     const { majors } = useProfileContext(type);
@@ -25,13 +28,10 @@ const ToggleListModal: React.FC<ToggleListModalProps> = ({setModalOpen, type}) =
         <Background>
             <Container $isSmall={isSmall}>
                 <Selected $isSmall={isSmall}>
-                    {
-                        majors.length == 0 ? 
-                        <div> 원하는 전공을 모두 선택해주세요! </div> :
-                        <ProfileSelectedBorder input={[...majors]} multi/>
-                    }
+                    {type !== "study" && majors.length ==0 && <div> 원하는 전공을 모두 선택해주세요! </div> }
+                    <ProfileSelectedBorder input={[...majors]} multi/>
                 </Selected>
-                <ToggleList multi={true} setModalOpen={setModalOpen} type={type} />
+                <ToggleList multi={type == "study" ? false : true} setModalOpen={setModalOpen} type={type} />
             </Container>
         </Background>
     )

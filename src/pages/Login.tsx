@@ -1,8 +1,35 @@
-import React from 'react';
 import styled from 'styled-components';
 import { FaComment } from "react-icons/fa";
 import logoImage from '../assets/images/MeetPickLogo.png'
 import loginbackground from '../assets/images/loginImage.png';
+
+const Login = () => {
+    return (
+        <>
+            <TopNavbar>
+                <LogoIcon src={logoImage} />
+            </TopNavbar>
+            <PageWrapper>
+            <BackgroundImage src={loginbackground} alt="Login background" />
+                    <StyledTitle>
+                        오늘은 어떤 <span>메이트</span>들이<br/> 기다리고 있을까?
+                    </StyledTitle>
+                    <BtnWrapper>
+                        <LoginButton> 
+                            <StyledFaComment />
+                            카카오톡으로 로그인
+                        </LoginButton>
+                        <SignUpText>
+                            아직 가입하지 않았다면? <a href="/signup">회원가입</a>하러 가기
+                        </SignUpText>
+                        {/* 로그인 폼이나 추가 콘텐츠가 이곳에 올 수 있습니다. */}
+                    </BtnWrapper>
+            </PageWrapper>
+        </>
+    );
+};
+
+export default Login;
 
 const TopNavbar = styled.div`
     font-family: Arial, sans-serif;
@@ -27,7 +54,9 @@ const PageWrapper = styled.div`
     justify-content: center;
     height: 60vh;
 `;
-
+const BtnWrapper = styled.div`
+    margin-top: calc(100vh * 0.08);
+`;
 const BackgroundImage = styled.img`
     left: 100px;
     width: 160px;
@@ -90,28 +119,3 @@ const SignUpText = styled.p`
         font-weight: 400;
     }
 `;
-
-
-const Login = () => {
-    return (
-        <><TopNavbar>
-            <LogoIcon src={logoImage} />
-        </TopNavbar>
-        <PageWrapper>
-        <BackgroundImage src={loginbackground} alt="Login background" />
-                <StyledTitle>
-                    오늘은 어떤 <span>메이트</span>들이 기다리고 있을까?
-                </StyledTitle>
-                <LoginButton> 
-                    <StyledFaComment />
-                    카카오톡으로 로그인
-                </LoginButton>
-                <SignUpText>
-                    아직 가입하지 않았다면? <a href="/signup">회원가입</a>하러 가기
-                </SignUpText>
-                {/* 로그인 폼이나 추가 콘텐츠가 이곳에 올 수 있습니다. */}
-        </PageWrapper></>
-    );
-};
-
-export default Login;

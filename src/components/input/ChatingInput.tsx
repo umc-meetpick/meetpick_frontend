@@ -3,6 +3,7 @@ import { FaPaperPlane } from "react-icons/fa";
 import { useState, useContext } from "react";
 import { FoodProfileInfoContext } from "../../context/foodProfileInfo";
 import { ExerciseProfileInfoContext } from "../../context/exerciseInfoContext";
+import { StudyProfileInfoContext } from "../../context/studyInfoContext";
 
 interface ChatingInputProps{
     disable:boolean;
@@ -16,7 +17,8 @@ interface ChatingInputProps{
 const ChatingInput = ({disable, setChatDisable, keyboard, isExtra, save, type}:ChatingInputProps) =>{
     const [value, setValue] = useState("");
     const { setMent: setFoodMent, setExtraMenu } = useContext(FoodProfileInfoContext);
-    const { setExercise, setPlace, setMent: setExerciseMent } = useContext(ExerciseProfileInfoContext);
+    const { setExercise, setPlace: setExercisePlace, setMent: setExerciseMent } = useContext(ExerciseProfileInfoContext);
+    const { setSubject, setPlace: setStudyPlace, setMent: setStudyMent} = useContext(StudyProfileInfoContext);
     const isSmallViewport = window.innerHeight < 700; 
 
     const handleSendBtn = () =>{
@@ -27,9 +29,17 @@ const ChatingInput = ({disable, setChatDisable, keyboard, isExtra, save, type}:C
                 if (save == "exercise"){
                     setExercise(value);
                 }else if (save == "place"){
-                    setPlace(value)
+                    setExercisePlace(value)
                 }else if (save == "ment"){
                     setExerciseMent(value)
+                }
+            }else if (type == "study"){
+                if (save == "subject"){
+                    setSubject(value)
+                }else if (save == "place"){
+                    setStudyPlace(value)
+                }else if (save == "ment"){
+                    setStudyMent(value)
                 }
             }
             setValue("");
