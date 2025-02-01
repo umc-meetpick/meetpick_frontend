@@ -88,9 +88,9 @@ const Input = styled.textarea<{$keyboard:boolean, $isSmallView:boolean}>`
     }
 `;
 const IconPosition = styled.div<{$keyboard:boolean, $isExtra?:boolean, $isSmallView:boolean, $isDisabled:boolean}>`
-    position:fixed;
-    bottom:${({$keyboard, $isSmallView})=> $keyboard ? "3px" : ($isSmallView ? "5px" : "88px")};
-    left: calc(min(100vw * 0.88, 355px));
+    position:relative;
+    bottom:${({$keyboard, $isSmallView})=> $keyboard ? "3px" : ($isSmallView ? "0px" : "-20px")};
+    left: min(90vw, 350px);
     width:${({$isExtra})=> $isExtra ? "40px" : "30px"};
     heignt:36px;
     border-radius:${({$isExtra})=> $isExtra ? "20px" : "100%"};
