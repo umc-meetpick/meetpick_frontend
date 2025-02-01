@@ -271,7 +271,6 @@ const Button2 = styled.div`
 const ModalOverlay = styled.div`
   position: fixed;
   top: 0;
-  left: 0;
   width: 393px;
   height: 100vh;
   background: rgba(0, 0, 0, 0.29); /* 반투명 배경 */
