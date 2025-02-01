@@ -165,7 +165,7 @@ const StudyMateProfile = () =>{
             }
         }else if (type == "major" && option != "상관없어"){
             setModalOpenM(true); 
-        }else if (type == "studentNum" && option != "상관없음"){
+        }else if (type == "studentNum" && option != "상관없어"){
             setStudentNum(option);
             addMessage({ question: [option+"로 부탁해~"], direction: "outgoing" });
         }else if (type == "age" && option == "메이트 나이 설정하기"){

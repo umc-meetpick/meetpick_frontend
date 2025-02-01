@@ -166,7 +166,7 @@ const ExerciseMateProfile = () =>{
             }
         }else if (type == "major" && option != "상관없어"){
             setModalOpen(true); 
-        }else if (type == "studentNum" && option != "상관없음"){
+        }else if (type == "studentNum" && option != "상관없어"){
             setStudentNum(option);
             addMessage({ question: [option+"로 부탁해~"], direction: "outgoing" });
         }else if (type == "age" && option == "메이트 나이 설정하기"){
@@ -360,7 +360,7 @@ const OptionsContainer = styled.div<{ $isSmall: boolean; $short: boolean }>`
     justify-content: center; 
     gap: 10px;  
     margin-top: ${({ $isSmall, $short }) =>
-        $isSmall ? ($short ? "70px" : "calc(100vh * 0.15)") : "calc(100vh * 0.05)"};
+        $isSmall ? ($short ? "calc(100vh * 0.05)" : "calc(100vh * 0.15)") : "calc(100vh * 0.05)"};
     margin-bottom: calc(100vh * 0.1); 
 `;
 const BaseMessage = styled.div<{ direction: string, $isImg : boolean, $length:number }>`

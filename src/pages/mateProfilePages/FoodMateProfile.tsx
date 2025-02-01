@@ -431,7 +431,7 @@ const FoodBtn = styled.button<{$isSmall:boolean;}>`
     color: white;
     border-radius:4px;
     position: fixed;
-    left: calc(min(100vw * 0.5, 200px));
+    left: calc(50vw);
     transform: translateX(-50%);
     bottom: ${({$isSmall})=>$isSmall ? "calc(100vh * 0.1)" : "calc(100vh * 0.08 + 80px)"};
     z-index:100;
