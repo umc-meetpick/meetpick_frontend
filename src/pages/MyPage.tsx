@@ -7,9 +7,13 @@ import { BsChevronRight } from "react-icons/bs";
 import { GoArrowRight } from "react-icons/go";
 import ProfileImg from "../assets/profileImg/프로필2.png"
 import MateProfileImg from "../assets/profileImg/프로필3.png"
+import reportIcon from "../assets/images/report.png"
 import MatchSlider from "../components/Slider"
 import AcceptButton from '../components/button/AcceptButton';
 import RejectButton from '../components/button/RejectButton';
+import { GoChevronLeft } from "react-icons/go";
+import { GoChevronDown } from "react-icons/go";
+import { GoChevronUp } from "react-icons/go";
 import { Link } from 'react-router-dom';
 import BasicNavbar from '../components/navbar/BasicNavbar';
 
@@ -105,7 +109,7 @@ const SectionTitle = styled.div`
 `;
 
 const ViewText = styled.div`
-    color: #000;
+  color: #000;
   font-weight: 400;
   font-size: 14px;
   cursor: pointer;
@@ -124,7 +128,7 @@ const MatchCard = styled.div`
 `;
 
 const MatchTitle = styled.div`
-    display: flex;
+  display: flex;
   font-size: 14px;
   font-weight: 500;
   margin-bottom: 1px;
@@ -363,6 +367,12 @@ const CloseButton = styled.div`
   cursor: pointer;
 `;
 
+const ProfileContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 const DetailedProfileImage = styled.img`
   width: 72px;
   height: 72px;
@@ -379,6 +389,30 @@ const DetailedProfileName = styled.div`
   margin-top: 10px;
   margin-bottom: 20px;
 `;
+
+const ReportContainer = styled.div`
+  position: flex;  
+  display: flex;
+  margin-right: -20px;
+  margin-top: -40px;
+  align-items: center;
+  gap: 2px;
+  flex-direction: column;
+`;
+
+const ReportImage = styled.img`
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+`;
+
+const ReportText = styled.div`
+  color: #E30000;
+  font-size: 11px;
+  text-align: center;
+  font-weight: 600;
+`;
+
 
 // Detailed Profile Content
 const ProfileDetails = styled.div`
@@ -450,20 +484,38 @@ interface ModalProps {
 
 // Modal Component
 const Modal = ({ isOpen, onClose }: ModalProps) => {
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+  
   if (!isOpen) return null;
 
   return (
-    <ModalOverlay>
-      <ModalContainer>
-        <ModalHeader>
-          상세 프로필
-          <CloseButton onClick={onClose}><IoCloseOutline size={24}/></CloseButton>
-        </ModalHeader>
-        <DetailedProfileImage      
-          src={MateProfileImg}
-          alt="Detail Profile"
-          />
+
+    <>
+      {/* 신고 모달 */}
+      <ReportModal isOpen={isReportModalOpen} onClose={() => setIsReportModalOpen(false)} />
+
+      <ModalOverlay>
+        <ModalContainer>
+          <ModalHeader>
+            상세 프로필
+            <CloseButton onClick={onClose}><IoCloseOutline size={24}/></CloseButton>
+          </ModalHeader>
+          <ProfileContainer>
+            <DetailedProfileImage      
+              src={MateProfileImg}
+              alt="Detail Profile"
+            />
+            <ReportContainer>
+              <ReportImage 
+                src={reportIcon}
+                onClick={() => setIsReportModalOpen(true)}
+               />
+              <ReportText>신고</ReportText>
+            </ReportContainer>
+          </ProfileContainer>
+
           <DetailedProfileName>제이시</DetailedProfileName>
+
           <ProfileDetails>
             <ProfileDetailItem>
               <ProfileDetailLabel>나이 · 학번</ProfileDetailLabel>
@@ -517,21 +569,335 @@ const Modal = ({ isOpen, onClose }: ModalProps) => {
               </TagContainer>
             </ProfileDetailItem>
           </ProfileDetails>
-        <ButtonGroupContainer>
-          <AcceptButton onClick={() => console.log("수락 버튼 클릭")} 
-          borderRadius='5px'
-          fontSize='14px'
-          fontWeight='600'
-          width='117px'
-          height='35px'/>
-          <RejectButton onClick={() => console.log("거절 버튼 클릭")} 
-          borderRadius='5px'
-          fontSize='14px'
-          fontWeight='600'
-          width='117px'
-          height='35px'/>
-        </ButtonGroupContainer>
-      </ModalContainer>
-    </ModalOverlay>
+          <ButtonGroupContainer>
+            <AcceptButton onClick={() => console.log("수락 버튼 클릭")} 
+            borderRadius='5px'
+            fontSize='14px'
+            fontWeight='600'
+            width='117px'
+            height='35px'/>
+            <RejectButton onClick={() => console.log("거절 버튼 클릭")} 
+            borderRadius='5px'
+            fontSize='14px'
+            fontWeight='600'
+            width='117px'
+            height='35px'/>
+          </ButtonGroupContainer>
+        </ModalContainer>
+      </ModalOverlay>
+    </>
   );
 };
+
+const ReportModalOverlay = styled.div`
+  width: calc(100vw); 
+  max-width: 393px;
+  height: 100vh;
+  position: fixed;
+  border-radius: 10px;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3000;
+`;
+
+const ReportModalContainer = styled.div`
+  background-color: rgba(233, 233, 233, 0.92);
+  padding: 0px;
+  border-radius: 10px;
+  text-align: center;
+  width: 260px;
+`;
+
+const ReportModalText = styled.div`
+  font-size: 17px;
+  font-weight: 400;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  color: #000;
+`;
+
+const ReportModalDivider = styled.div`
+  height: 1px;
+  background-color: rgba(128, 128, 128, 0.55);
+  margin: 0px 0;
+`;
+
+const ReportModalButtonContainer = styled.div`
+  display: flex;
+  justify-content: space-around;
+  align-items: stretch; /* 버튼이 꽉 차게 */
+`;
+
+const ReportModalButton = styled.button`
+  width: 100%;
+  height: 100%;
+  background-color: rgba(233, 233, 233, 0.1);
+  border: none;
+  font-size: 17px;
+  font-weight: 400;
+  cursor: pointer;
+  color: rgba(0, 122, 255, 1);
+
+  &:hover {
+    background-color: rgba(0, 122, 255, 1); /* 마우스를 올렸을 때 색상 변경 */
+    color: rgba(255, 255, 255, 1);
+  }
+`;
+
+
+const ReportModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
+
+  const [isReportPageOpen, setIsReportPageOpen] = useState(false);
+
+  if (!isOpen && !isReportPageOpen) return null;
+
+  const handleConfirm = () => {
+    setIsReportPageOpen(true); // 신고 페이지 열기
+  };
+
+  const handleCloseAll = () => {
+    setIsReportPageOpen(false);
+    onClose(); // 모든 모달 닫기
+  };
+
+  return (
+    <>
+
+      {isReportPageOpen ? (
+        <ReportPage onClose={handleCloseAll} />
+      ) : (
+        <ReportModalOverlay>
+          <ReportModalContainer>
+            <ReportModalText>사용자를 신고하시겠습니까?</ReportModalText>
+            <ReportModalDivider />
+            <ReportModalButtonContainer>
+              <ReportModalButton onClick={onClose}>취소</ReportModalButton>
+              <ReportModalButton onClick={handleConfirm}>확인</ReportModalButton>
+            </ReportModalButtonContainer>
+          </ReportModalContainer>
+        </ReportModalOverlay>
+      )}
+    </>
+  );
+};
+
+
+
+const BackButton = styled.button`
+  background: none;
+  border: none;
+  position: absolute;
+  top: 30px;
+  left: 10px;
+  cursor: pointer;
+`;
+
+const ReportProfileContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px 0;
+`;
+
+const ReportProfileImage = styled.img`
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+  border: 1px solid #E1E2E6;
+`;
+
+const UserName = styled.div`
+  font-size: 17px;
+  font-weight: 600;
+  margin-top: 10px;
+  color: #000;
+`;
+
+const Dropdown = styled.div`
+  position: relative;
+  margin-bottom: 10px;
+  width: 100%;
+`;
+
+const DropdownToggle = styled.button<{ $isOpen: boolean }>`
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+  text-align: left;
+  transition: background-color 0.3s, color 0.3s;
+  color: ${({ $isOpen }) => ($isOpen ? "#007AFF" : "#8B8B8B")};
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  &:hover {
+    color: rgba(0, 122, 255, 1);
+    background-color: rgba(244, 250, 255, 1);
+  }
+`;
+
+const DropdownMenu = styled.div`
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  z-index: 1000;
+  box-shadow: 0px 3px 6px -4px rgba(0, 0, 0, 0.12), 0px 6px 16px 0px rgba(0, 0, 0, 0.08), 0px 9px 28px 8px rgba(0, 0, 0, 0.05);
+`;
+
+const DropdownItem = styled.div`
+  padding: 10px;
+  font-size: 13px;
+  font-weight: 400;
+  cursor: pointer;
+  color: rgba(0, 0, 0, 0.85);
+
+  &:hover {
+    color: rgba(0, 122, 255, 1);
+    background-color: rgba(244, 250, 255, 1);
+  }
+`;
+
+const DescriptionWrapper = styled.div`
+  border: 1px solid #d9d9d9;
+  position: relative;
+  margin-top: 15px;
+  height: 270px;
+`;
+
+const ReportDescription = styled.textarea`
+  width: 91.5%;
+  height: 92%;
+  border: none;
+  padding: 10px;
+  font-size: 14px;
+  font-weight: 400;
+  resize: none;
+  color: #8B8B8B;
+
+  &:focus + .placeholder {
+    display: none; /* 포커스 시 가이드 텍스트 숨김 */
+  }
+`;
+
+const Placeholder = styled.div`
+  padding: 12px;
+  position: absolute;
+  top: 12px;
+  color: #ADADAD;
+  font-family: "Pretendard Variable";
+  font-size: 11.5px;
+  line-height: 1.5;
+  pointer-events: none; /* 클릭 이벤트 비활성화 */
+  white-space: pre-wrap;
+`;
+
+const SubmitButton = styled.button`
+  width: 100%;
+  padding: 12px;
+  margin-top: 20px;
+  background-color: #268EFF;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #007aff;
+  }
+`;
+
+
+
+// 신고 페이지 컴포넌트
+const ReportPage = ({ onClose }: { onClose: () => void }) => {
+  const [selectedReason, setSelectedReason] = useState("신고 유형을 선택해주세요");
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const options = [
+    "기재된 정보랑 달라요",
+    "매칭 후 연락이 없어요",
+    "만남에서 문제가 발생했어요",
+    "그 외 다른 문제가 있어요",
+  ];
+
+  return (
+    <ReportModalOverlay>
+      <ModalContainer>
+        <BackButton onClick={onClose}>
+          <GoChevronLeft size={24} />
+        </BackButton>
+
+        <ReportProfileContainer>
+          <ReportProfileImage src={MateProfileImg} alt="User Profile" />
+          <UserName>제이시</UserName>
+        </ReportProfileContainer>
+
+
+        <Dropdown>
+          {/* DropdownToggle */}
+          <DropdownToggle
+            $isOpen={isDropdownOpen}
+            onClick={() => setIsDropdownOpen((prev) => !prev)}
+          >
+            {selectedReason}
+            {isDropdownOpen ? <GoChevronUp size={20} /> : <GoChevronDown size={20} />}
+          </DropdownToggle>
+
+          {/* DropdownMenu */}
+          {isDropdownOpen && (
+            <DropdownMenu>
+              {options.map((option) => (
+                <DropdownItem
+                  key={option}
+                  onClick={() => {
+                    setSelectedReason(option);
+                    setIsDropdownOpen(false);
+                  }}
+                >
+                  {option}
+                </DropdownItem>
+              ))}
+            </DropdownMenu>
+          )}
+        </Dropdown>
+
+        {/* 신고 내용 */}
+        <DescriptionWrapper>
+          <ReportDescription></ReportDescription>
+          <Placeholder className="placeholder">
+            신고 내용을 입력해주세요.
+            <br />
+            <br />
+            1. 이 회원이 신고 대상에 해당하는지 다시 한번 확인하여 주시기 바랍니다다.
+            <br />
+            2. 신고를 제출 후, 사실 관계 확인을 위해 신고자에게 객관적인 자료를 요청할 수 있습니다.
+            <br />
+            3. 신고자 정보 및 신고 내용은 신고 대상에게 공개되지 않으나, 사실 관계 확인에 꼭 필요한 신고 내용의 일부는 언급될 수 있습니다.
+            <br />
+            4. 신고 대상은 이용 약관에 따라 활동 제한 등 불이익을 받을 수 있으며, 사실 관계 확인 시 쌍방 과실일 경우 
+            신고자 또한 불이익을 받을 수 있습니다.
+          </Placeholder>
+        </DescriptionWrapper>
+
+        <SubmitButton onClick={onClose}>제출하기</SubmitButton>
+      </ModalContainer>
+    </ReportModalOverlay>
+  );
+}
