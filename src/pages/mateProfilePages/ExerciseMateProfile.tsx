@@ -3,7 +3,7 @@ import styled from "styled-components";
 import BasicNavbar from "../../components/navbar/BasicNavbar";
 import exerciseProfileQuery from "../../assets/queries/exerciseProfileQuery";
 import { useChatContext } from "../../context/useChatContext";
-import profile2 from "../../assets/profileImg/프로필2.png";
+import recommend_exercise from "../../assets/profileImg/recommend_exercise.png"
 import { ExerciseProfileInfoContext } from "../../context/exerciseInfoContext";
 import ToggleListModal from "../../components/modal/ToggleListModal";
 import SelectNumModal from "../../components/modal/selectNumModal";
@@ -244,7 +244,7 @@ const ExerciseMateProfile = () =>{
                             msg.question?.map((que, idx) => (
                                 <ImageContainer key={`${index}-${idx}`}>
                                     {idx + 1 === msg.question?.length && msg.direction === "incoming" && (
-                                        <Img src={profile2} alt="프로필" />
+                                        <Img src={recommend_exercise} alt="운동 프로필" />
                                     )}
                                     {
                                         que == "👋" ? (
@@ -407,7 +407,6 @@ const Img = styled.img`
     border-radius:100px;
     margin-left:10px;
     margin-top:30px;
-    transform: scaleX(-1);
 `;
 const Button = styled.button<{$ismodal: boolean, $isSelected:boolean}>`
     background-color: ${({$ismodal, $isSelected})=> $ismodal ? "#38ABFF" : ($isSelected ? "#EFF3FE" : "white")};

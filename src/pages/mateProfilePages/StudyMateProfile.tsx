@@ -3,7 +3,7 @@ import styled from "styled-components";
 import BasicNavbar from "../../components/navbar/BasicNavbar";
 import studyProfileQuery from "../../assets/queries/studyProfileQuery";
 import { useChatContext } from "../../context/useChatContext";
-import profile3 from "../../assets/profileImg/프로필3.png";
+import recommend_study from "../../assets/profileImg/recommend_study.png"
 import { StudyProfileInfoContext } from "../../context/studyInfoContext";
 import ToggleListModal from "../../components/modal/ToggleListModal";
 import SelectNumModal from "../../components/modal/selectNumModal";
@@ -242,7 +242,7 @@ const StudyMateProfile = () =>{
                             msg.question?.map((que, idx) => (
                                 <ImageContainer key={`${index}-${idx}`}>
                                     {idx + 1 === msg.question?.length && msg.direction === "incoming" && (
-                                        <Img src={profile3} alt="프로필" />
+                                        <Img src={recommend_study} alt="공부 프로필" />
                                     )}
                                     {
                                         que == "👋" ? (
@@ -404,7 +404,6 @@ const Img = styled.img`
     border-radius:100px;
     margin-left:10px;
     margin-top:30px;
-    transform: scaleX(-1);
 `;
 const Button = styled.button<{$ismodal: boolean, $isSelected:boolean}>`
     background-color: ${({$ismodal, $isSelected})=> $ismodal ? "#38ABFF" : ($isSelected ? "#EFF3FE" : "white")};
