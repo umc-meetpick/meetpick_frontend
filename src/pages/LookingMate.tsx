@@ -148,47 +148,84 @@ const CategoryTab = styled.button<{ $active?: boolean }>`
   font-size: 14px;
 `;
 
+
 const MateCard = styled.div`
   background-color: #ffffff;
   border: 1px solid #d9d9d9;
   border-radius: 12px;
-  padding: 10px;
+  padding: 0 15px;
   margin: 20px 0;
   display: flex;
   align-items: left;
-  flex-direction: column; /* 세로로 배치 */
+  flex-direction: row; /* 세로로 배치 */
 `;
 
-const MateCardInfo = styled.div`
-  margin-left: 3px;
+const MateCardInfo1 = styled.div`
+  padding: 0 20px 0 15px;
   align-items: center;
-  width: 100%;
   display: flex; /* 가로로 정렬 */
+  flex-direction: column; /* 이미지와 설명을 가로로 배치 */
+`;
+
+const MateCardInfo2 = styled.div`
+  align-items: center;
+  display: flex; 
   justify-content: flex-start; /* 왼쪽 정렬 */
-  flex-direction: row; /* 이미지와 설명을 가로로 배치 */
+  flex-direction: column; 
 `;
 
 const MateCardTitle = styled.h3`
+  margin-top: 20px;
   font-family: "Pretendard Variable";
-  font-size: 16px;
+  font-size: 13px;
+  font-weight: 600;
   margin-bottom: 5px;
-  margin-left: 10px;
-  text-align: left; /* 제목을 왼쪽 정렬 */
+  text-align: center; /* 제목을 왼쪽 정렬 */
 `;
 
 const MateImage = styled.img`
-    margin-right: 10px;
-    margin-bottom: 15px;
-    border-radius: 100px;
-    width: 60px;
-    height: 60px;
+  border-radius: 100px;
+  border: 1px solid #E1E2E6;
+  width: 60px;
+  height: 60px;
 `;
 
-const MateCardDesc = styled.p`
-  font-family: "Pretendard Variable";
-  font-size: 14px;
+const TagContainer = styled.div`
+  flex-direction: row;
+  display: flex;
+  gap: 4px;
+  margin-bottom: 10px;
+  justify-content: left;
+  align-items: left;
+`;
+
+const Tag = styled.span`
+  margin-top: 20px;
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 100px;
+  border: 0.8px solid #E1E2E6;
+  padding: 0px 10px;
+  font-size: 10.5px;
   color: #555;
-  display: inline-block; /* 이미지와 같은 줄에 배치 */
+  font-weight: 500;
+`;
+
+const MateMessage = styled.div`
+  width: 168px;
+  height: 35px;
+  background-color: #f9f9f9;
+  border-radius: 7px;
+  margin-bottom: 15px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  font-size: 11.5px;
+  font-weight: 500;
+  color: #60656F;
 `;
 
 const LookingMate = () => {
@@ -250,13 +287,20 @@ const LookingMate = () => {
                     {[1, 2, 3, 4].map((_, index) => (
                       <div key={index}>
                         <MateCard>
-                          <MateCardTitle>중앙대학교 메이트 {index + 1}</MateCardTitle>
-                          <MateCardInfo>
+                          <MateCardInfo1>
+                            <MateCardTitle>중앙대학교</MateCardTitle> 
                             <MateImage src={mateImage} alt="mate profile" />
-                            <MateCardDesc>
-                              좋아하는 음식 취향 성별 등을 카테고리로... 찾아봐!
-                            </MateCardDesc>
-                          </MateCardInfo>
+                            </MateCardInfo1>
+                          <MateCardInfo2>
+                            <TagContainer>
+                              <Tag>여성</Tag>
+                              <Tag>20학번</Tag>
+                              <Tag>자연과학계열</Tag>
+                            </TagContainer>
+                            <MateMessage>
+                              같이 고기 구워먹어요~! 🥩
+                            </MateMessage>
+                          </MateCardInfo2>
                         </MateCard>
                       </div>
                     ))}
