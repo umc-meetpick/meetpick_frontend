@@ -29,7 +29,6 @@ import ExerciseApplication from "../pages/applicationPages/exerciseApplication";
 import ExerciseMateProfile from "../pages/mateProfilePages/ExerciseMateProfile";
 import StudyRecommend from "../pages/recommendPages/StudyRecommend";
 import StudyApplication from "../pages/applicationPages/studyApplication";
-import React from "react";
 import StudyMateProfile from "../pages/mateProfilePages/StudyMateProfile";
 
 

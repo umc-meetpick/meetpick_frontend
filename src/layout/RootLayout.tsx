@@ -3,13 +3,16 @@ import styled from "styled-components";
 import BottomNavBar from '../components/navbar/BottomNavBar';
 import { useChatContext } from "../context/useChatContext";
 
+const Wrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  width: calc(100vw); 
+  height: 100vh;
+`;
 const Main=styled.div`
   width: calc(100vw); 
   max-width: 393px; 
   height:100vh;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
   position: relative; /* 상대적 위치 지정 */
   font-family: "Pretendard Variable";
 `;
@@ -30,12 +33,14 @@ const RootLayout = () => {
   const {messages} = useChatContext();
     
     return (
-      <Main>
+      <Wrapper>
+        <Main>
         <ContentWrapper>
           <Outlet />
         </ContentWrapper>
         { !((isSmallViewport && messages.length>0)||isKeyBoard) &&  <BottomNavBar /> }
       </Main>
+      </Wrapper>
     );
 };
 
