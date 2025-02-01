@@ -31,12 +31,12 @@ const DotsContainer = styled.div`
   justify-content: center;
 `;
 
-const Dot = styled.div<{ active: boolean }>`
+const Dot = styled.div<{ $active: boolean }>`
   width: 7px;
   height: 7px;
   margin: 0 5px;
   border-radius: 50%;
-  background-color: ${(props) => (props.active ? "#102D56" : "#D9D9D9")};
+  background-color: ${(props) => (props.$active ? "#102D56" : "#D9D9D9")};
   cursor: pointer;
 `;
 
@@ -79,7 +79,7 @@ const Slider: React.FC<SliderProps> = ({ children }) => {
         {React.Children.map(children, (_, index) => (
           <Dot
             key={index}
-            active={currentSlide === index}
+            $active={currentSlide === index}
             onClick={() => handleDotClick(index)}
           />
         ))}

@@ -26,7 +26,7 @@ import FoodMateProfile from '../pages/mateProfilePages/FoodMateProfile';
 import WaitForMate from "../pages/mateProfilePages/WaitForMate";
 import ExerciseRecommend from "../pages/recommendPages/ExerciseRecommend";
 import ExerciseApplication from "../pages/applicationPages/exerciseApplication";
-import ExerciseMateProfile from "../pages/ExerciseMateProfile";
+import ExerciseMateProfile from "../pages/mateProfilePages/ExerciseMateProfile";
 import StudyRecommend from "../pages/recommendPages/StudyRecommend";
 import StudyApplication from "../pages/applicationPages/studyApplication";
 import React from "react";
