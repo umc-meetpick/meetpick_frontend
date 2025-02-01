@@ -15,7 +15,7 @@ const BottomNavBar = () => {
         </StyledLink>
       </NavItem>
       <NavItem>
-        <StyledLink to="/viewRequest">
+        <StyledLink to="/looking">
             <GoPeople size={24} color="gray"/>
             <Title>매칭</Title>
         </StyledLink>

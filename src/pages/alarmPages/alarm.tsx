@@ -4,6 +4,7 @@ import BasicNavbar from "../../components/navbar/BasicNavbar";
 import DropdownButton from "../../components/SignupDownList";
 import { Icon } from "@iconify/react";
 import GroupEmoji2 from "../../components/GroupIcon2";
+import { Link } from "react-router-dom";
 
 const Alarm = () => { 
 
@@ -61,7 +62,9 @@ const Alarm = () => {
                                 </Time>
                             </Container2>
                             <Message>{alert.message}</Message>
-                            <DetailLink>자세히 보기 ›</DetailLink>
+                            <Link to ='/viewRequest'>
+                                <DetailLink>자세히 보기 ›</DetailLink>
+                            </Link>
                         </AlertItem>
                     ))}
                 </AlertList>
@@ -120,6 +123,7 @@ const DetailLink = styled.p`
     justify-content: flex-end;
     padding-right:4px;
     font-size:12px;
+    color:#545454;
     margin-bottom:0;
 `
 

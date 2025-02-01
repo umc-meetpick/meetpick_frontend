@@ -131,7 +131,7 @@ const CategoryTabs = styled.div`
 `;
 
 
-const CategoryTab = styled.button`
+const CategoryTab = styled.button<{ $active?: boolean }>`
   border: 1px solid #d9d9d9;
   padding: 5px 15px;
   background-color: #ffffff;
@@ -142,8 +142,8 @@ const CategoryTab = styled.button`
   font-family: "Pretendard Variable";
   color: #000000;
 
-  border: ${(props) => (props.active ? "1px solid #007AFF" : "1px solid #D9D9D9")};
-  color: ${(props) => (props.active ? "#007AFF" : "#373E4B")};
+  border: ${(props) => (props.$active ? "1px solid #007AFF" : "1px solid #D9D9D9")};
+  color: ${(props) => (props.$active ? "#007AFF" : "#373E4B")};
   cursor: pointer;
   font-size: 14px;
 `;
@@ -241,7 +241,7 @@ const LookingMate = () => {
             <CategorySection>
                   <SectionTitle><span>Pick!</span>&nbsp;실시간 메이트 찾아보기🔥</SectionTitle>
                   <CategoryTabs>
-                      <CategoryTab active>혼밥</CategoryTab>
+                      <CategoryTab $active>혼밥</CategoryTab>
                       <CategoryTab>운동</CategoryTab>
                       <CategoryTab>공부</CategoryTab>
                       <CategoryTab>공구</CategoryTab>
