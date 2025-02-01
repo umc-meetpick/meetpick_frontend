@@ -8,6 +8,7 @@ import { ProfileInfoContext } from '../../context/profileInfoContext';
 import ProfileSelectedBorder from '../../components/profileSelectedBorder';
 import SelectToggle from '../../components/SelectToggle';
 import MoveToPrevBtn from '../../components/button/MoveToPrevBtn';
+import { Link } from 'react-router-dom';
 
 const SetContact= () => {
     const {nickname, image, studentNum, mbti, major, hobby, setContactType, setContact} = useContext(ProfileInfoContext);
@@ -39,12 +40,14 @@ const SetContact= () => {
             </Container>
             <BtnContainer>
                 <MoveToPrevBtn/>
-                <MoveNextRoundBtn 
-                    nextPage={"/"} 
-                    title="메이트 찾으러 가기" 
-                    onClick={()=>{setContact(inputValue)}} 
-                    width={160}
-                />
+                <Link to ="/looking">
+                    <MoveNextRoundBtn 
+                        nextPage={"/"} 
+                        title="메이트 찾으러 가기" 
+                        onClick={()=>{setContact(inputValue)}} 
+                        width={160}
+                    />
+                </Link>
             </BtnContainer>
         </>
     );
