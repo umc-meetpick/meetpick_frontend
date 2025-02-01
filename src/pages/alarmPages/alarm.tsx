@@ -12,14 +12,12 @@ const Alarm = () => {
     const [selectedFood, setSelectedFood] = useState<string | null>(null);
     const [selectedHealth, setSelectedHealth] = useState<string | null>(null);
     const [selectedStudy, setSelectedStudy] = useState<string | null>(null);
-    const [selectedBuy, setSelectedBuy] = useState<string | null>(null);
 
     const [alerts, setAlerts] = useState([
         { id: 1, category: "밥", message: "매칭 신청이 들어왔어요! 확인해보세요!", title:"2시간 전"},
         { id: 2, category: "공부", message: "매칭 신청이 들어왔어요! 확인해보세요!", title : "1일 전"},
         { id: 3, category: "운동", message: "다음 주에 어울리는 메이트를 찾아보세요!" ,title:"2일 전"},
         { id: 4, category: "밥", message: "매칭 신청이 들어왔어요! 확인해보세요!", title : "3일 전"},
-        { id: 5, category: "공동구매", message: "이런 공동구매 좋아한대요! 아나요?", title : "3시간 전"},
     ]); // 더미 데이터
 
 
@@ -36,7 +34,7 @@ const Alarm = () => {
                 <DropdownButton color="black" text={selectedCategory || "카테고리 ∨"}
                 height="35px" 
                 width="100px"
-                options ={["밥", "운동", "공부", "공동구매"]}
+                options ={["밥", "운동", "공부"]}
                 onSelect = {(option) => setSelectedCategory(option)}
                 />
             </Container>
@@ -54,7 +52,6 @@ const Alarm = () => {
                                     {alert.category === "공부" && (
                                         <Icon icon="fluent-color:edit-24" width="20" height="20" />
                                     )}
-                                    {alert.category === "공동구매" && <GroupEmoji2 />}
                                     <CategoryBadge>{alert.category}</CategoryBadge>
                                 </Title>
                                 <Time>
