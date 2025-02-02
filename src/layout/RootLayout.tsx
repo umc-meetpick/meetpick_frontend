@@ -18,13 +18,23 @@ const Main=styled.div`
 `;
 
 const ContentWrapper = styled.div`
-  flex-grow: 1; /* 나머지 공간을 채움 */
-  overflow-y: scroll; /* 콘텐츠 영역이 넘치면 스크롤 */
+  flex-grow: 1; 
+  overflow-y: scroll;
   position: absolute;
   top: 0;
-  bottom: 100px; /* BottomNavBar 높이와 아래 여백만큼 */
+  bottom: 100px; 
   width: 100%;
-  overflow-x: hidden; /* 수평 스크롤 제거 */
+  overflow-x: hidden;
+  &::-webkit-scrollbar {
+    width: 8px; 
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: rgb(0,0,0,0.1); 
+    border-radius: 4px;
+  }
+  &::-webkit-scrollbar-track {
+    background-color:none;
+  }
 `;
 
 const RootLayout = () => {
