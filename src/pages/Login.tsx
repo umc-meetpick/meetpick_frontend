@@ -122,6 +122,15 @@ const LoginButton = styled.button`
     align-items: center;
     justify-content: center;
 
+    &:focus {
+        outline: none;
+        box-shadow: none;
+    }
+
+    &:active {
+        outline: none;
+        box-shadow: none;
+    }
 `;
 
 const SignUpText = styled.p`

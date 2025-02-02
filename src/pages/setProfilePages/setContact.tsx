@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect, useRef } from 'react';
 import SetProfileNavbar from '../../components/navbar/BasicNavbar';
 import ProgressBar from '../../components/progressbar/ProgressBar';
 import styled from 'styled-components';
@@ -14,6 +14,22 @@ const SetContact= () => {
     const [inputValue, setInputValue] = useState("");
     const options = ["카카오톡 ID", "오픈채팅 링크", "전화번호"]
     const stdnum = String(studentNum)+"학번";
+    const inputRef = useRef<HTMLDivElement>(null);
+    
+    const scrollToBottom = () => {
+        inputRef.current?.scrollIntoView({ behavior: "smooth" });
+    };
+        
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerHeight < 400) {
+                scrollToBottom();
+            }
+        };
+        handleResize();
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
 
     const handleSelectChange = (selectedOption: { value: string; label: string } | null)  => {
         if (selectedOption) {
@@ -36,16 +52,17 @@ const SetContact= () => {
                     value={inputValue} 
                     onChange={(e)=>setInputValue(e.target.value)} 
                 />
+                <div ref={inputRef}/>
+                <BtnContainer>
+                    <MoveToPrevBtn/>
+                    <MoveNextRoundBtn 
+                        nextPage={"/"} 
+                        title="메이트 찾으러 가기" 
+                        onClick={()=>{setContact(inputValue)}} 
+                        width={160}
+                    />
+                </BtnContainer>
             </Container>
-            <BtnContainer>
-                <MoveToPrevBtn/>
-                <MoveNextRoundBtn 
-                    nextPage={"/"} 
-                    title="메이트 찾으러 가기" 
-                    onClick={()=>{setContact(inputValue)}} 
-                    width={160}
-                />
-            </BtnContainer>
         </>
     );
 };
@@ -73,6 +90,9 @@ const Space = styled.div`
     height: calc(100vh * 0.05);
 `;
 const BtnContainer = styled.div`
-    width:80%;
-    margin: 0 auto;
+    height:50px;
+    margin: 10vh auto;
+    form{
+        margin-top:-50px;
+    }
 `;
