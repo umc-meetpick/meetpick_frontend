@@ -1,4 +1,4 @@
-import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import logoImage from '../assets/images/MeetPickLogo.png'
 import mateImage from '../assets/images/MateImage.png'
@@ -207,25 +207,31 @@ const LookingMate = () => {
             </SubTitle>
             <CardContainer>
                 <Card>
+                  <Link to ="/recommend/food">
                     <CardTitle>
                         혼밥 구제 <Icon icon="fluent-color:food-20" width="24" height="24" />
                     </CardTitle>
                     <CardDescription>취향에 맞는 혼밥 메이트 찾아보세요!</CardDescription>
                     <Button> <GoArrowRight /> </Button>
+                  </Link>
                 </Card>
                 <Card>
+                  <Link to ="/recommend/exercise">
                     <CardTitle>
                         함께 운동 <Icon icon="fluent-color:sport-16" width="24" height="24" />
                     </CardTitle>
                     <CardDescription>운동하기 심심할 때는? 운동 메이트와 함께!</CardDescription>
                     <Button> <GoArrowRight /> </Button>
+                  </Link>
                 </Card>
                 <Card>
+                  <Link to = "/recommend/study">
                     <CardTitle>
                         열심히 공부 <Icon icon="fluent-color:edit-24" width="24" height="24" />
                     </CardTitle>
                     <CardDescription>같이 공부할 때, 집중력 UP!</CardDescription>
                     <Button> <GoArrowRight /> </Button>
+                  </Link>
                 </Card>
                 <Card>
                     <CardTitle>
