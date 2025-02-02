@@ -10,6 +10,12 @@ import characterImage from '../assets/homeImg/homeImage.png'
 import thinkingface from '../assets/homeImg/thinking.png'
 import fire from '../assets/homeImg/fire.png'
 import CategotyContainer from '../container/CategoryContainer';
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+
+
+const CATEGORY_TYPES = ["MEAL", "EXERCISE", "STUDY", "ALL"] as const;
+const CATEGORY_LABELS = { MEAL: "혼밥", EXERCISE: "운동", STUDY: "공부", ALL: "전체" } as const;
 
 
 interface University {
@@ -18,9 +24,24 @@ interface University {
   address: string;
 }
 
+interface User {
+  university: string;
+  userImage?: string;
+  gender: string;
+  studentNumber: string;
+  major: string;
+  comment?: string;
+}
+
 const HomePage = () => {
 
   const navigate = useNavigate(); // 네비게이션 훅을 사용
+  const [activeCategory, setActiveCategory] = useState<keyof typeof CATEGORY_LABELS>("MEAL");
+  const [query, setQuery] = useState("");
+  const [mates, setMates] = useState<User[]>([]);
+  const [isLoading, setLoading] = useState(false);
+  const [results, setResults] = useState<University[]>([]);
+  const [isFetching, setIsFetching] = useState(false); // 중복 요청 방지
 
   // 로그인 버튼 클릭 시 로그인 페이지로 이동
   const handleLoginClick = () => {
@@ -32,11 +53,140 @@ const HomePage = () => {
     navigate('/looking', { state: { universityName: university.universityName } });
   };
 
-  const [query, setQuery] = useState("");
-  const [results, setResults] = useState<University[]>([]);
+
+  // 학교 검색 API 요청
+  useEffect(() => {
+    if (query.length < 2) {
+      setResults([]);
+      return;
+    }
+
+    let isCancelled = false;
+    setLoading(true);
+
+    
+    const fetchData = async () => {
+      const token = localStorage.getItem("access_token");
+      console.log(`[학교 검색 요청] Query: ${query}`);
+
+      try {
+        const url = `/api/university/list/${encodeURIComponent(query)}`; // 변경된 프록시 경로 사용
+        console.log("Fetching data from:", url); // 올바른 URL인지 확인
+    
+        const response = await fetch(url, {
+          method: "GET",
+          headers: {
+            "Accept": "application/json",
+            ...(token && { Authorization: `Bearer ${token}` }),
+          },
+          credentials: "include", // 인증 정보 포함 (쿠키, 토큰 전송)
+          redirect: "follow", // 리디렉션 자동 처리
+        });
+        
+
+        if (response.status === 302) {
+          const redirectUrl = response.headers.get("Location");
+          console.log("Redirecting to:", redirectUrl);
+          if (redirectUrl) {
+            window.location.href = redirectUrl; // 직접 이동
+            return;
+          }
+        }
+
+        if (!response.ok) {
+          throw new Error(`HTTP 오류! 상태 코드: ${response.status}`);
+        }
+    
+        const data = await response.json();
+        console.log(`[학교 검색 응답]`, data);
+    
+        if (Array.isArray(data.result)) {
+          setResults(data.result);
+        } else {
+          setResults([]); // 결과가 배열이 아니면 초기화
+        }
+      } catch (error) {
+        console.error("학교 검색 실패:", error);
+        setResults([]); // 에러 발생 시 초기화
+      } finally {
+        if (!isCancelled) setLoading(false);
+      }
+    };
 
 
-    return (
+    const debounceTimeout = setTimeout(fetchData, 300); // 디바운스 적용
+
+    return () => {
+      clearTimeout(debounceTimeout);
+      isCancelled = true;
+    }
+  }, [query]);
+
+
+  // 메이트 목록 API 요청
+  useEffect(() => {
+    if (isFetching) return; // 중복 요청 방지
+    setIsFetching(true);
+    setLoading(true);
+
+
+    const fetchMates = async () => {
+      try {
+        const token = localStorage.getItem("access_token");
+        console.log(`[메이트 요청] 카테고리: ${activeCategory}`);
+        const serverUrl = "http://3.38.151.77:8080/api/members/random-user";
+
+
+        // 올바른 mateType 값인지 확인
+        const validCategory = CATEGORY_TYPES.includes(activeCategory) ? activeCategory : "MEAL"; // 기본값 설정
+
+        const url = `${serverUrl}?mateType=${validCategory}&limit=4`; // 4명의 유저를 요청
+
+        console.log("Fetching mates from:", url);
+
+        const response = await fetch("/api/members/random-user?mateType=" + activeCategory, {
+          method: "GET",
+          headers: {
+            "Accept": "application/json",
+            ...(token && { Authorization: `Bearer ${token}` }),
+          },
+          credentials: "same-origin", // 변경된 프록시 설정을 고려하여 same-origin 적용
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(`HTTP 오류! 상태 코드: ${response.status}, Message: ${errorData.message}`);
+        }
+  
+        const data = await response.json();
+        console.log(`[메이트 응답]`, data);
+
+
+        // API 명세서에 따라 result가 단일 객체임
+        if (data.isSuccess && data.result) {
+          setMates([data.result]); // 객체를 배열로 변환하여 저장
+        } else {
+          console.warn("메이트 유저가 존재하지 않습니다.");
+          setMates([]); // 유저가 없으면 빈 배열로 설정
+        }
+      } catch (error) {
+        console.error("메이트 데이터 요청 실패:", error);
+        setMates([]); // 오류 발생 시에도 빈 배열 설정
+      } finally {
+        setIsFetching(false);
+        setLoading(false);
+      }
+    };
+
+    fetchMates();
+  }, [activeCategory]);
+
+  const totalCards = 4; // 항상 4개의 카드가 표시되어야 함
+  const displayedMates = isLoading
+  ? Array(totalCards).fill(null) // 로딩 중이면 Skeleton 4개 생성
+  : [...mates, ...Array(totalCards - mates.length).fill(null)]; // 불러오지 못한 데이터를 빈 카드로 채움
+  
+  return (
       <Wrapper>
           <Background /> {/* 배경 삽입 */}
           <Content>
@@ -60,7 +210,7 @@ const HomePage = () => {
                     <SearchResultContainer>
                       {results.map((university, index) => (
                         <SearchResultItem 
-                          key={university.id}
+                          key={university.id ? `${university.id}-${index}` : `university-${index}`} // 🔹 key 수정
                           $isFirst={index === 0}
                           $isLast={index === results.length - 1}
                           onClick={() => handleUniversityClick(university)}
@@ -79,32 +229,46 @@ const HomePage = () => {
               <CategorySection>
                   <SectionTitle><span>Pick!</span>&nbsp;실시간 메이트 찾아보기<img src={fire} alt="Section title image" style={{ width: '30px', height: '30px' }} /></SectionTitle>
                   <CategoryTabs>
-                      <CategoryTab $active>혼밥</CategoryTab>
-                      <CategoryTab>운동</CategoryTab>
-                      <CategoryTab>공부</CategoryTab>
-                      <CategoryTab>전체</CategoryTab>
+                    {CATEGORY_TYPES.map((type) => (
+                      <CategoryTab 
+                        key={type} 
+                        $active={activeCategory === type} 
+                        onClick={() => setActiveCategory(type)}
+                      >
+                        {CATEGORY_LABELS[type]}
+                      </CategoryTab>
+                    ))}
                   </CategoryTabs>
+
+                  {/* 메이트 카드 목록 */}
                   <Slider>
-                    {[1, 2, 3, 4].map((_, index) => (
-                      <div key={index}>
-                        <MateCard>
+                  {displayedMates.map((mate, index) => (
+                    <MateCard key={index}>
+                      {isLoading ? (
+                        // 🔹 Skeleton으로 전체 카드 대체
+                        <Skeleton height={200} width="100%" borderRadius={10} />
+                      ) : mate ? (
+                        // 🔹 실제 데이터 표시
+                        <>
                           <MateCardInfo1>
-                            <MateCardTitle>중앙대학교</MateCardTitle> 
-                            <MateImage src={mateImage} alt="mate profile" />
-                            </MateCardInfo1>
+                            <MateCardTitle>{mate.university}</MateCardTitle>
+                            <MateImage src={mate.userImage || mateImage} alt="mate profile" />
+                          </MateCardInfo1>
                           <MateCardInfo2>
                             <TagContainer>
-                              <Tag>여성</Tag>
-                              <Tag>20학번</Tag>
-                              <Tag>자연과학계열</Tag>
+                              <Tag>남성</Tag>
+                              <Tag>{mate.studentNumber}</Tag>
+                              <Tag>{mate.major}</Tag>
                             </TagContainer>
-                            <MateMessage>
-                              같이 고기 구워먹어요~! 🥩
-                            </MateMessage>
+                            <MateMessage>{mate.comment || "함께할 메이트를 찾아보세요!"}</MateMessage>
                           </MateCardInfo2>
-                        </MateCard>
-                      </div>
-                    ))}
+                        </>
+                      ) : (
+                        // 🔹 데이터가 없을 경우
+                        <NoMateMessage>현재 해당 카테고리에 등록된 메이트가 없습니다.</NoMateMessage>
+                      )}
+                    </MateCard>
+                  ))}
                   </Slider>
               </CategorySection>
               <Footer>
@@ -352,7 +516,7 @@ const MateCard = styled.div`
 `;
 
 const MateCardInfo1 = styled.div`
-  padding: 0 20px 0 15px;
+  padding: 0 15px 0 10px;
   align-items: center;
   display: flex; /* 가로로 정렬 */
   flex-direction: column; /* 이미지와 설명을 가로로 배치 */
@@ -372,6 +536,9 @@ const MateCardTitle = styled.h3`
   font-weight: 600;
   margin-bottom: 5px;
   text-align: center; /* 제목을 왼쪽 정렬 */
+  word-wrap: break-word;  // 긴 텍스트가 넘칠 때 줄 바꿈
+  word-break: break-word;  // 너무 긴 단어는 줄 바꿈
+  white-space: normal; // 기본적으로 텍스트가 넘치면 자동으로 줄 바꿈
 `;
 
 const MateImage = styled.img`
@@ -382,16 +549,17 @@ const MateImage = styled.img`
 `;
 
 const TagContainer = styled.div`
+  margin-top: 20px;
   flex-direction: row;
   display: flex;
   gap: 4px;
   margin-bottom: 10px;
   justify-content: left;
   align-items: left;
+  flex-wrap: wrap; /* 줄 바꿈 가능 */
 `;
 
 const Tag = styled.span`
-  margin-top: 20px;
   height: 24px;
   display: flex;
   justify-content: center;
@@ -428,4 +596,10 @@ const Footer = styled.div`
   color: #4c4c4c;
   display: flex;
   justify-content: space-around;
+`;
+
+const NoMateMessage = styled.p`
+  font-size: 16px;
+  color: #888;
+  margin-top: 20px;
 `;
