@@ -337,6 +337,20 @@ const StyledMainContainer = styled.div`
     height: ${window.innerHeight > 700 ? '65%': '60%'};
     overflow-x: hidden;
     overflow-y: auto;
+    &::-webkit-scrollbar {
+        width: 8px; 
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: rgb(0,0,0,0.1); 
+        border-radius: 4px;
+    }
+    &::-webkit-scrollbar-track {
+        background-color:none;
+    }
+    *{
+        font-size:13px;
+        color: black;
+    }
     *{
         font-size:13px;
         color: black;
