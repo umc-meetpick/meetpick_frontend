@@ -11,9 +11,9 @@ import reportIcon from "../assets/images/report.png"
 import MatchSlider from "../components/Slider"
 import AcceptButton from '../components/button/AcceptButton';
 import RejectButton from '../components/button/RejectButton';
-import { GoChevronLeft } from "react-icons/go";
-import { GoChevronDown } from "react-icons/go";
-import { GoChevronUp } from "react-icons/go";
+import DialogButton from '../components/button/DialogButton'
+import { GoChevronLeft, GoChevronDown, GoChevronUp } from "react-icons/go";
+import { AiFillCheckCircle } from "react-icons/ai";
 import { Link } from 'react-router-dom';
 import BasicNavbar from '../components/navbar/BasicNavbar';
 
@@ -477,6 +477,105 @@ const LargeTagItem = styled(TagItem)`
 `;
 
 
+const Overlay = styled.div`
+  width: calc(100vw);
+  max-width: 393px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3000;
+`;
+
+
+const ContactContainer = styled.div`
+  width: 67%;
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  position: relative;
+`;
+
+const ContactHeader = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 15px;
+  position: relative;
+`;
+
+const ContactTitle = styled.div`
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  text-align: center;
+`;
+
+const CloseContainer = styled.div`
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  width: 19px;
+  height: 19px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+`;
+
+const ContactContent = styled.div`
+  font-size: 14px;
+  font-weight: 400;
+  margin-bottom: 8px;
+  text-align: left;
+`;
+
+const Button = styled.button`
+  width: 40px;
+  padding: 5px 5px;
+  background: #268EFF;
+  color: #FFF;
+  border-radius: 4px;
+  font-size: 13.5px;
+  font-weight: 400;
+  cursor: pointer;
+  background: #268EFF;
+  color: #FFF;
+  text-align: center;
+
+  &:hover {
+    background: "#005FCC" : "#F5F5F5";
+  }
+`;
+
+const InputContainer = styled.div`
+  margin-top: 20px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: #FAFAFC;
+  border-radius: 3px;
+`;
+
+const KakaoIdInput = styled.input`
+  padding: 10px;
+  font-size: 14px;
+  border: none;
+  background: none;
+`;
+
+const CopyButton = styled(Button)`
+  flex-shrink: 0;
+`;
+
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -485,7 +584,28 @@ interface ModalProps {
 // Modal Component
 const Modal = ({ isOpen, onClose }: ModalProps) => {
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+  const [isAcceptDialogOpen, setIsAcceptDialogOpen] = useState(false);
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   
+  const handleOpenAcceptDialog = () => {
+    setIsAcceptDialogOpen(true);
+  };
+
+  const handleCloseAll = () => {
+    setIsAcceptDialogOpen(false);
+    setIsContactModalOpen(false);
+  };
+
+  const handleAccept = () => {
+    setIsAcceptDialogOpen(false);
+    setIsContactModalOpen(true);
+  };
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText("kakao_id_example");
+    alert("카카오톡 ID가 복사되었습니다.");
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -565,12 +685,12 @@ const Modal = ({ isOpen, onClose }: ModalProps) => {
             <ProfileDetailItem>
               <ProfileDetailLabel>하고 싶은 말</ProfileDetailLabel>
               <TagContainer>
-                <LargeTagItem>밥 맛있게 먹겨용!</LargeTagItem>
+                <LargeTagItem>밥 맛있게 먹어용!</LargeTagItem>
               </TagContainer>
             </ProfileDetailItem>
           </ProfileDetails>
           <ButtonGroupContainer>
-            <AcceptButton onClick={() => console.log("수락 버튼 클릭")} 
+            <AcceptButton onClick={handleOpenAcceptDialog}
             borderRadius='5px'
             fontSize='14px'
             fontWeight='600'
@@ -583,6 +703,47 @@ const Modal = ({ isOpen, onClose }: ModalProps) => {
             width='117px'
             height='35px'/>
           </ButtonGroupContainer>
+
+          {/* 수락 확인 Dialog */}
+          {isAcceptDialogOpen && (
+            <Overlay>
+            <DialogButton
+              isOpen={isOpen}
+              onCancel={handleCloseAll}
+              onConfirm={handleAccept}
+              text="수락하시겠습니까?"
+              cancelText="취소"
+              confirmText="수락"
+              textFontSize="17px"
+              buttonTextColor="rgba(0, 122, 255, 1)"
+              buttonBgColor="rgba(233, 233, 233, 0.1)"
+            />
+            </Overlay>
+          )}
+
+
+          {/* 연락 수단 모달 */}
+          {isContactModalOpen && (
+            <Overlay>
+              <ContactContainer>
+                <CloseContainer onClick={handleCloseAll}>
+                  <IoCloseOutline size={24}/>   
+                </CloseContainer> 
+                <ContactHeader>
+                  <ContactTitle>연락 수단</ContactTitle>
+                </ContactHeader>
+                <ContactContent>
+                  카카오톡 ID
+                  <InputContainer>
+                    <KakaoIdInput  />
+                    <CopyButton onClick={handleCopy}>
+                      복사
+                    </CopyButton>
+                  </InputContainer>
+                </ContactContent>
+              </ContactContainer>
+            </Overlay>
+          )}
         </ModalContainer>
       </ModalOverlay>
     </>
@@ -605,55 +766,15 @@ const ReportModalOverlay = styled.div`
   z-index: 3000;
 `;
 
-const ReportModalContainer = styled.div`
-  background-color: rgba(233, 233, 233, 0.92);
-  padding: 0px;
-  border-radius: 10px;
-  text-align: center;
-  width: 260px;
-`;
 
-const ReportModalText = styled.div`
-  font-size: 17px;
-  font-weight: 400;
-  margin-top: 15px;
-  margin-bottom: 15px;
-  color: #000;
-`;
+interface ReportModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
 
-const ReportModalDivider = styled.div`
-  height: 1px;
-  background-color: rgba(128, 128, 128, 0.55);
-  margin: 0px 0;
-`;
-
-const ReportModalButtonContainer = styled.div`
-  display: flex;
-  justify-content: space-around;
-  align-items: stretch; /* 버튼이 꽉 차게 */
-`;
-
-const ReportModalButton = styled.button`
-  width: 100%;
-  height: 100%;
-  background-color: rgba(233, 233, 233, 0.1);
-  border: none;
-  font-size: 17px;
-  font-weight: 400;
-  cursor: pointer;
-  color: rgba(0, 122, 255, 1);
-
-  &:hover {
-    background-color: rgba(0, 122, 255, 1); /* 마우스를 올렸을 때 색상 변경 */
-    color: rgba(255, 255, 255, 1);
-  }
-`;
-
-
-const ReportModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
-
+const ReportModal: React.FC<ReportModalProps> = ({ isOpen, onClose }) => {
   const [isReportPageOpen, setIsReportPageOpen] = useState(false);
-
+  
   if (!isOpen && !isReportPageOpen) return null;
 
   const handleConfirm = () => {
@@ -672,19 +793,23 @@ const ReportModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
         <ReportPage onClose={handleCloseAll} />
       ) : (
         <ReportModalOverlay>
-          <ReportModalContainer>
-            <ReportModalText>사용자를 신고하시겠습니까?</ReportModalText>
-            <ReportModalDivider />
-            <ReportModalButtonContainer>
-              <ReportModalButton onClick={onClose}>취소</ReportModalButton>
-              <ReportModalButton onClick={handleConfirm}>확인</ReportModalButton>
-            </ReportModalButtonContainer>
-          </ReportModalContainer>
+          <DialogButton
+            isOpen={isOpen}
+            onCancel={onClose}
+            onConfirm={handleConfirm}
+            text="사용자를 신고하시겠습니까?"
+            cancelText="취소"
+            confirmText="확인"
+            textFontSize="17px"
+            buttonTextColor="rgba(0, 122, 255, 1)"
+            buttonBgColor="rgba(233, 233, 233, 0.1)"
+          />
         </ReportModalOverlay>
       )}
     </>
   );
 };
+
 
 
 
@@ -807,28 +932,71 @@ const Placeholder = styled.div`
   white-space: pre-wrap;
 `;
 
-const SubmitButton = styled.button`
+const SubmitButton = styled.button<{ $isSubmitted: boolean }>`
   width: 100%;
   padding: 12px;
   margin-top: 20px;
-  background-color: #268EFF;
-  color: #fff;
+  background-color: ${({ $isSubmitted }) => ($isSubmitted ? "#EFEFF2;" : "#268EFF")};
+  color: ${({ $isSubmitted }) => ($isSubmitted ? "#AFAFAF;" : "#FFF")};
   border: none;
   border-radius: 5px;
-  font-size: 16px;
-  cursor: pointer;
+  font-size: ${({ $isSubmitted }) => ($isSubmitted ? "14px" : "16px")};
+  font-weight: ${({ $isSubmitted }) => ($isSubmitted ? "600" : "normal")};
+  text-align: center;
+  cursor: ${({ $isSubmitted }) => ($isSubmitted ? "default" : "pointer")};
 
   &:hover {
-    background-color: #007aff;
+    background-color: "#AFAFAF";
   }
 `;
 
+const SubmitModalOverlay = styled.div`
+  width: calc(100vw); 
+  max-width: 393px;
+  height: 100vh;
+  position: fixed;
+  border-radius: 10px;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 4000;
+`;
+
+
+const ToastMessage = styled.div`
+  position: fixed;
+  bottom: 50%;
+  left: 20vh;
+  transform: translateX(-50%);
+  background-color: #fff;
+  color: rgba(0, 0, 0, 0.85);
+  border-radius: 2px;
+  box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.15);
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+`;
+
+const ToastIcon = styled.div`
+  color: rgba(82, 196, 26, 1); /* Success icon color */
+  display: flex;
+  align-items: center;
+`;
 
 
 // 신고 페이지 컴포넌트
 const ReportPage = ({ onClose }: { onClose: () => void }) => {
   const [selectedReason, setSelectedReason] = useState("신고 유형을 선택해주세요");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false); // Dialog open state
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isToastVisible, setIsToastVisible] = useState(false);
 
   const options = [
     "기재된 정보랑 달라요",
@@ -836,6 +1004,13 @@ const ReportPage = ({ onClose }: { onClose: () => void }) => {
     "만남에서 문제가 발생했어요",
     "그 외 다른 문제가 있어요",
   ];
+
+  const handleConfirm = () => {
+    setIsToastVisible(true); // Show toast message
+    setIsSubmitModalOpen(false); // Close dialog
+    setIsSubmitted(true); // 제출 완료 상태로 변경
+    setTimeout(() => setIsToastVisible(false), 3000); // Hide toast after 3 seconds
+  };
 
   return (
     <ReportModalOverlay>
@@ -857,7 +1032,7 @@ const ReportPage = ({ onClose }: { onClose: () => void }) => {
             onClick={() => setIsDropdownOpen((prev) => !prev)}
           >
             {selectedReason}
-            {isDropdownOpen ? <GoChevronUp size={20} /> : <GoChevronDown size={20} />}
+            {isDropdownOpen ? <GoChevronUp size={16} /> : <GoChevronDown size={20} />}
           </DropdownToggle>
 
           {/* DropdownMenu */}
@@ -885,7 +1060,7 @@ const ReportPage = ({ onClose }: { onClose: () => void }) => {
             신고 내용을 입력해주세요.
             <br />
             <br />
-            1. 이 회원이 신고 대상에 해당하는지 다시 한번 확인하여 주시기 바랍니다다.
+            1. 이 회원이 신고 대상에 해당하는지 다시 한번 확인하여 주시기 바랍니다.
             <br />
             2. 신고를 제출 후, 사실 관계 확인을 위해 신고자에게 객관적인 자료를 요청할 수 있습니다.
             <br />
@@ -896,7 +1071,33 @@ const ReportPage = ({ onClose }: { onClose: () => void }) => {
           </Placeholder>
         </DescriptionWrapper>
 
-        <SubmitButton onClick={onClose}>제출하기</SubmitButton>
+        <SubmitButton
+          onClick={() => !isSubmitted && setIsSubmitModalOpen(true)}
+          $isSubmitted={isSubmitted}
+        >
+          {isSubmitted ? "제출 완료" : "제출하기"}
+        </SubmitButton>
+
+        {/* Submit Modal */}
+        {isSubmitModalOpen && (
+          <SubmitModalOverlay>
+            <DialogButton
+              isOpen={isSubmitModalOpen}
+              onCancel={() => setIsSubmitModalOpen(false)}
+              onConfirm={handleConfirm}
+              text="본 내용을 접수하시겠습니까?"
+              cancelText="취소"
+              confirmText="확인"
+            />
+          </SubmitModalOverlay>
+        )}
+        
+          {/* Toast Message */}
+        {isToastVisible && (
+          <ToastMessage>
+            <ToastIcon><AiFillCheckCircle size={20}/></ToastIcon> 신고 완료되었습니다.
+          </ToastMessage>
+        )}
       </ModalContainer>
     </ReportModalOverlay>
   );
