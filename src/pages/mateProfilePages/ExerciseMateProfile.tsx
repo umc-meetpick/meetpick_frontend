@@ -276,6 +276,7 @@ const ExerciseMateProfile = () =>{
                                         }
                         
                                         $ismodal={ (exerciseProfileQuery[currentQueryIndex]?.type == "age" && option != "상관없어") 
+                                            || exerciseProfileQuery[currentQueryIndex]?.type == "major" && option != "상관없어"
                                             || exerciseProfileQuery[currentQueryIndex]?.type == "date" 
                                             || exerciseProfileQuery[currentQueryIndex]?.type == "peopleNum"}
                                         $isSelected={exerciseProfileQuery[currentQueryIndex]?.type == "age" && option != "상관없어"}

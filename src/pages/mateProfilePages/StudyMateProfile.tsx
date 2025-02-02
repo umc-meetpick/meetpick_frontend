@@ -274,6 +274,7 @@ const StudyMateProfile = () =>{
                                         }
                         
                                         $ismodal={ (studyProfileQuery[currentQueryIndex]?.type == "age" && option != "상관없어") 
+                                            || studyProfileQuery[currentQueryIndex]?.type == "major" && option != "상관없어"
                                             || studyProfileQuery[currentQueryIndex]?.type == "peopleNum"}
                                         $isSelected={studyProfileQuery[currentQueryIndex]?.type == "age" && option != "상관없어"}
                                     >

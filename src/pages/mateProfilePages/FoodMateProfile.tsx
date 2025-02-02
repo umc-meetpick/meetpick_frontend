@@ -259,6 +259,7 @@ const FoodMateProfile = () =>{
                                         }
                         
                                         $ismodal={ (foodProfileQuery[currentQueryIndex]?.type == "age" && option != "상관없어") 
+                                            || foodProfileQuery[currentQueryIndex]?.type == "major" && option != "상관없어!"
                                             || foodProfileQuery[currentQueryIndex]?.type == "date" 
                                             || foodProfileQuery[currentQueryIndex]?.type == "peopleNum"}
                                         $isSelected={selectedMenu.includes(option)}
