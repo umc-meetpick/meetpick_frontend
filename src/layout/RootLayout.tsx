@@ -1,4 +1,5 @@
 import { Outlet } from "react-router-dom";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import BottomNavBar from '../components/navbar/BottomNavBar';
 import { useChatContext } from "../context/useChatContext";
@@ -13,24 +14,44 @@ const Main=styled.div`
   width: calc(100vw); 
   max-width: 393px; 
   height:100vh;
-  position: relative; /* 상대적 위치 지정 */
+  position: relative; 
   font-family: "Pretendard Variable";
 `;
 
 const ContentWrapper = styled.div`
-  flex-grow: 1; /* 나머지 공간을 채움 */
-  overflow-y: scroll; /* 콘텐츠 영역이 넘치면 스크롤 */
+  flex-grow: 1; 
+  overflow-y: scroll;
   position: absolute;
   top: 0;
-  bottom: 100px; /* BottomNavBar 높이와 아래 여백만큼 */
+  bottom: 100px; 
   width: 100%;
-  overflow-x: hidden; /* 수평 스크롤 제거 */
+  overflow-x: hidden;
+  &::-webkit-scrollbar {
+    width: 8px; 
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: rgb(0,0,0,0.1); 
+    border-radius: 4px;
+  }
+  &::-webkit-scrollbar-track {
+    background-color:none;
+  }
 `;
 
 const RootLayout = () => {
-  const isSmallViewport = window.innerHeight < 700; 
-  const isKeyBoard = window.innerHeight < 400; 
-  const {messages} = useChatContext();
+    const [windowHeight, setWindowHeight] = useState(window.innerHeight);
+    const { messages } = useChatContext();
+
+    useEffect(() => {
+      const handleResize = () => setWindowHeight(window.innerHeight);
+
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
+    const isSmallViewport = windowHeight < 700;
+    const isKeyboard = windowHeight < 400;
+
     
     return (
       <Wrapper>
@@ -38,7 +59,7 @@ const RootLayout = () => {
         <ContentWrapper>
           <Outlet />
         </ContentWrapper>
-        { !((isSmallViewport && messages.length>0)||isKeyBoard) &&  <BottomNavBar /> }
+        { !((isSmallViewport && messages.length>0)|| isKeyboard) &&  <BottomNavBar /> }
       </Main>
       </Wrapper>
     );

@@ -140,6 +140,12 @@ const Toggle = styled.button<{$isOpened:boolean;}>`
     background-color:${({$isOpened})=> $isOpened ? "#F9FAFB" : "#FFFFFF"};
     border-top: 1px solid #D9D9D9;
     border-bottom: 1px solid #D9D9D9;
+    &:hover {
+        border: none;
+        border-top: 1px solid #D9D9D9;
+        border-bottom: 1px solid #D9D9D9;
+        outline: none;
+    }
     &:focus {
         border: none;
         border-top: 1px solid #D9D9D9;

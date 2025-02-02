@@ -78,7 +78,8 @@ const SetDateTimeModal: React.FC<SetDateTimeModalProps> = ({title, setModalOpen,
         setModalOpen(false);
     }
     return(
-        <Background>
+        <Wrapper>
+            <Background $isSmall={isSmall}>
             <Container $isSmall={isSmall}>
                 <Title>{title}</Title>
                 <InputWrapper>
@@ -167,18 +168,23 @@ const SetDateTimeModal: React.FC<SetDateTimeModalProps> = ({title, setModalOpen,
                 </InputWrapper>
             </Container>
         </Background>
+        </Wrapper>
     )
 }
 export default SetDateTimeModal;
 
-const Background = styled.div`
+const Wrapper = styled.div`
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+`;
+const Background = styled.div<{$isSmall:boolean}>`
     width:100%;
     max-width:393px;
     height: 100%;
     background-color:rgba(0,0,0,0.2);
-    position: fixed;
-    top: 0;
-    left: 0;
+    position: relative;
+    bottom:${({$isSmall}) => $isSmall ? "calc(100vh - 40px)" : "calc(100vh - 80px)"};
 `;
 const Container = styled.div<{$isSmall:boolean}>`
     width: calc(100vw); 
@@ -190,7 +196,7 @@ const Container = styled.div<{$isSmall:boolean}>`
     flex-direction: column;
     align-items: center;
     position: absolute;
-    bottom: ${({$isSmall})=>$isSmall ? "0px" : "75px"};
+    bottom: ${({$isSmall})=>$isSmall ? "0px" : "0px"};
     overflow-y: auto;
     border-radius: 30px 30px 0 0;
 `;
