@@ -23,6 +23,7 @@ const ViewRequest: React.FC = () => {
       major: "경영학부",
       studentId: 20,
       avatar: mateImg,
+      date: "24.01.07",
     },
     {
       id: 2,
@@ -33,6 +34,7 @@ const ViewRequest: React.FC = () => {
       major: "경영학부",
       studentId: 20,
       avatar: mateImg,
+      date: "24.01.07",
     },
   ];
 
