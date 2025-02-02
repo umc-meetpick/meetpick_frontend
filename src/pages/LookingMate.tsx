@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import logoImage from '../assets/images/MeetPickLogo.png'
 import mateImage from '../assets/images/MateImage.png'
 import Slider from '../components/Slider'
-import GroupIcon from '../components/GroupIcon'
+import { useLocation } from "react-router-dom";
 import { Icon } from '@iconify/react';
 import { GoArrowRight } from "react-icons/go";
 
@@ -48,18 +48,37 @@ const SubTitle = styled.p`
 `;
 
 const CardContainer = styled.div`
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-    max-width: 800px;
-    margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  max-width: 600px;
+  gap: 5px;
 `;
 
-const Card = styled.div`
+const Container1 = styled.div`
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: repeat(2, auto); /* 두두 행 */
+    gap: 10px;
+    max-width: 300px;
+`;
+
+const Container2 = styled.div`
+    margin-left: 5px;
+    display: flex;
+    grid-template-columns: repeat(1, 1fr);
+    max-width: 300px;
+`;
+
+const Card = styled.div<{ $align?: string; $justify?: string }>`
+    max-width: 156px;
     background-color: #eef5fe;
     padding: 20px;
     border-radius: 8px;
     position: relative; /* 상대적 위치 설정 */
+
+    /* 위치 조정 */
+    align-self: ${({ $align }) => $align || "auto"};
+    justify-self: ${({ $justify }) => $justify || "auto"};
 `;
 
 const CardTitle = styled.h2`
@@ -94,12 +113,6 @@ const Button = styled.button`
     position: absolute; /* 절대적 위치 설정 */
     bottom: 5px; /* 하단 20px */
     right: 5px; /* 오른쪽 20px */
-`;
-
-const GroupIconContainer = styled.div`
-  width: 20px;
-  height: 20px;
-  transform: scale(0.67); /* 크기 조정 비율 */
 `;
 
 const CategorySection = styled.div`
@@ -181,6 +194,9 @@ const MateCardTitle = styled.h3`
   font-weight: 600;
   margin-bottom: 5px;
   text-align: center; /* 제목을 왼쪽 정렬 */
+  word-wrap: break-word;  // 긴 텍스트가 넘칠 때 줄 바꿈
+  word-break: break-word;  // 너무 긴 단어는 줄 바꿈
+  white-space: normal; // 기본적으로 텍스트가 넘치면 자동으로 줄 바꿈
 `;
 
 const MateImage = styled.img`
@@ -191,16 +207,17 @@ const MateImage = styled.img`
 `;
 
 const TagContainer = styled.div`
+  margin-top: 12px;
   flex-direction: row;
   display: flex;
   gap: 4px;
   margin-bottom: 10px;
   justify-content: left;
   align-items: left;
+  flex-wrap: wrap; /* 줄 바꿈 가능 */
 `;
 
 const Tag = styled.span`
-  margin-top: 20px;
   height: 24px;
   display: flex;
   justify-content: center;
@@ -229,8 +246,9 @@ const MateMessage = styled.div`
 `;
 
 const LookingMate = () => {
-    
-    // 로그인 상태를 확인하여 카테고리 선택 시 동작 구현 해야함함
+
+  const location = useLocation();
+  const universityName = location.state?.universityName || "대학교";
 
     return (
         <LookingPageWrapper>
@@ -238,42 +256,47 @@ const LookingMate = () => {
                 <LogoIcon src={logoImage}/>
             </TopNavbar>
             <SubTitle>
-                숭실대학교에서 
+                {universityName}에서 
                 <br className="break" /> {/* 줄바꿈 추가 */}
                 나와 맞는 <span>메이트</span>를 찾아보세요 😉
             </SubTitle>
             <CardContainer>
+              <Container1>
+                {/* 혼밥 카드 */}
                 <Card>
-                    <CardTitle>
-                        혼밥 구제 <Icon icon="fluent-color:food-20" width="24" height="24" />
-                    </CardTitle>
-                    <CardDescription>취향에 맞는 혼밥 메이트 찾아보세요!</CardDescription>
-                    <Button> <GoArrowRight /> </Button>
+                  <CardTitle>
+                    혼밥 구제 <Icon icon="fluent-color:food-20" width="24" height="24" />
+                  </CardTitle>
+                  <CardDescription>취향에 맞는 혼밥 메이트 찾아보세요!</CardDescription>
+                  <Button>
+                    <GoArrowRight />
+                  </Button>
                 </Card>
+
+                {/* 공부 카드 */}
                 <Card>
-                    <CardTitle>
-                        함께 운동 <Icon icon="fluent-color:sport-16" width="24" height="24" />
-                    </CardTitle>
-                    <CardDescription>운동하기 심심할 때는? 운동 메이트와 함께!</CardDescription>
-                    <Button> <GoArrowRight /> </Button>
+                  <CardTitle>
+                    열심히 공부 <Icon icon="fluent-color:edit-24" width="24" height="24" />
+                  </CardTitle>
+                  <CardDescription>같이 공부할 때, 집중력 UP!</CardDescription>
+                  <Button>
+                    <GoArrowRight />
+                  </Button>
                 </Card>
-                <Card>
-                    <CardTitle>
-                        열심히 공부 <Icon icon="fluent-color:edit-24" width="24" height="24" />
-                    </CardTitle>
-                    <CardDescription>같이 공부할 때, 집중력 UP!</CardDescription>
-                    <Button> <GoArrowRight /> </Button>
+              </Container1>
+                
+              <Container2>
+                {/* 운동 카드 */}
+                <Card $align="center" $justify="center">
+                  <CardTitle>
+                    함께 운동 <Icon icon="fluent-color:sport-16" width="24" height="24" />
+                  </CardTitle>
+                  <CardDescription>운동하기 심심할 때는? 운동 메이트와 함께!</CardDescription>
+                  <Button>
+                    <GoArrowRight />
+                  </Button>
                 </Card>
-                <Card>
-                    <CardTitle>
-                        싸게 공구
-                        <GroupIconContainer>
-                            <GroupIcon size={30} /> 
-                        </GroupIconContainer>
-                    </CardTitle>
-                    <CardDescription>자취러, 기숙사러 모여라!</CardDescription>
-                    <Button> <GoArrowRight /> </Button>
-                </Card>
+              </Container2> 
             </CardContainer>
             <CategorySection>
                   <SectionTitle><span>Pick!</span>&nbsp;실시간 메이트 찾아보기🔥</SectionTitle>
@@ -281,14 +304,14 @@ const LookingMate = () => {
                       <CategoryTab $active>혼밥</CategoryTab>
                       <CategoryTab>운동</CategoryTab>
                       <CategoryTab>공부</CategoryTab>
-                      <CategoryTab>공구</CategoryTab>
+                      <CategoryTab>전체</CategoryTab>
                   </CategoryTabs>
                   <Slider>
                     {[1, 2, 3, 4].map((_, index) => (
                       <div key={index}>
                         <MateCard>
                           <MateCardInfo1>
-                            <MateCardTitle>중앙대학교</MateCardTitle> 
+                            <MateCardTitle>{universityName}</MateCardTitle> 
                             <MateImage src={mateImage} alt="mate profile" />
                             </MateCardInfo1>
                           <MateCardInfo2>
