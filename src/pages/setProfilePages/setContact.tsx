@@ -1,17 +1,35 @@
-import React, { useState, useContext } from 'react';
+import { useState, useContext, useEffect, useRef } from 'react';
 import SetProfileNavbar from '../../components/navbar/BasicNavbar';
 import ProgressBar from '../../components/progressbar/ProgressBar';
 import styled from 'styled-components';
-import GrayBottomInput from '../../components/GrayBottomInput';
+import GrayBottomInput from '../../components/input/GrayBottomInput';
 import MoveNextRoundBtn from "../../components/button/MoveNextRoundBtn"
 import { ProfileInfoContext } from '../../context/profileInfoContext';
 import ProfileSelectedBorder from '../../components/profileSelectedBorder';
 import SelectToggle from '../../components/SelectToggle';
+import MoveToPrevBtn from '../../components/button/MoveToPrevBtn';
 
 const SetContact= () => {
     const {nickname, image, studentNum, mbti, major, hobby, setContactType, setContact} = useContext(ProfileInfoContext);
     const [inputValue, setInputValue] = useState("");
     const options = ["카카오톡 ID", "오픈채팅 링크", "전화번호"]
+    const stdnum = String(studentNum)+"학번";
+    const inputRef = useRef<HTMLDivElement>(null);
+    
+    const scrollToBottom = () => {
+        inputRef.current?.scrollIntoView({ behavior: "smooth" });
+    };
+        
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerHeight < 400) {
+                scrollToBottom();
+            }
+        };
+        handleResize();
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
 
     const handleSelectChange = (selectedOption: { value: string; label: string } | null)  => {
         if (selectedOption) {
@@ -22,7 +40,7 @@ const SetContact= () => {
         <>
             <SetProfileNavbar title={"프로필 작성"}/>
             <ProgressBar progress={100}/>
-            <ProfileSelectedBorder input={[nickname,image,studentNum,mbti, major, ...hobby]}/>
+            <ProfileSelectedBorder input={[nickname,image,stdnum,mbti, major, ...hobby]}/>
             <Container>
                 <Title>
                     매칭 시 상대에게 전달할<br/>
@@ -34,8 +52,17 @@ const SetContact= () => {
                     value={inputValue} 
                     onChange={(e)=>setInputValue(e.target.value)} 
                 />
+                <div ref={inputRef}/>
+                <BtnContainer>
+                    <MoveToPrevBtn/>
+                    <MoveNextRoundBtn 
+                        nextPage={"/"} 
+                        title="메이트 찾으러 가기" 
+                        onClick={()=>{setContact(inputValue)}} 
+                        width={160}
+                    />
+                </BtnContainer>
             </Container>
-            <MoveNextRoundBtn nextPage={"/"} title="메이트 찾으러 가기" onClick={()=>{setContact(inputValue)}}/>
         </>
     );
 };
@@ -46,7 +73,8 @@ const Container = styled.div`
     margin-top:100px;
     margin: 0 auto;
     width:320px;
-    height:350px;
+    height: calc(100vh * 0.4);
+    font-family: "Pretendard Variable";
 `;
 const Title = styled.div`
     font-size:21px;
@@ -59,5 +87,12 @@ const Title = styled.div`
     margin-bottom:60px;
 `;
 const Space = styled.div`
-    height:80px;
+    height: calc(100vh * 0.05);
+`;
+const BtnContainer = styled.div`
+    height:50px;
+    margin: 10vh auto;
+    form{
+        margin-top:-50px;
+    }
 `;

@@ -52,9 +52,9 @@ const Signup2 = () => {
       <EntireContainer>
         <Text>학교를 인증해주세요!</Text>
         <Container>
-          <SignupInputContainer>
+          <SignupInputContainer1>
             <SignupInput placeholder={"재학 중인 학교"} />
-          </SignupInputContainer>
+          </SignupInputContainer1>
           <SignupInputContainer>
             <SignupInput
               placeholder="학교 이메일"
@@ -66,7 +66,7 @@ const Signup2 = () => {
             />
             <BottomText>
               <BsDot size="15px" color="#34A3FD" />
-              반드시 학교 도메인 이메일로 인증해주세요! ex) ooooo@soogsil.ac.kr
+              반드시 학교 도메인 이메일로 인증해주세요!<br/>ex) ooooo@soogsil.ac.kr
             </BottomText>
             {emailError && <ErrorText><MdErrorOutline/>{emailError}</ErrorText>}
           </SignupInputContainer>
@@ -90,7 +90,7 @@ const Signup2 = () => {
               <SignupButton
                 text="이전"
                 $backgroundColor="#F5F5F5"
-                width="150px"
+                width="140px"
                 color="black"
                 onClick={handlePrevious}
               />
@@ -99,7 +99,7 @@ const Signup2 = () => {
               <SignupButton
                 text="다음"
                 $backgroundColor="#E7F2FE"
-                width="150px"
+                width="140px"
                 color="#326DC1"
                 onClick={handleNext}
               />
@@ -127,6 +127,7 @@ const EntireContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0 40.5px;
+  font-family: "Pretendard Variable";
 `;
 
 const ButtonContainer = styled.div`
@@ -157,5 +158,9 @@ const ErrorText = styled.p`
 `;
 
 const SignupInputContainer = styled.div`
-  margin-bottom: 45px;
+  margin-bottom: 30px;
+`;
+
+const SignupInputContainer1 = styled.div`
+  margin-bottom: 50px;
 `;

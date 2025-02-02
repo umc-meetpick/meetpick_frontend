@@ -40,7 +40,7 @@ const StyledButton = styled.button<{ $backgroundColor: string; width: string; co
   border: none;
   border-radius: 8px;
   font-size: 16px;
-  font-weight: bold;
+  font-weight: 650;
   cursor: pointer;
   margin-bottom:14px;
 `;
