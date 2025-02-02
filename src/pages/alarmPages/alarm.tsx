@@ -67,8 +67,8 @@ const Alarm = () => {
                                     <CategoryBadge>{alert.category}</CategoryBadge>
                                     {!clickedAlerts[alert.id] && (
                                         <Alarm2>
-                                        <Icon icon = "lucide:dot" width="25" height="25" color="#FF3535"/>
-                                    </Alarm2>
+                                            <Icon icon = "lucide:dot" width="25" height="25" color="#FF3535"/>
+                                        </Alarm2>
                                     )}
                                 </Title>
                                 <Time>
@@ -90,11 +90,12 @@ export default Alarm;
 
 const Alarm2 = styled.div`
     position:absolute;
-    left:290px;
+    left:280px;
     top:-15px;
 `
 
 const TimeTitle = styled.div`
+
 `
 
 const Container = styled.div`
@@ -103,6 +104,7 @@ const Container = styled.div`
     align-items: center;
     margin: 10px 20px 25px 0;
     font-family: "Pretendard Variable";
+    position:relative;
 `;
 const Container2 = styled. div`
     display:flex;
@@ -162,5 +164,4 @@ const Time = styled.span`
     margin-left: auto;
     padding-right:8px;
     display:flex;
-
 `;

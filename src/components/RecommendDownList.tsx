@@ -111,6 +111,7 @@ const Container = styled.div`
   position: relative;
   display: inline-block;
   z-index: 10; /* 필요시 값 조정 */
+  border:solid 3px red;
 `;
 
 const StyledButton = styled.button<{ $isSelected?: boolean; $color?:string; $height:string }>`
@@ -141,6 +142,7 @@ const DropdownList = styled.ul<{$width : string; $top?: string; $left?: string }
   background: white;
   border: 1.5px solid #cecece;
   list-style: none;
+  border:3px solid black;
   width: ${({ $width }) => `calc(${Number($width.replace('px', '')) - 4}px)`};
   top: ${({ $top }) => $top || "0px"};
   left: ${({ $left }) => $left || "0px"};
@@ -160,6 +162,7 @@ const DropdownList2 = styled.ul<{$width : string; $top?: string; $left?: string 
   top:-5px;
   left: ${({ $left }) => $left || "0px"};
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.27); /* 드롭다운 전체에 그림자 추가 */
+  border: 6px solid yellow;
 
 `;
 
