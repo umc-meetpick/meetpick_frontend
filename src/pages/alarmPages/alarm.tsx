@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import BasicNavbar from "../../components/navbar/BasicNavbar";
 import DropdownButton from "../../components/SignupDownList";
@@ -6,11 +6,11 @@ import { Icon } from "@iconify/react";
 import { Link } from "react-router-dom";
 
 const Alarm = () => { 
-
+    const [clickedAlerts, setClickedAlerts] = useState<{ [key: number]: boolean }>({});
     const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-    const [selectedFood, setSelectedFood] = useState<string | null>(null);
-    const [selectedHealth, setSelectedHealth] = useState<string | null>(null);
-    const [selectedStudy, setSelectedStudy] = useState<string | null>(null);
+    //const [selectedFood, setSelectedFood] = useState<string | null>(null);
+    //const [selectedHealth, setSelectedHealth] = useState<string | null>(null);
+    //const [selectedStudy, setSelectedStudy] = useState<string | null>(null);
 
     const [alerts, setAlerts] = useState([
         { id: 1, category: "밥", message: "매칭 신청이 들어왔어요! 확인해보세요!", title:"2시간 전"},
@@ -19,7 +19,20 @@ const Alarm = () => {
         { id: 4, category: "밥", message: "매칭 신청이 들어왔어요! 확인해보세요!", title : "3일 전"},
     ]); // 더미 데이터
 
+    // localStorage 에서 클릭된 알림 항목을 불러와 "clickedAlerts" 상태에 저장
+    useEffect(() => {
+        const storedClicks = localStorage.getItem("clickedAlerts");
+        if(storedClicks) {
+            setClickedAlerts(JSON.parse(storedClicks));
+        }
+    },[])
 
+    // "자세히 보기" 클릭 시 실행되는 함수 
+    const handleAlertClick = (id:number) => {
+        const updateClicks = {...clickedAlerts, [id]:true}; // 클릭된 항목 저장 
+        setClickedAlerts(updateClicks);
+        localStorage.setItem("clickedAlerts", JSON.stringify(updateClicks)); // 로컬 스트로지에 저장 
+    }
 
     // 선택된 카테고리 기준으로 알림 필터링
     const filteredAlerts = (!selectedCategory)
@@ -52,16 +65,18 @@ const Alarm = () => {
                                         <Icon icon="fluent-color:edit-24" width="20" height="20" />
                                     )}
                                     <CategoryBadge>{alert.category}</CategoryBadge>
-                                    <Alarm2>
+                                    {!clickedAlerts[alert.id] && (
+                                        <Alarm2>
                                         <Icon icon = "lucide:dot" width="25" height="25" color="#FF3535"/>
                                     </Alarm2>
+                                    )}
                                 </Title>
                                 <Time>
                                     <TimeTitle>{alert.title}</TimeTitle>
                                 </Time>
                             </Container2>
                             <Message>{alert.message}</Message>
-                            <Link to ='/viewRequest'>
+                            <Link to ='/viewRequest' onClick={() => handleAlertClick(alert.id)}>
                                 <DetailLink>자세히 보기 ›</DetailLink>
                             </Link>
                         </AlertItem>
