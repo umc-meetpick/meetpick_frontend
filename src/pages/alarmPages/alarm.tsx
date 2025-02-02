@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import BasicNavbar from "../../components/navbar/BasicNavbar";
 import DropdownButton from "../../components/SignupDownList";
 import { Icon } from "@iconify/react";
-import GroupEmoji2 from "../../components/GroupIcon2";
 import { Link } from "react-router-dom";
 
 const Alarm = () => { 
@@ -53,9 +52,12 @@ const Alarm = () => {
                                         <Icon icon="fluent-color:edit-24" width="20" height="20" />
                                     )}
                                     <CategoryBadge>{alert.category}</CategoryBadge>
+                                    <Alarm2>
+                                        <Icon icon = "lucide:dot" width="25" height="25" color="#FF3535"/>
+                                    </Alarm2>
                                 </Title>
                                 <Time>
-                                    {alert.title}
+                                    <TimeTitle>{alert.title}</TimeTitle>
                                 </Time>
                             </Container2>
                             <Message>{alert.message}</Message>
@@ -70,6 +72,15 @@ const Alarm = () => {
 };
 
 export default Alarm;
+
+const Alarm2 = styled.div`
+    position:absolute;
+    left:290px;
+    top:-15px;
+`
+
+const TimeTitle = styled.div`
+`
 
 const Container = styled.div`
     display: flex;
@@ -126,6 +137,7 @@ const DetailLink = styled.p`
 
 const Title = styled.div`
     display: flex;
+    position:relative;
     align-items: center;
 `;
 
@@ -134,4 +146,6 @@ const Time = styled.span`
     color: #999;
     margin-left: auto;
     padding-right:8px;
+    display:flex;
+
 `;
