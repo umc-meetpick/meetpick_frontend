@@ -8,52 +8,52 @@ const HomeBackground = () => {
     <Background>
       <Ellipse
         src={ellipsepurple}
-        top="-20px"
-        left="100px"
-        width="500px"
-        height="97px"
+        $top="-20px"
+        $left="100px"
+        $width="500px"
+        $height="97px"
       />
       <Ellipse
         src={ellipsepurple}
-        top="290px"
-        left="-80px"
-        width="180px"
-        height="179px"
+        $top="290px"
+        $left="-80px"
+        $width="180px"
+        $height="179px"
       />
       <Ellipse
         src={ellipsepurple}
-        top="590px"
-        left="170px"
-        width="137px"
-        height="136px"
+        $top="590px"
+        $left="170px"
+        $width="137px"
+        $height="136px"
       />
       <Ellipse
         src={ellipsepurple}
-        top="890px"
-        left="-50px"
-        width="180px"
-        height="179px"
+        $top="890px"
+        $left="-50px"
+        $width="180px"
+        $height="179px"
       />
       <Ellipse
         src={ellipseyellow}
-        top="170px"
-        left="247px"
-        width="197px"
-        height="194px"
+        $top="170px"
+        $left="247px"
+        $width="197px"
+        $height="194px"
       />
       <Ellipse
         src={ellipseyellow}
-        top="800px"
-        left="250px"
-        width="180px"
-        height="179px"
+        $top="800px"
+        $left="250px"
+        $width="180px"
+        $height="179px"
       />
       <Ellipse
         src={ellipseyellow}
-        top="720px"
-        left="-30px"
-        width="97px"
-        height="80px"
+        $top="720px"
+        $left="-30px"
+        $width="97px"
+        $height="80px"
       />
 
 
@@ -85,17 +85,17 @@ const Background = styled.div`
 
 // Ellipse Props 타입 정의
 interface EllipseProps {
-  top?: string;
-  left?: string;
-  width?: string;
-  height?: string;
+  $top?: string;
+  $left?: string;
+  $width?: string;
+  $height?: string;
 }
 
 const Ellipse = styled.img<EllipseProps>`
   position: absolute;
-  width: ${(props) => props.width || "180px"}; /* 기본값: 180px */
-  height: ${(props) => props.height || "179px"}; /* 기본값: 179px */
-  top: ${(props) => props.top || "0"};
-  left: ${(props) => props.left || "0"};
+  width: ${(props) => props.$width || "180px"}; /* 기본값: 180px */
+  height: ${(props) => props.$height || "179px"}; /* 기본값: 179px */
+  top: ${(props) => props.$top || "0"};
+  left: ${(props) => props.$left || "0"};
   object-fit: contain; /* 이미지 비율 유지 */
 `;

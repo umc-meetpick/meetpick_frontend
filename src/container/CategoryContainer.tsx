@@ -23,7 +23,7 @@ const CategotyContainer = () => {
 // 반복할 컨텐츠를 하나의 컴포넌트로 추출
 const Content1 = () => (
   <>
-    <Row shift={0}>
+    <Row $shift={0}>
       <Emoji src={trust} alt="trust emoji" />
       <Category>새로운 친구를 만들고 싶을 때</Category>
       <Emoji src={hotdog} alt="hotdog emoji" />
@@ -46,7 +46,7 @@ const Content1 = () => (
 
 const Content2 = () => (
   <>
-    <Row shift={40}>
+    <Row $shift={40}>
       <Emoji src={pencil} alt="pencil emoji" />
       <Category>공부에 집중이 안될 때</Category>
       <Emoji src={sparkling} alt="sparkling emoji" />
@@ -69,7 +69,7 @@ const Content2 = () => (
 
 const Content3 = () => (
   <>
-    <Row shift={10}>
+    <Row $shift={10}>
       <Emoji src={basketball} alt="basketball emoji" />
       <Category>같이 운동하고 싶을 때</Category>
       <Emoji src={smiling} alt="smiling emoji" />
@@ -119,11 +119,11 @@ const SlidingContent = styled.div`
   }
 `;
 
-const Row = styled.div<{ shift: number }>` // shift prop 타입 정의
+const Row = styled.div<{ $shift: number }>` // shift prop 타입 정의
   display: flex;
   justify-content: flex-start; /* 기본 왼쪽 정렬 */
   gap: 10px; /* 버튼 간 간격 */
-  transform: translateX(${(props) => props.shift}px); /* 행마다 시작 위치 이동 */
+  transform: translateX(${(props) => props.$shift}px); /* 행마다 시작 위치 이동 */
   white-space: nowrap; /* 행을 한 줄로 유지 */
 `;
 
