@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useRef, useEffect } from 'react';
 import SetProfileNavbar from '../../components/navbar/BasicNavbar';
 import ProgressBar from '../../components/progressbar/ProgressBar';
 import styled from 'styled-components';
@@ -15,6 +15,22 @@ const SetNickName: React.FC = () => {
     const [isDupilicate, setIsDupilicate] = useState(false);
     const [btnClicked, setBtnClicked] = useState(false);
     const {nickname, setNickName} = useContext(ProfileInfoContext);
+    const inputRef = useRef<HTMLDivElement>(null);
+
+    const scrollToBottom = () => {
+        inputRef.current?.scrollIntoView({ behavior: "smooth" });
+    };
+      
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerHeight < 400) {
+                scrollToBottom();
+            }
+        };
+        handleResize();
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
 
     const schema = yup.object().shape({
         nickname: yup
@@ -60,6 +76,7 @@ const SetNickName: React.FC = () => {
                     onChange={handleInputChange}
                 />
                 <DupilicateBtn onClick={handleSubmit(onSubmit)}>중복확인</DupilicateBtn>
+                <div ref={inputRef}/>
                 {errors.nickname ? (
                         <Warning $isRed={true}>
                             <PiWarningCircle color={"#DB1818"} style={{ marginTop: "5px"}}/>
@@ -80,8 +97,10 @@ const SetNickName: React.FC = () => {
                             )
                         )
                     )}
+                <BtnContainer>
+                    <MoveNextRoundBtn nextPage={"/setProfile/image"} disable={isDupilicate}/>
+                </BtnContainer>
             </Container>
-            <MoveNextRoundBtn nextPage={"/setProfile/image"} disable={isDupilicate}/>
         </>
     );
 };
@@ -142,4 +161,7 @@ const Warning = styled.div<{ $isRed?: boolean }>`
         margin-left:5px;
         color:${({$isRed})=>($isRed ? "#DB1818" : "black")};
     }
+`;
+const BtnContainer = styled.div`
+    margin-top:10vh;
 `;

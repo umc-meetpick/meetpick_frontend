@@ -7,7 +7,7 @@ import Login from "../pages/Login"
 import Signup from "../pages/signupPages/Signup"
 import MatchingPage from "../pages/Matching";
 import MyPage from "../pages/MyPage";
-import ViewAll from "../pages/ViewAll"
+import ViewRequest from "../pages/ViewRequest"
 import Signup1 from '../pages/signupPages/Signup1';
 import Signup2 from '../pages/signupPages/Signup2';
 import Signup3 from '../pages/signupPages/Signup3';
@@ -22,11 +22,22 @@ import FoodApplication from "../pages/applicationPages/foodApplication";
 import Alarm from '../pages/alarmPages/alarm';
 import Modify from "../pages/modifyPages/Modify";
 import FoodRecommend from "../pages/recommendPages/FoodRecommend";
+<<<<<<< HEAD
 import FoodMateProfile from '../pages/FoodMateProfile';
 import ExerciseMateProfile from "../pages/ExerciseMateProfile";
 import WaitForMate from "../pages/WaitForMate";
 import ExerciseRecommend from "../pages/recommendPages/ExerciseRecommend";
 import ExerciseApplication from "../pages/applicationPages/exerciseApplication";
+=======
+import FoodMateProfile from '../pages/mateProfilePages/FoodMateProfile';
+import WaitForMate from "../pages/mateProfilePages/WaitForMate";
+import ExerciseRecommend from "../pages/recommendPages/ExerciseRecommend";
+import ExerciseApplication from "../pages/applicationPages/exerciseApplication";
+import ExerciseMateProfile from "../pages/mateProfilePages/ExerciseMateProfile";
+import StudyRecommend from "../pages/recommendPages/StudyRecommend";
+import StudyApplication from "../pages/applicationPages/studyApplication";
+import StudyMateProfile from "../pages/mateProfilePages/StudyMateProfile";
+>>>>>>> 10aaed467315d42c703d309c547b9c495fe2ef63
 
 
 const router = createBrowserRouter([
@@ -56,8 +67,8 @@ const router = createBrowserRouter([
             element:<MyPage/>
           },
           {
-            path:'view-all',
-            element:<ViewAll/>
+            path:'viewRequest',
+            element:<ViewRequest/>
           },
           {
             path:'matching',
@@ -112,6 +123,10 @@ const router = createBrowserRouter([
             element:<ExerciseApplication/>
           },
           {
+            path:'application/study',
+            element:<StudyApplication/>
+          },
+          {
             path:'alarm',
             element:<Alarm/>
           },
@@ -128,12 +143,20 @@ const router = createBrowserRouter([
             element:<ExerciseRecommend/>
           },
           {
+            path:'recommend/study',
+            element:<StudyRecommend/>
+          },
+          {
             path:'foodMateProfile',
             element:<FoodMateProfile/>
           },
           {
             path:'exerciseMateProfile',
             element:<ExerciseMateProfile/>
+          },
+          {
+            path:'studyMateProfile',
+            element:<StudyMateProfile/>
           },
           {
             path:'waitForMate',

@@ -2,54 +2,55 @@ import React, { useState } from "react";
 import styled from "styled-components";
 
 const TabContainer = styled.div`
-  width: 393px;
+  width: 190px;
   height: 36px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0px 65px 0px 66px;
-  border-bottom: 1px solid #dcdcdc;
+  padding: 0px 95px 0px 96px;
+  box-shadow: 0px 2px 2px 0px rgba(201, 203, 209, 0.25);
   position: relative;
 `;
 
 const TabItem = styled.div<{ isActive: boolean }>`
-  font-size: 16px;
-  font-weight: ${(props) => (props.isActive ? "600" : "400")};
-  color: ${(props) => (props.isActive ? "black" : "#999")};
+  font-size: 15px;
+  font-weight: ${(props) => (props.isActive ? "600" : "500")};
+  color: ${(props) => (props.isActive ? "black" : "#606060")};
   cursor: pointer;
   position: relative;
 
   &:after {
     content: "";
     display: ${(props) => (props.isActive ? "block" : "none")};
-    width: 100%;
+    width: 230%;
     height: 2px;
-    background-color: #0036c7; /* 밑줄 색상 */
+    background-color: #03347f; /* 밑줄 색상 */
     position: absolute;
     bottom: -5px;
-    left: 0;
+    left: -35px;
   }
 `;
 
-const TabComponent: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<string>("추천 리스트");
+interface ListTabsProps {
+  tabs: string[];
+  activeTab: string;
+  onTabClick: (tab: string) => void;
+}
 
+const ListTabs: React.FC<ListTabsProps> = ({ tabs, activeTab, onTabClick }) => {
   return (
     <TabContainer>
-      <TabItem
-        isActive={activeTab === "추천 리스트"}
-        onClick={() => setActiveTab("추천 리스트")}
-      >
-        추천 리스트
-      </TabItem>
-      <TabItem
-        isActive={activeTab === "전체 리스트"}
-        onClick={() => setActiveTab("전체 리스트")}
-      >
-        전체 리스트
-      </TabItem>
+      {tabs.map((tab) => (
+        <TabItem
+          key={tab}
+          isActive={activeTab === tab}
+          onClick={() => onTabClick(tab)}
+        >
+          {tab}
+        </TabItem>
+      ))}
     </TabContainer>
   );
 };
 
-export default TabComponent;
+export default ListTabs;

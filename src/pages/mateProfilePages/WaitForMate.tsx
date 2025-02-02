@@ -1,6 +1,6 @@
-import profile2 from "../assets/profileImg/프로필2.png";
+import original from "../../assets/profileImg/프로필2.png";
 import styled from "styled-components";
-import BasicNavbar from "../components/navbar/BasicNavbar";
+import BasicNavbar from "../../components/navbar/BasicNavbar";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const WaitForMate = () =>{
@@ -8,20 +8,24 @@ const WaitForMate = () =>{
     const location = useLocation();
     const param = (location.state == "혼밥") ? "food" : (location.state == "운동" ? "exercise" : "study")
     return(
-        <>
+        <Wrapper>
             <BasicNavbar title="추천 메이트 찾기" before={true} bell={true}></BasicNavbar>
             <Container>
-                <Img src={profile2} alt="프로필"/>
+                <Img src={original} alt="프로필"/>
                 <Btn onClick={()=>navigate(`/recommend/${param}`)}>{location.state} 메이트 만나러 가기</Btn>
                 {/* <Div>
                     작성해주신 내용으로 <br/> 
                     메이트를 찾고 있어요~
                 </Div> */}
             </Container>
-        </>
+        </Wrapper>
     )
 }
 export default WaitForMate;
+
+const Wrapper = styled.div`
+    padding:0 40px;
+`
 
 const Container = styled.div`
     width:250px;
@@ -55,3 +59,4 @@ const Btn = styled.button`
         border:none;
     }
 `;
+

@@ -2,11 +2,14 @@ import React, { useState, useContext } from 'react';
 import styled from "styled-components";
 import { FaChevronDown } from "react-icons/fa6";
 import majorList from '../assets/majorList';
+import studyLists from '../assets/studyLists';
 import { useNavigate } from 'react-router-dom';
 import { ProfileInfoContext } from '../context/profileInfoContext';
 import { FoodProfileInfoContext } from '../context/foodProfileInfo';
 import { ExerciseProfileInfoContext } from '../context/exerciseInfoContext';
+import { StudyProfileInfoContext } from '../context/studyInfoContext';
 import MoveToPrevBtn from './button/MoveToPrevBtn';
+
 interface ToggleListProps {
     button?: boolean; 
     multi?: boolean;
@@ -16,15 +19,19 @@ interface ToggleListProps {
 
 const ToggleList: React.FC<ToggleListProps> = ({button, multi, setModalOpen, type}) =>{
     const navigate = useNavigate();
-    const {major, setMajor} = useContext(ProfileInfoContext);
+    const lists = (type == "study") ? studyLists : majorList;
     function useProfileContext(type: string) {
-            if (type === "food") {
-                return useContext(FoodProfileInfoContext);
-            } else {
-                return useContext(ExerciseProfileInfoContext);
-            }
+        if (type == "food"){
+            return useContext(FoodProfileInfoContext);
+        }else if (type == "exercise"){
+            return useContext(ExerciseProfileInfoContext);
+        }else{
+            return useContext(StudyProfileInfoContext);
         }
+    }
+    const {major, setMajor} = useContext(ProfileInfoContext);
     const { majors, setMajors } = useProfileContext(type || "");
+    const { subject, setSubject} = useContext(StudyProfileInfoContext)
     const [openItems, setOpenItems] = useState<number[]>([]);
     const [selectedMajors, setSelectedMajors] = useState<string[]>([]); 
     
@@ -35,58 +42,63 @@ const ToggleList: React.FC<ToggleListProps> = ({button, multi, setModalOpen, typ
             setOpenItems([...openItems, id]);
         }
     };
-    const handleMajor = (major:string, college:string, all:string[]) =>{
-        if (multi) {
-            if (major === "all") {
-                if (majors.includes(college)){
-                    setMajors(majors.filter((m) => m !== college));
-                    setSelectedMajors(selectedMajors.filter((m) => !all.includes(m)));
+    const handleMajor = (major:string, title:string, all:string[]) =>{
+        if (type == "study"){
+            setSubject(major)
+        }else{
+            if (multi) {
+                if (major === "all") {
+                    if (majors.includes(title)){
+                        setMajors(majors.filter((m) => m !== title));
+                        setSelectedMajors(selectedMajors.filter((m) => !all.includes(m)));
+                    }else{
+                        setMajors([...majors.filter((m) => !all.includes(m)), title]); 
+                        setSelectedMajors([...selectedMajors, ...all.filter((m) => !selectedMajors.includes(m))]);
+                    }
                 }else{
-                    setMajors([...majors.filter((m) => !all.includes(m)), college]); 
-                    setSelectedMajors([...selectedMajors, ...all.filter((m) => !selectedMajors.includes(m))]);
-                }
-            }else{
-                if (!majors.includes(college)){
-                    if (majors.includes(major)) {
-                        setMajors(majors.filter((m) => m !== major));
-                        setSelectedMajors(selectedMajors.filter((m) => m !== major));
-                    } else {
-                        setSelectedMajors([...selectedMajors,major]);
-                        setMajors([...majors, major]);
+                    if (!majors.includes(title)){
+                        if (majors.includes(major)) {
+                            setMajors(majors.filter((m) => m !== major));
+                            setSelectedMajors(selectedMajors.filter((m) => m !== major));
+                        } else {
+                            setSelectedMajors([...selectedMajors,major]);
+                            setMajors([...majors, major]);
+                        }
                     }
                 }
+            } else {
+                setMajor(major);
             }
-        } else {
-            setMajor(major);
         }
     };
-    
     return(
         <>
             <Container>
-            {majorList.map(item => (
+            {lists?.length > 0 && lists.map(item => (
                 <div key={item.id}>
                     <Toggle key={item.id} onClick={() => handleToggle(item.id)} $isOpened={openItems.includes(item.id)}>
-                        {item.college}
+                        {item.title}
                         <FaChevronDown style={{color:"#AAAAAA"}}/>
                     </Toggle>
                     {openItems.includes(item.id) && (
                         <>  
                             {multi && 
                                 <Detail 
-                                    onClick={()=>handleMajor("all", item.college+" 전체", item.majors)} 
-                                    $isSelected={majors.includes(item.college+" 전체")}
+                                    onClick={()=>handleMajor("all", item.title+" 전체", item.items)} 
+                                    $isSelected={majors.includes(item.title+" 전체")}
                                 >
-                                    {`${item.college} 전체`}
+                                    {`${item.title} 전체`}
                                 </Detail>
                             }
-                            {item.majors.map((maj, index) => (
+                            {item.items.map((i, index) => (
                                 <Detail
                                     key={`major-${item.id}-${index}`}
-                                    onClick={() => handleMajor(maj, item.college+" 전체", item.majors)}
-                                    $isSelected={multi ? selectedMajors.includes(maj) : major === maj}
+                                    onClick={() => handleMajor(i, item.title+" 전체", item.items)}
+                                    $isSelected=
+                                    {multi ? selectedMajors.includes(i) : 
+                                    (type == "study" ? subject === i : major === i)}
                                 >
-                                    {maj}
+                                    {i}
                                 </Detail>
                             ))}
                         </>
@@ -128,6 +140,12 @@ const Toggle = styled.button<{$isOpened:boolean;}>`
     background-color:${({$isOpened})=> $isOpened ? "#F9FAFB" : "#FFFFFF"};
     border-top: 1px solid #D9D9D9;
     border-bottom: 1px solid #D9D9D9;
+    &:hover {
+        border: none;
+        border-top: 1px solid #D9D9D9;
+        border-bottom: 1px solid #D9D9D9;
+        outline: none;
+    }
     &:focus {
         border: none;
         border-top: 1px solid #D9D9D9;

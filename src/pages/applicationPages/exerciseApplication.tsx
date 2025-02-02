@@ -96,7 +96,7 @@ const ExerciseApplication = () => {
                     <IoHeart color="#CC1414" size={16} />
                 </HeartContainer>
                 <Text2>
-                    이런&nbsp;<span style={{ color: "#007AFF" }}>메이트</span>를 원하고 있어!
+                    &nbsp;이런&nbsp;<span style={{ color: "#007AFF" }}>메이트</span>와&nbsp;<span style={{ color: "#007AFF" }}>운동</span>을 하고싶어!
                 </Text2>
             </Mate>
             <Mate1>
@@ -271,7 +271,6 @@ const Button2 = styled.div`
 const ModalOverlay = styled.div`
   position: fixed;
   top: 0;
-  left: 0;
   width: 393px;
   height: 100vh;
   background: rgba(0, 0, 0, 0.29); /* 반투명 배경 */

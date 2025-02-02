@@ -3,6 +3,7 @@ import { FaPaperPlane } from "react-icons/fa";
 import { useState, useContext } from "react";
 import { FoodProfileInfoContext } from "../../context/foodProfileInfo";
 import { ExerciseProfileInfoContext } from "../../context/exerciseInfoContext";
+import { StudyProfileInfoContext } from "../../context/studyInfoContext";
 
 interface ChatingInputProps{
     disable:boolean;
@@ -16,7 +17,8 @@ interface ChatingInputProps{
 const ChatingInput = ({disable, setChatDisable, keyboard, isExtra, save, type}:ChatingInputProps) =>{
     const [value, setValue] = useState("");
     const { setMent: setFoodMent, setExtraMenu } = useContext(FoodProfileInfoContext);
-    const { setExercise, setPlace, setMent: setExerciseMent } = useContext(ExerciseProfileInfoContext);
+    const { setExercise, setPlace: setExercisePlace, setMent: setExerciseMent } = useContext(ExerciseProfileInfoContext);
+    const { setSubject, setPlace: setStudyPlace, setMent: setStudyMent} = useContext(StudyProfileInfoContext);
     const isSmallViewport = window.innerHeight < 700; 
 
     const handleSendBtn = () =>{
@@ -27,9 +29,17 @@ const ChatingInput = ({disable, setChatDisable, keyboard, isExtra, save, type}:C
                 if (save == "exercise"){
                     setExercise(value);
                 }else if (save == "place"){
-                    setPlace(value)
+                    setExercisePlace(value)
                 }else if (save == "ment"){
                     setExerciseMent(value)
+                }
+            }else if (type == "study"){
+                if (save == "subject"){
+                    setSubject(value)
+                }else if (save == "place"){
+                    setStudyPlace(value)
+                }else if (save == "ment"){
+                    setStudyMent(value)
                 }
             }
             setValue("");
@@ -79,8 +89,8 @@ const Input = styled.textarea<{$keyboard:boolean, $isSmallView:boolean}>`
 `;
 const IconPosition = styled.div<{$keyboard:boolean, $isExtra?:boolean, $isSmallView:boolean, $isDisabled:boolean}>`
     position:fixed;
-    bottom:${({$keyboard, $isSmallView})=> $keyboard ? "3px" : ($isSmallView ? "5px" : "88px")};
-    left: calc(min(100vw * 0.88, 355px));
+    bottom:${({$keyboard, $isSmallView})=> $keyboard ? "3px" : ($isSmallView ? "0px" : "90px")};
+    left: calc(50vw + 140px);
     width:${({$isExtra})=> $isExtra ? "40px" : "30px"};
     heignt:36px;
     border-radius:${({$isExtra})=> $isExtra ? "20px" : "100%"};

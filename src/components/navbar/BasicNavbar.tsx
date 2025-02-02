@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from "react-router-dom";
-import { IoChevronBackOutline } from "react-icons/io5";
 import { Icon } from "@iconify/react";
 
 interface TitleProps{
@@ -55,13 +54,15 @@ const Title = styled.div`
 `
 const BellIcon = styled(Icon)`
     position: absolute; /* 절대 위치 설정 */
-    right: 15px; /* 오른쪽 여백 설정 */
+    right: 5px; /* 오른쪽 여백 설정 */
     color: #000;
     top:26px;
+    margin-right:30px;
 `;
 const BackIcon= styled(Icon)`
     position: absolute; /* 절대 위치 설정 */
-    right: -10px; /* 오른쪽 여백 설정 */
+    right: -20px; /* 오른쪽 여백 설정 */
     color: #000;
     top:1px;
+    
 `

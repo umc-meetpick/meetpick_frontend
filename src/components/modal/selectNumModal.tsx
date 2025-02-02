@@ -3,6 +3,7 @@ import Slider from "@mui/material/Slider";
 import { useState, useContext } from "react";
 import { FoodProfileInfoContext } from "../../context/foodProfileInfo";
 import { ExerciseProfileInfoContext } from "../../context/exerciseInfoContext";
+import { StudyProfileInfoContext } from "../../context/studyInfoContext";
 
 interface ToggleListModalProps {
     setModalOpen: (isOpen: boolean) => void;
@@ -17,8 +18,10 @@ const SelectNumModal : React.FC<ToggleListModalProps> = ({setModalOpen, title, m
     function useProfileContext(type:string){
         if (type == "food"){
             return useContext(FoodProfileInfoContext);
-        }else{
+        }else if (type == "exercise"){
             return useContext(ExerciseProfileInfoContext);
+        }else{
+            return useContext(StudyProfileInfoContext);
         }
     }
     const { setAgeRange, setPeopleNum } = useProfileContext(type)
@@ -37,36 +40,42 @@ const SelectNumModal : React.FC<ToggleListModalProps> = ({setModalOpen, title, m
         setModalOpen(false)
     };
     return(
-        <Background>
-            <Container $isSmall={isSmall}>
-                <Title>{title}</Title>
-                <SliderStyle>
-                    <Slider
-                        value={value} 
-                        onChange={(_, newValue) => handleChange(newValue)} 
-                        valueLabelDisplay="on" 
-                        min={min}
-                        max={max} 
-                    />
-                    <MinMax>
-                        <div>{min}</div> 
-                        <div>{max}</div> 
-                    </MinMax>
-                </SliderStyle>
-                <Btn onClick={handleSave}>적용</Btn>
-            </Container>
-        </Background>
+        <Wrapper>
+            <Background $isSmall={isSmall}>
+                <Container $isSmall={isSmall}>
+                    <Title>{title}</Title>
+                    <SliderStyle>
+                        <Slider
+                            value={value} 
+                            onChange={(_, newValue) => handleChange(newValue)} 
+                            valueLabelDisplay="on" 
+                            min={min}
+                            max={max} 
+                        />
+                        <MinMax>
+                            <div>{min}</div> 
+                            <div>{max}</div> 
+                        </MinMax>
+                    </SliderStyle>
+                    <Btn onClick={handleSave}>적용</Btn>
+                </Container>
+            </Background>
+        </Wrapper>
     )
 }
 export default SelectNumModal;
 
-const Background = styled.div`
+const Wrapper = styled.div`
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+`;
+const Background = styled.div<{$isSmall:boolean;}>`
     width:393px;
     height: 100%;
     background-color:rgba(0,0,0,0.2);
-    position: fixed;
-    top: 0;
-    left: 0;
+    position: relative;
+    bottom:${({$isSmall}) => $isSmall ? "calc(100vh - 40px)" : "calc(100vh - 80px)"};
 `;
 const Container = styled.div<{$isSmall:boolean;}>`
     width: calc(100vw); 
@@ -78,7 +87,7 @@ const Container = styled.div<{$isSmall:boolean;}>`
     flex-direction: column;
     align-items: center;
     position: absolute;
-    bottom: ${({$isSmall})=>$isSmall ? "0px" : "75px"};
+    bottom: ${({$isSmall})=>$isSmall ? "0px" : "0px"};
     border-radius: 30px 30px 0 0;
 `;
 const Title= styled.div`

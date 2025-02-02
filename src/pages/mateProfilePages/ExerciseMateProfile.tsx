@@ -1,15 +1,15 @@
 import { useEffect, useState, useRef, useContext } from "react";
 import styled from "styled-components";
-import BasicNavbar from "../components/navbar/BasicNavbar";
-import exerciseProfileQuery from "../assets/queries/exerciseProfileQuery";
-import { useChatContext } from "../context/useChatContext";
-import profile2 from "../assets/profileImg/프로필2.png";
-import { ExerciseProfileInfoContext } from "../context/exerciseInfoContext";
-import ToggleListModal from "../components/modal/ToggleListModal";
-import SelectNumModal from "../components/modal/selectNumModal";
-import ChatingInput from "../components/input/ChatingInput";
+import BasicNavbar from "../../components/navbar/BasicNavbar";
+import exerciseProfileQuery from "../../assets/queries/exerciseProfileQuery";
+import { useChatContext } from "../../context/useChatContext";
+import recommend_exercise from "../../assets/profileImg/recommend_exercise.png"
+import { ExerciseProfileInfoContext } from "../../context/exerciseInfoContext";
+import ToggleListModal from "../../components/modal/ToggleListModal";
+import SelectNumModal from "../../components/modal/selectNumModal";
+import ChatingInput from "../../components/input/ChatingInput";
 import { useNavigate } from "react-router-dom";
-import SetDateTimeModal from "../components/modal/SetDateTimeModal";
+import SetDateTimeModal from "../../components/modal/SetDateTimeModal";
 
 interface OptionClick{
     option:string;
@@ -166,7 +166,7 @@ const ExerciseMateProfile = () =>{
             }
         }else if (type == "major" && option != "상관없어"){
             setModalOpen(true); 
-        }else if (type == "studentNum" && option != "상관없음"){
+        }else if (type == "studentNum" && option != "상관없어"){
             setStudentNum(option);
             addMessage({ question: [option+"로 부탁해~"], direction: "outgoing" });
         }else if (type == "age" && option == "메이트 나이 설정하기"){
@@ -244,7 +244,7 @@ const ExerciseMateProfile = () =>{
                             msg.question?.map((que, idx) => (
                                 <ImageContainer key={`${index}-${idx}`}>
                                     {idx + 1 === msg.question?.length && msg.direction === "incoming" && (
-                                        <Img src={profile2} alt="프로필" />
+                                        <Img src={recommend_exercise} alt="운동 프로필" />
                                     )}
                                     {
                                         que == "👋" ? (
@@ -276,6 +276,7 @@ const ExerciseMateProfile = () =>{
                                         }
                         
                                         $ismodal={ (exerciseProfileQuery[currentQueryIndex]?.type == "age" && option != "상관없어") 
+                                            || exerciseProfileQuery[currentQueryIndex]?.type == "major" && option != "상관없어"
                                             || exerciseProfileQuery[currentQueryIndex]?.type == "date" 
                                             || exerciseProfileQuery[currentQueryIndex]?.type == "peopleNum"}
                                         $isSelected={exerciseProfileQuery[currentQueryIndex]?.type == "age" && option != "상관없어"}
@@ -339,6 +340,20 @@ const StyledMainContainer = styled.div<{$short: boolean}>`
     height: ${window.innerHeight > 700 ? (({$short}) => $short ?'50%' : '65%'): (({$short}) => $short ?'55%' : '60%')};
     overflow-x: hidden;
     overflow-y: auto;
+    &::-webkit-scrollbar {
+        width: 8px; 
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: rgb(0,0,0,0.1); 
+        border-radius: 4px;
+    }
+    &::-webkit-scrollbar-track {
+        background-color:none;
+    }
+    *{
+        font-size:13px;
+        color: black;
+    }
     *{
         font-size:13px;
         color: black;
@@ -360,7 +375,7 @@ const OptionsContainer = styled.div<{ $isSmall: boolean; $short: boolean }>`
     justify-content: center; 
     gap: 10px;  
     margin-top: ${({ $isSmall, $short }) =>
-        $isSmall ? ($short ? "70px" : "calc(100vh * 0.15)") : "calc(100vh * 0.05)"};
+        $isSmall ? ($short ? "calc(100vh * 0.05)" : "calc(100vh * 0.15)") : "calc(100vh * 0.05)"};
     margin-bottom: calc(100vh * 0.1); 
 `;
 const BaseMessage = styled.div<{ direction: string, $isImg : boolean, $length:number }>`
@@ -407,7 +422,6 @@ const Img = styled.img`
     border-radius:100px;
     margin-left:10px;
     margin-top:30px;
-    transform: scaleX(-1);
 `;
 const Button = styled.button<{$ismodal: boolean, $isSelected:boolean}>`
     background-color: ${({$ismodal, $isSelected})=> $ismodal ? "#38ABFF" : ($isSelected ? "#EFF3FE" : "white")};
