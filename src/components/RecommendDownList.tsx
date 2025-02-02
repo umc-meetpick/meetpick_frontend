@@ -77,13 +77,13 @@ const DropdownButton: React.FC<DropdownButtonProps> = ({
           </DropdownList>
 
           {subOptions && (
-            <DropdownList $width="60px" $left={left} $top={top}>
+            <DropdownList2 $width="65px" $left={left} $top={top}>
               {subOptions.map((subOption, index) => (
                 <DropdownItem2 key={index} onClick={() => handleSubOptionClick(subOption)}>
                   {subOption}
                 </DropdownItem2>
               ))}
-            </DropdownList>
+            </DropdownList2>
           )}
         </DropdownWrapper>
       )}
@@ -103,6 +103,8 @@ const ArrowIcon = styled.span`
 
 const DropdownWrapper = styled.div`
   position: relative;
+  border: 1px solid none;
+  height:200px;
 `;
 
 const Container = styled.div`
@@ -132,7 +134,7 @@ const StyledButton = styled.button<{ $isSelected?: boolean; $color?:string; $hei
 `;
 
 const DropdownList = styled.ul<{$width : string; $top?: string; $left?: string }>`
-  position: relative;
+  position:relative;
   left: 0;
   margin-top:5px;
   padding: 0px;
@@ -144,6 +146,21 @@ const DropdownList = styled.ul<{$width : string; $top?: string; $left?: string }
   left: ${({ $left }) => $left || "0px"};
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.27); /* 드롭다운 전체에 그림자 추가 */
    
+`;
+
+const DropdownList2 = styled.ul<{$width : string; $top?: string; $left?: string }>`
+  position:absolute;
+  margin-top:5px;
+  padding: 0px;
+  background: white;
+  border: 1.5px solid #cecece;
+  list-style: none;
+  width: ${({ $width }) => `calc(${Number($width.replace('px', '')) - 4}px)`};
+  //top: ${({ $top }) => `${$top}` || "0px"};
+  top:-5px;
+  left: ${({ $left }) => $left || "0px"};
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.27); /* 드롭다운 전체에 그림자 추가 */
+
 `;
 
 const DropdownItem = styled.li`
@@ -170,6 +187,7 @@ const DropdownItem2 = styled.li`
   font-size:12px;
   font-weight: 500;
   padding: 4px 0;
+  
 
   &:hover{
     background-color:#F5F5F5;
