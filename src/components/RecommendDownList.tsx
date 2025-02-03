@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 
 interface DropdownButtonProps {
@@ -31,6 +31,19 @@ const DropdownButton: React.FC<DropdownButtonProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   // 선택된 1차 옵션의 하위 옵션 리스트 (있을 경우에만 세팅된다.)
   const [subOptions, setSubOptions] = useState<string[] | null>(null);
+
+  const [dropdownWidth, setDropdownWidth] = useState<string>("auto");
+
+  // 버튼의 너비를 가져오기 위한 ref
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (buttonRef.current) {
+      // "운동 종류"이면 너비를 120px로, 아니면 버튼의 너비로 설정
+      const newWidth = text === "운동 종류 ∨" ? "100px" : `${buttonRef.current.offsetWidth}px`;
+      setDropdownWidth(newWidth);
+    }
+  }, [text]); // text가 변경될 때마다 다시 측정
 
   // 버튼 클릭시 호출됨
   const toggleDropdown = () => {
@@ -67,7 +80,7 @@ const DropdownButton: React.FC<DropdownButtonProps> = ({
       </StyledButton>
       {isOpen && options.length > 0 && (
         <DropdownWrapper>
-          <DropdownList>
+          <DropdownList $width={dropdownWidth}>
             {(options as any[]).map((option, index) => (
               <DropdownItem key={index} onClick={() => handleOptionClick(option)}>
                 {typeof option === "string" ? option : option.label}
@@ -136,20 +149,20 @@ const StyledButton = styled.button<{ $isSelected?: boolean; $color?:string; $hei
   }
 `;
 
-const DropdownList = styled.ul<{$top?: string; $left?: string }>`
+const DropdownList = styled.ul<{$width?:string; $top?: string; $left?: string }>`
   position:absolute;
   left: 0;
   margin-top:5px;
-  margin-left:5px;
+  margin-left:8px;
   padding: 0px;
   background: white;
   border: 1.5px solid #cecece;
   list-style: none;
-  width: 55px;
+  min-width: 50px; /* 최소 너비는 버튼 크기 */
+  white-space: nowrap; /* 텍스트 줄바꿈 방지 */
   top: ${({ $top }) => $top || "0px"};
   left: ${({ $left }) => $left || "0px"};
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.27); /* 드롭다운 전체에 그림자 추가 */
-   
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.27);
 `;
 
 const DropdownList2 = styled.ul<{$width : string; $top?: string; $left?: string }>`
@@ -174,7 +187,7 @@ const DropdownItem = styled.li`
   cursor: pointer;
   text-align:center;
   color:#6C6C73;
-  font-size:12px;
+  font-size:10.5px;
   font-weight: 500;
   padding: 5px 3px;
   &:hover{
