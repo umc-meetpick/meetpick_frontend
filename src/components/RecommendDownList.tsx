@@ -102,9 +102,10 @@ const ArrowIcon = styled.span`
 `;
 
 const DropdownWrapper = styled.div`
-  position: relative;
+  position: absolute;
   border: 1px solid none;
-  height:200px;
+  height:auto;
+  z-index:50;
 `;
 
 const Container = styled.div`
@@ -112,6 +113,7 @@ const Container = styled.div`
   display: inline-block;
   z-index: 10; /* 필요시 값 조정 */
   border:solid 3px red;
+  overflow: visible; /* Swiper 내부에 있다면 필요 */
 `;
 
 const StyledButton = styled.button<{ $isSelected?: boolean; $color?:string; $height:string }>`
@@ -127,15 +129,15 @@ const StyledButton = styled.button<{ $isSelected?: boolean; $color?:string; $hei
   cursor: pointer;
   margin-right: 10px;
   box-sizing: border-box;
-  padding:0;
+  padding:0 5px;
 
   &:hover {
     border-color: #007aff;
   }
 `;
 
-const DropdownList = styled.ul<{$width : string; $top?: string; $left?: string }>`
-  position:relative;
+const DropdownList = styled.ul<{$top?: string; $left?: string }>`
+  position:absolute;
   left: 0;
   margin-top:5px;
   padding: 0px;
@@ -143,10 +145,11 @@ const DropdownList = styled.ul<{$width : string; $top?: string; $left?: string }
   border: 1.5px solid #cecece;
   list-style: none;
   border:3px solid black;
-  width: ${({ $width }) => `calc(${Number($width.replace('px', '')) - 4}px)`};
+  width: 60px;
   top: ${({ $top }) => $top || "0px"};
   left: ${({ $left }) => $left || "0px"};
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.27); /* 드롭다운 전체에 그림자 추가 */
+   z-index: 100; 
    
 `;
 
@@ -157,12 +160,13 @@ const DropdownList2 = styled.ul<{$width : string; $top?: string; $left?: string 
   background: white;
   border: 1.5px solid #cecece;
   list-style: none;
-  width: ${({ $width }) => `calc(${Number($width.replace('px', '')) - 4}px)`};
+  width: 60px;
   //top: ${({ $top }) => `${$top}` || "0px"};
   top:-5px;
   left: ${({ $left }) => $left || "0px"};
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.27); /* 드롭다운 전체에 그림자 추가 */
   border: 6px solid yellow;
+  z-index: 150; /* 최상위 레이어 */
 
 `;
 

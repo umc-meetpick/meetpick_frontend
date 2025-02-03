@@ -154,7 +154,7 @@ const StudyRecommend = () => {
                             slidesPerView="auto" // 자동으로 여러 슬라이드 표시
                             freeMode={true} // 자유롭게 드래그 가능
                             allowTouchMove={true} // 드래그 허용
-                            style={{ paddingRight: "60px" }} // Swiper의 오른쪽 패딩 추가
+                            style={{ paddingRight: "60px" , overflow:"visible"}} // Swiper의 오른쪽 패딩 추가
                             
                             >
                                 {StudyMateList.map((item) => (
@@ -176,7 +176,7 @@ const StudyRecommend = () => {
                                             ? selectedGrade
                                             : `${item.option} ∨`
                                         }
-                                        width="85px"
+                                        width="auto"
                                         options={item.option === "시간" ? StudyMateList.find((f) => f.option === "시간")?.lists || [] : item.lists || []}
                                         onSelect={(option) => handleSelect(item.option, option)}
                                         onToggle={handleDropdownHeight}
