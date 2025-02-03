@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import BasicNavbar from "../../components/navbar/BasicNavbar";
 import SignupButton from "../../components/button/SignupButton";
@@ -8,6 +8,8 @@ import DropdownButton from "../../components/SignupDownList";
 import SignupProgressbar from "../../components/progressbar/SignupProgressbar";
 import { BsDot } from "react-icons/bs";
 import { Link } from "react-router-dom";
+import { debounce } from "lodash";
+
 
 const Signup1 = () => {
   const [name, setName] = useState<string>(""); // 이름 상태
@@ -15,6 +17,7 @@ const Signup1 = () => {
   const [selectedYear, setSelectedYear] = useState<string | null>(null);
   const [selectedMonth, setSelectedMonth] = useState<string | null>(null);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const [showNextStep, setShowNextStep] = useState<boolean>(false); // 다음 단계 표시 여부
 
   // 다음 버튼 클릭 핸들러
   const handleNext = () => {
@@ -35,6 +38,20 @@ const Signup1 = () => {
     setSelectedGender(selectedGender === gender ? null : gender);
   };
 
+  // Debounce 적용: 입력이 끝난 후 600ms 뒤에 실행
+  useEffect(() => {
+    const debouncedSetNextStep = debounce(() => {
+      setShowNextStep(name.trim().length > 0); // 공백을 제외한 글자가 있을 때만 다음 단계 표시
+    }, 600);
+
+    debouncedSetNextStep();
+
+    return () => {
+      debouncedSetNextStep.cancel(); // cleanup 함수에서 debounce 취소
+    };
+  }, [name]);
+
+
   
 
   return (
@@ -52,7 +69,7 @@ const Signup1 = () => {
             onChange={handleNameChange}
           />
           {/* 2단계: 이름이 입력되면 성별 선택 표시 */}
-          {name && (
+          {showNextStep && (
             <>
               <Title>
                 <BsDot size="30px" color="#34A3FD" />
