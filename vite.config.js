@@ -3,6 +3,9 @@ import react from '@vitejs/plugin-react-swc'
 
 // https://vite.dev/config/
 export default defineConfig({
+  define: {
+    __WS_TOKEN__: JSON.stringify(process.env.VITE_WS_TOKEN || 'default_token_value'),
+  },
   plugins: [react()],
   assetsInclude: ['**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.svg'], // 이미지 처리
   server: {
