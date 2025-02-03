@@ -214,7 +214,7 @@ const FoodMateProfile = () =>{
     }
     return(
         <>
-            <BasicNavbar title="혼밥 메이트 찾기" bell={true}></BasicNavbar>
+            <BasicNavbar title="혼밥 메이트 찾기" ></BasicNavbar>
             <Container>
                 <StyledMainContainer>
                     <MessagesContainer>
