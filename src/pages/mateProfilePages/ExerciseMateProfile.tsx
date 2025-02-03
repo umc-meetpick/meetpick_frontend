@@ -236,7 +236,7 @@ const ExerciseMateProfile = () =>{
     }
     return(
         <>
-            <BasicNavbar title="운동 메이트 찾기" bell={true}></BasicNavbar>
+            <BasicNavbar title="운동 메이트 찾기"></BasicNavbar>
             <Container>
                 <StyledMainContainer $short={isManyOptions}>
                     <MessagesContainer>
