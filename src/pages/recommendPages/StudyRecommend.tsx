@@ -400,8 +400,7 @@ const FullListSection = styled.div`
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
-    padding:0 30px;
-    background-color:none;
+    padding:0 25px;
     position:absolute;
     top:260px;
     height:auto;
