@@ -67,7 +67,7 @@ const DropdownButton: React.FC<DropdownButtonProps> = ({
       </StyledButton>
       {isOpen && options.length > 0 && (
         <DropdownWrapper>
-          <DropdownList $width={width}>
+          <DropdownList>
             {(options as any[]).map((option, index) => (
               <DropdownItem key={index} onClick={() => handleOptionClick(option)}>
                 {typeof option === "string" ? option : option.label}
@@ -129,7 +129,8 @@ const StyledButton = styled.button<{ $isSelected?: boolean; $color?:string; $hei
   cursor: pointer;
   margin-right: 10px;
   box-sizing: border-box;
-  padding:0 5px;
+  padding:0 10px;
+  overflow:visible;
 
   &:hover {
     border-color: #007aff;
@@ -144,12 +145,10 @@ const DropdownList = styled.ul<{$top?: string; $left?: string }>`
   background: white;
   border: 1.5px solid #cecece;
   list-style: none;
-  border:3px solid black;
   width: 60px;
   top: ${({ $top }) => $top || "0px"};
   left: ${({ $left }) => $left || "0px"};
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.27); /* 드롭다운 전체에 그림자 추가 */
-   z-index: 100; 
    
 `;
 
@@ -162,11 +161,9 @@ const DropdownList2 = styled.ul<{$width : string; $top?: string; $left?: string 
   list-style: none;
   width: 60px;
   //top: ${({ $top }) => `${$top}` || "0px"};
-  top:-5px;
-  left: ${({ $left }) => $left || "0px"};
+  top:0px;
+  left: 63px; 
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.27); /* 드롭다운 전체에 그림자 추가 */
-  border: 6px solid yellow;
-  z-index: 150; /* 최상위 레이어 */
 
 `;
 
