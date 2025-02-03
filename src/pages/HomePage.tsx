@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Background from '../assets/background/HomeBackground'; 
 import Slider from '../components/Slider'; 
@@ -12,7 +12,7 @@ import fire from '../assets/homeImg/fire.png'
 import CategotyContainer from '../container/CategoryContainer';
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-
+import { useFetchMates, useFetchUniversities } from "../apis/home/homeFetch";
 
 const CATEGORY_TYPES = ["MEAL", "EXERCISE", "STUDY", "ALL"] as const;
 const CATEGORY_LABELS = { MEAL: "혼밥", EXERCISE: "운동", STUDY: "공부", ALL: "전체" } as const;
@@ -24,168 +24,28 @@ interface University {
   address: string;
 }
 
-interface User {
-  university: string;
-  userImage?: string;
-  gender: string;
-  studentNumber: string;
-  major: string;
-  comment?: string;
-}
-
 const HomePage = () => {
 
   const navigate = useNavigate(); // 네비게이션 훅을 사용
   const [activeCategory, setActiveCategory] = useState<keyof typeof CATEGORY_LABELS>("MEAL");
   const [query, setQuery] = useState("");
-  const [mates, setMates] = useState<User[]>([]);
-  const [isLoading, setLoading] = useState(false);
-  const [results, setResults] = useState<University[]>([]);
-  const [isFetching, setIsFetching] = useState(false); // 중복 요청 방지
 
-  // 로그인 버튼 클릭 시 로그인 페이지로 이동
+  const { data: universities, isLoading: isLoadingUniversities } = useFetchUniversities(query);
+  const { data: mates, isLoading: isLoadingMates } = useFetchMates(activeCategory);
+
+  const totalCards = 4;
+  const displayedMates = isLoadingMates
+    ? Array(totalCards).fill(null) // 로딩 상태일 때 Skeleton 카드
+    : [...(mates || []), ...Array(totalCards - (mates?.length || 0)).fill(null)];
+
   const handleLoginClick = () => {
-      navigate('/login');
+    navigate('/login');
   };
 
-  // 학교 컨테이너 클릭 시 학교 메이트 찾기 페이지로 이동
   const handleUniversityClick = (university: University) => {
     navigate('/looking', { state: { universityName: university.universityName } });
   };
 
-
-  // 학교 검색 API 요청
-  useEffect(() => {
-    if (query.length < 2) {
-      setResults([]);
-      return;
-    }
-
-    let isCancelled = false;
-    setLoading(true);
-
-    
-    const fetchData = async () => {
-      const token = localStorage.getItem("access_token");
-      console.log(`[학교 검색 요청] Query: ${query}`);
-
-      try {
-        const url = `/api/university/list/${encodeURIComponent(query)}`; // 변경된 프록시 경로 사용
-        console.log("Fetching data from:", url); // 올바른 URL인지 확인
-    
-        const response = await fetch(url, {
-          method: "GET",
-          headers: {
-            "Accept": "application/json",
-            ...(token && { Authorization: `Bearer ${token}` }),
-          },
-          credentials: "include", // 인증 정보 포함 (쿠키, 토큰 전송)
-          redirect: "follow", // 리디렉션 자동 처리
-        });
-        
-
-        if (response.status === 302) {
-          const redirectUrl = response.headers.get("Location");
-          console.log("Redirecting to:", redirectUrl);
-          if (redirectUrl) {
-            window.location.href = redirectUrl; // 직접 이동
-            return;
-          }
-        }
-
-        if (!response.ok) {
-          throw new Error(`HTTP 오류! 상태 코드: ${response.status}`);
-        }
-    
-        const data = await response.json();
-        console.log(`[학교 검색 응답]`, data);
-    
-        if (Array.isArray(data.result)) {
-          setResults(data.result);
-        } else {
-          setResults([]); // 결과가 배열이 아니면 초기화
-        }
-      } catch (error) {
-        console.error("학교 검색 실패:", error);
-        setResults([]); // 에러 발생 시 초기화
-      } finally {
-        if (!isCancelled) setLoading(false);
-      }
-    };
-
-
-    const debounceTimeout = setTimeout(fetchData, 300); // 디바운스 적용
-
-    return () => {
-      clearTimeout(debounceTimeout);
-      isCancelled = true;
-    }
-  }, [query]);
-
-
-  // 메이트 목록 API 요청
-  useEffect(() => {
-    if (isFetching) return; // 중복 요청 방지
-    setIsFetching(true);
-    setLoading(true);
-
-
-    const fetchMates = async () => {
-      try {
-        const token = localStorage.getItem("access_token");
-        console.log(`[메이트 요청] 카테고리: ${activeCategory}`);
-        const serverUrl = "http://3.38.151.77:8080/api/members/random-user";
-
-
-        // 올바른 mateType 값인지 확인
-        const validCategory = CATEGORY_TYPES.includes(activeCategory) ? activeCategory : "MEAL"; // 기본값 설정
-
-        const url = `${serverUrl}?mateType=${validCategory}&limit=4`; // 4명의 유저를 요청
-
-        console.log("Fetching mates from:", url);
-
-        const response = await fetch("/api/members/random-user?mateType=" + activeCategory, {
-          method: "GET",
-          headers: {
-            "Accept": "application/json",
-            ...(token && { Authorization: `Bearer ${token}` }),
-          },
-          credentials: "same-origin", // 변경된 프록시 설정을 고려하여 same-origin 적용
-        });
-
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(`HTTP 오류! 상태 코드: ${response.status}, Message: ${errorData.message}`);
-        }
-  
-        const data = await response.json();
-        console.log(`[메이트 응답]`, data);
-
-
-        // API 명세서에 따라 result가 단일 객체임
-        if (data.isSuccess && data.result) {
-          setMates([data.result]); // 객체를 배열로 변환하여 저장
-        } else {
-          console.warn("메이트 유저가 존재하지 않습니다.");
-          setMates([]); // 유저가 없으면 빈 배열로 설정
-        }
-      } catch (error) {
-        console.error("메이트 데이터 요청 실패:", error);
-        setMates([]); // 오류 발생 시에도 빈 배열 설정
-      } finally {
-        setIsFetching(false);
-        setLoading(false);
-      }
-    };
-
-    fetchMates();
-  }, [activeCategory]);
-
-  const totalCards = 4; // 항상 4개의 카드가 표시되어야 함
-  const displayedMates = isLoading
-  ? Array(totalCards).fill(null) // 로딩 중이면 Skeleton 4개 생성
-  : [...mates, ...Array(totalCards - mates.length).fill(null)]; // 불러오지 못한 데이터를 빈 카드로 채움
-  
   return (
       <Wrapper>
           <Background /> {/* 배경 삽입 */}
@@ -206,13 +66,13 @@ const HomePage = () => {
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                   />
-                  {results.length > 0 && (
+                  {! isLoadingUniversities && universities?.length > 0 && (
                     <SearchResultContainer>
-                      {results.map((university, index) => (
+                      {universities.map((university:University, index:number) => (
                         <SearchResultItem 
                           key={university.id ? `${university.id}-${index}` : `university-${index}`} // 🔹 key 수정
                           $isFirst={index === 0}
-                          $isLast={index === results.length - 1}
+                          $isLast={index === universities.length - 1}
                           onClick={() => handleUniversityClick(university)}
                         >
                           <strong>{university.universityName}</strong>
@@ -244,9 +104,9 @@ const HomePage = () => {
                   <Slider>
                   {displayedMates.map((mate, index) => (
                     <MateCard key={index}>
-                      {isLoading ? (
+                      {isLoadingMates ? (
                         // 🔹 Skeleton으로 전체 카드 대체
-                        <Skeleton height={200} width="100%" borderRadius={10} />
+                        <Skeleton height={150} width="100vw" borderRadius={10} />
                       ) : mate ? (
                         // 🔹 실제 데이터 표시
                         <>
