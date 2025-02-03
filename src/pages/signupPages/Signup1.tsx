@@ -92,7 +92,7 @@ const Signup1 = () => {
             </>
           )}
           {/* 3단계: 성별이 선택되면 생년월일 선택 표시 */}
-          {selectedGender && (
+          {selectedGender&& showNextStep && (
             <>
               <Title>
                 <BsDot size="30px" color="#34A3FD" />
