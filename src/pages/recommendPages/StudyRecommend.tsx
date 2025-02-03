@@ -242,7 +242,7 @@ const BubbleText1 = styled.p`
 `
 const BubbleText2 = styled.p`
     color:#636D77;
-    font-size: 12px;
+    font-size: 11.5px;
     font-weight: 600;
     transform:scaleX(-1) rotate(-10deg);
     display:flex;
@@ -250,9 +250,9 @@ const BubbleText2 = styled.p`
     align-items:center;
     justify-content:center;
     height:75px;
-    padding:3px 22px 0 22px;
+    padding:15px 23px 15px 20px;
     margin:0;
-    width:53px;
+    width:100px;
 `
 
 const BubbleText3 = styled.p`
