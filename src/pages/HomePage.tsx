@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Background from '../assets/background/HomeBackground'; 
 import Slider from '../components/Slider'; 
@@ -13,6 +13,7 @@ import CategotyContainer from '../container/CategoryContainer';
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { useFetchMates, useFetchUniversities } from "../apis/home/homeFetch";
+import { debounce } from "../utils/debounce";
 
 const CATEGORY_TYPES = ["MEAL", "EXERCISE", "STUDY", "ALL"] as const;
 const CATEGORY_LABELS = { MEAL: "혼밥", EXERCISE: "운동", STUDY: "공부", ALL: "전체" } as const;
@@ -29,8 +30,10 @@ const HomePage = () => {
   const navigate = useNavigate(); // 네비게이션 훅을 사용
   const [activeCategory, setActiveCategory] = useState<keyof typeof CATEGORY_LABELS>("MEAL");
   const [query, setQuery] = useState("");
+  const [search, setSearch] = useState("");
+  const [isTyping, setIsTyping] = useState<boolean>(false);
 
-  const { data: universities, isLoading: isLoadingUniversities } = useFetchUniversities(query);
+  const { data: universities, isLoading: isLoadingUniversities } = useFetchUniversities(search);
   const { data: mates, isLoading: isLoadingMates } = useFetchMates(activeCategory);
 
   const totalCards = 4;
@@ -46,6 +49,21 @@ const HomePage = () => {
     navigate('/looking', { state: { universityName: university.universityName } });
   };
 
+  const debouncedSearch = debounce((query: string) => {
+    setSearch(query);
+    setIsTyping(false); 
+  }, 500);
+
+  useEffect(() => {
+    if (query) {
+      setIsTyping(true); // 타이핑 중일 때는 isTyping 상태를 true로 설정
+      debouncedSearch(query); // query 값이 바뀔 때마다 debouncedSearch 호출
+    } else {
+      setSearch(''); // query 값이 비어있으면 search도 비워줌
+    }
+  }, [query]);
+
+ 
   return (
       <Wrapper>
           <Background /> {/* 배경 삽입 */}
@@ -64,9 +82,9 @@ const HomePage = () => {
                     type="text" 
                     placeholder="학교명 검색" 
                     value={query}
-                    onChange={(e) => setQuery(e.target.value)}
+                    onChange={(e)=>setQuery(e.target.value)}
                   />
-                  {! isLoadingUniversities && universities?.length > 0 && (
+                  { !isLoadingUniversities && !isTyping && universities?.length > 0 && (
                     <SearchResultContainer>
                       {universities.map((university:University, index:number) => (
                         <SearchResultItem 

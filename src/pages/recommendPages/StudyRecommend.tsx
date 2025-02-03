@@ -1,4 +1,4 @@
-import React,{useEffect, useState} from "react";
+import {useState} from "react";
 import styled from "styled-components";
 import { Icon } from "@iconify/react";
 import RecommendBox from "../../components/RecommendBox";
@@ -82,9 +82,14 @@ const StudyRecommend = () => {
         <Container>
             <Top>
                 <Title>열심히 공부 MATE</Title>
-                <Link to ='/alarm'>
-                    <BellIcon icon="ci:bell" width="24" height="24" />
-                </Link>
+                <TwoIcon>
+                    <Link to ="/alarm">
+                        <Icon icon="ci:heart-01" width="24" height="24" style={{color:"black"}}></Icon>
+                    </Link>
+                    <Link to ="/alarm">
+                        <Icon icon="ci:bell" width="24" height="24" style={{color:"black"}}/>
+                    </Link>
+                </TwoIcon>
             </Top>
             <Message>
                 <Name>베티</Name>
@@ -126,7 +131,9 @@ const StudyRecommend = () => {
                                 
                                 <SwiperSlide key={slidesData.id}>
                                     <SlideContent>
-                                        <StyledImage src={RecommendImage} alt={`${slidesData.name} 이미지`} />
+                                        <Link to ="/application/study">
+                                            <StyledImage src={RecommendImage} alt={`${slidesData.name} 이미지`} />
+                                        </Link>
                                     </SlideContent>
                                 </SwiperSlide>
                                 ))}
@@ -147,13 +154,13 @@ const StudyRecommend = () => {
                             slidesPerView="auto" // 자동으로 여러 슬라이드 표시
                             freeMode={true} // 자유롭게 드래그 가능
                             allowTouchMove={true} // 드래그 허용
-                            style={{ paddingRight: "50px" }} // Swiper의 오른쪽 패딩 추가
+                            style={{ paddingRight: "60px" , overflow:"visible"}} // Swiper의 오른쪽 패딩 추가
                             
                             >
                                 {StudyMateList.map((item) => (
                                     <SwiperSlide key={item.id} style={{ width: "auto"}}>
                                         <DropdownButton
-                                        left="85px" // 원하는 위치
+                                        left="60px" // 원하는 위치
                                         top="-115px"  // 원하는 위치
                                         height="33px"
                                         text={
@@ -169,7 +176,7 @@ const StudyRecommend = () => {
                                             ? selectedGrade
                                             : `${item.option} ∨`
                                         }
-                                        width="85px"
+                                        width={item.option === "공부 과목 " ? "95px" : "auto"}
                                         options={item.option === "시간" ? StudyMateList.find((f) => f.option === "시간")?.lists || [] : item.lists || []}
                                         onSelect={(option) => handleSelect(item.option, option)}
                                         onToggle={handleDropdownHeight}
@@ -210,6 +217,15 @@ const StudyRecommend = () => {
 
 export default StudyRecommend;
 
+const TwoIcon = styled.div`
+    position:absolute;
+    right:20px;
+    display:flex;
+    align-items:center;
+    top:20px;
+    gap:5px;
+`
+
 const BubbleText1 = styled.p`
     color:#636D77;
     font-size: 12px;
@@ -226,7 +242,7 @@ const BubbleText1 = styled.p`
 `
 const BubbleText2 = styled.p`
     color:#636D77;
-    font-size: 12px;
+    font-size: 11.5px;
     font-weight: 600;
     transform:scaleX(-1) rotate(-10deg);
     display:flex;
@@ -234,9 +250,9 @@ const BubbleText2 = styled.p`
     align-items:center;
     justify-content:center;
     height:75px;
-    padding:3px 22px 0 22px;
+    padding:15px 23px 15px 20px;
     margin:0;
-    width:53px;
+    width:100px;
 `
 
 const BubbleText3 = styled.p`
@@ -304,12 +320,6 @@ const Title = styled.p`
     font-family: "Pretendard Variable";
 `;
 
-const BellIcon = styled(Icon)`
-    position: absolute; /* 절대 위치 설정 */
-    right: 35px; /* 오른쪽 여백 설정 */
-    color: #000;
-    top:20px;
-`;
 const Message = styled.p`
     display:flex;
     padding-left:30px;
@@ -390,10 +400,9 @@ const FullListSection = styled.div`
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
-    padding:0 30px;
-    background-color:none;
+    padding:0 25px;
     position:absolute;
-    top:265px;
+    top:260px;
     height:auto;
 `;
 
@@ -454,14 +463,14 @@ const EmojiBubble1 = styled.div`
 
 const EmojiBubble2 = styled.div`
   position: absolute;
-  width: 90px;
-  height: 90px;
+  width: 130px;
+  height: 130px;
   font-size: 50px;
   background-image: url(${emojiImage});
   background-size: cover;
   background-position: center;
-  top: -22px;
-  left: 32px; /* 우측 위치 */
+  top: -50px;
+  left: 2px; /* 우측 위치 */
   transform: scaleX(-1) rotate(-10deg); /* 좌우 반전 및 회전 */
   z-index:1;
 `;
