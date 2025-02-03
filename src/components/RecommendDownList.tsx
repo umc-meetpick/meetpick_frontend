@@ -80,7 +80,7 @@ const DropdownButton: React.FC<DropdownButtonProps> = ({
       </StyledButton>
       {isOpen && options.length > 0 && (
         <DropdownWrapper>
-          <DropdownList $width={dropdownWidth}>
+          <DropdownList $width={width}>
             {(options as any[]).map((option, index) => (
               <DropdownItem key={index} onClick={() => handleOptionClick(option)}>
                 {typeof option === "string" ? option : option.label}
@@ -159,6 +159,7 @@ const DropdownList = styled.ul<{$width?:string; $top?: string; $left?: string }>
   border: 1.5px solid #cecece;
   list-style: none;
   min-width: 50px; /* 최소 너비는 버튼 크기 */
+  width: ${({ $width }) => ($width ? `${parseInt($width) - 18}px` : "auto")};
   white-space: nowrap; /* 텍스트 줄바꿈 방지 */
   top: ${({ $top }) => $top || "0px"};
   left: ${({ $left }) => $left || "0px"};
@@ -175,7 +176,7 @@ const DropdownList2 = styled.ul<{$width : string; $top?: string; $left?: string 
   width: 60px;
   //top: ${({ $top }) => `${$top}` || "0px"};
   top:0px;
-  left: 63px; 
+  left: 58px; 
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.27); /* 드롭다운 전체에 그림자 추가 */
 
 `;
@@ -201,7 +202,7 @@ const DropdownItem2 = styled.li`
   cursor: pointer;
   text-align:center;
   color:#6C6C73;
-  font-size:12px;
+  font-size:10.5px;
   font-weight: 500;
   padding: 4px 0;
   

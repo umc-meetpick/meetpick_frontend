@@ -176,7 +176,7 @@ const FoodRecommend = () => {
                                             ? selectedFood
                                             : `${item.option} ∨`
                                         }
-                                        width="auto"
+                                        width={item.option === "음식 종류" ? "95px" : "auto"}
                                         options={item.option === "시간" ? FoodMateList.find((f) => f.option === "시간")?.lists || [] : item.lists || []}
                                         onSelect={(option) => handleSelect(item.option, option)}
                                         onToggle={handleDropdownHeight}
