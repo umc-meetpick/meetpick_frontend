@@ -112,7 +112,6 @@ const Container = styled.div`
   position: relative;
   display: inline-block;
   z-index: 10; /* 필요시 값 조정 */
-  border:solid 3px red;
   overflow: visible; /* Swiper 내부에 있다면 필요 */
 `;
 
@@ -127,9 +126,9 @@ const StyledButton = styled.button<{ $isSelected?: boolean; $color?:string; $hei
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  margin-right: 10px;
+  margin-right: 5px;
   box-sizing: border-box;
-  padding:0 10px;
+  padding:0 15px;
   overflow:visible;
 
   &:hover {
@@ -141,11 +140,12 @@ const DropdownList = styled.ul<{$top?: string; $left?: string }>`
   position:absolute;
   left: 0;
   margin-top:5px;
+  margin-left:5px;
   padding: 0px;
   background: white;
   border: 1.5px solid #cecece;
   list-style: none;
-  width: 60px;
+  width: 55px;
   top: ${({ $top }) => $top || "0px"};
   left: ${({ $left }) => $left || "0px"};
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.27); /* 드롭다운 전체에 그림자 추가 */
