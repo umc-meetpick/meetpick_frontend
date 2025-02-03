@@ -82,9 +82,14 @@ const ExerciseRecommend = () => {
         <Container>
             <Top>
                 <Title>함께! 운동 MATE</Title>
-                <Link to ='/alarm'>
-                    <BellIcon icon="ci:bell" width="24" height="24" />
-                </Link>
+                <TwoIcon>   
+                    <Link to ="/alarm">
+                        <Icon icon="ci:heart-01" width="24" height="24" style={{color:"black"}}></Icon>
+                    </Link>
+                    <Link to ="/alarm">
+                        <Icon icon="ci:bell" width="24" height="24" style={{color:"black"}}/>
+                    </Link>
+                </TwoIcon>  
             </Top>
             <Message>
                 <Name>베티</Name>
@@ -126,7 +131,9 @@ const ExerciseRecommend = () => {
                                 
                                 <SwiperSlide key={slidesData.id}>
                                     <SlideContent>
-                                        <StyledImage src={RecommendImage} alt={`${slidesData.name} 이미지`} />
+                                        <Link to ="/application/exercise">
+                                            <StyledImage src={RecommendImage} alt={`${slidesData.name} 이미지`} />
+                                        </Link>
                                     </SlideContent>
                                 </SwiperSlide>
                                 ))}
@@ -210,6 +217,17 @@ const ExerciseRecommend = () => {
 };
 
 export default ExerciseRecommend;
+
+
+const TwoIcon = styled.div`
+    position:absolute;
+    right:20px;
+    display:flex;
+    align-items:center;
+    top:20px;
+    gap:5px;
+`
+
 
 const BubbleText1 = styled.p`
     color:#636D77;
@@ -305,12 +323,6 @@ const Title = styled.p`
     font-family: "Pretendard Variable";
 `;
 
-const BellIcon = styled(Icon)`
-    position: absolute; /* 절대 위치 설정 */
-    right: 35px; /* 오른쪽 여백 설정 */
-    color: #000;
-    top:20px;
-`;
 
 const Message = styled.p`
     display:flex;
