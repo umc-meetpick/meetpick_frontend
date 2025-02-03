@@ -160,7 +160,7 @@ const FoodRecommend = () => {
                                 {FoodMateList.map((item) => (
                                     <SwiperSlide key={item.id} style={{ width: "auto"}}>
                                         <DropdownButton
-                                        left="85px" // 원하는 위치
+                                        left="60px" // 원하는 위치
                                         top="-83px"  // 원하는 위치
                                         height="33px"
                                         text={

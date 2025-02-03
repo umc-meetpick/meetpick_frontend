@@ -160,7 +160,7 @@ const StudyRecommend = () => {
                                 {StudyMateList.map((item) => (
                                     <SwiperSlide key={item.id} style={{ width: "auto"}}>
                                         <DropdownButton
-                                        left="85px" // 원하는 위치
+                                        left="60px" // 원하는 위치
                                         top="-115px"  // 원하는 위치
                                         height="33px"
                                         text={
@@ -176,7 +176,7 @@ const StudyRecommend = () => {
                                             ? selectedGrade
                                             : `${item.option} ∨`
                                         }
-                                        width="auto"
+                                        width={item.option === "공부 과목 " ? "95px" : "auto"}
                                         options={item.option === "시간" ? StudyMateList.find((f) => f.option === "시간")?.lists || [] : item.lists || []}
                                         onSelect={(option) => handleSelect(item.option, option)}
                                         onToggle={handleDropdownHeight}

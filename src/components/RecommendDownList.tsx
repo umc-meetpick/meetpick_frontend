@@ -153,13 +153,13 @@ const DropdownList = styled.ul<{$width?:string; $top?: string; $left?: string }>
   position:absolute;
   left: 0;
   margin-top:5px;
-  margin-left:8px;
+  margin-left:7.5px;
   padding: 0px;
   background: white;
   border: 1.5px solid #cecece;
   list-style: none;
   min-width: 50px; /* 최소 너비는 버튼 크기 */
-  width: ${({ $width }) => ($width ? `${parseInt($width) - 18}px` : "auto")};
+  width: ${({ $width }) => ($width ? `${parseInt($width) - 16}px` : "auto")};
   white-space: nowrap; /* 텍스트 줄바꿈 방지 */
   top: ${({ $top }) => $top || "0px"};
   left: ${({ $left }) => $left || "0px"};
@@ -176,7 +176,7 @@ const DropdownList2 = styled.ul<{$width : string; $top?: string; $left?: string 
   width: 60px;
   //top: ${({ $top }) => `${$top}` || "0px"};
   top:0px;
-  left: 58px; 
+  left:  ${({ $left }) => `${$left}` || "60px"};; 
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.27); /* 드롭다운 전체에 그림자 추가 */
 
 `;
