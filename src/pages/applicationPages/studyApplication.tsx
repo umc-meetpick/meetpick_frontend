@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import Navbar from "../../components/navbar/Navbar";
 import ApplicationImage from "../../assets/images/Application.png";
