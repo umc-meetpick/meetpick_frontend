@@ -462,14 +462,14 @@ const EmojiBubble1 = styled.div`
 
 const EmojiBubble2 = styled.div`
   position: absolute;
-  width: 90px;
-  height: 90px;
+  width: 130px;
+  height: 130px;
   font-size: 50px;
   background-image: url(${emojiImage});
   background-size: cover;
   background-position: center;
-  top: -22px;
-  left: 32px; /* 우측 위치 */
+  top: -50px;
+  left: 2px; /* 우측 위치 */
   transform: scaleX(-1) rotate(-10deg); /* 좌우 반전 및 회전 */
   z-index:1;
 `;

@@ -245,7 +245,7 @@ const BubbleText1 = styled.p`
 `
 const BubbleText2 = styled.p`
     color:#636D77;
-    font-size: 12px;
+    font-size: 11.5px;
     font-weight: 600;
     transform:scaleX(-1) rotate(-10deg);
     display:flex;
@@ -253,9 +253,9 @@ const BubbleText2 = styled.p`
     align-items:center;
     justify-content:center;
     height:75px;
-    padding:3px 27px 0 22px;
+    padding:15px 23px 15px 20px;
     margin:0;
-    width:45px;
+    width:100px;
 `
 
 const BubbleText3 = styled.p`
@@ -466,14 +466,14 @@ const EmojiBubble1 = styled.div`
 
 const EmojiBubble2 = styled.div`
   position: absolute;
-  width: 90px;
-  height: 90px;
+  width: 130px;
+  height: 130px;
   font-size: 50px;
   background-image: url(${emojiImage});
   background-size: cover;
   background-position: center;
-  top: -22px;
-  left: 32px; /* 우측 위치 */
+  top: -50px;
+  left: 2px; /* 우측 위치 */
   transform: scaleX(-1) rotate(-10deg); /* 좌우 반전 및 회전 */
   z-index:1;
 `;
