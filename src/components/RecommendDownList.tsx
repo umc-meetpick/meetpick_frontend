@@ -32,7 +32,6 @@ const DropdownButton: React.FC<DropdownButtonProps> = ({
   // 선택된 1차 옵션의 하위 옵션 리스트 (있을 경우에만 세팅된다.)
   const [subOptions, setSubOptions] = useState<string[] | null>(null);
 
-  
   // 버튼 클릭시 호출됨
   const toggleDropdown = () => {
     
