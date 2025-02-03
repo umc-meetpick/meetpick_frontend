@@ -24,15 +24,6 @@ interface University {
   address: string;
 }
 
-interface User {
-  university: string;
-  userImage?: string;
-  gender: string;
-  studentNumber: string;
-  major: string;
-  comment?: string;
-}
-
 const HomePage = () => {
 
   const navigate = useNavigate(); // 네비게이션 훅을 사용
@@ -115,7 +106,7 @@ const HomePage = () => {
                     <MateCard key={index}>
                       {isLoadingMates ? (
                         // 🔹 Skeleton으로 전체 카드 대체
-                        <Skeleton height={200} width="100%" borderRadius={10} />
+                        <Skeleton height={150} width="100vw" borderRadius={10} />
                       ) : mate ? (
                         // 🔹 실제 데이터 표시
                         <>
