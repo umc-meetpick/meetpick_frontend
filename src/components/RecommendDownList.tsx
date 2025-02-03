@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState} from "react";
 import styled from "styled-components";
 
 interface DropdownButtonProps {
@@ -31,19 +31,6 @@ const DropdownButton: React.FC<DropdownButtonProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   // 선택된 1차 옵션의 하위 옵션 리스트 (있을 경우에만 세팅된다.)
   const [subOptions, setSubOptions] = useState<string[] | null>(null);
-
-  const [dropdownWidth, setDropdownWidth] = useState<string>("auto");
-
-  // 버튼의 너비를 가져오기 위한 ref
-  const buttonRef = useRef<HTMLButtonElement>(null);
-
-  useEffect(() => {
-    if (buttonRef.current) {
-      // "운동 종류"이면 너비를 120px로, 아니면 버튼의 너비로 설정
-      const newWidth = text === "운동 종류 ∨" ? "100px" : `${buttonRef.current.offsetWidth}px`;
-      setDropdownWidth(newWidth);
-    }
-  }, [text]); // text가 변경될 때마다 다시 측정
 
   // 버튼 클릭시 호출됨
   const toggleDropdown = () => {
