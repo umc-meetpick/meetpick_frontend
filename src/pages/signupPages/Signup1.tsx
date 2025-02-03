@@ -15,7 +15,6 @@ const Signup1 = () => {
   const [selectedYear, setSelectedYear] = useState<string | null>(null);
   const [selectedMonth, setSelectedMonth] = useState<string | null>(null);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
-  const [selectedGrade, setSelectedGrade] = useState<string | null>(null);
 
   // 다음 버튼 클릭 핸들러
   const handleNext = () => {
@@ -115,28 +114,9 @@ const Signup1 = () => {
               </GrayButtonContainer>
             </>
           )}
-          {/* 4단계: 생년월일이 선택되면 학번 선택 표시 */}
-          {selectedYear && selectedMonth && selectedDate && (
-            <>
-              <Title>
-                <BsDot size="30px" color="#34A3FD" />
-                학번
-              </Title>
-              <GrayButtonContainer>
-                <DropdownButton
-                  height="40px"
-                  text={selectedGrade || "학번 ∨"}
-                  width="90px"
-                  options={["10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20","21","22","23","24","25"]}
-                  onSelect={(option) => setSelectedGrade(option)}
-                />
-              </GrayButtonContainer>
-            </>
-          )}
-        
-
+         
               {/* 모든 단계가 완료되면 다음 버튼 활성화 */}
-              {name&&selectedGender&&selectedYear&&selectedMonth&&selectedDate &&selectedGrade &&(
+              {name&&selectedGender&&selectedYear&&selectedMonth&&selectedDate&&(
                 <ButtonContainer>
                   <Link to="/Signup">
                   <SignupButton
@@ -153,7 +133,7 @@ const Signup1 = () => {
                     $backgroundColor="#E7F2FE"
                     width="140px"
                     color="#326DC1"
-                    disabled={!selectedGrade} // 학번이 선택되지 않으면 비활성화
+                    disabled={!selectedDate} // 학번이 선택되지 않으면 비활성화
                     onClick={handleNext}
                   />
                   </Link>
