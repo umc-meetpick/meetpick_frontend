@@ -3,7 +3,7 @@ import styled from "styled-components";
 import BasicNavbar from "../../components/navbar/BasicNavbar";
 import studyProfileQuery from "../../assets/queries/studyProfileQuery";
 import { useChatContext } from "../../context/useChatContext";
-import profile3 from "../../assets/profileImg/프로필3.png";
+import recommend_study from "../../assets/profileImg/recommend_study.png"
 import { StudyProfileInfoContext } from "../../context/studyInfoContext";
 import ToggleListModal from "../../components/modal/ToggleListModal";
 import SelectNumModal from "../../components/modal/selectNumModal";
@@ -165,7 +165,7 @@ const StudyMateProfile = () =>{
             }
         }else if (type == "major" && option != "상관없어"){
             setModalOpenM(true); 
-        }else if (type == "studentNum" && option != "상관없음"){
+        }else if (type == "studentNum" && option != "상관없어"){
             setStudentNum(option);
             addMessage({ question: [option+"로 부탁해~"], direction: "outgoing" });
         }else if (type == "age" && option == "메이트 나이 설정하기"){
@@ -242,7 +242,7 @@ const StudyMateProfile = () =>{
                             msg.question?.map((que, idx) => (
                                 <ImageContainer key={`${index}-${idx}`}>
                                     {idx + 1 === msg.question?.length && msg.direction === "incoming" && (
-                                        <Img src={profile3} alt="프로필" />
+                                        <Img src={recommend_study} alt="공부 프로필" />
                                     )}
                                     {
                                         que == "👋" ? (
@@ -274,6 +274,7 @@ const StudyMateProfile = () =>{
                                         }
                         
                                         $ismodal={ (studyProfileQuery[currentQueryIndex]?.type == "age" && option != "상관없어") 
+                                            || studyProfileQuery[currentQueryIndex]?.type == "major" && option != "상관없어"
                                             || studyProfileQuery[currentQueryIndex]?.type == "peopleNum"}
                                         $isSelected={studyProfileQuery[currentQueryIndex]?.type == "age" && option != "상관없어"}
                                     >
@@ -337,6 +338,20 @@ const StyledMainContainer = styled.div`
     height: ${window.innerHeight > 700 ? '65%': '60%'};
     overflow-x: hidden;
     overflow-y: auto;
+    &::-webkit-scrollbar {
+        width: 8px; 
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: rgb(0,0,0,0.1); 
+        border-radius: 4px;
+    }
+    &::-webkit-scrollbar-track {
+        background-color:none;
+    }
+    *{
+        font-size:13px;
+        color: black;
+    }
     *{
         font-size:13px;
         color: black;
@@ -404,7 +419,6 @@ const Img = styled.img`
     border-radius:100px;
     margin-left:10px;
     margin-top:30px;
-    transform: scaleX(-1);
 `;
 const Button = styled.button<{$ismodal: boolean, $isSelected:boolean}>`
     background-color: ${({$ismodal, $isSelected})=> $ismodal ? "#38ABFF" : ($isSelected ? "#EFF3FE" : "white")};

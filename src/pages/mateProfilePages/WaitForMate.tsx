@@ -1,4 +1,4 @@
-import profile2 from "../../assets/profileImg/프로필2.png";
+import original from "../../assets/profileImg/프로필2.png";
 import styled from "styled-components";
 import BasicNavbar from "../../components/navbar/BasicNavbar";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -11,7 +11,7 @@ const WaitForMate = () =>{
         <Wrapper>
             <BasicNavbar title="추천 메이트 찾기" before={true} bell={true}></BasicNavbar>
             <Container>
-                <Img src={profile2} alt="프로필"/>
+                <Img src={original} alt="프로필"/>
                 <Btn onClick={()=>navigate(`/recommend/${param}`)}>{location.state} 메이트 만나러 가기</Btn>
                 {/* <Div>
                     작성해주신 내용으로 <br/> 

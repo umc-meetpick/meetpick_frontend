@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Background from '../assets/background/HomeBackground'; 
 import Slider from '../components/Slider'; 
@@ -10,6 +10,12 @@ import characterImage from '../assets/homeImg/homeImage.png'
 import thinkingface from '../assets/homeImg/thinking.png'
 import fire from '../assets/homeImg/fire.png'
 import CategotyContainer from '../container/CategoryContainer';
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+import { useFetchMates, useFetchUniversities } from "../apis/home/homeFetch";
+
+const CATEGORY_TYPES = ["MEAL", "EXERCISE", "STUDY", "ALL"] as const;
+const CATEGORY_LABELS = { MEAL: "혼밥", EXERCISE: "운동", STUDY: "공부", ALL: "전체" } as const;
 
 
 interface University {
@@ -21,22 +27,26 @@ interface University {
 const HomePage = () => {
 
   const navigate = useNavigate(); // 네비게이션 훅을 사용
+  const [activeCategory, setActiveCategory] = useState<keyof typeof CATEGORY_LABELS>("MEAL");
+  const [query, setQuery] = useState("");
 
-  // 로그인 버튼 클릭 시 로그인 페이지로 이동
+  const { data: universities, isLoading: isLoadingUniversities } = useFetchUniversities(query);
+  const { data: mates, isLoading: isLoadingMates } = useFetchMates(activeCategory);
+
+  const totalCards = 4;
+  const displayedMates = isLoadingMates
+    ? Array(totalCards).fill(null) // 로딩 상태일 때 Skeleton 카드
+    : [...(mates || []), ...Array(totalCards - (mates?.length || 0)).fill(null)];
+
   const handleLoginClick = () => {
-      navigate('/login');
+    navigate('/login');
   };
 
-  // 학교 컨테이너 클릭 시 학교 메이트 찾기 페이지로 이동
   const handleUniversityClick = (university: University) => {
     navigate('/looking', { state: { universityName: university.universityName } });
   };
 
-  const [query, setQuery] = useState("");
-  const [results, setResults] = useState<University[]>([]);
-
-
-    return (
+  return (
       <Wrapper>
           <Background /> {/* 배경 삽입 */}
           <Content>
@@ -56,13 +66,13 @@ const HomePage = () => {
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                   />
-                  {results.length > 0 && (
+                  {! isLoadingUniversities && universities?.length > 0 && (
                     <SearchResultContainer>
-                      {results.map((university, index) => (
+                      {universities.map((university:University, index:number) => (
                         <SearchResultItem 
-                          key={university.id}
+                          key={university.id ? `${university.id}-${index}` : `university-${index}`} // 🔹 key 수정
                           $isFirst={index === 0}
-                          $isLast={index === results.length - 1}
+                          $isLast={index === universities.length - 1}
                           onClick={() => handleUniversityClick(university)}
                         >
                           <strong>{university.universityName}</strong>
@@ -79,32 +89,46 @@ const HomePage = () => {
               <CategorySection>
                   <SectionTitle><span>Pick!</span>&nbsp;실시간 메이트 찾아보기<img src={fire} alt="Section title image" style={{ width: '30px', height: '30px' }} /></SectionTitle>
                   <CategoryTabs>
-                      <CategoryTab $active>혼밥</CategoryTab>
-                      <CategoryTab>운동</CategoryTab>
-                      <CategoryTab>공부</CategoryTab>
-                      <CategoryTab>전체</CategoryTab>
+                    {CATEGORY_TYPES.map((type) => (
+                      <CategoryTab 
+                        key={type} 
+                        $active={activeCategory === type} 
+                        onClick={() => setActiveCategory(type)}
+                      >
+                        {CATEGORY_LABELS[type]}
+                      </CategoryTab>
+                    ))}
                   </CategoryTabs>
+
+                  {/* 메이트 카드 목록 */}
                   <Slider>
-                    {[1, 2, 3, 4].map((_, index) => (
-                      <div key={index}>
-                        <MateCard>
+                  {displayedMates.map((mate, index) => (
+                    <MateCard key={index}>
+                      {isLoadingMates ? (
+                        // 🔹 Skeleton으로 전체 카드 대체
+                        <Skeleton height={150} width="100vw" borderRadius={10} />
+                      ) : mate ? (
+                        // 🔹 실제 데이터 표시
+                        <>
                           <MateCardInfo1>
-                            <MateCardTitle>중앙대학교</MateCardTitle> 
-                            <MateImage src={mateImage} alt="mate profile" />
-                            </MateCardInfo1>
+                            <MateCardTitle>{mate.university}</MateCardTitle>
+                            <MateImage src={mate.userImage || mateImage} alt="mate profile" />
+                          </MateCardInfo1>
                           <MateCardInfo2>
                             <TagContainer>
-                              <Tag>여성</Tag>
-                              <Tag>20학번</Tag>
-                              <Tag>자연과학계열</Tag>
+                              <Tag>남성</Tag>
+                              <Tag>{mate.studentNumber}</Tag>
+                              <Tag>{mate.major}</Tag>
                             </TagContainer>
-                            <MateMessage>
-                              같이 고기 구워먹어요~! 🥩
-                            </MateMessage>
+                            <MateMessage>{mate.comment || "함께할 메이트를 찾아보세요!"}</MateMessage>
                           </MateCardInfo2>
-                        </MateCard>
-                      </div>
-                    ))}
+                        </>
+                      ) : (
+                        // 🔹 데이터가 없을 경우
+                        <NoMateMessage>현재 해당 카테고리에 등록된 메이트가 없습니다.</NoMateMessage>
+                      )}
+                    </MateCard>
+                  ))}
                   </Slider>
               </CategorySection>
               <Footer>
@@ -352,7 +376,7 @@ const MateCard = styled.div`
 `;
 
 const MateCardInfo1 = styled.div`
-  padding: 0 20px 0 15px;
+  padding: 0 15px 0 10px;
   align-items: center;
   display: flex; /* 가로로 정렬 */
   flex-direction: column; /* 이미지와 설명을 가로로 배치 */
@@ -372,6 +396,9 @@ const MateCardTitle = styled.h3`
   font-weight: 600;
   margin-bottom: 5px;
   text-align: center; /* 제목을 왼쪽 정렬 */
+  word-wrap: break-word;  // 긴 텍스트가 넘칠 때 줄 바꿈
+  word-break: break-word;  // 너무 긴 단어는 줄 바꿈
+  white-space: normal; // 기본적으로 텍스트가 넘치면 자동으로 줄 바꿈
 `;
 
 const MateImage = styled.img`
@@ -382,16 +409,17 @@ const MateImage = styled.img`
 `;
 
 const TagContainer = styled.div`
+  margin-top: 20px;
   flex-direction: row;
   display: flex;
   gap: 4px;
   margin-bottom: 10px;
   justify-content: left;
   align-items: left;
+  flex-wrap: wrap; /* 줄 바꿈 가능 */
 `;
 
 const Tag = styled.span`
-  margin-top: 20px;
   height: 24px;
   display: flex;
   justify-content: center;
@@ -428,4 +456,10 @@ const Footer = styled.div`
   color: #4c4c4c;
   display: flex;
   justify-content: space-around;
+`;
+
+const NoMateMessage = styled.p`
+  font-size: 16px;
+  color: #888;
+  margin-top: 20px;
 `;

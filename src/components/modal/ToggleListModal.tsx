@@ -25,27 +25,33 @@ const ToggleListModal: React.FC<ToggleListModalProps> = ({setModalOpen, type}) =
     const isSmall = window.innerHeight < 700; 
 
     return(
-        <Background>
-            <Container $isSmall={isSmall}>
-                <Selected $isSmall={isSmall}>
-                    {type !== "study" && majors.length ==0 && <div> 원하는 전공을 모두 선택해주세요! </div> }
-                    <ProfileSelectedBorder input={[...majors]} multi/>
-                </Selected>
-                <ToggleList multi={type == "study" ? false : true} setModalOpen={setModalOpen} type={type} />
-            </Container>
-        </Background>
+        <Wrapper>
+            <Background $isSmall={isSmall}>
+                <Container $isSmall={isSmall}>
+                    <Selected $isSmall={isSmall}>
+                        {type !== "study" && majors.length ==0 && <div> 원하는 전공을 모두 선택해주세요! </div> }
+                        <ProfileSelectedBorder input={[...majors]} multi/>
+                    </Selected>
+                    <ToggleList multi={type == "study" ? false : true} setModalOpen={setModalOpen} type={type} />
+                </Container>
+            </Background>
+        </Wrapper>
     )
 }
 export default ToggleListModal;
 
-const Background = styled.div`
+const Wrapper = styled.div`
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+`;
+const Background = styled.div<{$isSmall:boolean;}>`
     width:100%;
     max-width:393px;
     height: 100%;
     background-color:rgba(0,0,0,0.2);
-    position: fixed;
-    top: 0;
-    left: 0;
+    position: relative;
+    bottom:${({$isSmall}) => $isSmall ? "calc(100vh - 40px)" : "calc(100vh - 80px)"};
 `;
 const Container = styled.div<{$isSmall:boolean;}>`
     width: calc(100vw); 
@@ -58,7 +64,7 @@ const Container = styled.div<{$isSmall:boolean;}>`
     justify-content: center;
     align-items: center;
     position: absolute;
-    bottom: ${({$isSmall})=>$isSmall ? "0px" : "75px"};
+    bottom: 0px;
     overflow-y: auto;
     border-radius: 30px 30px 0 0;
 `;

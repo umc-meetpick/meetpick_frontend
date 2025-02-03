@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect} from "react"
+import { useState, useContext, useEffect, useRef} from "react"
 import SetProfileNavbar from '../../components/navbar/BasicNavbar';
 import ProgressBar from '../../components/progressbar/ProgressBar';
 import styled from "styled-components";
@@ -15,7 +15,23 @@ import { PiWarningCircle } from "react-icons/pi";
 const SetStudentNum = () =>{
     const {nickname, image, studentNum, setStudentNum} = useContext(ProfileInfoContext);
     const [stnum, setStnum] = useState("");
-    
+    const inputRef = useRef<HTMLDivElement>(null);
+
+    const scrollToBottom = () => {
+        inputRef.current?.scrollIntoView({ behavior: "smooth" });
+    };
+        
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerHeight < 400) {
+                scrollToBottom();
+            }
+        };
+        handleResize();
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
     const schema = yup.object().shape({
             studentNum: yup
             .string()
@@ -59,24 +75,25 @@ const SetStudentNum = () =>{
                     {...register("studentNum")} 
                     onChange={handleInputChange}
                 />
+                <div ref={inputRef}/>
                 {errors.studentNum && 
                     <Warning $isRed={true}>
                         <PiWarningCircle color={"#DB1818"} style={{ marginTop: "5px"}}/>
                         <div>{errors.studentNum?.message}</div>
                     </Warning>
                 }
+                <BtnContainer>
+                    <MoveToPrevBtn/>
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                        <MoveNextRoundBtn 
+                            nextPage={"/setProfile/mbti"} 
+                            width={160}
+                            onClick={handleSubmit(onSubmit)}
+                            disable={!isValid} 
+                        />
+                    </form>
+                </BtnContainer>
             </Container>
-            <BtnContainer>
-                <MoveToPrevBtn/>
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    <MoveNextRoundBtn 
-                        nextPage={"/setProfile/mbti"} 
-                        width={160}
-                        onClick={handleSubmit(onSubmit)}
-                        disable={!isValid} 
-                    />
-                </form>
-            </BtnContainer>
         </>
     )
 }
@@ -85,7 +102,7 @@ export default SetStudentNum;
 const Container = styled.div`
     margin-top:100px;
     margin: 0 auto;
-    width:320px;
+    width:calc(min(80vw, 320px));
     height: calc(100vh * 0.4);
     font-family: "Pretendard Variable";
 `;
@@ -106,8 +123,8 @@ const SubInfo = styled.div`
     margin-bottom:40px;
 `;
 const BtnContainer = styled.div`
-    width:80%;
-    margin: 0 auto;
+    height:50px;
+    margin: 10vh auto;
     form{
         margin-top:-50px;
     }

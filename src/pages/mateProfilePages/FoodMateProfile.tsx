@@ -3,7 +3,7 @@ import styled, { css } from "styled-components";
 import BasicNavbar from "../../components/navbar/BasicNavbar";
 import foodProfileQuery from "../../assets/queries/foodProfileQuery";
 import { useChatContext } from "../../context/useChatContext";
-import profile1 from "../../assets/profileImg/프로필1.png";
+import recommend_food from "../../assets/profileImg/recommend_food.png"
 import { FoodProfileInfoContext } from "../../context/foodProfileInfo";
 import ToggleListModal from "../../components/modal/ToggleListModal";
 import SelectNumModal from "../../components/modal/selectNumModal";
@@ -222,7 +222,7 @@ const FoodMateProfile = () =>{
                             msg.question?.map((que, idx) => (
                                 <ImageContainer key={`${index}-${idx}`}>
                                     {idx + 1 === msg.question?.length && msg.direction === "incoming" && (
-                                        <Img src={profile1} alt="프로필" />
+                                        <Img src={recommend_food} alt="혼밥 프로필" />
                                     )}
                                     {
                                         que == "👋" ? (
@@ -259,6 +259,7 @@ const FoodMateProfile = () =>{
                                         }
                         
                                         $ismodal={ (foodProfileQuery[currentQueryIndex]?.type == "age" && option != "상관없어") 
+                                            || foodProfileQuery[currentQueryIndex]?.type == "major" && option != "상관없어!"
                                             || foodProfileQuery[currentQueryIndex]?.type == "date" 
                                             || foodProfileQuery[currentQueryIndex]?.type == "peopleNum"}
                                         $isSelected={selectedMenu.includes(option)}
@@ -325,6 +326,16 @@ const StyledMainContainer = styled.div`
     height: ${window.innerHeight > 700 ? '65%' : '60%'};
     overflow-x: hidden;
     overflow-y: auto;
+    &::-webkit-scrollbar {
+        width: 8px; 
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: rgb(0,0,0,0.1); 
+        border-radius: 4px;
+    }
+    &::-webkit-scrollbar-track {
+        background-color:none;
+    }
     *{
         font-size:13px;
         color: black;
@@ -415,7 +426,6 @@ const Img = styled.img`
     border-radius:100px;
     margin-left:10px;
     margin-top:30px;
-    transform: scaleX(-1);
 `;
 const Button = styled.button<{$ismodal: boolean, $isSelected:boolean}>`
     background-color: ${({$ismodal, $isSelected})=> $ismodal ? "#38ABFF" : ($isSelected ? "#EFF3FE" : "white")};
@@ -432,7 +442,7 @@ const FoodBtn = styled.button<{$isSmall:boolean;}>`
     color: white;
     border-radius:4px;
     position: fixed;
-    left: calc(min(100vw * 0.5, 200px));
+    left: calc(50vw);
     transform: translateX(-50%);
     bottom: ${({$isSmall})=>$isSmall ? "calc(100vh * 0.1)" : "calc(100vh * 0.08 + 80px)"};
     z-index:100;
