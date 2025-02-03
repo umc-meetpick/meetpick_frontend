@@ -15,7 +15,7 @@ const Alarm = () => {
     const [alerts, setAlerts] = useState([
         { id: 1, category: "밥", message: "매칭 신청이 들어왔어요! 확인해보세요!", title:"2시간 전"},
         { id: 2, category: "공부", message: "매칭 신청이 들어왔어요! 확인해보세요!", title : "1일 전"},
-        { id: 3, category: "운동", message: "다음 주에 어울리는 메이트를 찾아보세요!" ,title:"2일 전"},
+        { id: 3, category: "운동", message: "다음 주에 어울리는 메이트를 찾아보세요!" ,title:"12시간 전"},
         { id: 4, category: "밥", message: "매칭 신청이 들어왔어요! 확인해보세요!", title : "3일 전"},
     ]); // 더미 데이터
 
@@ -65,15 +65,20 @@ const Alarm = () => {
                                         <Icon icon="fluent-color:edit-24" width="20" height="20" />
                                     )}
                                     <CategoryBadge>{alert.category}</CategoryBadge>
-                                    {!clickedAlerts[alert.id] && (
-                                        <Alarm2>
-                                            <Icon icon = "lucide:dot" width="25" height="25" color="#FF3535"/>
-                                        </Alarm2>
-                                    )}
+                                    
                                 </Title>
                                 <Time>
-                                    <TimeTitle>{alert.title}</TimeTitle>
+                                    <TimeTitle>{alert.title}
+                                        
+                                            {!clickedAlerts[alert.id] && (
+                                                    <Alarm2>
+                                                        <Icon icon = "lucide:dot" width="25" height="25" color="#FF3535"/>
+                                                    </Alarm2>
+                                                )}
+                                       
+                                    </TimeTitle>
                                 </Time>
+                               
                             </Container2>
                             <Message>{alert.message}</Message>
                             <Link to ='/viewRequest' onClick={() => handleAlertClick(alert.id)}>
@@ -89,13 +94,15 @@ const Alarm = () => {
 export default Alarm;
 
 const Alarm2 = styled.div`
-    position:absolute;
-    left:280px;
-    top:-15px;
-`
+    position: absolute;
+    top: -14px;
+    right: -15px;  /* 원하는 위치 조정 */
+`;
+
 
 const TimeTitle = styled.div`
-
+    position:relative;
+    
 `
 
 const Container = styled.div`
@@ -108,6 +115,7 @@ const Container = styled.div`
 `;
 const Container2 = styled. div`
     display:flex;
+    position:relative;
 `
 
 const AlertList = styled.div`
@@ -162,6 +170,6 @@ const Time = styled.span`
     font-size: 12px;
     color: #999;
     margin-left: auto;
-    padding-right:8px;
     display:flex;
+    position:relative;
 `;
