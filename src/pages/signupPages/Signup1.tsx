@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import BasicNavbar from "../../components/navbar/BasicNavbar";
 import SignupButton from "../../components/button/SignupButton";
@@ -8,6 +8,8 @@ import DropdownButton from "../../components/SignupDownList";
 import SignupProgressbar from "../../components/progressbar/SignupProgressbar";
 import { BsDot } from "react-icons/bs";
 import { Link } from "react-router-dom";
+import { debounce } from "lodash";
+
 
 const Signup1 = () => {
   const [name, setName] = useState<string>(""); // 이름 상태
@@ -15,7 +17,7 @@ const Signup1 = () => {
   const [selectedYear, setSelectedYear] = useState<string | null>(null);
   const [selectedMonth, setSelectedMonth] = useState<string | null>(null);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
-  const [selectedGrade, setSelectedGrade] = useState<string | null>(null);
+  const [showNextStep, setShowNextStep] = useState<boolean>(false); // 다음 단계 표시 여부
 
   // 다음 버튼 클릭 핸들러
   const handleNext = () => {
@@ -36,6 +38,20 @@ const Signup1 = () => {
     setSelectedGender(selectedGender === gender ? null : gender);
   };
 
+  // Debounce 적용: 입력이 끝난 후 600ms 뒤에 실행
+  useEffect(() => {
+    const debouncedSetNextStep = debounce(() => {
+      setShowNextStep(name.trim().length > 0); // 공백을 제외한 글자가 있을 때만 다음 단계 표시
+    }, 600);
+
+    debouncedSetNextStep();
+
+    return () => {
+      debouncedSetNextStep.cancel(); // cleanup 함수에서 debounce 취소
+    };
+  }, [name]);
+
+
   
 
   return (
@@ -53,7 +69,7 @@ const Signup1 = () => {
             onChange={handleNameChange}
           />
           {/* 2단계: 이름이 입력되면 성별 선택 표시 */}
-          {name && (
+          {showNextStep && (
             <>
               <Title>
                 <BsDot size="30px" color="#34A3FD" />
@@ -76,7 +92,7 @@ const Signup1 = () => {
             </>
           )}
           {/* 3단계: 성별이 선택되면 생년월일 선택 표시 */}
-          {selectedGender && (
+          {selectedGender&&showNextStep && (
             <>
               <Title>
                 <BsDot size="30px" color="#34A3FD" />
@@ -115,28 +131,9 @@ const Signup1 = () => {
               </GrayButtonContainer>
             </>
           )}
-          {/* 4단계: 생년월일이 선택되면 학번 선택 표시 */}
-          {selectedYear && selectedMonth && selectedDate && (
-            <>
-              <Title>
-                <BsDot size="30px" color="#34A3FD" />
-                학번
-              </Title>
-              <GrayButtonContainer>
-                <DropdownButton
-                  height="40px"
-                  text={selectedGrade || "학번 ∨"}
-                  width="90px"
-                  options={["10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20","21","22","23","24","25"]}
-                  onSelect={(option) => setSelectedGrade(option)}
-                />
-              </GrayButtonContainer>
-            </>
-          )}
-        
-
+         
               {/* 모든 단계가 완료되면 다음 버튼 활성화 */}
-              {name&&selectedGender&&selectedYear&&selectedMonth&&selectedDate &&selectedGrade &&(
+              {name&&selectedGender&&selectedYear&&selectedMonth&&selectedDate&&(
                 <ButtonContainer>
                   <Link to="/Signup">
                   <SignupButton
@@ -153,7 +150,7 @@ const Signup1 = () => {
                     $backgroundColor="#E7F2FE"
                     width="140px"
                     color="#326DC1"
-                    disabled={!selectedGrade} // 학번이 선택되지 않으면 비활성화
+                    disabled={!selectedDate} // 학번이 선택되지 않으면 비활성화
                     onClick={handleNext}
                   />
                   </Link>

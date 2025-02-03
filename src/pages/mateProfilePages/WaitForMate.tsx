@@ -9,7 +9,7 @@ const WaitForMate = () =>{
     const param = (location.state == "혼밥") ? "food" : (location.state == "운동" ? "exercise" : "study")
     return(
         <Wrapper>
-            <BasicNavbar title="추천 메이트 찾기" before={true} bell={true}></BasicNavbar>
+            <BasicNavbar title="추천 메이트 찾기"></BasicNavbar>
             <Container>
                 <Img src={original} alt="프로필"/>
                 <Btn onClick={()=>navigate(`/recommend/${param}`)}>{location.state} 메이트 만나러 가기</Btn>

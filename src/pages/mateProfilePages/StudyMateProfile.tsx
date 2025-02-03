@@ -234,7 +234,7 @@ const StudyMateProfile = () =>{
     }
     return(
         <>
-            <BasicNavbar title="공부 메이트 찾기" bell={true}></BasicNavbar>
+            <BasicNavbar title="공부 메이트 찾기"></BasicNavbar>
             <Container>
                 <StyledMainContainer>
                     <MessagesContainer>

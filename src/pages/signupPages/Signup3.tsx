@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import BasicNavbar from "../../components/navbar/BasicNavbar";
 import SignupButton from "../../components/button/SignupButton";
@@ -32,19 +31,13 @@ const Signup3 = () => {
             </Text>
             <Link to ="/setProfile/nickname">
               <SignupButton
-                  text="매칭을 위한 프로필 작성하러가기"
+                  text="매칭을 위한 프로필 작성하러가기 →"
                   $backgroundColor="#E7F2FE"
-                  width="312px"
+                  width="270px"
                   color="#0069FF"
                   onClick={handleNext}
               />
-              <SignupButton
-                  text="우리 학교 MATE 둘러보기"
-                  $backgroundColor="#F5F5F5"
-                  width="312px"
-                  color="#454545"
-                  onClick={handleNext}
-              />
+
             </Link>
         </Container>
       </EntireContainer>
