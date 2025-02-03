@@ -160,7 +160,7 @@ const ExerciseRecommend = () => {
                                 {ExerciseMateList.map((item) => (
                                     <SwiperSlide key={item.id} style={{ width: "auto"}}>
                                         <DropdownButton
-                                        left="93px" // 원하는 위치
+                                        left="61px" // 원하는 위치
                                         top="-115px"  // 원하는 위치
                                         height="33px"
                                         text={
@@ -407,7 +407,7 @@ const FullListSection = styled.div`
     padding:0 30px;
     background-color:none;
     position:absolute;
-    top:265px;
+    top:260px;
 `;
 
 const List = styled.div`

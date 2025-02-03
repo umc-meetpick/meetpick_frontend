@@ -403,7 +403,7 @@ const FullListSection = styled.div`
     padding:0 30px;
     background-color:none;
     position:absolute;
-    top:265px;
+    top:260px;
     height:auto;
 `;
 
