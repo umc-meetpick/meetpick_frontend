@@ -83,7 +83,7 @@ const ExerciseRecommend = () => {
             <Top>
                 <Title>함께! 운동 MATE</Title>
                 <TwoIcon>   
-                    <Link to ="/alarm">
+                    <Link to ="/Likepage">
                         <Icon icon="ci:heart-01" width="24" height="24" style={{color:"black"}}></Icon>
                     </Link>
                     <Link to ="/alarm">
@@ -189,6 +189,7 @@ const ExerciseRecommend = () => {
                         <FullListSection>
                             {filteredData.map((data) => (
                                 <RecommendBox
+                                category={data.category}
                                 key={data.id}
                                 id={data.id}
                                 text1={data.text1}

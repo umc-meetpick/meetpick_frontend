@@ -30,6 +30,7 @@ import ExerciseMateProfile from "../pages/mateProfilePages/ExerciseMateProfile";
 import StudyRecommend from "../pages/recommendPages/StudyRecommend";
 import StudyApplication from "../pages/applicationPages/studyApplication";
 import StudyMateProfile from "../pages/mateProfilePages/StudyMateProfile";
+import LikePage from "../pages/Likepage";
 
 
 const router = createBrowserRouter([
@@ -153,6 +154,10 @@ const router = createBrowserRouter([
           {
             path:'waitForMate',
             element:<WaitForMate/>
+          },
+          {
+            path:'LikePage',
+            element:<LikePage/>
           }
         ]
     }])

@@ -1,5 +1,6 @@
 export interface RecommendDataType {
   id:number;
+  category:string;
   text1: string;
   text2: string;
   text3:string;
@@ -22,6 +23,7 @@ export interface RecommendDataType {
 export const recommendData: RecommendDataType[] = [
   {
     id:1,
+    category:"food",
     text1: "베티",
     text2: "#여성 #22살",
     text3:"#24학번 #ISFP",
@@ -41,6 +43,7 @@ export const recommendData: RecommendDataType[] = [
   },
   {
     id:2,
+    category:"food",
     text1: "마음이 숭숭",
     text2: "#여성 #22살",
     text3: "#24학번 #ISFP",
@@ -60,6 +63,7 @@ export const recommendData: RecommendDataType[] = [
   },
   {
     id:3,
+    category:"food",
     text1: "제이든",
     text2: "#남성 #27살",
     text3:"#18학번 #ESTP",
@@ -79,6 +83,7 @@ export const recommendData: RecommendDataType[] = [
   },
   {
     id:4,
+    category:"food",
     text1: "디아",
     text2: "#여성 #23살",
     text3:"#22학번 #ISTP",
@@ -99,6 +104,7 @@ export const recommendData: RecommendDataType[] = [
   },
   {
       id:5,
+      category:"food",
       text1: "베티",
       text2: "#여성 #22살",
       text3: "#24학번 #ISFP",
@@ -118,6 +124,7 @@ export const recommendData: RecommendDataType[] = [
     },
     {
       id:6,
+      category:"food",
       text1: "미기",
       text2: "#여성 #23살",
       text3: "#23학번 #ESFJ",
@@ -137,6 +144,7 @@ export const recommendData: RecommendDataType[] = [
     },
     {
       id:7,
+      category:"food",
       text1: "피기",
       text2: "#남성 #26살",
       text3: "#18학번 #ESTP",
