@@ -28,7 +28,7 @@ const Signup2 = () => {
     }
 
     const result = await getUniversities(query);
-    console.log("API Response:", result); 
+    //console.log("API Response/ result 리스트 출력:", result); 
     setSchoolList(result); // 검색 결과 리스트 업데이트
   }, 10);
 
