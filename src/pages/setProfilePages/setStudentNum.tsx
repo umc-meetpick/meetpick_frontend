@@ -35,8 +35,7 @@ const SetStudentNum = () =>{
     const schema = yup.object().shape({
             studentNum: yup
             .string()
-            .matches(/^\d+$/, "숫자만 입력해주세요") 
-            .max(2, "2자 이내로 작성해주세요.")
+            .matches(/^\d+$/, "숫자만 입력해주세요")
             .required("학번을 입력해주세요."),
         })
     const {
@@ -47,7 +46,7 @@ const SetStudentNum = () =>{
         } = useForm({
         resolver: yupResolver(schema),
         mode: "onChange", 
-        });
+    });
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setValue("studentNum", e.target.value, { shouldValidate: true });
@@ -72,9 +71,14 @@ const SetStudentNum = () =>{
                 <SubInfo>숫자만 입력해주세요! ex) 22학번 → 22</SubInfo>
                 <GrayBottomInput 
                     value={stnum}
+                    width={100}
+                    placeholder="00"
+                    $isRight={true}
+                    $isBlack={true}
                     {...register("studentNum")} 
                     onChange={handleInputChange}
                 />
+                <StdNum>학번</StdNum>
                 <div ref={inputRef}/>
                 {errors.studentNum && 
                     <Warning $isRed={true}>
@@ -103,7 +107,7 @@ const Container = styled.div`
     margin-top:100px;
     margin: 0 auto;
     width:calc(min(80vw, 320px));
-    height: calc(100vh * 0.4);
+    height: calc(100vh * 0.5);
     font-family: "Pretendard Variable";
 `;
 const Title = styled.div`
@@ -140,4 +144,10 @@ const Warning = styled.div<{ $isRed?: boolean }>`
         margin-left:5px;
         color:${({$isRed})=>($isRed ? "#DB1818" : "black")};
     }
+`;
+const StdNum = styled.div`
+    font-size:18px;
+    color:black;
+    margin-top:-40px;
+    margin-left:110px;
 `;
