@@ -17,8 +17,8 @@ const Signup2 = () => {
   const [codeError, setCodeError] = useState(""); // 인증번호 에러 메시지 상태
 
   const [school, setSchool] = useState(""); // 학교 검색 입력값
-  const [schoolList, setSchoolList] = useState<{universityName:string; address:string}[]>([]); // 자동완성 결과 리스트
-  const [selectedSchool, setSelectedSchool] = useState<string | null>(null); // 선택된 학교
+  const [schoolList, setSchoolList] = useState<{universityName:string; address:string}[]>([]); // 자동완성 결과 리스트 / API 응답으로 받은 학교 목록 저장 상태 
+  const [selectedSchool, setSelectedSchool] = useState<string | null>(null); // 선택된 학교 이름 저장하는 상태 
 
    // Debounce 적용: 입력이 멈춘 후 500ms 뒤에 실행
    const fetchUniversities = debounce(async (query: string) => {
@@ -30,7 +30,7 @@ const Signup2 = () => {
     const result = await getUniversities(query);
     console.log("API Response:", result); 
     setSchoolList(result); // 검색 결과 리스트 업데이트
-  }, 600);
+  }, 10);
 
     // 학교 이름 입력 핸들러
     const handleSchoolChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -88,7 +88,7 @@ const Signup2 = () => {
           <SignupInputContainer1>
             <SignupInput placeholder={"재학 중인 학교"}  value={selectedSchool || school} onChange={handleSchoolChange}/>
             {/* 자동완성 리스트 */}
-            {schoolList.length > 0 && (
+            {schoolList?.length > 0 && (
             <DropdownContainer>
               {schoolList.map((school, index) => (
                 <DropdownItem key={index} onClick={() => handleSelectSchool(school.universityName)}>
