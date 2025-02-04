@@ -180,6 +180,17 @@ const DropdownContainer = styled.div`
   max-height: 195px;
   overflow-y: auto;
   z-index:9999999;
+
+  &::-webkit-scrollbar {
+    width: 8px; 
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: rgb(0,0,0,0.1); 
+    border-radius: 4px;
+  }
+  &::-webkit-scrollbar-track {
+    background-color:none;
+  }
 `;
 
 const DropdownItem = styled.div`
