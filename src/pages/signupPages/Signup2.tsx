@@ -7,12 +7,45 @@ import SignupProgressbar from "../../components/progressbar/SignupProgressbar";
 import { Link } from "react-router-dom";
 import { BsDot } from "react-icons/bs";
 import { MdErrorOutline } from "react-icons/md";
+import { getUniversities } from "../../apis/signup/UniversityAPI";
+import { debounce } from "lodash"; // Debounce 적용
 
 const Signup2 = () => {
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState(""); // 이메일 에러 메시지 상태
   const [verificationCode, setVerificationCode] = useState("");
   const [codeError, setCodeError] = useState(""); // 인증번호 에러 메시지 상태
+
+  const [school, setSchool] = useState(""); // 학교 검색 입력값
+  const [schoolList, setSchoolList] = useState<{universityName:string; address:string}[]>([]); // 자동완성 결과 리스트
+  const [selectedSchool, setSelectedSchool] = useState<string | null>(null); // 선택된 학교
+
+   // Debounce 적용: 입력이 멈춘 후 500ms 뒤에 실행
+   const fetchUniversities = debounce(async (query: string) => {
+    if (query.trim().length === 0) {
+        setSchoolList([]);  // 입력값이 없으면 리스트 비우기
+        return;
+    }
+
+    const result = await getUniversities(query);
+    console.log("API Response:", result); 
+    setSchoolList(result); // 검색 결과 리스트 업데이트
+  }, 600);
+
+    // 학교 이름 입력 핸들러
+    const handleSchoolChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value;
+      setSchool(value);
+      setSelectedSchool(null); // 새로운 입력값이 들어오면 선택 해제
+      fetchUniversities(value); // Debounce 적용된 API 호출
+    };
+  
+    // 학교 선택 핸들러
+    const handleSelectSchool = (schoolName: string) => {
+      setSchool(schoolName);
+      setSelectedSchool(schoolName);
+      setSchoolList([]); // 리스트 숨기기
+    };
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -53,7 +86,19 @@ const Signup2 = () => {
         <Text>학교를 인증해주세요!</Text>
         <Container>
           <SignupInputContainer1>
-            <SignupInput placeholder={"재학 중인 학교"} />
+            <SignupInput placeholder={"재학 중인 학교"}  value={selectedSchool || school} onChange={handleSchoolChange}/>
+            {/* 자동완성 리스트 */}
+            {schoolList.length > 0 && (
+            <DropdownContainer>
+              {schoolList.map((school, index) => (
+                <DropdownItem key={index} onClick={() => handleSelectSchool(school.universityName)}>
+                    <UniversityName>{school.universityName}</UniversityName>
+                    <Address>{school.address}</Address>
+                </DropdownItem>
+              ))}
+            </DropdownContainer>
+          )}
+
           </SignupInputContainer1>
           <SignupInputContainer>
             <SignupInput
@@ -112,6 +157,37 @@ const Signup2 = () => {
 };
 
 export default Signup2;
+
+
+const Address = styled.div`
+  color: #767373;
+  font-size: 14px;
+  font-weight: 400;
+`
+const UniversityName = styled.div`
+  color:#29303E;
+  font-size:15px;
+  font-weight:500;
+`
+
+const DropdownContainer = styled.div`
+  position: absolute;
+  width: 300px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  max-height: 195px;
+  overflow-y: auto;
+`;
+
+const DropdownItem = styled.div`
+  padding: 10px;
+  cursor: pointer;
+  &:hover {
+    background-color: #f5f5f5;
+  }
+`;
 
 const Container = styled.div`
   display: flex;
