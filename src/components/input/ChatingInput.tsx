@@ -83,6 +83,7 @@ const Input = styled.textarea<{$keyboard:boolean, $isSmallView:boolean}>`
     line-height: 1.5;
     text-align: left;
     background-color:white;
+    font-family: "Pretendard Variable";
     &:focus {
         outline: none;
     }
@@ -97,6 +98,7 @@ const IconPosition = styled.div<{$keyboard:boolean, $isExtra?:boolean, $isSmallV
     padding: ${({$isExtra})=> $isExtra ? "0px" : "5px 0px 3px 1px"};
     border: ${({$isExtra})=> $isExtra ? "1px solid #AAAAAA" : "none"};
     padding-left:5px;
+    font-family: "Pretendard Variable";
     background-color:${({$isDisabled})=> $isDisabled ? "#F2F2F2" : "#007AFF"};
     color: ${({$isDisabled})=> $isDisabled ? "#AAAAAA" : "white"};
 `;

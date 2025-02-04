@@ -38,6 +38,7 @@ const StyledButton = styled.button<{ $isSelected?: boolean }>`
   margin-right: 10px;
   box-sizing: border-box;
   font-weight:700;
+  font-family: "Pretendard Variable";
 
   &:hover {
     border-color: #007AFF; /* 호버 시 테두리 색상 */

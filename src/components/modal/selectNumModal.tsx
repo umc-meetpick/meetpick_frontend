@@ -69,6 +69,7 @@ const Wrapper = styled.div`
     display: flex;
     width: 100vw;
     height: 100vh;
+    font-family: "Pretendard Variable";
 `;
 const Background = styled.div<{$isSmall:boolean;}>`
     width:393px;

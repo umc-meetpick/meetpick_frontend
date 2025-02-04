@@ -17,6 +17,7 @@ const Btn = styled.button`
     height:48px;
     background-color:#F4F5F9;
     color:#373E4B;
+    font-family: "Pretendard Variable";
     border:none;
     border-radius:100px;
     &:focus {

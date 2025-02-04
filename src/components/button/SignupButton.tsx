@@ -43,6 +43,7 @@ const StyledButton = styled.button<{ $backgroundColor: string; width: string; co
   font-weight: 650;
   cursor: pointer;
   margin-bottom:14px;
+  font-family: "Pretendard Variable";
 `;
 
 export default SignupButton;

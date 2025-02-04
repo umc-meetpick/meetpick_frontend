@@ -24,6 +24,7 @@ export default GrayBottomInput;
 
 const Input = styled.input`
     width:300px;
+    font-family: "Pretendard Variable";
     height:48px;
     border:none;
     border-bottom: 1px solid #CECECE;
