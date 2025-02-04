@@ -71,12 +71,12 @@ const StyledButton = styled.button<{ $isSelected?: boolean; $color?:string; $hei
   cursor: pointer;
   box-sizing: border-box;
   z-index:9999;
-  font-weight:700;
+  font-weight:600;
 
   &:hover {
     border-color: #007aff;
     color:#007aff;
-    font-weight:700;
+    font-weight:600;
   }
 `;
 

@@ -185,7 +185,7 @@ const EntireContainer = styled.div`
 const GrayButtonContainer = styled.div`
   display: flex;
   margin-top: 10px;
-  margin-bottom: 40px;
+  margin-bottom: 50px;
   align-items:center;
   font-weight:550;
 `;
@@ -200,6 +200,6 @@ const ButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
-  margin-top: 5px;
+  margin-top: 20px;
   gap:5px;
 `;
