@@ -89,14 +89,14 @@ const Input = styled.textarea<{$keyboard:boolean, $isSmallView:boolean}>`
 `;
 const IconPosition = styled.div<{$keyboard:boolean, $isExtra?:boolean, $isSmallView:boolean, $isDisabled:boolean}>`
     position:fixed;
-    bottom:${({$keyboard, $isSmallView})=> $keyboard ? "3px" : ($isSmallView ? "0px" : "90px")};
+    bottom:${({$keyboard, $isSmallView})=> $keyboard ? "3px" : ($isSmallView ? "5px" : "90px")};
     left: calc(50vw + 140px);
-    width:${({$isExtra})=> $isExtra ? "40px" : "30px"};
+    width:${({$isExtra})=> $isExtra ? "35px" : "30px"};
     heignt:36px;
     border-radius:${({$isExtra})=> $isExtra ? "20px" : "100%"};
     padding: ${({$isExtra})=> $isExtra ? "0px" : "5px 0px 3px 1px"};
     border: ${({$isExtra})=> $isExtra ? "1px solid #AAAAAA" : "none"};
-    padding-left:5px;
+    padding-left:7px;
     background-color:${({$isDisabled})=> $isDisabled ? "#F2F2F2" : "#007AFF"};
     color: ${({$isDisabled})=> $isDisabled ? "#AAAAAA" : "white"};
 `;

@@ -41,25 +41,24 @@ const SelectNumModal : React.FC<ToggleListModalProps> = ({setModalOpen, title, m
     };
     return(
         <Wrapper>
-            <Background $isSmall={isSmall}>
-                <Container $isSmall={isSmall}>
-                    <Title>{title}</Title>
-                    <SliderStyle>
-                        <Slider
-                            value={value} 
-                            onChange={(_, newValue) => handleChange(newValue)} 
-                            valueLabelDisplay="on" 
-                            min={min}
-                            max={max} 
-                        />
-                        <MinMax>
-                            <div>{min}</div> 
-                            <div>{max}</div> 
-                        </MinMax>
-                    </SliderStyle>
-                    <Btn onClick={handleSave}>적용</Btn>
-                </Container>
-            </Background>
+            <Background $isSmall={isSmall}/>
+            <Container $isSmall={isSmall}>
+                <Title>{title}</Title>
+                <SliderStyle>
+                    <Slider
+                        value={value} 
+                        onChange={(_, newValue) => handleChange(newValue)} 
+                        valueLabelDisplay="on" 
+                        min={min}
+                        max={max} 
+                    />
+                    <MinMax>
+                        <div>{min}</div> 
+                        <div>{max}</div> 
+                    </MinMax>
+                </SliderStyle>
+                <Btn onClick={handleSave}>적용</Btn>
+            </Container>
         </Wrapper>
     )
 }
@@ -74,8 +73,8 @@ const Background = styled.div<{$isSmall:boolean;}>`
     width:393px;
     height: 100%;
     background-color:rgba(0,0,0,0.2);
-    position: relative;
-    bottom:${({$isSmall}) => $isSmall ? "calc(100vh - 40px)" : "calc(100vh - 80px)"};
+    position: fixed;
+    bottom:0;
 `;
 const Container = styled.div<{$isSmall:boolean;}>`
     width: calc(100vw); 
@@ -87,7 +86,7 @@ const Container = styled.div<{$isSmall:boolean;}>`
     flex-direction: column;
     align-items: center;
     position: absolute;
-    bottom: ${({$isSmall})=>$isSmall ? "0px" : "0px"};
+    bottom: ${({$isSmall})=>$isSmall ? "-40px" : "30px"};
     border-radius: 30px 30px 0 0;
 `;
 const Title= styled.div`

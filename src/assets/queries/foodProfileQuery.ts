@@ -31,6 +31,12 @@ const foodProfileQuery = [
       "type": "age"
     },
     {
+      "question": [ "메이트가 특정 성격이나 스타일이면 좋을 것 같나요?"],
+      "direction": "incoming",
+      "options": ["응!","상관없어"],
+      "type": "mbti"
+    },
+    {
       "question": [ "함께할 메이트분은 어떤 성격이실까요? 🤔"],
       "direction": "incoming",
       "options": ["활기찬", "조용한","상관없어!"],
@@ -54,7 +60,7 @@ const foodProfileQuery = [
     {
       "question": [ "아하! 알겠습니다", "그럼, 취미가 [닉네임]님과 비슷한 메이트를 원하세요?"],
       "direction": "incoming",
-      "options": ["같으면 좋겠어","상관없어!"],
+      "options": ["같으면 좋겠어","상관없어"],
       "type": "hobby"
     },
     {

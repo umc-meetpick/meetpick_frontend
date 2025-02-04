@@ -4,6 +4,7 @@ import { createContext, useContext, useState, ReactNode } from "react";
 interface Message {
   question?: string[];
   direction: "incoming" | "outgoing"; // 방향을 제한하여 오류 방지
+  type?: "last"
 }
 
 // Context 데이터 타입 정의
