@@ -92,6 +92,17 @@ const DropdownList = styled.ul<{$width : string}>`
   overflow-y: scroll; /* 내용이 많을 경우 스크롤 활성화 */
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.27); /* 드롭다운 전체에 그림자 추가 */
   
+  &::-webkit-scrollbar {
+    width: 8px; 
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: rgb(0,0,0,0.1); 
+    border-radius: 4px;
+  }
+  &::-webkit-scrollbar-track {
+    background-color:none;
+  }
+
 `;
 
 const DropdownItem = styled.li`
