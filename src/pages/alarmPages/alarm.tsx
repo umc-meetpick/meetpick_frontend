@@ -43,7 +43,7 @@ const Alarm = () => {
         <>
             <BasicNavbar title="알림" before={true} />
             <Container>
-                <DropdownButton color="black" text={selectedCategory || "카테고리 ∨"}
+                <DropdownButton color="#3F3F3F" text={selectedCategory || "카테고리 ∨"}
                 height="32px" 
                 width="99px"
                 options ={["밥", "운동", "공부"]}
@@ -72,7 +72,7 @@ const Alarm = () => {
                                         
                                             {!clickedAlerts[alert.id] && (
                                                     <Alarm2>
-                                                        <Icon icon = "lucide:dot" width="25" height="25" color="#FF3535"/>
+                                                        <Icon icon ="lucide:dot" width="27" height="27" color="#FF3535" style={{filter:"drop-shadow(0px 1px 1px rgba(255, 59, 59, 0.25))"}}/>
                                                     </Alarm2>
                                                 )}
                                        
@@ -93,9 +93,10 @@ const Alarm = () => {
 
 export default Alarm;
 
+
 const Alarm2 = styled.div`
     position: absolute;
-    top: -14px;
+    top: -15px;
     right: -15px;  /* 원하는 위치 조정 */
 `;
 

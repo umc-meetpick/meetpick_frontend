@@ -179,6 +179,7 @@ const DropdownContainer = styled.div`
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   max-height: 195px;
   overflow-y: auto;
+  z-index:9999999;
 `;
 
 const DropdownItem = styled.div`
