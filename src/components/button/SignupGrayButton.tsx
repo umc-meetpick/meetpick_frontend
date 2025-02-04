@@ -25,10 +25,10 @@ export default SignupGrayButton;
 
 const StyledButton = styled.button<{ $isSelected?: boolean }>`
   height: 40px;
-  border: 2px solid ${({ $isSelected }) => ($isSelected ? "#34A3FD" : "#CECECE")}; /* 테두리 색상 */
+  border: 2px solid ${({ $isSelected }) => ($isSelected ? "#007aff" : "#CECECE")}; /* 테두리 색상 */
   border-radius: 20px; /* 둥근 테두리 */
   font-size: 14px;
-  color: ${({ $isSelected }) => ($isSelected ? "#34A3FD" : "#8B8B8B")}; /* 텍스트 색상 */
+  color: ${({ $isSelected }) => ($isSelected ? "#007aff" : "#8B8B8B")}; /* 텍스트 색상 */
   background-color: white; /* 버튼 배경색 */
   display: flex;
   align-items: center;
@@ -37,9 +37,11 @@ const StyledButton = styled.button<{ $isSelected?: boolean }>`
   padding: 0 10px; /* 좌우 여백 */
   margin-right: 10px;
   box-sizing: border-box;
+  font-weight:700;
 
   &:hover {
     border-color: #007AFF; /* 호버 시 테두리 색상 */
+    color:#007aff;
   }
 
 `;

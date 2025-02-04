@@ -65,15 +65,18 @@ const StyledButton = styled.button<{ $isSelected?: boolean; $color?:string; $hei
   color: ${({ $color }) => $color || "#8B8B8B"}; /* 전달받은 color를 적용 */
   background-color: white;
   display: flex;
+  margin-right:10px;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  margin-right: 10px;
   box-sizing: border-box;
   z-index:9999;
+  font-weight:700;
 
   &:hover {
     border-color: #007aff;
+    color:#007aff;
+    font-weight:700;
   }
 `;
 

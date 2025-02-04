@@ -186,6 +186,8 @@ const GrayButtonContainer = styled.div`
   display: flex;
   margin-top: 10px;
   margin-bottom: 40px;
+  align-items:center;
+  font-weight:550;
 `;
 
 const Title = styled.div`

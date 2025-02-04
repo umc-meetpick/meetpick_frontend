@@ -52,10 +52,13 @@ const StyledInput = styled.input`
   height: 48px;
   border: none;
   font-size: 17px;
-  font-weight: 400;
+  color:#4e4d4d;
+  font-weight: 550;
+  font-family: "Pretendard Variable";
   margin-right: 8px; /* 버튼과의 간격 */
   ::placeholder {
-    color: #939395;
+    color:#4e4d4d;
+    font-family: "Pretendard Variable";
   }
   &:focus {
     outline: none;
@@ -63,7 +66,7 @@ const StyledInput = styled.input`
 `;
 
 const StyledButton = styled.button`
-  padding: 6px 10px; /* 버튼 좌우 패딩 */
+  padding: 6px 9px; /* 버튼 좌우 패딩 */
   border: 1px solid #CECECE;
   border-radius: 20px;
   background-color: white;
