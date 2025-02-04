@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import BasicNavbar from "../../components/navbar/BasicNavbar";
 import SignupButton from "../../components/button/SignupButton";
-import SignupImage from "../../assets/images/SignupImage.png";
+import SignupImage from "../../assets/images/Signup3.png";
 import SignupProgressbar from "../../components/progressbar/SignupProgressbar";
 import { Link } from "react-router-dom";
 
@@ -60,7 +60,7 @@ const EntireContainer = styled.div`
   flex-direction: column;
   justify-content:center;
   align-items:center;
-  padding:45px 40.5px;
+  padding:30px 40.5px;
   font-family: "Pretendard Variable";
 `
 const Text = styled.div`
@@ -90,8 +90,8 @@ const ImageContainer = styled.div`
 `;
 
 const StyledImage = styled.img`
-  width: 136px;
-  height: 136px;
+  width: 170px;
+  height: 170px;
   border-radius: 50%; /* 둥근 모양 */
 `;
 
