@@ -19,7 +19,7 @@ interface OptionClick{
 const StudyMateProfile = () =>{
     const {messages, addMessage} = useChatContext();
     const [currentQueryIndex, setCurrentQueryIndex] = useState(0); 
-    const { setGender, majors, setStudentNum, ageRange, mbtiList, setMbtiList, subject,
+    const { setGender, majors, setStudentNum, ageRange, mbtiList, setMbtiList, subject, subjectType,
         studyType, setStudyType, place, dateTime, peopleNum, ment } = useContext( StudyProfileInfoContext );
     const [modalOpen, setModalOpen] = useState(false);
     const [modalOpenM, setModalOpenM] = useState(false);
@@ -41,17 +41,19 @@ const StudyMateProfile = () =>{
     }, [messages]);
 
     useEffect(() => {
-        if ( !modalOpen && studyType!= "" && subject != "" && subject != "기타") {
+        if ( !modalOpen && studyType!= "스터디" && subject != "" && subject != "기타") {
             addMessage({ question: [studyType], direction: "outgoing" });
             addMessage({ question: [subject], direction: "outgoing" });
             setChatDisable(true);
             nextOption(); 
-        }else if( !modalOpen && studyType!= "" && subject == "기타") {
+        }else if( !modalOpen && studyType== "스터디" && subject != "") {
             setModalOpen(false)
-            setChatDisable(false)
-            setSaveType("subject");
+            setChatDisable(true)
+            addMessage({ question: [studyType], direction: "outgoing" });
+            addMessage({ question: [`${subjectType}/${subject}`], direction: "outgoing" });
+            nextOption(); 
         }
-    }, [ modalOpen, studyType, subject]);
+    }, [ modalOpen, studyType, subject, subjectType]);
 
     useEffect(() => {
         if ( !modalOpenM && majors.length > 0) {

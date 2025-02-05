@@ -10,7 +10,7 @@ const studyProfileQuery = [
       "question": ["mate와 어떤 공부를\n투게더하고 싶으신가요?",
         "전공/교양 선택시, 구체적인\n[교수명/과목명]을 알려주세요."],
       "direction": "incoming",
-      "options": ["전공", "교양", "스터디", "기타"],
+      "options": ["전공", "교양", "스터디"],
       "type": "studyType"
     },
     {
