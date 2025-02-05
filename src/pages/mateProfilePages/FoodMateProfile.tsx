@@ -151,7 +151,7 @@ const FoodMateProfile = () =>{
                   setCurrentQueryIndex(nextQueryIndex);  
                   setTimeout(() => {
                     const questions = foodProfileQuery[nextQueryIndex]?.question || [];
-                    intervalQ({ questions, setCurrentQueryIndex, nextQueryIndex, addMessage, setOptionSelectEnd });
+                    intervalQ({ questions, setCurrentQueryIndex, nextQueryIndex, addMessage, setOptionSelectEnd,time:300});
                   }, 100); 
                 }
               }
@@ -350,7 +350,7 @@ const OptionsContainer = styled.div<{ $isMenu: boolean , $isSmall:boolean}>`
                   display: grid;
                   grid-template-columns: repeat(3, 1fr);
                   gap: 10px;
-                  padding: 0px 20px;
+                  padding: 10px 20px;
                   overflow-y:auto;
                   position:relative;
                   *{

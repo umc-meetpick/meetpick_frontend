@@ -4,10 +4,12 @@ interface IntervalType {
     nextQueryIndex: number;
     addMessage: (message: any) => void; 
     setOptionSelectEnd?: (s:boolean) => void;
+    time?:number;
 }
 
-const intervalQ = async ({ questions, setCurrentQueryIndex, nextQueryIndex, addMessage, setOptionSelectEnd}: IntervalType) => {
+const intervalQ = async ({ questions, setCurrentQueryIndex, nextQueryIndex, addMessage, setOptionSelectEnd, time}: IntervalType) => {
     let currentIndex = 0;
+    const sec = time || 700;
 
     const interval = setInterval(() => {
         if (questions && currentIndex < questions.length) {
@@ -31,7 +33,7 @@ const intervalQ = async ({ questions, setCurrentQueryIndex, nextQueryIndex, addM
             setOptionSelectEnd?.(false);
             setCurrentQueryIndex(nextQueryIndex); 
         }
-    }, 700);
+    }, sec);
 };
 
 export default intervalQ;

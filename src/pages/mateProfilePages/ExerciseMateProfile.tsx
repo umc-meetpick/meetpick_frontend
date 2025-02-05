@@ -150,7 +150,7 @@ const ExerciseMateProfile = () =>{
                 setCurrentQueryIndex(nextQueryIndex);  
                 setTimeout(() => {
                     const questions = exerciseProfileQuery[nextQueryIndex]?.question || [];
-                    intervalQ({ questions, setCurrentQueryIndex, nextQueryIndex, addMessage, setOptionSelectEnd });
+                    intervalQ({ questions, setCurrentQueryIndex, nextQueryIndex, addMessage, setOptionSelectEnd, time:300});
                 }, 100);  
             }}
         }else if (type?.includes("mbti") ) {

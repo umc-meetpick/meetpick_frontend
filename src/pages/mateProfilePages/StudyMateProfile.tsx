@@ -147,7 +147,7 @@ const StudyMateProfile = () =>{
                 setCurrentQueryIndex(nextQueryIndex);  
                 setTimeout(() => {
                     const questions = studyProfileQuery[nextQueryIndex]?.question || [];
-                    intervalQ({ questions, setCurrentQueryIndex, nextQueryIndex, addMessage, setOptionSelectEnd });
+                    intervalQ({ questions, setCurrentQueryIndex, nextQueryIndex, addMessage, setOptionSelectEnd, time:300});
                 }, 100);  
             }}
             }else if (type?.includes("mbti") ) {
@@ -173,6 +173,7 @@ const StudyMateProfile = () =>{
             setChatDisable(false);
             setSaveType("ment");
         } else if (type == "date"){
+            addMessage({ question: [option], direction: "outgoing" });
             setModalOpenD(true);
         }else if (type == "peopleNum"){
             setModalOpenS2(true); 
