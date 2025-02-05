@@ -7,7 +7,7 @@ import SignupProgressbar from "../../components/progressbar/SignupProgressbar";
 import { Link } from "react-router-dom";
 import { BsDot } from "react-icons/bs";
 import { MdErrorOutline } from "react-icons/md";
-import { getUniversities } from "../../apis/signup/UniversityAPI";
+import { getUniversities } from "../../apis/signup/universityAPI";
 import { debounce } from "lodash"; // Debounce 적용
 
 const Signup2 = () => {
