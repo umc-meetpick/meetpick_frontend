@@ -68,7 +68,6 @@ const studyProfileQuery = [
         "type": "mbti"
     },
     {
-      "question": [ "원하는 mate의 특정 성격이 있으실까요?"],
       "direction": "incoming",
       "options": ["활기찬", "조용한","상관없어!"],
       "type": "mbti-EI"

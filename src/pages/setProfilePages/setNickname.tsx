@@ -12,7 +12,7 @@ import * as yup from 'yup';
 import {yupResolver} from '@hookform/resolvers/yup';
 
 const SetNickName: React.FC = () => {
-    const [isDupilicate, setIsDupilicate] = useState(false);
+    const [isDupilicate, setIsDupilicate] = useState(true);
     const [btnClicked, setBtnClicked] = useState(false);
     const {nickname, setNickName} = useContext(ProfileInfoContext);
     const inputRef = useRef<HTMLDivElement>(null);
@@ -151,7 +151,7 @@ const DupilicateBtn = styled.button`
     }
 `;
 const Warning = styled.div<{ $isRed?: boolean }>`
-    margin-top:10px;
+    margin-top:-10px;
     display:flex;
     font-size:14px;
     width:100%;

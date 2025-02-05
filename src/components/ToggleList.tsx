@@ -108,7 +108,7 @@ const ToggleList: React.FC<ToggleListProps> = ({button, multi, setModalOpen, typ
             {button ? (
                 <BtnContainer>
                     <MoveToPrevBtn/>
-                    <Btn onClick={()=>navigate("/setProfile/hobby")}>다음</Btn>
+                    <Btn onClick={()=>navigate("/setProfile/hobby")} $isDisable={major==""}>다음</Btn>
                 </BtnContainer>
             ) : (
 
@@ -164,13 +164,13 @@ const Detail = styled.button<{$isSelected: boolean}>`
         outline: none;
     }
 `;
-const Btn = styled.button`
+const Btn = styled.button<{$isDisable:boolean}>`
     width:160px;
     height:48px;
-    color:#326DC1;
+    color:${({$isDisable})=>$isDisable ? "#373E4B" : "#326DC1"};
     font-size:15px;
     font-weight:600;
-    background-color:#E7F2FE;
+    background-color:${({$isDisable})=>$isDisable ? "#F4F5F9" : "#E7F2FE"};
     border-radius:100px;
     border:none;
     &:focus {

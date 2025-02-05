@@ -43,7 +43,7 @@ const SetImage = () =>{
             </Container>
             <BtnContainer>
                 <MoveToPrevBtn/>
-                <MoveNextRoundBtn nextPage={"/setProfile/studentNum"} width={160}/>
+                <MoveNextRoundBtn nextPage={"/setProfile/studentNum"} width={160} disable={imgNum==0}/>
             </BtnContainer>
         </>
     )

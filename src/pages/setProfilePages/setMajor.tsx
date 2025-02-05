@@ -16,6 +16,7 @@ const SetMajor = () =>{
             <ProfileSelectedBorder input={[nickname,image,stdnum,mbti]}/>
             <Container>
                 <Title>전공을 선택해주세요</Title>
+                <SubInfo>정확한 전공이 없다면 비슷한 학과로 선택해주세요!</SubInfo>
                 <ToggleList button={true}/>
             </Container>
         </Wrapper>
@@ -40,4 +41,12 @@ const Title = styled.div`
     width:302px;
     height:23px;
     line-height:23px;
+`;
+const SubInfo = styled.div`
+    margin-top:5px;
+    width:300px;
+    height:23px;
+    font-size:14px;
+    color:#838383;
+    margin-bottom:20px;
 `;

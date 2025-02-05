@@ -8,15 +8,17 @@ import { ExerciseProfileInfoContext } from "../../context/exerciseInfoContext";
 import ToggleListModal from "../../components/modal/ToggleListModal";
 import SelectNumModal from "../../components/modal/selectNumModal";
 import ChatingInput from "../../components/input/ChatingInput";
-import { useNavigate } from "react-router-dom";
 import SetDateTimeModal from "../../components/modal/SetDateTimeModal";
+import intervalQ from "../../utils/intervalQuestions"
+import FirstAndLast from "../../utils/firstAndLastMessage";
 
 interface OptionClick{
     option:string;
-    type?: string;
+    type?: string
 }
+
 const ExerciseMateProfile = () =>{
-    const {messages, addMessage, resetMessages} = useChatContext();
+    const {messages, addMessage} = useChatContext();
     const [currentQueryIndex, setCurrentQueryIndex] = useState(0); 
     const { setGender, majors, studentNum, setStudentNum, ageRange, mbtiList, setMbtiList, 
             exercise, setExercise, place, dateTime, peopleNum, ment } = useContext(ExerciseProfileInfoContext);
@@ -26,14 +28,11 @@ const ExerciseMateProfile = () =>{
     const [modalOpenD, setModalOpenD] = useState(false);
     const [chatDisable, setChatDisable] = useState(true);
     const messageEndRef = useRef<HTMLDivElement>(null);
-    const timerRef = useRef<number | null>(null);
-    const hasRun = useRef(false);
     const [keyboardOpen, setKeyboardOpen] = useState(false);
     const [isManyOptions, setIsManyOptions] = useState(false);
     const [saveType, setSaveType] = useState("");
-
-    const navigate = useNavigate();
-
+    const [optionSelectEnd, setOptionSelectEnd] = useState(false);
+    
     const scrollToBottom = () => {
       messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
     };
@@ -106,38 +105,8 @@ const ExerciseMateProfile = () =>{
         }
     }, [ment])
 
-    useEffect(() => {
-        const hasWaveEmoji = messages.some((msg) =>
-            msg.question?.includes("👋")
-        );
-
-        if (hasWaveEmoji) {
-            if (timerRef.current) {
-                clearTimeout(timerRef.current);
-            }
-            timerRef.current = setTimeout(() => {
-                resetMessages();
-                navigate("/waitForMate",{state:"운동"}); 
-            }, 3000);
-        }
-        return () => {
-            if (timerRef.current) {
-                clearTimeout(timerRef.current);
-            }
-        };
-    }, [messages, navigate]);
-
-    useEffect(() => {
-        if (!hasRun.current) {
-          hasRun.current = true; 
-          if (messages.length === 0) {
-            addMessage({
-              question: exerciseProfileQuery[0].question,
-              direction: exerciseProfileQuery[0].direction as "incoming" | "outgoing",
-            });
-          }
-        }
-      }, [messages, addMessage, exerciseProfileQuery]);
+    
+    FirstAndLast("운동");
 
     useEffect(() => {
         const handleResize = () => {
@@ -155,6 +124,7 @@ const ExerciseMateProfile = () =>{
     const handleOptionClick = ({option, type}: OptionClick): void => {
         if (type == "first"){
             setIsManyOptions(true);
+            addMessage({ question: [option], direction: "outgoing" });
         }else if (type == "exercise"){
             if ( option == "기타"){
                 setChatDisable(false);
@@ -174,14 +144,15 @@ const ExerciseMateProfile = () =>{
         }else if (type == "mbti"){
             addMessage({ question: [option], direction: "outgoing" });
             if (option == "상관없어"){
+                setOptionSelectEnd(true); 
                 const nextQueryIndex = currentQueryIndex + 5;
-                if (nextQueryIndex < exerciseProfileQuery.length && !modalOpen ) {
-                    setTimeout(() => {
-                        addMessage({ question: exerciseProfileQuery[nextQueryIndex]?.question, direction: "incoming" });
-                        setCurrentQueryIndex(nextQueryIndex); 
-                    },500);
-                }
-            }
+                if (nextQueryIndex < exerciseProfileQuery.length && !modalOpen) {
+                setCurrentQueryIndex(nextQueryIndex);  
+                setTimeout(() => {
+                    const questions = exerciseProfileQuery[nextQueryIndex]?.question || [];
+                    intervalQ({ questions, setCurrentQueryIndex, nextQueryIndex, addMessage, setOptionSelectEnd, time:300});
+                }, 100);  
+            }}
         }else if (type?.includes("mbti") ) {
             if (option == "상관없어!"){
                 setMbtiList([...mbtiList, "x"]);
@@ -229,8 +200,8 @@ const ExerciseMateProfile = () =>{
         setCurrentQueryIndex(-1); 
         if (nextQueryIndex < exerciseProfileQuery.length && !modalOpen ) {
             setTimeout(() => {
-                addMessage({ question: exerciseProfileQuery[nextQueryIndex]?.question, direction: "incoming" });
-                setCurrentQueryIndex(nextQueryIndex); 
+                const questions = exerciseProfileQuery[nextQueryIndex]?.question || [];
+                intervalQ({questions, setCurrentQueryIndex, nextQueryIndex, addMessage});
             },500);
         }
     }
@@ -243,7 +214,7 @@ const ExerciseMateProfile = () =>{
                         {messages.map((msg, index) => (
                             msg.question?.map((que, idx) => (
                                 <ImageContainer key={`${index}-${idx}`}>
-                                    {idx + 1 === msg.question?.length && msg.direction === "incoming" && (
+                                    {msg?.type == "last" && msg.direction === "incoming" && (
                                         <Img src={recommend_exercise} alt="운동 프로필" />
                                     )}
                                     {
@@ -252,7 +223,7 @@ const ExerciseMateProfile = () =>{
                                         ) : (
                                             <BaseMessage
                                                 direction={msg.direction}
-                                                $isImg={idx + 1 === msg.question?.length && msg.direction === "incoming"}
+                                                $isImg={msg?.type == "last"}
                                                 $length={que.length}
                                             >
                                                 {que}
@@ -265,28 +236,30 @@ const ExerciseMateProfile = () =>{
                     </MessagesContainer>
                     <div ref={messageEndRef} />
                 </StyledMainContainer>
-                <OptionsContainer $isSmall={window.innerHeight <700} $short={isManyOptions}>
-                        {currentQueryIndex >=0 && exerciseProfileQuery[currentQueryIndex]?.options && (
-                            <>
-                                {exerciseProfileQuery[currentQueryIndex].options.map((option, idx) => (
-                                    <Button 
-                                        key={idx} 
-                                        onClick={
-                                            () => handleOptionClick({option, type: exerciseProfileQuery[currentQueryIndex]?.type}) 
-                                        }
-                        
-                                        $ismodal={ (exerciseProfileQuery[currentQueryIndex]?.type == "age" && option != "상관없어") 
-                                            || exerciseProfileQuery[currentQueryIndex]?.type == "major" && option != "상관없어"
-                                            || exerciseProfileQuery[currentQueryIndex]?.type == "date" 
-                                            || exerciseProfileQuery[currentQueryIndex]?.type == "peopleNum"}
-                                        $isSelected={exerciseProfileQuery[currentQueryIndex]?.type == "age" && option != "상관없어"}
-                                    >
-                                        {option}
-                                    </Button>
-                                ))}
-                            </>
-                        )}
-                    </OptionsContainer>
+                {messages.some(msg => (msg?.type === "last" || !msg) && msg.direction === "incoming") && !optionSelectEnd &&
+                    <OptionsContainer $isSmall={window.innerHeight <700} $short={isManyOptions}>
+                            {currentQueryIndex >=0 && exerciseProfileQuery[currentQueryIndex]?.options && (
+                                <>
+                                    {exerciseProfileQuery[currentQueryIndex].options.map((option, idx) => (
+                                        <Button 
+                                            key={idx} 
+                                            onClick={
+                                                () => handleOptionClick({option, type: exerciseProfileQuery[currentQueryIndex]?.type}) 
+                                            }
+                            
+                                            $ismodal={ (exerciseProfileQuery[currentQueryIndex]?.type == "age" && option != "상관없어") 
+                                                || exerciseProfileQuery[currentQueryIndex]?.type == "major" && option != "상관없어"
+                                                || exerciseProfileQuery[currentQueryIndex]?.type == "date" 
+                                                || exerciseProfileQuery[currentQueryIndex]?.type == "peopleNum"}
+                                            $isSelected={exerciseProfileQuery[currentQueryIndex]?.type == "age" && option != "상관없어"}
+                                        >
+                                            {option}
+                                        </Button>
+                                    ))}
+                                </>
+                            )}
+                        </OptionsContainer>
+                    }               
                     <ChatingInput 
                         disable={chatDisable} 
                         setChatDisable={setChatDisable} 
