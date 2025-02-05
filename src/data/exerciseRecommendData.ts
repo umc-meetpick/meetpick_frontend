@@ -12,6 +12,8 @@ export interface RecommendDataType {
     detail2?: string;
     detail3?: string;
     detail4?: string;
+    detail5?:string;
+    detail6?:string;
     gender: string;
     grade: string;
     time? :string;

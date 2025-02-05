@@ -1,4 +1,4 @@
-import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import logoImage from '../assets/images/MeetPickLogo.png'
 import mateImage from '../assets/images/MateImage.png'
@@ -6,6 +6,103 @@ import Slider from '../components/Slider'
 import { useLocation } from "react-router-dom";
 import { Icon } from '@iconify/react';
 import { GoArrowRight } from "react-icons/go";
+
+
+const LookingMate = () => {
+
+  const location = useLocation();
+  const universityName = location.state?.universityName || "대학교";
+
+    return (
+        <LookingPageWrapper>
+            <TopNavbar>
+                <LogoIcon src={logoImage}/>
+            </TopNavbar>
+            <SubTitle>
+                {universityName}에서 
+                <br className="break" /> {/* 줄바꿈 추가 */}
+                나와 맞는 <span>메이트</span>를 찾아보세요 😉
+            </SubTitle>
+            <CardContainer>
+              <Container1>
+                {/* 혼밥 카드 */}
+                <Card>
+                  <Link to ="/recommend/food">
+                    <CardTitle>
+                      혼밥 구제 <Icon icon="fluent-color:food-20" width="24" height="24" />
+                    </CardTitle>
+                    <CardDescription>취향에 맞는 혼밥 메이트 찾아보세요!</CardDescription>
+                    <Button>
+                      <GoArrowRight />
+                    </Button>
+                  </Link>
+                </Card>
+
+                {/* 공부 카드 */}
+                <Card>
+                  <Link to = "/recommend/study">
+                    <CardTitle>
+                      열심히 공부 <Icon icon="fluent-color:edit-24" width="24" height="24" />
+                    </CardTitle>
+                    <CardDescription>같이 공부할 때, 집중력 UP!</CardDescription>
+                    <Button>
+                      <GoArrowRight />
+                    </Button>
+                  </Link>
+                </Card>
+              </Container1>
+                
+              <Container2>
+                {/* 운동 카드 */}
+                <Card $align="center" $justify="center">
+                   <Link to ="/recommend/exercise">
+                    <CardTitle>
+                      함께 운동 <Icon icon="fluent-color:sport-16" width="24" height="24" />
+                    </CardTitle>
+                    <CardDescription>운동하기 심심할 때는? 운동 메이트와 함께!</CardDescription>
+                    <Button>
+                      <GoArrowRight />
+                    </Button>
+                  </Link>
+                </Card>
+              </Container2> 
+            </CardContainer>
+            <CategorySection>
+                  <SectionTitle><span>Pick!</span>&nbsp;실시간 메이트 찾아보기🔥</SectionTitle>
+                  <CategoryTabs>
+                      <CategoryTab $active>혼밥</CategoryTab>
+                      <CategoryTab>운동</CategoryTab>
+                      <CategoryTab>공부</CategoryTab>
+                      <CategoryTab>전체</CategoryTab>
+                  </CategoryTabs>
+                  <Slider>
+                    {[1, 2, 3, 4].map((_, index) => (
+                      <div key={index}>
+                        <MateCard>
+                          <MateCardInfo1>
+                            <MateCardTitle>{universityName}</MateCardTitle> 
+                            <MateImage src={mateImage} alt="mate profile" />
+                            </MateCardInfo1>
+                          <MateCardInfo2>
+                            <TagContainer>
+                              <Tag>여성</Tag>
+                              <Tag>20학번</Tag>
+                              <Tag>자연과학계열</Tag>
+                            </TagContainer>
+                            <MateMessage>
+                              같이 고기 구워먹어요~! 🥩
+                            </MateMessage>
+                          </MateCardInfo2>
+                        </MateCard>
+                      </div>
+                    ))}
+                  </Slider>
+            </CategorySection>
+        </LookingPageWrapper>
+    );
+};
+
+export default LookingMate;
 
 // 스타일 컴포넌트 정의
 const LookingPageWrapper = styled.div`
@@ -72,9 +169,10 @@ const Container2 = styled.div`
 const Card = styled.div<{ $align?: string; $justify?: string }>`
     max-width: 156px;
     background-color: #eef5fe;
-    padding: 20px;
+    padding: 5px 20px;
     border-radius: 8px;
     position: relative; /* 상대적 위치 설정 */
+    height:156px;
 
     /* 위치 조정 */
     align-self: ${({ $align }) => $align || "auto"};
@@ -90,13 +188,14 @@ const CardTitle = styled.h2`
     align-items: left;
     justify-content: left;
     gap: 3px; /* 아이콘과 텍스트 간 간격 */
+    font-weight: 700;
 `;
 
 const CardDescription = styled.p`
     font-size: 12px;
     font-family: "Pretendard Variable";
     color: #222222;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     text-align: left;
     font-weight: 400;
 
@@ -244,93 +343,3 @@ const MateMessage = styled.div`
   font-weight: 500;
   color: #60656F;
 `;
-
-const LookingMate = () => {
-
-  const location = useLocation();
-  const universityName = location.state?.universityName || "대학교";
-
-    return (
-        <LookingPageWrapper>
-            <TopNavbar>
-                <LogoIcon src={logoImage}/>
-            </TopNavbar>
-            <SubTitle>
-                {universityName}에서 
-                <br className="break" /> {/* 줄바꿈 추가 */}
-                나와 맞는 <span>메이트</span>를 찾아보세요 😉
-            </SubTitle>
-            <CardContainer>
-              <Container1>
-                {/* 혼밥 카드 */}
-                <Card>
-                  <CardTitle>
-                    혼밥 구제 <Icon icon="fluent-color:food-20" width="24" height="24" />
-                  </CardTitle>
-                  <CardDescription>취향에 맞는 혼밥 메이트 찾아보세요!</CardDescription>
-                  <Button>
-                    <GoArrowRight />
-                  </Button>
-                </Card>
-
-                {/* 공부 카드 */}
-                <Card>
-                  <CardTitle>
-                    열심히 공부 <Icon icon="fluent-color:edit-24" width="24" height="24" />
-                  </CardTitle>
-                  <CardDescription>같이 공부할 때, 집중력 UP!</CardDescription>
-                  <Button>
-                    <GoArrowRight />
-                  </Button>
-                </Card>
-              </Container1>
-                
-              <Container2>
-                {/* 운동 카드 */}
-                <Card $align="center" $justify="center">
-                  <CardTitle>
-                    함께 운동 <Icon icon="fluent-color:sport-16" width="24" height="24" />
-                  </CardTitle>
-                  <CardDescription>운동하기 심심할 때는? 운동 메이트와 함께!</CardDescription>
-                  <Button>
-                    <GoArrowRight />
-                  </Button>
-                </Card>
-              </Container2> 
-            </CardContainer>
-            <CategorySection>
-                  <SectionTitle><span>Pick!</span>&nbsp;실시간 메이트 찾아보기🔥</SectionTitle>
-                  <CategoryTabs>
-                      <CategoryTab $active>혼밥</CategoryTab>
-                      <CategoryTab>운동</CategoryTab>
-                      <CategoryTab>공부</CategoryTab>
-                      <CategoryTab>전체</CategoryTab>
-                  </CategoryTabs>
-                  <Slider>
-                    {[1, 2, 3, 4].map((_, index) => (
-                      <div key={index}>
-                        <MateCard>
-                          <MateCardInfo1>
-                            <MateCardTitle>{universityName}</MateCardTitle> 
-                            <MateImage src={mateImage} alt="mate profile" />
-                            </MateCardInfo1>
-                          <MateCardInfo2>
-                            <TagContainer>
-                              <Tag>여성</Tag>
-                              <Tag>20학번</Tag>
-                              <Tag>자연과학계열</Tag>
-                            </TagContainer>
-                            <MateMessage>
-                              같이 고기 구워먹어요~! 🥩
-                            </MateMessage>
-                          </MateCardInfo2>
-                        </MateCard>
-                      </div>
-                    ))}
-                  </Slider>
-            </CategorySection>
-        </LookingPageWrapper>
-    );
-};
-
-export default LookingMate;

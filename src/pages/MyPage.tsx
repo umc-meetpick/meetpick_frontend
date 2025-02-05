@@ -184,7 +184,6 @@ const FooterMenu = styled.div`
   background-color: white;
   padding: 10px 20px;
   margin-bottom: 40px;
-  
 `;
 
 const FooterItem1 = styled.div`
@@ -250,65 +249,65 @@ const MyPage = () => {
     };
 
   return (
-    <Container>
-      {/* Navbar */}
-      <Navbar>
-        <BasicNavbar title ="마이페이지" bell={true}/>
-      </Navbar>
+    <>
+      <Container>
+        {/* Navbar */}
+        <Navbar>
+          <BasicNavbar title ="마이페이지" bell={true}/>
+        </Navbar>
 
-      {/* Profile Section */}
-      <ProfileSection>
-        <ProfileImage src={ProfileImg} alt="Profile" />
-        <ProfileInfo>
-            <ProfileName>베티 (나윤빈)</ProfileName>
-            <Link to ="/modify">
-              <EditProfileButton>프로필 수정하기 <BsChevronRight /></EditProfileButton>
-            </Link>
-        </ProfileInfo>
-      </ProfileSection>
+        {/* Profile Section */}
+        <ProfileSection>
+          <ProfileImage src={ProfileImg} alt="Profile" />
+          <ProfileInfo>
+              <ProfileName>베티 (나윤빈)</ProfileName>
+              <Link to ="/modify">
+                <EditProfileButton>프로필 수정하기 <BsChevronRight /></EditProfileButton>
+              </Link>
+          </ProfileInfo>
+        </ProfileSection>
 
-        {/* Match Request Section */}
-      <SectionHeader>
-        <TitleWrapper>
-          <Dot />
-          <SectionTitle>매칭신청</SectionTitle>
-        </TitleWrapper>
-        <ViewText onClick={handleViewAllClick}>전체보기</ViewText>
-      </SectionHeader>
+          {/* Match Request Section */}
+        <SectionHeader>
+          <TitleWrapper>
+            <Dot />
+            <SectionTitle>매칭신청</SectionTitle>
+          </TitleWrapper>
+          <ViewText onClick={handleViewAllClick}>전체보기</ViewText>
+        </SectionHeader>
 
-      <MatchSlider>
-        {[1, 2, 3, 4].map((_, index) => (
-            <MatchCard key={index}>
-                <MatchTitle><Icon icon="fluent-color:sport-16" width="20" height="20" />운동 MATE</MatchTitle>
-                <MatchCardHeader>
-                    <MatchImage src={MateProfileImg} alt="MatchProfile" />
-                    <MatchInfo>
-                    <MateName>제이시</MateName>
-                    <MateInfo>남성, 20학번, 23살</MateInfo>
-                    <MateInfo>경영학부</MateInfo>
-                    </MatchInfo>
-                    <ChevronButton onClick={handleOpenModal} />
-                </MatchCardHeader>
-                <ButtonGroup />
-            </MatchCard>
-        ))}
-      </MatchSlider>
-      
+        <MatchSlider>
+          {[1, 2, 3, 4].map((_, index) => (
+              <MatchCard key={index}>
+                  <MatchTitle><Icon icon="fluent-color:sport-16" width="20" height="20" />운동 MATE</MatchTitle>
+                  <MatchCardHeader>
+                      <MatchImage src={MateProfileImg} alt="MatchProfile" />
+                      <MatchInfo>
+                      <MateName>제이시</MateName>
+                      <MateInfo>남성, 20학번, 23살</MateInfo>
+                      <MateInfo>경영학부</MateInfo>
+                      </MatchInfo>
+                      <ChevronButton onClick={handleOpenModal} />
+                  </MatchCardHeader>
+                  <ButtonGroup />
+              </MatchCard>
+          ))}
+        </MatchSlider>
+        
 
-      {/* Footer Menu */}
-      <FooterMenu>
-        <FooterItem1>
-          신청 현황 <span><GoArrowRight size={16}/></span>
-        </FooterItem1>
-        <FooterItem2>
-          고객센터 <span><GoArrowRight size={16}/></span>
-        </FooterItem2>
-      </FooterMenu>
-
-
-      {/* Modal */}
+        {/* Footer Menu */}
+        <FooterMenu>
+          <FooterItem1>
+            신청 현황 <span><GoArrowRight size={16}/></span>
+          </FooterItem1>
+          <FooterItem2>
+            고객센터 <span><GoArrowRight size={16}/></span>
+          </FooterItem2>
+        </FooterMenu>
+      </Container>
+      {/* ✅ Modal을 Container 바깥에서 렌더링 */}
       <Modal isOpen={isModalOpen} onClose={handleCloseModal} />
-    </Container>
+    </>
   );
 };
 
@@ -317,12 +316,11 @@ export default MyPage;
 
 // Modal Overlay
 const ModalOverlay = styled.div`
-  width: calc(100vw); 
+  width: 100%; 
   max-width: 393px; 
   height:100vh;
   position: fixed;
   top: 0;
-  left: 0;
   background-color: rgba(0, 0, 0, 0.3);
   display: flex;
   justify-content: center;
@@ -483,7 +481,6 @@ const Overlay = styled.div`
   height: 100vh;
   position: fixed;
   top: 0;
-  left: 0;
   background-color: rgba(0, 0, 0, 0.3);
   display: flex;
   align-items: center;
@@ -704,48 +701,51 @@ const Modal = ({ isOpen, onClose }: ModalProps) => {
             height='35px'/>
           </ButtonGroupContainer>
 
-          {/* 수락 확인 Dialog */}
-          {isAcceptDialogOpen && (
-            <Overlay>
-            <DialogButton
-              isOpen={isOpen}
-              onCancel={handleCloseAll}
-              onConfirm={handleAccept}
-              text="수락하시겠습니까?"
-              cancelText="취소"
-              confirmText="수락"
-              textFontSize="17px"
-              buttonTextColor="rgba(0, 122, 255, 1)"
-              buttonBgColor="rgba(233, 233, 233, 0.1)"
-            />
-            </Overlay>
-          )}
+          
 
-
-          {/* 연락 수단 모달 */}
-          {isContactModalOpen && (
-            <Overlay>
-              <ContactContainer>
-                <CloseContainer onClick={handleCloseAll}>
-                  <IoCloseOutline size={24}/>   
-                </CloseContainer> 
-                <ContactHeader>
-                  <ContactTitle>연락 수단</ContactTitle>
-                </ContactHeader>
-                <ContactContent>
-                  카카오톡 ID
-                  <InputContainer>
-                    <KakaoIdInput  />
-                    <CopyButton onClick={handleCopy}>
-                      복사
-                    </CopyButton>
-                  </InputContainer>
-                </ContactContent>
-              </ContactContainer>
-            </Overlay>
-          )}
         </ModalContainer>
       </ModalOverlay>
+
+      {/* 수락 확인 Dialog */}
+      {isAcceptDialogOpen && (
+        <Overlay>
+        <DialogButton
+          isOpen={isOpen}
+          onCancel={handleCloseAll}
+          onConfirm={handleAccept}
+          text="수락하시겠습니까?"
+          cancelText="취소"
+          confirmText="수락"
+          textFontSize="17px"
+          buttonTextColor="rgba(0, 122, 255, 1)"
+          buttonBgColor="rgba(233, 233, 233, 0.1)"
+        />
+        </Overlay>
+      )}
+
+      {/* 연락 수단 모달 */}
+      {isContactModalOpen && (
+        <Overlay>
+          <ContactContainer>
+            <CloseContainer onClick={handleCloseAll}>
+              <IoCloseOutline size={24}/>   
+            </CloseContainer> 
+            <ContactHeader>
+              <ContactTitle>연락 수단</ContactTitle>
+            </ContactHeader>
+            <ContactContent>
+              카카오톡 ID
+              <InputContainer>
+                <KakaoIdInput  />
+                <CopyButton onClick={handleCopy}>
+                  복사
+                </CopyButton>
+              </InputContainer>
+            </ContactContent>
+          </ContactContainer>
+        </Overlay>
+      )}
+
     </>
   );
 };
@@ -757,7 +757,6 @@ const ReportModalOverlay = styled.div`
   position: fixed;
   border-radius: 10px;
   top: 0;
-  left: 0;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.3);
   display: flex;
@@ -957,7 +956,6 @@ const SubmitModalOverlay = styled.div`
   position: fixed;
   border-radius: 10px;
   top: 0;
-  left: 0;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.3);
   display: flex;
@@ -970,7 +968,7 @@ const SubmitModalOverlay = styled.div`
 const ToastMessage = styled.div`
   position: fixed;
   bottom: 50%;
-  left: 20vh;
+  left: 50%;
   transform: translateX(-50%);
   background-color: #fff;
   color: rgba(0, 0, 0, 0.85);
@@ -1013,6 +1011,8 @@ const ReportPage = ({ onClose }: { onClose: () => void }) => {
   };
 
   return (
+    <>
+    
     <ReportModalOverlay>
       <ModalContainer>
         <BackButton onClick={onClose}>
@@ -1078,19 +1078,6 @@ const ReportPage = ({ onClose }: { onClose: () => void }) => {
           {isSubmitted ? "제출 완료" : "제출하기"}
         </SubmitButton>
 
-        {/* Submit Modal */}
-        {isSubmitModalOpen && (
-          <SubmitModalOverlay>
-            <DialogButton
-              isOpen={isSubmitModalOpen}
-              onCancel={() => setIsSubmitModalOpen(false)}
-              onConfirm={handleConfirm}
-              text="본 내용을 접수하시겠습니까?"
-              cancelText="취소"
-              confirmText="확인"
-            />
-          </SubmitModalOverlay>
-        )}
         
           {/* Toast Message */}
         {isToastVisible && (
@@ -1100,5 +1087,21 @@ const ReportPage = ({ onClose }: { onClose: () => void }) => {
         )}
       </ModalContainer>
     </ReportModalOverlay>
+
+    {/* Submit Modal */}
+    {isSubmitModalOpen && (
+      <SubmitModalOverlay>
+        <DialogButton
+          isOpen={isSubmitModalOpen}
+          onCancel={() => setIsSubmitModalOpen(false)}
+          onConfirm={handleConfirm}
+          text="본 내용을 접수하시겠습니까?"
+          cancelText="취소"
+          confirmText="확인"
+        />
+      </SubmitModalOverlay>
+    )}
+        
+    </>
   );
 }

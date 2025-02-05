@@ -143,7 +143,7 @@ const ViewRequest: React.FC = () => {
 
   return (
     <PageContainer>
-        <Navbar title="매칭 신청" before={true} bell={true}></Navbar>
+        <Navbar title="매칭 신청" bell={true}></Navbar>
         {/* 상단 메인 탭 */}
         <ListTabs
             tabs={["매칭 신청", "매칭 완료"]}
