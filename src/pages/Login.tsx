@@ -3,22 +3,23 @@ import { useEffect } from 'react';
 import { FaComment } from "react-icons/fa";
 import logoImage from '../assets/images/MeetPickLogo.png'
 import loginbackground from '../assets/images/loginImage.png';
-import { postKakaoAuth } from '../apis/login/postKakaoAuth';
+//import { postKakaoAuth } from '../apis/login/postKakaoAuth';
+import getToken from '../apis/login/getToken';
 import.meta.env.VITE_KAKAO_AUTH_URL;
 
 const Login = () => {
     const handleKakaoLogin = async() =>{
-        window.location.href = import.meta.env.VITE_KAKAO_AUTH_URL;
+        console.log('버튼클릭')
+        getToken();
+        //window.location.href = import.meta.env.VITE_KAKAO_AUTH_URL;
     };
-    useEffect(() => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const authCode = urlParams.get("code");
-        console.log(window.location.search)
-        if (authCode) {
-            console.log(window.location.search)
-            postKakaoAuth(authCode);
-        }
-    }, []);
+    // useEffect(() => {
+    //     const urlParams = new URLSearchParams(window.location.search);
+    //     const authCode = urlParams.get("code");
+    //     if (authCode) {
+    //         getToken(authCode);
+    //       }
+    // }, []);
  
     return (
         <>
@@ -33,11 +34,8 @@ const Login = () => {
                     <BtnWrapper>
                         <LoginButton onClick = {handleKakaoLogin}> 
                             <StyledFaComment />
-                            카카오톡으로 로그인
+                            카카오톡 간편 로그인
                         </LoginButton>
-                        <SignUpText>
-                            아직 가입하지 않았다면? <a href="/signup">회원가입</a>하러 가기
-                        </SignUpText>
                         {/* 로그인 폼이나 추가 콘텐츠가 이곳에 올 수 있습니다. */}
                     </BtnWrapper>
             </PageWrapper>
@@ -132,16 +130,3 @@ const LoginButton = styled.button`
         box-shadow: none;
     }
 `;
-
-const SignUpText = styled.p`
-    font-family: "Pretendard Variable";
-    font-size: 14px;
-    color: #757575;
-
-    & a {
-        color: #757575; /* 링크 스타일 */
-        text-decoration: underline;
-        font-weight: 400;
-    }
-`;
-

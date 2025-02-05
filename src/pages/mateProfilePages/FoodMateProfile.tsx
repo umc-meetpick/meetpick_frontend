@@ -388,6 +388,8 @@ const BaseMessage = styled.div<{ direction: string, $isImg : boolean, $length:nu
     position:relative;
     display: flex;
     align-items: center; 
+    white-space: pre-line; /* 줄 바꿈을 인식하도록 설정 */
+  word-wrap: break-word;
     div{
         display: -webkit-box;
         -webkit-box-orient: vertical;
