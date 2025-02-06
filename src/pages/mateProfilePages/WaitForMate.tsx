@@ -8,14 +8,15 @@ const WaitForMate = () =>{
     const navigate = useNavigate();
     const location = useLocation();
     const param = (location.state == "혼밥") ? "food" : (location.state == "운동" ? "exercise" : "study")
-    const {data, isLoading} = getRecommendation(param.toUpperCase());
+    const mateType = (param == "food") ? "MEAL" : param.toUpperCase();
+    const {data, isLoading} = getRecommendation(mateType);
     return(
         <Wrapper>
             <BasicNavbar title="추천 메이트 찾기"></BasicNavbar>
             <Container>
                 <Img src={original} alt="프로필"/>
                 { data && 
-                    <Btn onClick={()=>navigate(`/recommend/${param}`)}>{location.state} 메이트 만나러 가기</Btn>
+                    <Btn onClick={()=>navigate(`/recommend/${param}`, {state:data})}>{location.state} 메이트 만나러 가기</Btn>
                 }
                 { isLoading && 
                     <Div>

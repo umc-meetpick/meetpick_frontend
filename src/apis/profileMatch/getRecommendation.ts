@@ -6,6 +6,7 @@ const getRecommendation = (type: string) =>{
         queryKey:['recommend'],
         queryFn: async () => {
             const { data } = await axiosInstance.get(`api/matches/recommendation?mateType=${type}`)
+            console.log("recommend data:",data)
             return data.result || [];
         }
     })
