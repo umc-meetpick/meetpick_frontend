@@ -9,6 +9,7 @@ import { BsDot } from "react-icons/bs";
 import { MdErrorOutline } from "react-icons/md";
 import { useFetchUniversities } from "../../apis/home/homeFetch";
 import { useVerifyEmail } from "../../apis/signup/vertifyEmail";
+import { useSendEmailCode } from "../../apis/signup/vertifyEmail";
 
 interface University {
   id:number;
@@ -31,6 +32,7 @@ const Signup2 = () => {
   const [selectedSchool, setSelectedSchool] = useState<string | null>(null); // 선택된 학교 이름 저장하는 상태
   
   const verifyEmailMutation = useVerifyEmail(); // useMutation 훅 사용 
+  const sendEmailMutation = useSendEmailCode(); // 이메일 인증 요청 API
 
 
 
@@ -67,51 +69,65 @@ const Signup2 = () => {
     return emailRegex.test(email);
   };
 
-  const handleEmailSubmit = () => {
-    if(!validateEmail(email)){
-      setEmailError("이메일을 확인해주세요");
+  // 이메일 인증 요청 버튼 클릭 시 실행
+  const handleSendEmail = () => {
+    if(!validateEmail(email)) {
+      setEmailError("이메일을 확인해주세요!");
       return;
     }
-    if(!selectedSchool){
-      setEmailError("학교를 먼저 선택해주세요");
+    if(!selectedSchool) {
+      setEmailError("학교를 먼저 선택해주세요.");
       return;
     }
-    setEmailError(""); // 기존 에러 초기화 
-    console.log("✔️이메일 인증 요청 시작!");
+    setEmailError("");
+    console.log("✔️이메일 인증 코드 요청 시작!!");
+
+    sendEmailMutation.mutate(
+      {email, univName:selectedSchool},
+      {
+        onSuccess:(data)=> {
+          console.log("✅이메일 인증 코드 요청 성공!", data);
+          console.log("🔍 백엔드 응답 전체 데이터:", data);
+
+
+           // ✨ 백엔드 응답에서 인증번호를 콘솔에 출력 (가능한 경우)
+           if (data.result) {
+            console.log(`📩 전송된 인증번호: ${data.verificationCode}`);
+
+          } else {
+            console.warn("⚠️ 응답에 인증번호 정보가 없습니다.");
+          }
+        },
+        onError:(error)=> {
+          console.error("❌이메일 인증 코드 요청 실패", error);
+        }
+      }
+    )
+  }
+
+  // 이메일 인증 코드 검증 버튼 클릭 시 실행 
+  const handleVerifyEmail = () => {
+    if(verificationCode === ""){
+      setCodeError("인증번호를 입력해주세요!!");
+      return;
+    }
+    setCodeError("");
+    console.log("✔️이메일 인증 검증 시작!");
 
     verifyEmailMutation.mutate(
+      {email, univName:selectedSchool || "", verificationCode:Number(verificationCode)},
       {
-        email, 
-        univName:selectedSchool,
-        verificationCode:Number(verificationCode), // 인증하는 숫자는 변환해서 보냄 
-      },
-      {
-        onSuccess:(data) => {
-          console.log("이메일 인증 성공!", data);
+        onSuccess:(data)=> {
+          console.log("✅이메일 인증 검증 성공!", data);
         },
-        onError :(error) => {
-          console.error("이메일 인증 실패", error);
-        },
+        onError: (error)=> {
+          console.error("❌이메일 인증 검증 실패!", error);
+        }
       }
-    );
-  };
+    )
+  }
 
-  const handleCodeSubmit = () => {
-    if (verificationCode === "") {
-      setCodeError("인증번호를 확인해주세요.");
-    } else {
-      setCodeError("");
-      console.log("확인 버튼 클릭");
-    }
-  };
 
-  const handlePrevious = () => {
-    console.log("이전 버튼 클릭");
-  };
-
-  const handleNext = () => {
-    console.log("다음 버튼 클릭");
-  };
 
   return (
     <>
@@ -141,8 +157,8 @@ const Signup2 = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               hasButton={true}
-              buttonText={verifyEmailMutation.isPending ? "인증 중...": "인증하기"}
-              onButtonClick={handleEmailSubmit}
+              buttonText={verifyEmailMutation.isPending ? "요청 중...": "요청하기"}
+              onButtonClick={handleSendEmail}
             />
             <BottomText>
               <BsDot size="15px" color="#34A3FD" />
@@ -156,8 +172,8 @@ const Signup2 = () => {
               value={verificationCode}
               onChange={(e) => setVerificationCode(e.target.value)}
               hasButton={true}
-              buttonText="확인"
-              onButtonClick={handleCodeSubmit}
+              buttonText={verifyEmailMutation.isPending ? "확인중":"확인"}
+              onButtonClick={handleVerifyEmail}
             />
             <BottomText>
               <BsDot size="15px" color="#34A3FD" />
@@ -172,7 +188,6 @@ const Signup2 = () => {
                 $backgroundColor="#F5F5F5"
                 width="140px"
                 color="black"
-                onClick={handlePrevious}
               />
             </Link>
             <Link to="/Signup3">
@@ -181,7 +196,6 @@ const Signup2 = () => {
                 $backgroundColor="#E7F2FE"
                 width="140px"
                 color="#326DC1"
-                onClick={handleNext}
               />
             </Link>
           </ButtonContainer>
