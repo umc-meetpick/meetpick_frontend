@@ -18,6 +18,8 @@ interface StudyProfileInfoContextType {
     setStudyType: (studyType: string) => void;
     subject: string;
     setSubject:(subject: string) => void;
+    subjectType: string;
+    setSubjectType:(subjectT: string) => void;
     place:string;
     setPlace: (place:string) => void;
     peopleNum: number;
@@ -48,6 +50,8 @@ const defaultValue: StudyProfileInfoContextType = {
     setStudyType: () => {},
     subject:"",
     setSubject:() => {},
+    subjectType:"",
+    setSubjectType:() => {},
     place: "",
     setPlace: () => {},
     peopleNum: 0,
@@ -76,6 +80,7 @@ export function StudyProfileContextProvider({children}:StudyProfileContextProvid
     const [mbti, setMbti] = useState<string>("");
     const [studyType, setStudyType] = useState<string>("");
     const [subject, setSubject] = useState<string>("");
+    const [subjectType, setSubjectType] = useState<string>("");
     const [place, setPlace] = useState<string>("");
     const [peopleNum, setPeopleNum] = useState<number>(0);
     const [hobby, setHobby] = useState<string[]>([]);
@@ -101,6 +106,8 @@ export function StudyProfileContextProvider({children}:StudyProfileContextProvid
                 setStudyType,
                 subject,
                 setSubject,
+                subjectType,
+                setSubjectType,
                 place,
                 setPlace,
                 peopleNum,

@@ -79,7 +79,7 @@ const SetDateTimeModal: React.FC<SetDateTimeModalProps> = ({title, setModalOpen,
     }
     return(
         <Wrapper>
-            <Background $isSmall={isSmall}>
+            <Background $isSmall={isSmall}/>
             <Container $isSmall={isSmall}>
                 <Title>{title}</Title>
                 <InputWrapper>
@@ -167,7 +167,6 @@ const SetDateTimeModal: React.FC<SetDateTimeModalProps> = ({title, setModalOpen,
                 </Btn>
                 </InputWrapper>
             </Container>
-        </Background>
         </Wrapper>
     )
 }
@@ -184,8 +183,8 @@ const Background = styled.div<{$isSmall:boolean}>`
     max-width:393px;
     height: 100%;
     background-color:rgba(0,0,0,0.2);
-    position: relative;
-    bottom:${({$isSmall}) => $isSmall ? "calc(100vh - 40px)" : "calc(100vh - 80px)"};
+    position: fixed;
+    bottom:0;
 `;
 const Container = styled.div<{$isSmall:boolean}>`
     width: calc(100vw); 

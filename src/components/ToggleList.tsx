@@ -31,9 +31,10 @@ const ToggleList: React.FC<ToggleListProps> = ({button, multi, setModalOpen, typ
     }
     const {major, setMajor} = useContext(ProfileInfoContext);
     const { majors, setMajors } = useProfileContext(type || "");
-    const { subject, setSubject} = useContext(StudyProfileInfoContext)
+    const { subject, setSubject, subjectType, setSubjectType} = useContext(StudyProfileInfoContext)
     const [openItems, setOpenItems] = useState<number[]>([]);
     const [selectedMajors, setSelectedMajors] = useState<string[]>([]); 
+    const [value, setValue] = useState("");
     
     const handleToggle = (id: number) => {
         if (openItems.includes(id)) {
@@ -44,6 +45,7 @@ const ToggleList: React.FC<ToggleListProps> = ({button, multi, setModalOpen, typ
     };
     const handleMajor = (major:string, title:string, all:string[]) =>{
         if (type == "study"){
+            setSubjectType(title)
             setSubject(major)
         }else{
             if (multi) {
@@ -86,20 +88,29 @@ const ToggleList: React.FC<ToggleListProps> = ({button, multi, setModalOpen, typ
                                 <Detail 
                                     onClick={()=>handleMajor("all", item.title+" 전체", item.items)} 
                                     $isSelected={majors.includes(item.title+" 전체")}
+                                    key={item.id}
                                 >
                                     {`${item.title} 전체`}
                                 </Detail>
                             }
                             {item.items.map((i, index) => (
+                            <React.Fragment key={`fragment-${item.id}-${index}`}>
                                 <Detail
-                                    key={`major-${item.id}-${index}`}
-                                    onClick={() => handleMajor(i, item.title+" 전체", item.items)}
-                                    $isSelected=
-                                    {multi ? selectedMajors.includes(i) : 
-                                    (type == "study" ? subject === i : major === i)}
+                                key={`major-${item.id}-${index}`}
+                                onClick={() => handleMajor(i, item.title, item.items)}
+                                $isSelected={multi ? selectedMajors.includes(i) 
+                                    : (type == "study" ? subject === i && subjectType == item.title: major === i)}
                                 >
-                                    {i}
+                                {i}
                                 </Detail>
+                                {(i == "기타" && (subject === i || value != "")) && subjectType == item.title &&
+                                    <Input 
+                                        placeholder="스터디 과목을 입력해주세요!" 
+                                        value={value}
+                                        onChange={(e)=>{setValue(e.target.value)}}
+                                        onBlur={(e) => setSubject(e.target.value)}
+                                    />}
+                            </React.Fragment>
                             ))}
                         </>
                     )}
@@ -108,11 +119,19 @@ const ToggleList: React.FC<ToggleListProps> = ({button, multi, setModalOpen, typ
             {button ? (
                 <BtnContainer>
                     <MoveToPrevBtn/>
-                    <Btn onClick={()=>navigate("/setProfile/hobby")}>다음</Btn>
+                    <Btn onClick={()=>navigate("/setProfile/hobby")} $isDisable={major==""}>다음</Btn>
                 </BtnContainer>
             ) : (
 
-                <Btn2 onClick={()=>setModalOpen?.(false)}>저장</Btn2>
+                <Btn2 
+                    onClick={()=>{
+                        setModalOpen?.(false);
+                    }} 
+                    disabled={type == "study" ? subject === "" || subject === "기타" : major === ""}
+                    $isDisable={type == "study" ? subject === "" : major === ""}
+                >
+                    저장
+                </Btn2>
 
             )}
             </Container>
@@ -127,6 +146,7 @@ const Container = styled.div`
     margin-top:20px;
     max-height: calc(100vh - 150px);
     position:relative;
+    overflow-y:auto;
 `;
 const Toggle = styled.button<{$isOpened:boolean;}>`
     width:312px;
@@ -164,13 +184,13 @@ const Detail = styled.button<{$isSelected: boolean}>`
         outline: none;
     }
 `;
-const Btn = styled.button`
+const Btn = styled.button<{$isDisable:boolean}>`
     width:160px;
     height:48px;
-    color:#326DC1;
+    color:${({$isDisable})=>$isDisable ? "#373E4B" : "#326DC1"};
     font-size:15px;
     font-weight:600;
-    background-color:#E7F2FE;
+    background-color:${({$isDisable})=>$isDisable ? "#F4F5F9" : "#E7F2FE"};
     border-radius:100px;
     border:none;
     &:focus {
@@ -178,13 +198,13 @@ const Btn = styled.button`
         border:none;
     }
 `;
-const Btn2 = styled.button`
+const Btn2 = styled.button<{$isDisable:boolean}>`
     width:312px;
     height:48px;
-    color:#326DC1;
+    color:${({$isDisable})=>$isDisable ? "#373E4B" : "#326DC1"};
     font-size:15px;
     font-weight:600;
-    background-color:#E7F2FE;
+    background-color:${({$isDisable})=>$isDisable ? "#F4F5F9" : "#E7F2FE"};
     margin-top:43px;
     margin-bottom:20px;
     border:none;
@@ -198,4 +218,14 @@ const BtnContainer = styled.div`
     display:flex;
     justify-content:space-between;
     margin: 30px auto;
+`;
+const Input = styled.input`
+    width:100%;
+    height:40px;
+    border: 1px solid #5A5A5A;
+    border-radius: 3px;
+    &:focus {
+        outline: none;
+        border: 1px solid #5A5A5A;
+    }
 `;

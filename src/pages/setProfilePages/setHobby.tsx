@@ -24,7 +24,7 @@ const SetHobby = () =>{
             <ProgressBar progress={85}/>
             <ProfileSelectedBorder input={[nickname,image,stdnum,mbti, major]}/>
             <Container>
-                <Title>취미를 선택해주세요(5개까지)</Title>
+                <Title>취미를 선택해주세요 (최대 5개)</Title>
                 <HobbyWrapper>
                     {hobbyList.map((content,index)=>(
                         <Border 
@@ -41,7 +41,7 @@ const SetHobby = () =>{
             </Container>
             <BtnContainer>
                 <MoveToPrevBtn/>
-                <MoveNextRoundBtn nextPage={"/setProfile/contact"} width={160}/>
+                <MoveNextRoundBtn nextPage={"/setProfile/contact"} width={160} disable={hobby.length==0}/>
             </BtnContainer>
         </>
     )

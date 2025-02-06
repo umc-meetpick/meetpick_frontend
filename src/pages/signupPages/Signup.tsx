@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import  { useState, useEffect } from "react";
 import styled from "styled-components";
 import BasicNavbar from "../../components/navbar/BasicNavbar";
 import AgreeItem from "../../components/SignupAgree";
 import SignupButton from "../../components/button/SignupButton";
 import { Link } from "react-router-dom";
+import getToken from "../../apis/login/getToken";
 
 const Signup = () => {
   const [allChecked, setAllChecked] = useState(false);
@@ -26,8 +27,13 @@ const Signup = () => {
     });
   };
 
+  useEffect(() => {
+    getToken();
+  }, []);
+  
   // 개별 항목 핸들러
   const handleIndividualCheck = (key: keyof typeof agreements) => {
+
     const newAgreements = {
       ...agreements,
       [key]: !agreements[key],

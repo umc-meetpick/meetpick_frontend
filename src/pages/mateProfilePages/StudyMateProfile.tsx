@@ -8,17 +8,18 @@ import { StudyProfileInfoContext } from "../../context/studyInfoContext";
 import ToggleListModal from "../../components/modal/ToggleListModal";
 import SelectNumModal from "../../components/modal/selectNumModal";
 import ChatingInput from "../../components/input/ChatingInput";
-import { useNavigate } from "react-router-dom";
 import SetDateTimeModal from "../../components/modal/SetDateTimeModal";
+import intervalQ from "../../utils/intervalQuestions"
+import FirstAndLast from "../../utils/firstAndLastMessage";
 
 interface OptionClick{
     option:string;
     type?: string;
 }
 const StudyMateProfile = () =>{
-    const {messages, addMessage, resetMessages} = useChatContext();
+    const {messages, addMessage} = useChatContext();
     const [currentQueryIndex, setCurrentQueryIndex] = useState(0); 
-    const { setGender, majors, setStudentNum, ageRange, mbtiList, setMbtiList, subject,
+    const { setGender, majors, setStudentNum, ageRange, mbtiList, setMbtiList, subject, subjectType,
         studyType, setStudyType, place, dateTime, peopleNum, ment } = useContext( StudyProfileInfoContext );
     const [modalOpen, setModalOpen] = useState(false);
     const [modalOpenM, setModalOpenM] = useState(false);
@@ -27,12 +28,9 @@ const StudyMateProfile = () =>{
     const [modalOpenD, setModalOpenD] = useState(false);
     const [chatDisable, setChatDisable] = useState(true);
     const messageEndRef = useRef<HTMLDivElement>(null);
-    const timerRef = useRef<number | null>(null);
-    const hasRun = useRef(false);
     const [keyboardOpen, setKeyboardOpen] = useState(false);
     const [saveType, setSaveType] = useState("");
-
-    const navigate = useNavigate();
+    const [optionSelectEnd, setOptionSelectEnd] = useState(false);
 
     const scrollToBottom = () => {
       messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -43,16 +41,19 @@ const StudyMateProfile = () =>{
     }, [messages]);
 
     useEffect(() => {
-        if ( !modalOpen && studyType!= "" && subject != "" && subject != "기타") {
+        if ( !modalOpen && studyType!= "스터디" && subject != "" && subject != "기타") {
             addMessage({ question: [studyType], direction: "outgoing" });
             addMessage({ question: [subject], direction: "outgoing" });
+            setChatDisable(true);
             nextOption(); 
-        }else if( !modalOpen && studyType!= "" && subject == "기타") {
+        }else if( !modalOpen && studyType== "스터디" && subject != "") {
             setModalOpen(false)
-            setChatDisable(false)
-            setSaveType("subject");
+            setChatDisable(true)
+            addMessage({ question: [studyType], direction: "outgoing" });
+            addMessage({ question: [`${subjectType}/${subject}`], direction: "outgoing" });
+            nextOption(); 
         }
-    }, [ modalOpen, studyType, subject]);
+    }, [ modalOpen, studyType, subject, subjectType]);
 
     useEffect(() => {
         if ( !modalOpenM && majors.length > 0) {
@@ -108,38 +109,7 @@ const StudyMateProfile = () =>{
         }
     }, [ment])
 
-    useEffect(() => {
-        const hasWaveEmoji = messages.some((msg) =>
-            msg.question?.includes("👋")
-        );
-
-        if (hasWaveEmoji) {
-            if (timerRef.current) {
-                clearTimeout(timerRef.current);
-            }
-            timerRef.current = setTimeout(() => {
-                resetMessages();
-                navigate("/waitForMate",{state:"공부"}); 
-            }, 3000);
-        }
-        return () => {
-            if (timerRef.current) {
-                clearTimeout(timerRef.current);
-            }
-        };
-    }, [messages, navigate]);
-
-    useEffect(() => {
-        if (!hasRun.current) {
-          hasRun.current = true; 
-          if (messages.length === 0) {
-            addMessage({
-              question: studyProfileQuery[0].question,
-              direction: studyProfileQuery[0].direction as "incoming" | "outgoing",
-            });
-          }
-        }
-      }, [messages, addMessage, studyProfileQuery]);
+    FirstAndLast("공부");
 
     useEffect(() => {
         const handleResize = () => {
@@ -173,14 +143,15 @@ const StudyMateProfile = () =>{
         }else if (type == "mbti"){
             addMessage({ question: [option], direction: "outgoing" });
             if (option == "상관없어"){
+                setOptionSelectEnd(true); 
                 const nextQueryIndex = currentQueryIndex + 5;
-                if (nextQueryIndex < studyProfileQuery.length && !modalOpen ) {
-                    setTimeout(() => {
-                        addMessage({ question: studyProfileQuery[nextQueryIndex]?.question, direction: "incoming" });
-                        setCurrentQueryIndex(nextQueryIndex); 
-                    },500);
-                }
-            }
+                if (nextQueryIndex < studyProfileQuery.length && !modalOpen) {
+                setCurrentQueryIndex(nextQueryIndex);  
+                setTimeout(() => {
+                    const questions = studyProfileQuery[nextQueryIndex]?.question || [];
+                    intervalQ({ questions, setCurrentQueryIndex, nextQueryIndex, addMessage, setOptionSelectEnd, time:300});
+                }, 100);  
+            }}
             }else if (type?.includes("mbti") ) {
                 if (option == "상관없어!"){
                     setMbtiList([...mbtiList, "x"]);
@@ -204,6 +175,7 @@ const StudyMateProfile = () =>{
             setChatDisable(false);
             setSaveType("ment");
         } else if (type == "date"){
+            addMessage({ question: [option], direction: "outgoing" });
             setModalOpenD(true);
         }else if (type == "peopleNum"){
             setModalOpenS2(true); 
@@ -227,8 +199,8 @@ const StudyMateProfile = () =>{
         setCurrentQueryIndex(-1); 
         if (nextQueryIndex < studyProfileQuery.length && !modalOpen ) {
             setTimeout(() => {
-                addMessage({ question: studyProfileQuery[nextQueryIndex]?.question, direction: "incoming" });
-                setCurrentQueryIndex(nextQueryIndex); 
+                const questions = studyProfileQuery[nextQueryIndex]?.question || [];
+                intervalQ({questions, setCurrentQueryIndex, nextQueryIndex, addMessage});
             },500);
         }
     }
@@ -241,7 +213,7 @@ const StudyMateProfile = () =>{
                         {messages.map((msg, index) => (
                             msg.question?.map((que, idx) => (
                                 <ImageContainer key={`${index}-${idx}`}>
-                                    {idx + 1 === msg.question?.length && msg.direction === "incoming" && (
+                                    {msg?.type == "last" && msg.direction === "incoming" && (
                                         <Img src={recommend_study} alt="공부 프로필" />
                                     )}
                                     {
@@ -250,7 +222,7 @@ const StudyMateProfile = () =>{
                                         ) : (
                                             <BaseMessage
                                                 direction={msg.direction}
-                                                $isImg={idx + 1 === msg.question?.length && msg.direction === "incoming"}
+                                                $isImg={msg?.type == "last"}
                                                 $length={que.length}
                                             >
                                                 {que}
@@ -263,27 +235,29 @@ const StudyMateProfile = () =>{
                     </MessagesContainer>
                     <div ref={messageEndRef} />
                 </StyledMainContainer>
-                <OptionsContainer $isSmall={window.innerHeight <700}>
-                        {currentQueryIndex >=0 && studyProfileQuery[currentQueryIndex]?.options && (
-                            <>
-                                {studyProfileQuery[currentQueryIndex].options.map((option, idx) => (
-                                    <Button 
-                                        key={idx} 
-                                        onClick={
-                                            () => handleOptionClick({option, type: studyProfileQuery[currentQueryIndex]?.type}) 
-                                        }
-                        
-                                        $ismodal={ (studyProfileQuery[currentQueryIndex]?.type == "age" && option != "상관없어") 
-                                            || studyProfileQuery[currentQueryIndex]?.type == "major" && option != "상관없어"
-                                            || studyProfileQuery[currentQueryIndex]?.type == "peopleNum"}
-                                        $isSelected={studyProfileQuery[currentQueryIndex]?.type == "age" && option != "상관없어"}
-                                    >
-                                        {option}
-                                    </Button>
-                                ))}
-                            </>
-                        )}
-                    </OptionsContainer>
+                {messages.some(msg => (msg?.type === "last" || !msg) && msg.direction === "incoming") && !optionSelectEnd &&
+                    <OptionsContainer $isSmall={window.innerHeight <700}>
+                            {currentQueryIndex >=0 && studyProfileQuery[currentQueryIndex]?.options && (
+                                <>
+                                    {studyProfileQuery[currentQueryIndex].options.map((option, idx) => (
+                                        <Button 
+                                            key={idx} 
+                                            onClick={
+                                                () => handleOptionClick({option, type: studyProfileQuery[currentQueryIndex]?.type}) 
+                                            }
+                            
+                                            $ismodal={ (studyProfileQuery[currentQueryIndex]?.type == "age" && option != "상관없어") 
+                                                || studyProfileQuery[currentQueryIndex]?.type == "major" && option != "상관없어"
+                                                || studyProfileQuery[currentQueryIndex]?.type == "peopleNum"}
+                                            $isSelected={studyProfileQuery[currentQueryIndex]?.type == "studyType" && option != "스터디" && studyType == option}
+                                        >
+                                            {option}
+                                        </Button>
+                                    ))}
+                                </>
+                            )}
+                        </OptionsContainer>
+}
                     <ChatingInput 
                         disable={chatDisable} 
                         setChatDisable={setChatDisable} 
@@ -371,12 +345,12 @@ const OptionsContainer = styled.div<{ $isSmall: boolean }>`
     display: flex;
     flex-wrap: wrap;
     justify-content: center; 
-    gap: 10px;  
+    gap: 15px;
     margin-top: ${({ $isSmall }) => $isSmall ?  "calc(100vh * 0.15)" : "calc(100vh * 0.05)"};
     margin-bottom: calc(100vh * 0.1); 
 `;
 const BaseMessage = styled.div<{ direction: string, $isImg : boolean, $length:number }>`
-    width:180px;
+    width:185px;
     height: ${({$length})=> $length < 17 ? "35px" : `${$length + 15}px`};
     padding: 12px 15px;
     margin: 10px;
@@ -389,6 +363,7 @@ const BaseMessage = styled.div<{ direction: string, $isImg : boolean, $length:nu
     position:relative;
     display: flex;
     align-items: center; 
+    white-space: pre-line;
     div{
         display: -webkit-box;
         -webkit-box-orient: vertical;

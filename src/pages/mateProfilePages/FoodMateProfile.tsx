@@ -8,17 +8,19 @@ import { FoodProfileInfoContext } from "../../context/foodProfileInfo";
 import ToggleListModal from "../../components/modal/ToggleListModal";
 import SelectNumModal from "../../components/modal/selectNumModal";
 import ChatingInput from "../../components/input/ChatingInput";
-import { useNavigate } from "react-router-dom";
 import SetDateTimeModal from "../../components/modal/SetDateTimeModal";
+import intervalQ from "../../utils/intervalQuestions"
+import FirstAndLast from "../../utils/firstAndLastMessage";
 
 interface OptionClick{
     option:string;
     type?: string;
 }
+
 const FoodMateProfile = () =>{
-    const {messages, addMessage, resetMessages} = useChatContext();
+    const {messages, addMessage } = useChatContext();
     const [currentQueryIndex, setCurrentQueryIndex] = useState(0); 
-    const { setGender, majors, studentNum, setStudentNum, ageRange, mbtiList, setMbtiList, 
+    const { majors, studentNum, ageRange, mbtiList, setGender, setStudentNum, setMbtiList, 
             menuList, setMenuList, extraMenu, dateTime, peopleNum, ment } = useContext(FoodProfileInfoContext);
     const [modalOpen, setModalOpen] = useState(false);
     const [modalOpenS, setModalOpenS] = useState(false);
@@ -27,10 +29,8 @@ const FoodMateProfile = () =>{
     const [chatDisable, setChatDisable] = useState(true);
     const [selectedMenu, setSelectedMenu] = useState<string[]>([]);
     const messageEndRef = useRef<HTMLDivElement>(null);
-    const timerRef = useRef<number | null>(null);
-    const hasRun = useRef(false);
     const [keyboardOpen, setKeyboardOpen] = useState(false);
-    const navigate = useNavigate();
+    const [optionSelectEnd, setOptionSelectEnd] = useState(false);
 
     const scrollToBottom = () => {
       messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -56,7 +56,9 @@ const FoodMateProfile = () =>{
     useEffect(() => {
         if ( !modalOpenS && ageRange.length > 0) {
             addMessage({ question: [ `${ ageRange[0] == ageRange[1] ? ageRange[0] : ageRange.join("~") }살 메이트면 좋겠어`], direction: "outgoing" });
-            addMessage({ question: [ `${ ageRange[0] == ageRange[1] ? ageRange[0] : ageRange.join("~") }살 ${studentNum} 메이트를 찾고 계시군요!`], direction: "incoming" });
+            setTimeout(()=>{
+                addMessage({ question: [ `${ ageRange[0] == ageRange[1] ? ageRange[0] : ageRange.join("~") }살 ${studentNum} 메이트를 찾고 계시군요!`], direction: "incoming" });
+            },500);
             nextOption(); 
         }
     }, [ modalOpenS, ageRange]);
@@ -114,38 +116,7 @@ const FoodMateProfile = () =>{
         }
     }, [ chatDisable, ment])
 
-    useEffect(() => {
-        const hasWaveEmoji = messages.some((msg) =>
-            msg.question?.includes("👋")
-        );
-
-        if (hasWaveEmoji) {
-            if (timerRef.current) {
-                clearTimeout(timerRef.current);
-            }
-            timerRef.current = setTimeout(() => {
-                resetMessages();
-                navigate("/waitForMate",{state:"혼밥"}); 
-            }, 3000);
-        }
-        return () => {
-            if (timerRef.current) {
-                clearTimeout(timerRef.current);
-            }
-        };
-    }, [messages, navigate]);
-
-    useEffect(() => {
-        if (!hasRun.current) {
-          hasRun.current = true; 
-          if (messages.length === 0) {
-            addMessage({
-              question: foodProfileQuery[0].question,
-              direction: foodProfileQuery[0].direction as "incoming" | "outgoing",
-            });
-          }
-        }
-      }, [messages, addMessage, foodProfileQuery]);
+    FirstAndLast("혼밥");
 
     useEffect(() => {
         const handleResize = () => {
@@ -165,13 +136,27 @@ const FoodMateProfile = () =>{
             setGender(option);
             addMessage({ question: [option], direction: "outgoing" });
         }else if (type == "major" && option != "상관없어!"){
-            setModalOpen(true); 
+            setModalOpen?.(true); 
         }else if (type == "studentNum" && option != "상관없음"){
             setStudentNum(option);
             addMessage({ question: [option+"로 부탁해~"], direction: "outgoing" });
         }else if (type == "age" && option == "메이트 나이 설정하기"){
-            setModalOpenS(true); 
+            setModalOpenS?.(true); 
+        }else if (type == "mbti"){
+            addMessage({ question: [option], direction: "outgoing" });
+            if (option === "상관없어") {
+                setOptionSelectEnd(true); 
+                const nextQueryIndex = currentQueryIndex + 5;
+                if (nextQueryIndex < foodProfileQuery.length && !modalOpen) {
+                  setCurrentQueryIndex(nextQueryIndex);  
+                  setTimeout(() => {
+                    const questions = foodProfileQuery[nextQueryIndex]?.question || [];
+                    intervalQ({ questions, setCurrentQueryIndex, nextQueryIndex, addMessage, setOptionSelectEnd,time:300});
+                  }, 100); 
+                }
+              }
         }else if (type?.includes("mbti") ) {
+            setOptionSelectEnd(false);
             if (option == "상관없어!"){
                 setMbtiList([...mbtiList, "x"]);
             }else{
@@ -190,38 +175,40 @@ const FoodMateProfile = () =>{
             //같을경우
             addMessage({ question: [option], direction: "outgoing" });
         } else if (type == "date"){
-            setModalOpenD(true);
+            setModalOpenD?.(true);
         }else if (type == "peopleNum"){
-            setModalOpenS2(true); 
-            setChatDisable(false);
+            setModalOpenS2?.(true); 
+            setChatDisable?.(false);
         }
         else{
             addMessage({ question: [option], direction: "outgoing" });
         }
         
-        if (!((type == "major" && option != "상관없어!") || (type == "age" && option != "상관없어") || type == "date" || type == "menu"|| type == "peopleNum"))
-            nextOption();
+        if (!((type == "major" && option != "상관없어!") || 
+            (type == "age" && option != "상관없어") || 
+            type == "mbti" && option=="상관없어" ||
+            type == "date" || type == "menu"|| type == "peopleNum")){
+                nextOption();
+        }
     };
     const nextOption = () =>{
         const nextQueryIndex = currentQueryIndex + 1;
         setCurrentQueryIndex(-1); 
-        if (nextQueryIndex < foodProfileQuery.length && !modalOpen ) {
-            setTimeout(() => {
-                addMessage({ question: foodProfileQuery[nextQueryIndex]?.question, direction: "incoming" });
-                setCurrentQueryIndex(nextQueryIndex); 
-            },500);
+        if (nextQueryIndex < foodProfileQuery.length && !modalOpen) {
+            const questions = foodProfileQuery[nextQueryIndex]?.question || [];
+            intervalQ({questions, setCurrentQueryIndex, nextQueryIndex, addMessage, setOptionSelectEnd});
         }
     }
     return(
         <>
-            <BasicNavbar title="혼밥 메이트 찾기" ></BasicNavbar>
+            <BasicNavbar title="혼밥 메이트 찾기"></BasicNavbar>
             <Container>
                 <StyledMainContainer>
                     <MessagesContainer>
                         {messages.map((msg, index) => (
                             msg.question?.map((que, idx) => (
                                 <ImageContainer key={`${index}-${idx}`}>
-                                    {idx + 1 === msg.question?.length && msg.direction === "incoming" && (
+                                    {msg?.type == "last" && msg.direction === "incoming" && (
                                         <Img src={recommend_food} alt="혼밥 프로필" />
                                     )}
                                     {
@@ -230,7 +217,7 @@ const FoodMateProfile = () =>{
                                         ) : (
                                             <BaseMessage
                                                 direction={msg.direction}
-                                                $isImg={idx + 1 === msg.question?.length && msg.direction === "incoming"}
+                                                $isImg={msg?.type == "last"}
                                                 $length={que.length}
                                             >
                                                 {que}
@@ -244,32 +231,37 @@ const FoodMateProfile = () =>{
                     <div ref={messageEndRef} />
                 </StyledMainContainer>
                 { foodProfileQuery[currentQueryIndex]?.type == "menu" && 
-                    <FoodMent>{selectedMenu.includes("기타") ? "기타 음식들은 채팅으로 입력해주세요" : "원하는 음식 종류를 모두 선택해주세요!"}</FoodMent>
+                        <FoodMent>{selectedMenu.includes("기타") ? "기타 음식들은 채팅으로 입력해주세요" : "원하는 음식 종류를 모두 선택해주세요!"}</FoodMent>
                 }
-                <OptionsContainer $isMenu={foodProfileQuery[currentQueryIndex]?.type == "menu"} $isSmall={window.innerHeight <700}>
-                        {currentQueryIndex >=0 && foodProfileQuery[currentQueryIndex]?.options && (
-                            <>
-                                {foodProfileQuery[currentQueryIndex].options.map((option, idx) => (
-                                    <Button 
-                                        key={idx} 
-                                        onClick={
-                                            foodProfileQuery[currentQueryIndex]?.type != "menu" ?
-                                            () => handleOptionClick({option, type: foodProfileQuery[currentQueryIndex]?.type}) :
-                                            ()=>handleMenuList(option)
-                                        }
-                        
-                                        $ismodal={ (foodProfileQuery[currentQueryIndex]?.type == "age" && option != "상관없어") 
-                                            || foodProfileQuery[currentQueryIndex]?.type == "major" && option != "상관없어!"
-                                            || foodProfileQuery[currentQueryIndex]?.type == "date" 
-                                            || foodProfileQuery[currentQueryIndex]?.type == "peopleNum"}
-                                        $isSelected={selectedMenu.includes(option)}
-                                    >
-                                        {option}
-                                    </Button>
-                                ))}
-                            </>
-                        )}
-                    </OptionsContainer>
+                {messages.some(msg => (msg?.type === "last" || !msg) && msg.direction === "incoming") && !optionSelectEnd &&
+                    <OptionsContainer $isMenu={foodProfileQuery[currentQueryIndex]?.type == "menu"} $isSmall={window.innerHeight <700}>
+                            {currentQueryIndex >=0 && foodProfileQuery[currentQueryIndex]?.options && (
+                                <>
+                                    {foodProfileQuery[currentQueryIndex].options.map((option, idx) => (
+                                        <Button 
+                                            key={idx} 
+                                            onClick={
+                                                () => {if (foodProfileQuery[currentQueryIndex]?.type != "menu"){
+                                                    handleOptionClick({option, type: foodProfileQuery[currentQueryIndex]?.type});
+                                                    setOptionSelectEnd(true);
+                                                }else{
+                                                    handleMenuList(option)
+                                                }
+                                            }}
+                            
+                                            $ismodal={ (foodProfileQuery[currentQueryIndex]?.type == "age" && option != "상관없어") 
+                                                || foodProfileQuery[currentQueryIndex]?.type == "major" && option != "상관없어!"
+                                                || foodProfileQuery[currentQueryIndex]?.type == "date" 
+                                                || foodProfileQuery[currentQueryIndex]?.type == "peopleNum"}
+                                            $isSelected={selectedMenu.includes(option)}
+                                        >
+                                            {option}
+                                        </Button>
+                                    ))}
+                                </>
+                            )}
+                        </OptionsContainer>
+                }
                     { foodProfileQuery[currentQueryIndex]?.type == "menu" && menuList.length > 0 &&
                             <FoodBtn onClick={()=>saveMenu()} $isSmall={window.innerHeight <700}>다음으로</FoodBtn>
                     }
@@ -323,7 +315,7 @@ const Container = styled.div`
 const StyledMainContainer = styled.div`
     width: calc(100vw); 
     max-width: 393px; 
-    height: ${window.innerHeight > 700 ? '65%' : '60%'};
+    height: 60%;
     overflow-x: hidden;
     overflow-y: auto;
     &::-webkit-scrollbar {
@@ -358,8 +350,9 @@ const OptionsContainer = styled.div<{ $isMenu: boolean , $isSmall:boolean}>`
                   display: grid;
                   grid-template-columns: repeat(3, 1fr);
                   gap: 10px;
-                  padding: 0px 20px;
+                  padding: 10px 20px;
                   overflow-y:auto;
+                  position:relative;
                   *{
                     font-size:14px;
                     padding:10px;
@@ -372,7 +365,7 @@ const OptionsContainer = styled.div<{ $isMenu: boolean , $isSmall:boolean}>`
                   justify-content: center;
                   margin-top: ${$isSmall ? "calc(100vh * 0.15)" : "calc(100vh * 0.05)"};
                   margin-bottom: calc(100vh * 0.1);
-                  gap: 10px;
+                  gap: 15px;
               `}
 `;
 const FoodMent = styled.div`
@@ -380,22 +373,23 @@ const FoodMent = styled.div`
     font-weight:400;
     display:flex;
     justify-content:center;
-    color:black;
 `;
 const BaseMessage = styled.div<{ direction: string, $isImg : boolean, $length:number }>`
-    width:180px;
+    font-size:13px;
+    width:185px;
     height: ${({$length})=> $length < 17 ? "35px" : `${$length + 15}px`};
-    padding: 12px 15px;
+    padding: 12px 10px;
     margin: 10px;
     margin-left: ${({ direction, $isImg }) =>
-    direction === "incoming" 
-      ? $isImg 
-        ? "18px" 
-        : "75px" 
-      : "130px"};
+        direction === "incoming" 
+        ? ($isImg 
+            ? "18px" 
+            : "75px" )
+        : "130px"};
     position:relative;
     display: flex;
     align-items: center; 
+    white-space: pre-line;
     div{
         display: -webkit-box;
         -webkit-box-orient: vertical;
@@ -444,7 +438,7 @@ const FoodBtn = styled.button<{$isSmall:boolean;}>`
     position: fixed;
     left: calc(50vw);
     transform: translateX(-50%);
-    bottom: ${({$isSmall})=>$isSmall ? "calc(100vh * 0.1)" : "calc(100vh * 0.08 + 80px)"};
+    bottom: ${({$isSmall})=>$isSmall ? "calc(100vh * 0.05 + 45px)" : "calc(100vh * 0.1 + 85px)"};
     z-index:100;
 `;
 const ByeImoticon = styled.div`

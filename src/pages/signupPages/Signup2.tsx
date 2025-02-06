@@ -82,21 +82,17 @@ const Signup2 = () => {
     setEmailError("");
     console.log("✔️이메일 인증 코드 요청 시작!!");
 
+     // ✅ 보낼 데이터 콘솔에 출력
+  const requestData = { email, univName: selectedSchool };
+  console.log("📨 백엔드로 전송하는 데이터:", requestData);
+
+
     sendEmailMutation.mutate(
       {email, univName:selectedSchool},
       {
         onSuccess:(data)=> {
           console.log("✅이메일 인증 코드 요청 성공!", data);
           console.log("🔍 백엔드 응답 전체 데이터:", data);
-
-
-           // ✨ 백엔드 응답에서 인증번호를 콘솔에 출력 (가능한 경우)
-           if (data.result) {
-            console.log(`📩 전송된 인증번호: ${data.verificationCode}`);
-
-          } else {
-            console.warn("⚠️ 응답에 인증번호 정보가 없습니다.");
-          }
         },
         onError:(error)=> {
           console.error("❌이메일 인증 코드 요청 실패", error);
@@ -114,6 +110,7 @@ const Signup2 = () => {
     setCodeError("");
     console.log("✔️이메일 인증 검증 시작!");
 
+ 
     verifyEmailMutation.mutate(
       {email, univName:selectedSchool || "", verificationCode:Number(verificationCode)},
       {

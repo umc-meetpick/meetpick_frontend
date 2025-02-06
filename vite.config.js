@@ -17,6 +17,13 @@ export default defineConfig({
         credentials: true,
         rewrite: (path) => path,
       },
+      '/login': {
+        target: 'http://35.172.251.131:8080/oauth/authorize/kakao',
+        changeOrigin: true,
+        secure: false,
+        credentials: true,
+        rewrite: (path) => '/signup',
+      },
     },
   },
 })
