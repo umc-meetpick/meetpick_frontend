@@ -51,13 +51,11 @@ const Signup2 = () => {
   
     // 학교 선택 핸들러
     const handleSelectSchool = (schoolName: string) => {
-      console.log("학교 선택 됨 ", schoolName);
-      
       setQuery(""); // 먼저 검색어 비우기 
       setSearch(""); // ✅ search도 초기화하여 API 요청 중지
       setSelectedSchool(schoolName); // 그리고 학교 선택 상태 업데이트 
 
-      console.log("학교 선택 완료");
+      console.log("학교 선택 됨➡️",schoolName);
     };
 
   const validateEmail = (email: string) => {
