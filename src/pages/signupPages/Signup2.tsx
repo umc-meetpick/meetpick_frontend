@@ -31,9 +31,8 @@ const Signup2 = () => {
 
   const [selectedSchool, setSelectedSchool] = useState<string | null>(null); // 선택된 학교 이름 저장하는 상태
   
-  const verifyEmailMutation = useVerifyEmail(); // useMutation 훅 사용 
   const sendEmailMutation = useSendEmailCode(); // 이메일 인증 요청 API
-
+  const verifyEmailMutation = useVerifyEmail(); // useMutation 훅 사용 
 
 
   useEffect(() => {
