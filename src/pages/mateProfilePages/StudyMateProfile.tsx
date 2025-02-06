@@ -19,7 +19,7 @@ interface OptionClick{
 const StudyMateProfile = () =>{
     const {messages, addMessage} = useChatContext();
     const [currentQueryIndex, setCurrentQueryIndex] = useState(0); 
-    const { setGender, majors, setStudentNum, ageRange, mbtiList, setMbtiList, subject,
+    const { setGender, majors, setStudentNum, ageRange, mbtiList, setMbtiList, subject, subjectType,
         studyType, setStudyType, place, dateTime, peopleNum, ment } = useContext( StudyProfileInfoContext );
     const [modalOpen, setModalOpen] = useState(false);
     const [modalOpenM, setModalOpenM] = useState(false);
@@ -41,17 +41,19 @@ const StudyMateProfile = () =>{
     }, [messages]);
 
     useEffect(() => {
-        if ( !modalOpen && studyType!= "" && subject != "" && subject != "기타") {
+        if ( !modalOpen && studyType!= "스터디" && subject != "" && subject != "기타") {
             addMessage({ question: [studyType], direction: "outgoing" });
             addMessage({ question: [subject], direction: "outgoing" });
             setChatDisable(true);
             nextOption(); 
-        }else if( !modalOpen && studyType!= "" && subject == "기타") {
+        }else if( !modalOpen && studyType== "스터디" && subject != "") {
             setModalOpen(false)
-            setChatDisable(false)
-            setSaveType("subject");
+            setChatDisable(true)
+            addMessage({ question: [studyType], direction: "outgoing" });
+            addMessage({ question: [`${subjectType}/${subject}`], direction: "outgoing" });
+            nextOption(); 
         }
-    }, [ modalOpen, studyType, subject]);
+    }, [ modalOpen, studyType, subject, subjectType]);
 
     useEffect(() => {
         if ( !modalOpenM && majors.length > 0) {
@@ -343,12 +345,12 @@ const OptionsContainer = styled.div<{ $isSmall: boolean }>`
     display: flex;
     flex-wrap: wrap;
     justify-content: center; 
-    gap: 10px;  
+    gap: 15px;
     margin-top: ${({ $isSmall }) => $isSmall ?  "calc(100vh * 0.15)" : "calc(100vh * 0.05)"};
     margin-bottom: calc(100vh * 0.1); 
 `;
 const BaseMessage = styled.div<{ direction: string, $isImg : boolean, $length:number }>`
-    width:180px;
+    width:185px;
     height: ${({$length})=> $length < 17 ? "35px" : `${$length + 15}px`};
     padding: 12px 15px;
     margin: 10px;
@@ -361,6 +363,7 @@ const BaseMessage = styled.div<{ direction: string, $isImg : boolean, $length:nu
     position:relative;
     display: flex;
     align-items: center; 
+    white-space: pre-line;
     div{
         display: -webkit-box;
         -webkit-box-orient: vertical;

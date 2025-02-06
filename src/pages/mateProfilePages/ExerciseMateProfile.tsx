@@ -346,13 +346,13 @@ const OptionsContainer = styled.div<{ $isSmall: boolean; $short: boolean }>`
     display: flex;
     flex-wrap: wrap;
     justify-content: center; 
-    gap: 10px;  
+    gap: 15px;
     margin-top: ${({ $isSmall, $short }) =>
         $isSmall ? ($short ? "calc(100vh * 0.05)" : "calc(100vh * 0.15)") : "calc(100vh * 0.05)"};
     margin-bottom: calc(100vh * 0.1); 
 `;
 const BaseMessage = styled.div<{ direction: string, $isImg : boolean, $length:number }>`
-    width:180px;
+    width:185px;
     height: ${({$length})=> $length < 17 ? "35px" : `${$length + 15}px`};
     padding: 12px 15px;
     margin: 10px;
@@ -365,6 +365,7 @@ const BaseMessage = styled.div<{ direction: string, $isImg : boolean, $length:nu
     position:relative;
     display: flex;
     align-items: center; 
+    white-space: pre-line;
     div{
         display: -webkit-box;
         -webkit-box-orient: vertical;
