@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState , useEffect} from "react";
 import styled from "styled-components";
 import BasicNavbar from "../../components/navbar/BasicNavbar";
 import SignupButton from "../../components/button/SignupButton";
@@ -7,8 +7,13 @@ import SignupProgressbar from "../../components/progressbar/SignupProgressbar";
 import { Link } from "react-router-dom";
 import { BsDot } from "react-icons/bs";
 import { MdErrorOutline } from "react-icons/md";
-import { getUniversities } from "../../apis/signup/universityAPI";
-import { debounce } from "lodash"; // Debounce 적용
+import { useFetchUniversities } from "../../apis/home/homeFetch";
+
+interface University {
+  id:number;
+  universityName:string;
+  address:string;
+}
 
 const Signup2 = () => {
   const [email, setEmail] = useState("");
@@ -16,35 +21,43 @@ const Signup2 = () => {
   const [verificationCode, setVerificationCode] = useState("");
   const [codeError, setCodeError] = useState(""); // 인증번호 에러 메시지 상태
 
-  const [school, setSchool] = useState(""); // 학교 검색 입력값
-  const [schoolList, setSchoolList] = useState<{universityName:string; address:string}[]>([]); // 자동완성 결과 리스트 / API 응답으로 받은 학교 목록 저장 상태 
+  const [query, setQuery] = useState(""); // 검색어 상태 
+  const [search, setSearch] = useState(""); // 실제 API 요청에 사용될 검색어 상태 
+  const [isTyping, setIsTyping] = useState<boolean>(false); // 사용자가 타이핑 중인지 여부 상태 확인 
+
+  const { data: universities =[], isLoading: isLoadingUniversities } = useFetchUniversities(search);
+
   const [selectedSchool, setSelectedSchool] = useState<string | null>(null); // 선택된 학교 이름 저장하는 상태 
 
-   // Debounce 적용: 입력이 멈춘 후 500ms 뒤에 실행
-   const fetchUniversities = debounce(async (query: string) => {
-    if (query.trim().length === 0) {
-        setSchoolList([]);  // 입력값이 없으면 리스트 비우기
-        return;
-    }
 
-    const result = await getUniversities(query);
-    //console.log("API Response/ result 리스트 출력:", result); 
-    setSchoolList(result); // 검색 결과 리스트 업데이트
-  }, 10);
+  useEffect(() => {
+    if (query) {
+      setIsTyping(true);
+      //console.log("⌨️ 검색어 입력 중:", query);
+      setSearch(query);
+      setIsTyping(false);
+    } else {
+      setSearch(""); // ✅ 검색어가 비어있다면 search도 초기화
+    }
+  }, [query]);
+
 
     // 학교 이름 입력 핸들러
     const handleSchoolChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;
-      setSchool(value);
+      setQuery(value);
       setSelectedSchool(null); // 새로운 입력값이 들어오면 선택 해제
-      fetchUniversities(value); // Debounce 적용된 API 호출
     };
   
     // 학교 선택 핸들러
     const handleSelectSchool = (schoolName: string) => {
-      setSchool(schoolName);
-      setSelectedSchool(schoolName);
-      setSchoolList([]); // 리스트 숨기기
+      console.log("학교 선택 됨 ", schoolName);
+      
+      setQuery(""); // 먼저 검색어 비우기 
+      setSearch(""); // ✅ search도 초기화하여 API 요청 중지
+      setSelectedSchool(schoolName); // 그리고 학교 선택 상태 업데이트 
+
+      console.log("학교 선택 완료");
     };
 
   const validateEmail = (email: string) => {
@@ -86,14 +99,14 @@ const Signup2 = () => {
         <Text>학교를 인증해주세요!</Text>
         <Container>
           <SignupInputContainer1>
-            <SignupInput placeholder={"재학 중인 학교"}  value={selectedSchool || school} onChange={handleSchoolChange}/>
+            <SignupInput placeholder={"재학 중인 학교"}  value={selectedSchool || query} onChange={handleSchoolChange}/>
             {/* 자동완성 리스트 */}
-            {schoolList?.length > 0 && (
+            {!isLoadingUniversities && !isTyping && universities?.length > 0 && (
             <DropdownContainer>
-              {schoolList.map((school, index) => (
-                <DropdownItem key={index} onClick={() => handleSelectSchool(school.universityName)}>
-                    <UniversityName>{school.universityName}</UniversityName>
-                    <Address>{school.address}</Address>
+              {universities.map((university:University) => (
+                <DropdownItem key={university.id} onClick={() => handleSelectSchool(university.universityName)}>
+                    <UniversityName>{university.universityName}</UniversityName>
+                    <Address>{university.address}</Address>
                 </DropdownItem>
               ))}
             </DropdownContainer>
