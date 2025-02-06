@@ -1,3 +1,4 @@
+import { useMutation } from "@tanstack/react-query";
 import axiosInstance from "../axiosInstance";
 
 interface VerifyEmailParams {
@@ -6,11 +7,16 @@ interface VerifyEmailParams {
     verificationCode:number;
 }
 
-export const verifyEamilAPI = async ({email, univName, verificationCode} : VerifyEmailParams) =>{
-    const response = await axiosInstance.post("/api/members/verify/verifyCode", {
-        email, 
-        univName,
-        verificationCode,
-    });
-    return response.data; // API 응답 데이터 반환 
+export const useVerifyEmail=() => {
+    return useMutation({
+        mutationKey:["verifyEmail"],
+        mutationFn: async ({email, univName, verificationCode} : VerifyEmailParams) => {
+            const {data} = await axiosInstance.post("/api/members/verify/verifyCode", {
+                email,
+                univName,
+                verificationCode,
+            });
+            return data;
+        }
+    })
 }

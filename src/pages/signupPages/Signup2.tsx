@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import { BsDot } from "react-icons/bs";
 import { MdErrorOutline } from "react-icons/md";
 import { useFetchUniversities } from "../../apis/home/homeFetch";
+import { useVerifyEmail } from "../../apis/signup/vertifyEmail";
 
 interface University {
   id:number;
@@ -27,7 +28,10 @@ const Signup2 = () => {
 
   const { data: universities =[], isLoading: isLoadingUniversities } = useFetchUniversities(search);
 
-  const [selectedSchool, setSelectedSchool] = useState<string | null>(null); // 선택된 학교 이름 저장하는 상태 
+  const [selectedSchool, setSelectedSchool] = useState<string | null>(null); // 선택된 학교 이름 저장하는 상태
+  
+  const verifyEmailMutation = useVerifyEmail(); // useMutation 훅 사용 
+
 
 
   useEffect(() => {
@@ -64,12 +68,32 @@ const Signup2 = () => {
   };
 
   const handleEmailSubmit = () => {
-    if (!validateEmail(email)) {
-      setEmailError("이메일을 확인해주세요.");
-    } else {
-      setEmailError("");
-      console.log("인증하기 버튼 클릭");
+    if(!validateEmail(email)){
+      setEmailError("이메일을 확인해주세요");
+      return;
     }
+    if(!selectedSchool){
+      setEmailError("학교를 먼저 선택해주세요");
+      return;
+    }
+    setEmailError(""); // 기존 에러 초기화 
+    console.log("✔️이메일 인증 요청 시작!");
+
+    verifyEmailMutation.mutate(
+      {
+        email, 
+        univName:selectedSchool,
+        verificationCode:Number(verificationCode), // 인증하는 숫자는 변환해서 보냄 
+      },
+      {
+        onSuccess:(data) => {
+          console.log("이메일 인증 성공!", data);
+        },
+        onError :(error) => {
+          console.error("이메일 인증 실패", error);
+        },
+      }
+    );
   };
 
   const handleCodeSubmit = () => {
@@ -117,7 +141,7 @@ const Signup2 = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               hasButton={true}
-              buttonText="인증하기"
+              buttonText={verifyEmailMutation.isPending ? "인증 중...": "인증하기"}
               onButtonClick={handleEmailSubmit}
             />
             <BottomText>
