@@ -345,7 +345,7 @@ const OptionsContainer = styled.div<{ $isSmall: boolean }>`
     display: flex;
     flex-wrap: wrap;
     justify-content: center; 
-    gap: 10px;  
+    gap: 15px;
     margin-top: ${({ $isSmall }) => $isSmall ?  "calc(100vh * 0.15)" : "calc(100vh * 0.05)"};
     margin-bottom: calc(100vh * 0.1); 
 `;

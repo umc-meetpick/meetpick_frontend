@@ -1,25 +1,13 @@
 import styled from 'styled-components';
-import { useEffect } from 'react';
 import { FaComment } from "react-icons/fa";
 import logoImage from '../assets/images/MeetPickLogo.png'
 import loginbackground from '../assets/images/loginImage.png';
-//import { postKakaoAuth } from '../apis/login/postKakaoAuth';
-import getToken from '../apis/login/getToken';
 import.meta.env.VITE_KAKAO_AUTH_URL;
 
 const Login = () => {
     const handleKakaoLogin = async() =>{
-        console.log('버튼클릭')
-        getToken();
-        //window.location.href = import.meta.env.VITE_KAKAO_AUTH_URL;
+        window.location.href = import.meta.env.VITE_KAKAO_AUTH_URL;
     };
-    // useEffect(() => {
-    //     const urlParams = new URLSearchParams(window.location.search);
-    //     const authCode = urlParams.get("code");
-    //     if (authCode) {
-    //         getToken(authCode);
-    //       }
-    // }, []);
  
     return (
         <>

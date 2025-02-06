@@ -365,7 +365,7 @@ const OptionsContainer = styled.div<{ $isMenu: boolean , $isSmall:boolean}>`
                   justify-content: center;
                   margin-top: ${$isSmall ? "calc(100vh * 0.15)" : "calc(100vh * 0.05)"};
                   margin-bottom: calc(100vh * 0.1);
-                  gap: 10px;
+                  gap: 15px;
               `}
 `;
 const FoodMent = styled.div`
