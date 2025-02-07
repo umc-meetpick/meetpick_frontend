@@ -76,7 +76,7 @@ const LikePage = () => {
 
       <BoxList>
         {favorites[activeButton === "혼밥" ? "food" : activeButton === "운동" ? "exercise" : "study"].length === 0 ? (
-          <p>찜한 메이트가 없습니다.</p>
+          <NoMateText>찜한 메이트가 없습니다.</NoMateText>
         ) : (
           favorites[activeButton === "혼밥" ? "food" : activeButton === "운동" ? "exercise" : "study"].map((data) => (
             <RecommendBox
@@ -139,3 +139,13 @@ const BoxList = styled.div`
     gap: 10px;
     padding:0 30px;
 `;
+
+const NoMateText = styled.div`
+  display:flex;
+  width:310px;
+  justify-content:center;
+  height:350px;
+  align-items:center;
+  
+
+`

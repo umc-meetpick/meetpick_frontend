@@ -73,6 +73,7 @@ const ChatingInput = ({disable, setChatDisable, keyboard, isExtra, save, type}:C
 export default ChatingInput;
 
 const Input = styled.textarea<{$keyboard:boolean, $isSmallView:boolean}>`
+    font-family: "Pretendard Variable", sans-serif;
     width:100%;
     max-width:373px;
     height:${({$isSmallView})=> $isSmallView ? "40px" : "63px"};
@@ -83,6 +84,8 @@ const Input = styled.textarea<{$keyboard:boolean, $isSmallView:boolean}>`
     line-height: 1.5;
     text-align: left;
     background-color:white;
+    font-size:15px;
+    font-weight: 400;
     &:focus {
         outline: none;
     }
