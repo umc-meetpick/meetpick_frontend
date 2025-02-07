@@ -4,6 +4,8 @@ import styled from "styled-components";
 import { Icon } from "@iconify/react";
 import RecommendBox from "../components/RecommendBox";
 import { recommendData } from "../data/recommendData"; // 전체 데이터를 불러옴
+import { ExerciserecommendData } from "../data/exerciseRecommendData";
+import { StudyrecommendData } from "../data/studyRecommendData";
 
 const LikePage = () => {
   // 카테고리별 찜한 목록 저장하는 상태
@@ -38,7 +40,12 @@ const LikePage = () => {
             const mateId = parts[2]; // ID 값
 
             // recommendData에서 해당 ID에 맞는 데이터 찾기
-            const foundData = recommendData.find((item) => item.id === parseInt(mateId));
+            const foundData = 
+            category === "food" ? recommendData.find((item)=> item.id === parseInt(mateId))
+            :category ==="exercise"? ExerciserecommendData.find((item)=> item.id === parseInt(mateId))
+            : StudyrecommendData.find((item)=> item.id === parseInt(mateId));
+
+             // **📌 foundData가 존재하면 해당 카테고리에 추가**
             if (foundData) {
               storedFavorites[category].push(foundData);
             }
