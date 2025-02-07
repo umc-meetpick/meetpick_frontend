@@ -32,7 +32,7 @@ const LookingMate = () => {
               <Container1>
                 {/* 혼밥 카드 */}
                 <Card>
-                  <Link to ="/recommend/food">
+                  <Link to ="/foodMateProfile">
                     <CardTitle>
                       혼밥 구제 <Icon icon="fluent-color:food-20" width="24" height="24" />
                     </CardTitle>
@@ -45,7 +45,7 @@ const LookingMate = () => {
 
                 {/* 공부 카드 */}
                 <Card>
-                  <Link to = "/recommend/study">
+                  <Link to = "/studyMateProfile">
                     <CardTitle>
                       열심히 공부 <Icon icon="fluent-color:edit-24" width="24" height="24" />
                     </CardTitle>
@@ -60,7 +60,7 @@ const LookingMate = () => {
               <Container2>
                 {/* 운동 카드 */}
                 <Card $align="center" $justify="center">
-                  <Link to ="/recommend/exercise">
+                  <Link to ="/exerciseMateProfile">
                     <CardTitle>
                       함께 운동 <Icon icon="fluent-color:sport-16" width="24" height="24" />
                     </CardTitle>
