@@ -1,7 +1,7 @@
 import { createContext, useState, ReactNode } from "react";
 
 // 타입 정의
-interface ExerciseProfileInfoContextType {
+export interface ExerciseProfileInfoContextType {
     gender: string;
     setGender:(gender: string) => void;
     majors: string[];
