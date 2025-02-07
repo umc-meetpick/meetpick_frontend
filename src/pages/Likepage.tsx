@@ -142,10 +142,8 @@ const BoxList = styled.div`
 
 const NoMateText = styled.div`
   display:flex;
-  width:310px;
+  width:330px;
   justify-content:center;
   height:350px;
   align-items:center;
-  
-
 `
