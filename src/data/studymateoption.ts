@@ -3,8 +3,8 @@ const StudyMateList = [
         "id": 1,
         "option": "공부 과목",
         "lists": [
-            { "label": "전공" },
-            { "label": "교양" },
+            "전공", 
+            "교양",
             { "label": "자격증", "subOptions": ["어학","취업","고시/공무원","취미&교양", "프로그래밍","기타"] } 
         ]
     },

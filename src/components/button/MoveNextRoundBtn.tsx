@@ -44,6 +44,7 @@ const Btn = styled.button<{$width:number, $title:number, $isDisable:boolean}>`
     position: absolute;
     left:${({$width})=> $width==312 ? "50%" : "70%"};
     transform: translateX(-50%);
+    font-family: "Pretendard Variable";
     &:focus {
         outline: none; 
         border:none;

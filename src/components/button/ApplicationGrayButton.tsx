@@ -31,5 +31,6 @@ const StyledButton = styled.button`
   justify-content: center;
   cursor: pointer;
   padding: 0 12px; /* 좌우 여백 */
+  font-family: "Pretendard Variable";
   box-sizing: border-box;
 `;

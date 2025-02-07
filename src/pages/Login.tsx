@@ -91,7 +91,7 @@ const StyledFaComment = styled(FaComment)`
 `;
 
 const LoginButton = styled.button`
-    width: 100%;
+    width: 250px;
     max-width: 300px;
     padding: 12px;
     font-family: "Pretendard Variable";

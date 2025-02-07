@@ -34,7 +34,7 @@ const DropdownButton: React.FC<DropdownButtonProps> = ({
 
   return (
     <Container>
-      <StyledButton $color={color} $height = {height} style={{ width}} $isSelected={$isSelected} onClick={toggleDropdown} >
+      <StyledButton $color={color} isOpen={isOpen} $height = {height} style={{ width}} $isSelected={$isSelected} onClick={toggleDropdown} >
         {text}
       </StyledButton>
       {isOpen && options.length > 0 && (
@@ -57,23 +57,26 @@ const Container = styled.div`
   display: inline-block;
 `;
 
-const StyledButton = styled.button<{ $isSelected?: boolean; $color?:string; $height:string }>`
+const StyledButton = styled.button<{ isOpen: boolean; $isSelected?: boolean; $color?:string; $height:string }>`
   height: ${({ $height }) => $height || "40px"}; /* 전달받은 height를 적용하고 기본값 설정 */
-  border: 2px solid #CECECE;
+  border: 2px solid ${({ isOpen }) => (isOpen ? "#007aff" : "#CECECE")};
   border-radius: 20px;
   font-size: 14px;
-  color: ${({ $color }) => $color || "#8B8B8B"}; /* 전달받은 color를 적용 */
+  color: ${({ isOpen}) => (isOpen? "#007aff" : "#8B8B8B")};
   background-color: white;
   display: flex;
+  margin-right:10px;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  margin-right: 10px;
   box-sizing: border-box;
-  z-index:9999;
+  z-index:10;
+  font-weight:570;
 
   &:hover {
     border-color: #007aff;
+    color:#007aff;
+    font-weight:600;
   }
 `;
 
@@ -92,6 +95,17 @@ const DropdownList = styled.ul<{$width : string}>`
   overflow-y: scroll; /* 내용이 많을 경우 스크롤 활성화 */
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.27); /* 드롭다운 전체에 그림자 추가 */
   
+  &::-webkit-scrollbar {
+    width: 8px; 
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: rgb(0,0,0,0.1); 
+    border-radius: 4px;
+  }
+  &::-webkit-scrollbar-track {
+    background-color:none;
+  }
+
 `;
 
 const DropdownItem = styled.li`

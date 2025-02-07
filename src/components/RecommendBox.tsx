@@ -4,6 +4,7 @@ import { Icon } from "@iconify/react";
 import RecommendImage from "../assets/images/Recommend3.png";
 
 interface ButtonProps {
+  category:string;
   id:number;
   text1: string;
   text2:string;
@@ -24,6 +25,7 @@ interface ButtonProps {
 }
 
 const RecommendBox: React.FC<ButtonProps> = ({
+  category,
   id,
   text1,
   text2,
@@ -43,25 +45,43 @@ const RecommendBox: React.FC<ButtonProps> = ({
   onClick,
 }) => {
 
+  const favoriteKey = `heart_${category}_${id}`;
+
   const [isIconClicked, setIsIconClicked] = useState<boolean>(() => {
-    const savedState = localStorage.getItem(`heart_${id}`);
+    const savedState = localStorage.getItem(favoriteKey);
     return savedState ? JSON.parse(savedState) : false;
   }); 
 
+  // useEffect를 사용해 LocalStorage에서 상태 불러오기 
   useEffect(() => {
-    const savedState = localStorage.getItem(`heart_${id}`);
+    const savedState = localStorage.getItem(favoriteKey);
     if(savedState) {
       setIsIconClicked(JSON.parse(savedState)); // JSON을 불러와 상태 업데이트 
     }
-  },[id]);
+  },[favoriteKey]);
 
   // 하트를 클릭하면 상태를 토글하고 로컬 스토리지에 저장 
-  const handleIconClick=() => {
-    setIsIconClicked(!isIconClicked); // 클릭 시 상태 토글
-    //console.log("아이콘 클릭됨"); // 디버깅 로그
+  const handleIconClick=(event:React.MouseEvent) => {
+    event.stopPropagation(); // 부모 클릭 방지
     const newState = !isIconClicked;
-    localStorage.setItem(`heart_${id}`, JSON.stringify(newState));
+    setIsIconClicked(!isIconClicked); // 클릭 시 상태 토글
+    localStorage.setItem(favoriteKey, JSON.stringify(newState));
+
+    // ✅ LocalStorage 변경 시 이벤트 발생 -> 다른 컴포넌트에도 반영
+    window.dispatchEvent(new Event("storage"));
   }
+
+  useEffect(() => {
+    const updateHeartState=() => {
+      const savedState = localStorage.getItem(favoriteKey);
+      setIsIconClicked(savedState? JSON.parse(savedState):false);
+    };
+
+    window.addEventListener("storage",updateHeartState);
+    return() => {
+      window.removeEventListener("storage", updateHeartState);
+    }
+  },[favoriteKey]);
 
   const [isExpanded, setIsExpanded] = useState(false);
 

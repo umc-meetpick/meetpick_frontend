@@ -6,6 +6,7 @@ const DialogContainer = styled.div`
   background-color: rgba(233, 233, 233, 0.92);
   border-radius: 10px;
   text-align: center;
+  font-family: "Pretendard Variable";
   width: 260px;
 `;
 

@@ -1,5 +1,6 @@
 export interface RecommendDataType {
     id:number;
+    category:string;
     text1: string;
     text2: string;
     text3:string;
@@ -24,6 +25,7 @@ export interface RecommendDataType {
   export const StudyrecommendData: RecommendDataType[] = [
     {
       id:1,
+      category:"study",
       text1: "베티",
       text2: "#여성 #22살 #23학번",
       text3:"#소프트웨어학부",
@@ -45,6 +47,7 @@ export interface RecommendDataType {
     },
     {
       id:2,
+      category:"study",
       text1: "마음이 숭숭",
       text2: "#여성 #21살 #23학번",
       text3: "#글로벌미디어학부",
@@ -64,6 +67,7 @@ export interface RecommendDataType {
     },
     {
       id:3,
+      category:"study",
       text1: "제이든",
       text2: "#남성 #24살 #24학번",
       text3:"#건축학부",
@@ -84,6 +88,7 @@ export interface RecommendDataType {
     },
     {
       id:4,
+      category:"study",
       text1: "디아",
       text2: "#여성 #23살 #23학번",
       text3:"#AI융합학부",
@@ -104,6 +109,7 @@ export interface RecommendDataType {
     },
     {
         id:5,
+        category:"study",
         text1: "베티",
         text2: "#여성 #27살 #18학번",
         text3: "#생명공학과",
@@ -124,6 +130,7 @@ export interface RecommendDataType {
       },
       {
         id:6,
+        category:"study",
         text1: "미기",
         text2: "#여성 #20살 #26학번",
         text3: "#식품공학과",
@@ -144,6 +151,7 @@ export interface RecommendDataType {
       },
       {
         id:7,
+        category:"study",
         text1: "피기",
         text2: "#남성 #26살 #20학번",
         text3: "#영어영문학과",
