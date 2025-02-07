@@ -127,8 +127,8 @@ const ToggleList: React.FC<ToggleListProps> = ({button, multi, setModalOpen, typ
                     onClick={()=>{
                         setModalOpen?.(false);
                     }} 
-                    disabled={type == "study" ? subject === "" || subject === "기타" : major === ""}
-                    $isDisable={type == "study" ? subject === "" : major === ""}
+                    disabled={type == "study" ? subject === "" || subject === "기타" : majors.length === 0}
+                    $isDisable={type == "study" ? subject === "" :  majors.length === 0}
                 >
                     저장
                 </Btn2>
@@ -147,6 +147,7 @@ const Container = styled.div`
     max-height: calc(100vh - 150px);
     position:relative;
     overflow-y:auto;
+    overflow-x:hidden;
 `;
 const Toggle = styled.button<{$isOpened:boolean;}>`
     width:312px;
