@@ -6,6 +6,7 @@ import Slider from '../components/Slider'
 import { useLocation } from "react-router-dom";
 import { Icon } from '@iconify/react';
 import { GoArrowRight } from "react-icons/go";
+import { Link } from 'react-router-dom';
 import getToken from '../apis/login/getToken';
 
 const LookingMate = () => {
@@ -31,37 +32,43 @@ const LookingMate = () => {
               <Container1>
                 {/* 혼밥 카드 */}
                 <Card>
-                  <CardTitle>
-                    혼밥 구제 <Icon icon="fluent-color:food-20" width="24" height="24" />
-                  </CardTitle>
-                  <CardDescription>취향에 맞는 혼밥 메이트 찾아보세요!</CardDescription>
-                  <Button>
-                    <GoArrowRight />
-                  </Button>
+                  <Link to ="/recommend/food">
+                    <CardTitle>
+                      혼밥 구제 <Icon icon="fluent-color:food-20" width="24" height="24" />
+                    </CardTitle>
+                    <CardDescription>취향에 맞는 혼밥 메이트 찾아보세요!</CardDescription>
+                    <Button>
+                      <GoArrowRight />
+                    </Button>
+                  </Link>
                 </Card>
 
                 {/* 공부 카드 */}
                 <Card>
-                  <CardTitle>
-                    열심히 공부 <Icon icon="fluent-color:edit-24" width="24" height="24" />
-                  </CardTitle>
-                  <CardDescription>같이 공부할 때, 집중력 UP!</CardDescription>
-                  <Button>
-                    <GoArrowRight />
-                  </Button>
+                  <Link to = "/recommend/study">
+                    <CardTitle>
+                      열심히 공부 <Icon icon="fluent-color:edit-24" width="24" height="24" />
+                    </CardTitle>
+                    <CardDescription>같이 공부할 때, 집중력 UP!</CardDescription>
+                    <Button>
+                      <GoArrowRight />
+                    </Button>
+                  </Link>
                 </Card>
               </Container1>
                 
               <Container2>
                 {/* 운동 카드 */}
                 <Card $align="center" $justify="center">
-                  <CardTitle>
-                    함께 운동 <Icon icon="fluent-color:sport-16" width="24" height="24" />
-                  </CardTitle>
-                  <CardDescription>운동하기 심심할 때는? 운동 메이트와 함께!</CardDescription>
-                  <Button>
-                    <GoArrowRight />
-                  </Button>
+                  <Link to ="/recommend/exercise">
+                    <CardTitle>
+                      함께 운동 <Icon icon="fluent-color:sport-16" width="24" height="24" />
+                    </CardTitle>
+                    <CardDescription>운동하기 심심할 때는? 운동 메이트와 함께!</CardDescription>
+                    <Button>
+                      <GoArrowRight />
+                    </Button>
+                  </Link>
                 </Card>
               </Container2> 
             </CardContainer>
