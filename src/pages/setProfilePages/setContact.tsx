@@ -125,7 +125,7 @@ const SetContact= () => {
                 <BtnContainer>
                     <MoveToPrevBtn/>
                     <MoveNextRoundBtn 
-                        nextPage={"/"} 
+                        nextPage={"/looking"} 
                         title="메이트 찾으러 가기" 
                         onClick={handleSubmit(onSubmit)}
                         width={160}
