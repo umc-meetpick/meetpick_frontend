@@ -30,10 +30,9 @@ const ToggleList: React.FC<ToggleListProps> = ({button, multi, setModalOpen, typ
         }
     }
     const {major, setMajor} = useContext(ProfileInfoContext);
-    const { majors, setMajors } = useProfileContext(type || "");
+    const { majors, setMajors, selectedMajors, setSelectedMajors } = useProfileContext(type || "");
     const { subject, setSubject, subjectType, setSubjectType} = useContext(StudyProfileInfoContext)
     const [openItems, setOpenItems] = useState<number[]>([]);
-    const [selectedMajors, setSelectedMajors] = useState<string[]>([]); 
     const [value, setValue] = useState("");
     
     const handleToggle = (id: number) => {
@@ -42,6 +41,8 @@ const ToggleList: React.FC<ToggleListProps> = ({button, multi, setModalOpen, typ
         } else {
             setOpenItems([...openItems, id]);
         }
+        console.log('majors:',majors)
+        console.log('selectedMajors:',selectedMajors)
     };
     const handleMajor = (major:string, title:string, all:string[]) =>{
         if (type == "study"){
@@ -50,12 +51,13 @@ const ToggleList: React.FC<ToggleListProps> = ({button, multi, setModalOpen, typ
         }else{
             if (multi) {
                 if (major === "all") {
-                    if (majors.includes(title)){
-                        setMajors(majors.filter((m) => m !== title));
-                        setSelectedMajors(selectedMajors.filter((m) => !all.includes(m)));
+                    if (selectedMajors.includes(title)){
+                        console.log("dd")
+                        setMajors(majors.filter((m) => !all.includes(m)));
+                        setSelectedMajors(selectedMajors.filter((m) => m !== title));
                     }else{
-                        setMajors([...majors.filter((m) => !all.includes(m)), title]); 
-                        setSelectedMajors([...selectedMajors, ...all.filter((m) => !selectedMajors.includes(m))]);
+                        setMajors([...majors.filter((m) => all.includes(m)),...all]); 
+                        setSelectedMajors([...selectedMajors.filter((m) => !all.includes(m)), title]);
                     }
                 }else{
                     if (!majors.includes(title)){
@@ -87,7 +89,7 @@ const ToggleList: React.FC<ToggleListProps> = ({button, multi, setModalOpen, typ
                             {multi && 
                                 <Detail 
                                     onClick={()=>handleMajor("all", item.title+" 전체", item.items)} 
-                                    $isSelected={majors.includes(item.title+" 전체")}
+                                    $isSelected={selectedMajors.includes(item.title+" 전체")}
                                     key={item.id}
                                 >
                                     {`${item.title} 전체`}
@@ -98,8 +100,8 @@ const ToggleList: React.FC<ToggleListProps> = ({button, multi, setModalOpen, typ
                                 <Detail
                                 key={`major-${item.id}-${index}`}
                                 onClick={() => handleMajor(i, item.title, item.items)}
-                                $isSelected={multi ? selectedMajors.includes(i) 
-                                    : (type == "study" ? subject === i && subjectType == item.title: major === i)}
+                                $isSelected={multi ? majors.includes(i) 
+                                    : (type == "study" ? (subject === i && subjectType == item.title) : major == i)}
                                 >
                                 {i}
                                 </Detail>

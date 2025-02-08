@@ -6,6 +6,8 @@ export interface ExerciseProfileInfoContextType {
     setGender:(gender: string) => void;
     majors: string[];
     setMajors: (majors: string[]) => void;
+    selectedMajors: string[];
+    setSelectedMajors: (majors: string[]) => void;
     studentNum: string;
     setStudentNum: (studentNum: string) => void;
     ageRange: number[];
@@ -20,8 +22,10 @@ export interface ExerciseProfileInfoContextType {
     setPlace: (place:string) => void;
     peopleNum: number;
     setPeopleNum: (peoplenum: number) => void;
-    hobby: string[];
-    setHobby: (hobby: string[]) => void;
+    isHobbySame: boolean;
+    setIsHobbySame: (h:boolean) => void;
+    isSchool: boolean,
+    setIsSchool: (s: boolean) => void;
     ment: string;
     setMent: (ment: string) => void;
     dateTime: { [key: string]: string[] };
@@ -34,6 +38,8 @@ const defaultValue: ExerciseProfileInfoContextType = {
     setGender: () => {},
     majors: [],
     setMajors: () => {},
+    selectedMajors: [],
+    setSelectedMajors: () => {},
     studentNum: "",
     setStudentNum: () => {},
     ageRange: [],
@@ -48,8 +54,10 @@ const defaultValue: ExerciseProfileInfoContextType = {
     setPlace: () => {},
     peopleNum: 0,
     setPeopleNum: () => {},
-    hobby: [],
-    setHobby: () => {},
+    isHobbySame: true,
+    setIsHobbySame: () => {},
+    isSchool: true,
+    setIsSchool: () => {},
     ment: "",
     setMent: () => {},
     dateTime: {},
@@ -66,6 +74,7 @@ interface ExerciseProfileContextProviderProps {
 export function ExerciseProfileContextProvider({children}:ExerciseProfileContextProviderProps){
     const [gender, setGender] = useState<string>("");
     const [majors, setMajors] = useState<string[]>([]);
+    const [selectedMajors, setSelectedMajors] = useState<string[]>([]);
     const [studentNum, setStudentNum] = useState<string>("");
     const [ageRange, setAgeRange] = useState<number[]>([])
     const [mbtiList, setMbtiList] = useState<string[]>([]);
@@ -73,7 +82,8 @@ export function ExerciseProfileContextProvider({children}:ExerciseProfileContext
     const [exercise, setExercise] = useState<string>("");
     const [place, setPlace] = useState<string>("");
     const [peopleNum, setPeopleNum] = useState<number>(0);
-    const [hobby, setHobby] = useState<string[]>([]);
+    const [isHobbySame, setIsHobbySame] = useState<boolean>(true);
+    const [isSchool, setIsSchool] = useState<boolean>(true);
     const [ment, setMent] = useState<string>("");
     const [dateTime, setDateTime] = useState<{ [key: string]: string[] }>({});
 
@@ -84,6 +94,8 @@ export function ExerciseProfileContextProvider({children}:ExerciseProfileContext
                 setGender,
                 majors,
                 setMajors,
+                selectedMajors,
+                setSelectedMajors,
                 studentNum,
                 setStudentNum,
                 ageRange,
@@ -98,8 +110,10 @@ export function ExerciseProfileContextProvider({children}:ExerciseProfileContext
                 setPlace,
                 peopleNum,
                 setPeopleNum,
-                hobby,
-                setHobby,
+                isHobbySame,
+                setIsHobbySame,
+                isSchool,
+                setIsSchool,
                 ment,
                 setMent,
                 dateTime,

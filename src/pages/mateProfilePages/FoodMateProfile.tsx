@@ -20,7 +20,7 @@ interface OptionClick{
 const FoodMateProfile = () =>{
     const {messages, addMessage } = useChatContext();
     const [currentQueryIndex, setCurrentQueryIndex] = useState(0); 
-    const { majors, studentNum, ageRange, mbtiList, setGender, setStudentNum, setMbtiList, 
+    const { selectedMajors, studentNum, ageRange, mbtiList, setGender, setStudentNum, setMbtiList, 
             menuList, setMenuList, extraMenu, dateTime, peopleNum, ment } = useContext(FoodProfileInfoContext);
     const [modalOpen, setModalOpen] = useState(false);
     const [modalOpenS, setModalOpenS] = useState(false);
@@ -41,15 +41,15 @@ const FoodMateProfile = () =>{
     }, [messages]);
 
     useEffect(() => {
-        if ( !modalOpen && majors.length > 0) {
-            addMessage({ question: [majors.join(", ") + "!"], direction: "outgoing" });
+        if ( !modalOpen && selectedMajors.length > 0) {
+            addMessage({ question: [selectedMajors.join(", ") + "!"], direction: "outgoing" });
             nextOption(); 
         }
-    }, [ modalOpen, majors]);
+    }, [ modalOpen, selectedMajors]);
 
     useEffect(() => {
         if (mbtiList.length === 4) {
-          addMessage({ question: [mbtiList.join("")], direction: "outgoing" });
+            addMessage({ question: [mbtiList.join("")], direction: "outgoing" });
         }
       }, [mbtiList]);
 
@@ -94,6 +94,7 @@ const FoodMateProfile = () =>{
             setChatDisable(false);
         }else{
             setMenuList(selectedMenu);
+            console.log(menuList)
         }
     },[selectedMenu])
 

@@ -19,7 +19,7 @@ interface OptionClick{
 const StudyMateProfile = () =>{
     const {messages, addMessage} = useChatContext();
     const [currentQueryIndex, setCurrentQueryIndex] = useState(0); 
-    const { setGender, majors, setStudentNum, ageRange, mbtiList, setMbtiList, subject, subjectType,
+    const { setGender, selectedMajors, setStudentNum, ageRange, mbtiList, setMbtiList, subject, subjectType,
         studyType, setStudyType, place, dateTime, peopleNum, ment } = useContext( StudyProfileInfoContext );
     const [modalOpen, setModalOpen] = useState(false);
     const [modalOpenM, setModalOpenM] = useState(false);
@@ -56,11 +56,11 @@ const StudyMateProfile = () =>{
     }, [ modalOpen, studyType, subject, subjectType]);
 
     useEffect(() => {
-        if ( !modalOpenM && majors.length > 0) {
-            addMessage({ question: [majors.join(", ") + "!"], direction: "outgoing" });
+        if ( !modalOpenM && selectedMajors.length > 0) {
+            addMessage({ question: [selectedMajors.join(", ") + "!"], direction: "outgoing" });
             nextOption(); 
         }
-    }, [ modalOpenM, majors]);
+    }, [ modalOpenM, selectedMajors]);
 
     useEffect(() => {
         if (mbtiList.length === 4) {

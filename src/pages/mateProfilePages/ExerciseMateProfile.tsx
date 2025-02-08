@@ -20,7 +20,7 @@ interface OptionClick{
 const ExerciseMateProfile = () =>{
     const {messages, addMessage} = useChatContext();
     const [currentQueryIndex, setCurrentQueryIndex] = useState(0); 
-    const { setGender, majors, studentNum, setStudentNum, ageRange, mbtiList, setMbtiList, 
+    const { setGender, selectedMajors, studentNum, setStudentNum, ageRange, mbtiList, setMbtiList, setIsSchool,
             exercise, setExercise, place, dateTime, peopleNum, ment } = useContext(ExerciseProfileInfoContext);
     const [modalOpen, setModalOpen] = useState(false);
     const [modalOpenS, setModalOpenS] = useState(false);
@@ -42,11 +42,11 @@ const ExerciseMateProfile = () =>{
     }, [messages]);
 
     useEffect(() => {
-        if ( !modalOpen && majors.length > 0) {
-            addMessage({ question: [majors.join(", ") + "!"], direction: "outgoing" });
+        if ( !modalOpen && selectedMajors.length > 0) {
+            addMessage({ question: [selectedMajors.join(", ") + "!"], direction: "outgoing" });
             nextOption(); 
         }
-    }, [ modalOpen, majors]);
+    }, [ modalOpen, selectedMajors]);
 
     useEffect(() => {
         if (mbtiList.length === 4) {
@@ -179,9 +179,14 @@ const ExerciseMateProfile = () =>{
             setModalOpenD(true);
         }else if (type == "peopleNum"){
             setModalOpenS2(true); 
-        }else if (type == "place" && option == "외부시설"){
-            setSaveType("place")
-            setChatDisable(false);
+        }else if (type == "place"){
+            if(option == "외부시설"){
+                setSaveType("place")
+                setChatDisable(false);
+                setIsSchool(false);
+            }else{
+                setIsSchool(true);
+            }
 
         }else{
             addMessage({ question: [option], direction: "outgoing" });

@@ -14,7 +14,7 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import { PiWarningCircle } from "react-icons/pi";
 
 const SetContact= () => {
-    const {nickname, image, studentNum, mbti, major, hobby, contactType, setContactType, contact, setContact} = useContext(ProfileInfoContext);
+    const {nickname, image, studentNum, mbti, major, hobby, contactType, setContactType, setContact} = useContext(ProfileInfoContext);
     const [inputValue, setInputValue] = useState("");
     const [ctype, setCtype] = useState("");
     const options = ["카카오톡 ID", "오픈채팅 링크", "전화번호"]

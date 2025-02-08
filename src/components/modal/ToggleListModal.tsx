@@ -21,7 +21,7 @@ const ToggleListModal: React.FC<ToggleListModalProps> = ({setModalOpen, type}) =
             return useContext(StudyProfileInfoContext);
         }
     }
-    const { majors } = useProfileContext(type);
+    const { selectedMajors } = useProfileContext(type);
     const isSmall = window.innerHeight < 700; 
 
     return(
@@ -29,8 +29,8 @@ const ToggleListModal: React.FC<ToggleListModalProps> = ({setModalOpen, type}) =
             <Background $isSmall={isSmall}/>
             <Container $isSmall={isSmall}>
                 <Selected $isSmall={isSmall}>
-                    {type !== "study" && majors.length ==0 && <div> 원하는 전공을 모두 선택해주세요! </div> }
-                    <ProfileSelectedBorder input={[...majors]} multi/>
+                    {type !== "study" && selectedMajors.length ==0 && <div> 원하는 전공을 모두 선택해주세요! </div> }
+                    <ProfileSelectedBorder input={[...selectedMajors]} multi/>
                 </Selected>
                 <ToggleList multi={type == "study" ? false : true} setModalOpen={setModalOpen} type={type} />
             </Container>
