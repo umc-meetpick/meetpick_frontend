@@ -56,9 +56,9 @@ const Alarm = () => {
             <Container>
             <DropdownButton 
             color="#3F3F3F" 
-            text={categoryMap[selectedCategory] || "카테고리 ∨"} // 🔥 한글 변환 적용
+            text={categoryMap[selectedCategory] || "전체 ∨"} // 🔥 한글 변환 적용
             height="32px" 
-            width="99px"
+            width="80px"
             options={["ALL", "MEAL", "EXERCISE", "STUDY"].map((value) => categoryMap[value])} // 🔥 한글로 변환
             onSelect={(option) => {
                 // 🔥 선택된 한글 값을 API에서 사용하는 영어 값으로 변환
@@ -83,15 +83,16 @@ const Alarm = () => {
                                 <Container2>
                                     <Title>
                                         {alert.mateType === "MEAL" && (
-                                            <Icon icon="fluent-color:food-20" width="20" height="20" />
+                                            <Icon icon="fluent-color:food-20" width="24" height="24" />
                                         )}
                                         {alert.mateType === "EXERCISE" && (
-                                            <Icon icon="fluent-color:sport-16" width="20" height="20" />
+                                            <Icon icon="fluent-color:sport-16" width="24" height="24" />
                                         )}
                                         {alert.mateType === "STUDY" && (
-                                            <Icon icon="fluent-color:edit-24" width="20" height="20" />
+                                            <Icon icon="fluent-color:edit-24" width="24" height="24" />
                                         )}
-                                        <CategoryBadge> {alert.mateType}</CategoryBadge>
+                                        <CategoryBadge> {categoryMap[alert.mateType]}</CategoryBadge>
+
                                     </Title>
                                     <Time>
                                         <TimeTitle>
@@ -106,7 +107,7 @@ const Alarm = () => {
                                 </Container2>
                                 <Message>{alert.content}</Message>
                                 <Link to ="/viewRequest" onClick={() => handleAlertClick(alert.mappingId)}>
-                                            <DetailLink> 자세히보기 ›</DetailLink>
+                                    <DetailLink> 자세히보기 ›</DetailLink>
                                 </Link>
                             </AlertItem>
                         ))

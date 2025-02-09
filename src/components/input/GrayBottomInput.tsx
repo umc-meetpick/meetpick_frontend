@@ -29,6 +29,7 @@ const GrayBottomInput = React.forwardRef<HTMLInputElement, GrayBottomInputProps>
 export default GrayBottomInput;
 const Input = styled.input<{$width:string, $isRight:boolean, $isBlack:boolean}>`
     width:${props => props.$width};
+    font-family: 'Pretendard Variable', sans-serif;
     height:48px;
     border:none;
     border-bottom: 1px solid #CECECE;
