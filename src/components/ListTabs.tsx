@@ -12,16 +12,16 @@ const TabContainer = styled.div`
   position: relative;
 `;
 
-const TabItem = styled.div<{ isActive: boolean }>`
+const TabItem = styled.div<{ $isactive: boolean }>`
   font-size: 15px;
-  font-weight: ${(props) => (props.isActive ? "600" : "500")};
-  color: ${(props) => (props.isActive ? "black" : "#606060")};
+  font-weight: ${(props) => (props.$isactive ? "600" : "500")};
+  color: ${(props) => (props.$isactive ? "black" : "#606060")};
   cursor: pointer;
   position: relative;
 
   &:after {
     content: "";
-    display: ${(props) => (props.isActive ? "block" : "none")};
+    display: ${(props) => (props.$isactive ? "block" : "none")};
     width: 230%;
     height: 2px;
     background-color: #03347f; /* 밑줄 색상 */
@@ -43,7 +43,7 @@ const ListTabs: React.FC<ListTabsProps> = ({ tabs, activeTab, onTabClick }) => {
       {tabs.map((tab) => (
         <TabItem
           key={tab}
-          isActive={activeTab === tab}
+          $isactive={activeTab === tab}
           onClick={() => onTabClick(tab)}
         >
           {tab}
