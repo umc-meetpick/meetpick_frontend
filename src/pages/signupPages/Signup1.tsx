@@ -7,7 +7,7 @@ import SignupGrayButton from "../../components/button/SignupGrayButton";
 import DropdownButton from "../../components/SignupDownList";
 import SignupProgressbar from "../../components/progressbar/SignupProgressbar";
 import { BsDot } from "react-icons/bs";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { debounce } from "lodash";
 
 
@@ -18,15 +18,8 @@ const Signup1 = () => {
   const [selectedMonth, setSelectedMonth] = useState<string | null>(null);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [showNextStep, setShowNextStep] = useState<boolean>(false); // 다음 단계 표시 여부
+  const navigate = useNavigate(); // ✅ 페이지 이동을 위한 useNavigate 추가
 
-  // 다음 버튼 클릭 핸들러
-  const handleNext = () => {
-    console.log("다음으로 버튼 클릭");
-  };
-
-  const handlePrevious = () => {
-    console.log("이전 버튼 클릭");
-  };
 
   // 이름 입력 핸들러
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,6 +30,18 @@ const Signup1 = () => {
   const handleGenderClick = (gender: string) => {
     setSelectedGender(selectedGender === gender ? null : gender);
   };
+
+  const handleNextStep = () => {
+    
+    // 생년월일을 YYYY-MM-DD 형식으로 변환
+    const formattedBirthday = `${selectedYear}-${(selectedMonth ?? "01").padStart(2, "0")}-${(selectedDate ?? "01").padStart(2, "0")}`;
+
+    // Signup2 페이지로 이동하면서 state 전달 
+    navigate("/Signup2", {
+      state: {name, gender:selectedGender, birthday:formattedBirthday},
+    });
+  };
+
 
   // Debounce 적용: 입력이 끝난 후 600ms 뒤에 실행
   useEffect(() => {
@@ -141,19 +146,16 @@ const Signup1 = () => {
                     $backgroundColor="#F5F5F5"
                     width="140px"
                     color="black"
-                    onClick={handlePrevious}
                   />
                   </Link>
-                  <Link to="/Signup2">
                   <SignupButton
                     text="다음"
                     $backgroundColor="#E7F2FE"
                     width="140px"
                     color="#326DC1"
-                    disabled={!selectedDate} // 학번이 선택되지 않으면 비활성화
-                    onClick={handleNext}
+                    disabled={!selectedDate} // 학번이 선택되지 않으면 비활성화 
+                    onClick={handleNextStep}
                   />
-                  </Link>
                 </ButtonContainer>
           )}
           
