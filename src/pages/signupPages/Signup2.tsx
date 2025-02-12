@@ -6,7 +6,6 @@ import SignupInput from "../../components/SignupInput";
 import SignupProgressbar from "../../components/progressbar/SignupProgressbar";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { BsDot } from "react-icons/bs";
-import { MdErrorOutline } from "react-icons/md";
 import { useFetchUniversities } from "../../apis/home/homeFetch";
 import { useVerifyEmail } from "../../apis/signup/vertifyEmail";
 import { useSendEmailCode } from "../../apis/signup/vertifyEmail";
