@@ -40,7 +40,7 @@ const defaultValue: ProfileInfoContextType = {
     setMajor: () => {},
     hobby: [],
     setHobby: () => {},
-    contactType: "",
+    contactType: "카카오톡 ID",
     setContactType: () => {},
     contact: "",
     setContact: () => {},

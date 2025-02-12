@@ -101,7 +101,7 @@ const SetNickName: React.FC = () => {
                         )
                     )}
                 <BtnContainer>
-                    <MoveNextRoundBtn nextPage={"/setProfile/image"} disable={!isSuccess || nickname !== inputValue}/>
+                    <MoveNextRoundBtn nextPage={"/setProfile/image"} disable={isDupilicate || nickname !== inputValue}/>
                 </BtnContainer>
             </Container>
         </>
