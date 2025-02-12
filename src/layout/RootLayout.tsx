@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import BottomNavBar from '../components/navbar/BottomNavBar';
@@ -41,6 +41,7 @@ const ContentWrapper = styled.div`
 const RootLayout = () => {
     const [windowHeight, setWindowHeight] = useState(window.innerHeight);
     const { messages } = useChatContext();
+    const location = useLocation();
 
     useEffect(() => {
       const handleResize = () => setWindowHeight(window.innerHeight);
@@ -56,11 +57,13 @@ const RootLayout = () => {
     return (
       <Wrapper>
         <Main>
-        <ContentWrapper>
-          <Outlet />
-        </ContentWrapper>
-        { !((isSmallViewport && messages.length>0)|| isKeyboard) &&  <BottomNavBar /> }
-      </Main>
+          <ContentWrapper>
+            <Outlet />
+          </ContentWrapper>
+          {location.pathname !== "/" && !((isSmallViewport && messages.length > 0) || isKeyboard) && (
+              <BottomNavBar />
+          )}
+        </Main>
       </Wrapper>
     );
 };

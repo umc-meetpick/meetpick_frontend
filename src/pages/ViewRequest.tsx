@@ -6,12 +6,18 @@ import AcceptButton from "../components/button/AcceptButton";
 import RejectButton from "../components/button/RejectButton";
 import SelectToggle from "../components/SelectToggle";
 import mateImg from "../assets/profileImg/프로필3.png"
-import GroupIcon from '../components/GroupIcon'
 import { Icon } from '@iconify/react';
+import { IoCloseOutline } from "react-icons/io5";
+import Modal from '../components/modal/detailedModal';
+import ModalwithReport from '../components/modal/detailedModalwithReport';
+
 
 const ViewRequest: React.FC = () => {
   const [mainTab, setMainTab] = useState<string>("매칭 신청");
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null); // 카테고리 필터 상태
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
+  const [modalType, setModalType] = useState<"default" | "report">("default");
 
   const matchRequests = [
     {
@@ -41,7 +47,7 @@ const ViewRequest: React.FC = () => {
   const matchComplete = [
     {
       id: 3,
-      category: "공동구매",
+      category: "밥",
       name: "제이시",
       gender: "남성",
       age: 23,
@@ -64,6 +70,34 @@ const ViewRequest: React.FC = () => {
   ];
 
 
+  const handleOpenModal = () => {
+    if (mainTab === "매칭 신청") {
+      setModalType("default");
+    } else {
+      setModalType("report");
+    }
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleOpenContact = () => {
+    setIsContactModalOpen(true);
+  };
+
+  const handleCloseContact = () => {
+    setIsContactModalOpen(false);
+  };
+
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText("kakao_id_example");
+    alert("카카오톡 ID가 복사되었습니다.");
+  };
+
+
   const handleAccept = () => {
     console.log("수락 버튼 클릭");
   };
@@ -82,12 +116,6 @@ const ViewRequest: React.FC = () => {
         return <Icon icon="fluent-color:sport-16" width="19" height="19" />;
       case "공부":
         return <Icon icon="fluent-color:edit-24" width="19" height="19" />;
-      case "공동구매":
-        return (
-          <GroupIconContainer>
-            <GroupIcon size={24} />
-          </GroupIconContainer>
-        );
       default:
         return null;
     }
@@ -104,7 +132,7 @@ const ViewRequest: React.FC = () => {
     return filteredList.map((mate) => (
       <MateCard key={mate.id}>
         {/* 상단 category와 date */}
-        <CardTop hasDate={mainTab === "매칭 완료"}>
+        <CardTop $hasdate={mainTab === "매칭 완료"}>
           <CategoryWrapper>
             {/* 카테고리 아이콘 */}
             {getCategoryIcon(mate.category)}
@@ -114,7 +142,7 @@ const ViewRequest: React.FC = () => {
         </CardTop>
         
         <MateInfo>
-          <MateAvatar src={mate.avatar} alt={`${mate.name} 프로필`} />
+          <MateAvatar onClick={handleOpenModal} src={mate.avatar} alt={`${mate.name} 프로필`} />
           <MateDetails>
             <MateName>{mate.name}</MateName>
             <MateSubDetails>
@@ -133,7 +161,7 @@ const ViewRequest: React.FC = () => {
                 </ButtonContainer>
               </>
             ) : (
-              <ContactButton>연락 수단</ContactButton>
+              <ContactButton onClick={handleOpenContact}>연락 수단</ContactButton>
             )}
           </MateActions>
         </MateInfo>
@@ -142,29 +170,62 @@ const ViewRequest: React.FC = () => {
   };
 
   return (
-    <PageContainer>
-        <Navbar title="매칭 신청" bell={true}></Navbar>
-        {/* 상단 메인 탭 */}
-        <ListTabs
-            tabs={["매칭 신청", "매칭 완료"]}
-            activeTab={mainTab}
-            onTabClick={(tab) => setMainTab(tab)}
-          />
-        <FilterContainer>
-          <SelectToggle
-            options={["카테고리", "밥", "운동", "공부", "공동구매"]}
-            onChange={(selectedOption) =>
-              setCategoryFilter(
-                selectedOption && selectedOption.value !== "카테고리"
-                  ? selectedOption.value
-                  : null
-              )
-            }
-          />
-        </FilterContainer>
-        {/* 리스트 출력 */}
-        <MateList>{renderList()}</MateList>
-    </PageContainer>
+    <>
+      <PageContainer>
+          <Navbar title="매칭 신청" bell={true}></Navbar>
+          {/* 상단 메인 탭 */}
+          <ListTabs
+              tabs={["매칭 신청", "매칭 완료"]}
+              activeTab={mainTab}
+              onTabClick={(tab) => setMainTab(tab)}
+            />
+          <FilterContainer>
+            <SelectToggle
+              options={["카테고리", "밥", "운동", "공부"]}
+              onChange={(selectedOption) =>
+                setCategoryFilter(
+                  selectedOption && selectedOption.value !== "카테고리"
+                    ? selectedOption.value
+                    : null
+                )
+              }
+            />
+          </FilterContainer>
+          {/* 리스트 출력 */}
+          <MateList>{renderList()}</MateList>
+      </PageContainer>
+
+      {isModalOpen && (
+        modalType === "default" ? (
+          <Modal isOpen={isModalOpen} onClose={handleCloseModal} />
+        ) : (
+          <ModalwithReport isOpen={isModalOpen} onClose={handleCloseModal} />
+        )
+      )}
+
+      {/* 연락 수단 모달 */}
+      {isContactModalOpen && (
+        <Overlay>
+          <ContactContainer>
+            <CloseContainer onClick={handleCloseContact}>
+              <IoCloseOutline size={24}/>   
+            </CloseContainer> 
+            <ContactHeader>
+              <ContactTitle>연락 수단</ContactTitle>
+            </ContactHeader>
+            <ContactContent>
+              카카오톡 ID
+              <InputContainer>
+                <KakaoIdInput  />
+                <CopyButton onClick={handleCopy}>
+                  복사
+                </CopyButton>
+              </InputContainer>
+            </ContactContent>
+          </ContactContainer>
+        </Overlay>
+      )}
+    </>
   );
 };
 
@@ -205,10 +266,10 @@ const MateCard = styled.div`
   border-bottom: 1px solid #E4E6E9;
 `;
 
-const CardTop = styled.div<{ hasDate: boolean }>`
+const CardTop = styled.div<{ $hasdate: boolean }>`
   display: flex;
-  justify-content: ${(props) => (props.hasDate ? "space-between" : "flex-start")};
-  padding: 7px 0;
+  justify-content: ${(props) => (props.$hasdate ? "space-between" : "flex-start")};
+  padding: 8px 0;
   width: 90%;
 `;
 
@@ -227,7 +288,7 @@ const Category = styled.div`
 const Date = styled.div`
   font-size: 11px;
   color: #525252;
-  margin-top: 10px;
+  margin-top: 4px;
 `;
 
 const MateInfo = styled.div`
@@ -244,6 +305,7 @@ const MateAvatar = styled.img`
   border-radius: 50%;
   width: 50%;
   margin-right: 10px;
+  cursor: pointer;
 `;
 
 const MateDetails = styled.div`
@@ -292,8 +354,104 @@ const ContactButton = styled.button`
   width: 80%;
 `;
 
-const GroupIconContainer = styled.div`
-  width: 18px;
-  height: 30px;
-  transform: scale(0.50); /* 크기 조정 비율 */
+
+
+
+const Overlay = styled.div`
+  width: calc(100vw);
+  max-width: 393px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3000;
+`;
+
+
+const ContactContainer = styled.div`
+  width: 67%;
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  position: relative;
+`;
+
+const ContactHeader = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 15px;
+  position: relative;
+`;
+
+const ContactTitle = styled.div`
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  text-align: center;
+`;
+
+const CloseContainer = styled.div`
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  width: 19px;
+  height: 19px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+`;
+
+const ContactContent = styled.div`
+  font-size: 14px;
+  font-weight: 400;
+  margin-bottom: 8px;
+  text-align: left;
+`;
+
+const Button = styled.button`
+  width: 40px;
+  padding: 5px 5px;
+  background: #268EFF;
+  color: #FFF;
+  border-radius: 4px;
+  font-size: 13.5px;
+  font-weight: 400;
+  cursor: pointer;
+  background: #268EFF;
+  color: #FFF;
+  text-align: center;
+
+  &:hover {
+    background: "#005FCC" : "#F5F5F5";
+  }
+`;
+
+
+const InputContainer = styled.div`
+  margin-top: 20px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: #FAFAFC;
+  border-radius: 3px;
+`;
+
+const KakaoIdInput = styled.input`
+  padding: 10px;
+  font-size: 14px;
+  border: none;
+  background: none;
+`;
+
+const CopyButton = styled(Button)`
+  flex-shrink: 0;
 `;
