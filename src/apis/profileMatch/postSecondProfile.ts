@@ -21,10 +21,11 @@ const contextMap: Record<ProfileType, React.Context<any>> = {
 const postSecondProfile = (type: ProfileType) => {
   const Context = contextMap[type];
   const contextData: ProfileContextType = useContext(Context);
-
+  
   const mutation = useMutation({
     mutationFn: async () => {
-      console.log("Request Body:", secondProfileData(type, contextData));
+      console.log(JSON.stringify(secondProfileData(type, contextData), null, 2));
+
       const response = await axiosInstance.post("/api/request/add", secondProfileData(type,contextData));
       console.log("post",response)
       return response.data;
@@ -35,4 +36,3 @@ const postSecondProfile = (type: ProfileType) => {
 };
 
 export default postSecondProfile;
-

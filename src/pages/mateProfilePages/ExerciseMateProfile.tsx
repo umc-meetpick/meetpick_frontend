@@ -20,7 +20,7 @@ interface OptionClick{
 const ExerciseMateProfile = () =>{
     const {messages, addMessage} = useChatContext();
     const [currentQueryIndex, setCurrentQueryIndex] = useState(0); 
-    const { setGender, selectedMajors, studentNum, setStudentNum, ageRange, mbtiList, setMbtiList, setIsSchool,
+    const { setGender, selectedMajors, studentNum, setStudentNum, ageRange, mbtiList, setMbtiList, setIsSchool,setIsHobbySame,
             exercise, setExercise, place, dateTime, peopleNum, ment } = useContext(ExerciseProfileInfoContext);
     const [modalOpen, setModalOpen] = useState(false);
     const [modalOpenS, setModalOpenS] = useState(false);
@@ -49,7 +49,7 @@ const ExerciseMateProfile = () =>{
     }, [ modalOpen, selectedMajors]);
 
     useEffect(() => {
-        if (mbtiList.length === 4) {
+        if (mbtiList.length === 4 && mbtiList.join("") != "xxxx") {
           addMessage({ question: [mbtiList.join("")], direction: "outgoing" });
           addMessage({ question: ["아하 이제 슬슬 알겠다!"], direction: "incoming" });
         }
@@ -126,14 +126,7 @@ const ExerciseMateProfile = () =>{
             setIsManyOptions(true);
             addMessage({ question: [option], direction: "outgoing" });
         }else if (type == "exercise"){
-            if ( option == "기타"){
-                setChatDisable(false);
-                setSaveType("exercise");
-            }else{
-                setSaveType("");
-                setExercise(option);
-                setChatDisable(true); 
-            }
+            setExercise(option);
         }else if (type == "major" && option != "상관없어"){
             setModalOpen(true); 
         }else if (type == "studentNum" && option != "상관없어"){
@@ -145,6 +138,7 @@ const ExerciseMateProfile = () =>{
             addMessage({ question: [option], direction: "outgoing" });
             if (option == "상관없어"){
                 setOptionSelectEnd(true); 
+                setMbtiList(["x","x","x","x"])
                 const nextQueryIndex = currentQueryIndex + 5;
                 if (nextQueryIndex < exerciseProfileQuery.length && !modalOpen) {
                 setCurrentQueryIndex(nextQueryIndex);  
@@ -172,7 +166,8 @@ const ExerciseMateProfile = () =>{
             setGender(option);
             addMessage({ question: [option], direction: "outgoing" });
         }else if (type == "hobby"){
-            addMessage({ question: [option], direction: "outgoing" })
+            option == "같으면 좋겠어" ? setIsHobbySame(true) : setIsHobbySame(false);
+            addMessage({ question: [option], direction: "outgoing" });
             setChatDisable(false);
             setSaveType("ment");
         } else if (type == "date"){

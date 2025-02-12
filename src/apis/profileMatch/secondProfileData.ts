@@ -8,50 +8,76 @@ type ProfileContextType =
   | ExerciseProfileInfoContextType
   | StudyProfileInfoContextType;
 
+const isFoodProfile = (contextData: ProfileContextType): contextData is FoodProfileInfoContextType => {
+  return (contextData as FoodProfileInfoContextType).menuList !== undefined;
+};
+
+const isExerciseProfile = (contextData: ProfileContextType): contextData is ExerciseProfileInfoContextType => {
+  return (contextData as ExerciseProfileInfoContextType).exercise !== undefined;
+};
+
+const isStudyProfile = (contextData: ProfileContextType): contextData is StudyProfileInfoContextType => {
+  return !(isFoodProfile(contextData) || isExerciseProfile(contextData));
+};
+
 const secondProfileData = (type: ProfileType, contextData: ProfileContextType) => {
    // 공통 데이터
    const baseData = {
-    writerId: 0,
-    gender: contextData.gender,
-    subMajorName:contextData.majors,
-    studentNumber: (contextData.studentNum == "상관없음") ? contextData.studentNum : null,
-    minAge: contextData.ageRange[0],
-    maxAge: contextData.ageRange[1],
-    mbti: contextData.mbtiList.join(""),
-    isHobbySame: contextData.isHobbySame,
-    memberSecondProfileTimes: Object.entries(contextData.dateTime || {}).map(
-      ([week, times]) => ({ week, times })
-    ),
-    maxPeople: contextData.peopleNum,
-    comment: contextData.ment,
+    "writerId": 20,
+    "gender": (contextData.gender == "상관없음") ? null : (contextData.gender == "남성" ? "MALE" : "FEMALE"),
+    "subMajorName": contextData.majors,
+    "studentNumber": (contextData.studentNum == "상관없음") ? null : contextData.studentNum,
+    "minAge": contextData.ageRange[0] ? contextData.ageRange[0] : 0,
+    "maxAge": contextData.ageRange[1] ? contextData.ageRange[1] : 0,
+    "mbti": contextData.mbtiList.join(""),
+    "isHobbySame": contextData.isHobbySame || false,
+    "memberSecondProfileTimes": Object.entries(contextData.dateTime || {}).map(([week, times]) => ({
+      week,
+      times: times.map(time => {
+        const hour = parseInt(time.split(":")[0]);
+        return isNaN(hour) ? 0 : hour;
+      }),
+    })),
+    "maxPeople": contextData.peopleNum,
+    "comment": contextData.ment,
   };
-  const foodData = contextData as FoodProfileInfoContextType;
-  const exerciseData = contextData as ExerciseProfileInfoContextType;
-
-  switch (type) {
-    case "food":
+ 
+switch (type) {
+  case "food":
+    if (isFoodProfile(contextData)) {
       return {
         ...baseData,
         exerciseTypes: null,
         isSchool: null,
-        food:foodData.menuList,
-        type:"MEAL"
+        food: contextData.menuList,
+        type: "MEAL"
       };
-    case "exercise":
-      return {
-        ...baseData,
-        exerciseTypes:  exerciseData.exercise,
-        isSchool: exerciseData.isSchool,
+    }
+    break;
 
-        type:"EXERCISE"
-      };
-    case "study":
+  case "exercise":
+    if (isExerciseProfile(contextData)) {
       return {
         ...baseData,
-        type:"STUDY"
+        exerciseTypes: contextData.exercise,
+        isSchool: contextData.isSchool,
+        type: "EXERCISE"
       };
-    default:
-      throw new Error("Invalid profile type");
+    }
+    break;
+
+  case "study":
+    if (isStudyProfile(contextData)) {
+      return {
+        ...baseData,
+        type: "STUDY"
+      };
+    }
+    break;
+
+  default:
+    throw new Error("Invalid profile type");
   }
-};
+}
+
 export default secondProfileData;

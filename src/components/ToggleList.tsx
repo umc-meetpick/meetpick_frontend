@@ -41,8 +41,6 @@ const ToggleList: React.FC<ToggleListProps> = ({button, multi, setModalOpen, typ
         } else {
             setOpenItems([...openItems, id]);
         }
-        console.log('majors:',majors)
-        console.log('selectedMajors:',selectedMajors)
     };
     const handleMajor = (major:string, title:string, all:string[]) =>{
         if (type == "study"){
@@ -52,7 +50,6 @@ const ToggleList: React.FC<ToggleListProps> = ({button, multi, setModalOpen, typ
             if (multi) {
                 if (major === "all") {
                     if (selectedMajors.includes(title)){
-                        console.log("dd")
                         setMajors(majors.filter((m) => !all.includes(m)));
                         setSelectedMajors(selectedMajors.filter((m) => m !== title));
                     }else{

@@ -20,14 +20,13 @@ interface OptionClick{
 const FoodMateProfile = () =>{
     const {messages, addMessage } = useChatContext();
     const [currentQueryIndex, setCurrentQueryIndex] = useState(0); 
-    const { selectedMajors, studentNum, ageRange, mbtiList, setGender, setStudentNum, setMbtiList, 
-            menuList, setMenuList, extraMenu, dateTime, peopleNum, ment } = useContext(FoodProfileInfoContext);
+    const { selectedMajors, studentNum, ageRange, mbtiList, setGender, setStudentNum, setMbtiList, setIsHobbySame,
+            menuList, setMenuList, dateTime, peopleNum, ment } = useContext(FoodProfileInfoContext);
     const [modalOpen, setModalOpen] = useState(false);
     const [modalOpenS, setModalOpenS] = useState(false);
     const [modalOpenS2, setModalOpenS2] = useState(false);
     const [modalOpenD, setModalOpenD] = useState(false);
     const [chatDisable, setChatDisable] = useState(true);
-    const [selectedMenu, setSelectedMenu] = useState<string[]>([]);
     const messageEndRef = useRef<HTMLDivElement>(null);
     const [keyboardOpen, setKeyboardOpen] = useState(false);
     const [optionSelectEnd, setOptionSelectEnd] = useState(false);
@@ -48,7 +47,7 @@ const FoodMateProfile = () =>{
     }, [ modalOpen, selectedMajors]);
 
     useEffect(() => {
-        if (mbtiList.length === 4) {
+        if (mbtiList.length === 4 && mbtiList.join("") != "xxxx") {
             addMessage({ question: [mbtiList.join("")], direction: "outgoing" });
         }
       }, [mbtiList]);
@@ -81,33 +80,16 @@ const FoodMateProfile = () =>{
             nextOption();
         }
     }, [modalOpenD, dateTime]);
-      
-    useEffect(() => {
-        if (chatDisable && selectedMenu.includes("기타") && extraMenu.length > 0) {
-            const updatedMenuList = [...selectedMenu.filter(m => m !== "기타"), extraMenu];
-            setMenuList(updatedMenuList);
-        }
-    }, [chatDisable, selectedMenu, extraMenu]);
-
-    useEffect(()=>{
-        if (selectedMenu.includes("기타")){
-            setChatDisable(false);
-        }else{
-            setMenuList(selectedMenu);
-            console.log(menuList)
-        }
-    },[selectedMenu])
 
     const handleMenuList = (menu:string) =>{
-        if (selectedMenu.includes(menu)){
-            setSelectedMenu(selectedMenu.filter(m => m !== menu));
+        if (menuList.includes(menu)){
+            setMenuList(menuList.filter(m => m !== menu));
         }else{
-            setSelectedMenu([...selectedMenu, menu]);
+            setMenuList([...menuList, menu]);
         }
     };
     const saveMenu = () =>{
         addMessage({ question: [menuList.join(", ")+" 먹고 싶어!"], direction: "outgoing" });
-        setSelectedMenu([]);
         nextOption(); 
     };
     useEffect(() => {
@@ -147,6 +129,7 @@ const FoodMateProfile = () =>{
             addMessage({ question: [option], direction: "outgoing" });
             if (option === "상관없어") {
                 setOptionSelectEnd(true); 
+                setMbtiList(["x","x","x","x"])
                 const nextQueryIndex = currentQueryIndex + 5;
                 if (nextQueryIndex < foodProfileQuery.length && !modalOpen) {
                   setCurrentQueryIndex(nextQueryIndex);  
@@ -172,8 +155,8 @@ const FoodMateProfile = () =>{
                 const mbtiValue = mbtiMap[mbtiKey];
                 setMbtiList([...mbtiList, mbtiValue]);
             }
-        }else if (type == "hobby" && option == "같으면 좋겠어"){
-            //같을경우
+        }else if (type == "hobby"){
+            option == "같으면 좋겠어" ? setIsHobbySame(true) : setIsHobbySame(false);
             addMessage({ question: [option], direction: "outgoing" });
         } else if (type == "date"){
             setModalOpenD?.(true);
@@ -232,7 +215,7 @@ const FoodMateProfile = () =>{
                     <div ref={messageEndRef} />
                 </StyledMainContainer>
                 { foodProfileQuery[currentQueryIndex]?.type == "menu" && 
-                        <FoodMent>{selectedMenu.includes("기타") ? "기타 음식들은 채팅으로 입력해주세요" : "원하는 음식 종류를 모두 선택해주세요!"}</FoodMent>
+                        <FoodMent>원하는 음식 종류를 모두 선택해주세요!</FoodMent>
                 }
                 {messages.some(msg => (msg?.type === "last" || !msg) && msg.direction === "incoming") && !optionSelectEnd &&
                     <OptionsContainer $isMenu={foodProfileQuery[currentQueryIndex]?.type == "menu"} $isSmall={window.innerHeight <700}>
@@ -254,7 +237,7 @@ const FoodMateProfile = () =>{
                                                 || foodProfileQuery[currentQueryIndex]?.type == "major" && option != "상관없어!"
                                                 || foodProfileQuery[currentQueryIndex]?.type == "date" 
                                                 || foodProfileQuery[currentQueryIndex]?.type == "peopleNum"}
-                                            $isSelected={selectedMenu.includes(option)}
+                                            $isSelected={menuList.includes(option)}
                                         >
                                             {option}
                                         </Button>
@@ -270,7 +253,6 @@ const FoodMateProfile = () =>{
                         disable={chatDisable} 
                         setChatDisable={setChatDisable} 
                         keyboard={keyboardOpen} 
-                        isExtra={selectedMenu.includes("기타")}
                         type="food"
                     />
                     { modalOpen && <ToggleListModal setModalOpen={setModalOpen} type="food"/> }
