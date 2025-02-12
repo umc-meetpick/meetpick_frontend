@@ -10,17 +10,17 @@ const BottomNavBar = () => {
 
   return (
     <BottomNav>
-     <NavItem active={location.pathname === "/"}>
-        <StyledLink to="/">
-          <GrHomeRounded size={24} color={location.pathname === "/" ? "#1A6AFF" : "gray"} />
-          <Title active={location.pathname === "/"}>홈</Title>
+     <NavItem active={location.pathname === "/looking"}>
+        <StyledLink to="/looking">
+          <GrHomeRounded size={24} color={location.pathname === "/looking" ? "#1A6AFF" : "gray"} />
+          <Title active={location.pathname === "/looking"}>홈</Title>
         </StyledLink>
       </NavItem>
 
-      <NavItem active={location.pathname === "/looking"}>
-        <StyledLink to="/looking">
-          <GoPeople size={24} color={location.pathname === "/looking" ? "#1A6AFF" : "gray"} />
-          <Title active={location.pathname === "/looking"}>매칭</Title>
+      <NavItem active={location.pathname === "/viewRequest"}>
+        <StyledLink to="/viewRequest">
+          <GoPeople size={24} color={location.pathname === "/viewRequest" ? "#1A6AFF" : "gray"} />
+          <Title active={location.pathname === "/viewRequest"}>매칭</Title>
         </StyledLink>
       </NavItem>
 
