@@ -23,8 +23,9 @@ const ContentWrapper = styled.div`
   overflow-y: scroll;
   position: absolute;
   top: 0;
-  bottom: 100px; 
+  bottom: 100px;
   width: 100%;
+  
   overflow-x: hidden;
   &::-webkit-scrollbar {
     width: 8px; 
@@ -52,8 +53,6 @@ const RootLayout = () => {
 
     const isSmallViewport = windowHeight < 700;
     const isKeyboard = windowHeight < 400;
-
-    
     return (
       <Wrapper>
         <Main>

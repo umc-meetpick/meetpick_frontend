@@ -10,10 +10,12 @@ import { ProfileInfoContext } from '../../context/profileInfoContext';
 import {useForm} from 'react-hook-form';
 import * as yup from 'yup';
 import {yupResolver} from '@hookform/resolvers/yup';
+import useNicknameCheck from '../../apis/basicProfile/useNicknameCheck';
 
 const SetNickName: React.FC = () => {
     const [isDupilicate, setIsDupilicate] = useState(true);
     const [btnClicked, setBtnClicked] = useState(false);
+    const [inputValue, setInputValue] = useState("");
     const {nickname, setNickName} = useContext(ProfileInfoContext);
     const inputRef = useRef<HTMLDivElement>(null);
 
@@ -43,20 +45,21 @@ const SetNickName: React.FC = () => {
         resolver: yupResolver(schema),
     });
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setBtnClicked(false);
         setValue("nickname", e.target.value, { shouldValidate: true });
-        setNickName(e.target.value);
+        setInputValue(e.target.value);
     };
 
+    const {isSuccess} = useNicknameCheck(nickname);
+    
     const onSubmit = (data: { nickname: string }) => {
-        if (!errors.nickname){
-            // 서버에 닉네임 중복 여부 확인 요청
-            const isDuplicateCheck = false; // 서버 결과 가정
-            setIsDupilicate(isDuplicateCheck);
-            setBtnClicked(true);
-
-            if (!isDuplicateCheck) {
-                setNickName(data.nickname);
-            }
+        console.log('isSuceess',nickname,isSuccess)
+        setBtnClicked(true);
+        if (isSuccess) {
+            setNickName(data.nickname);
+            setIsDupilicate(false);  
+        } else {
+            setIsDupilicate(true); 
         }
     };
 
@@ -71,7 +74,7 @@ const SetNickName: React.FC = () => {
                 </Title>
                 <SubInfo>공백 제외 한글, 영문 10자까지 가능</SubInfo>
                 <GrayBottomInput
-                    value={nickname}
+                    value={inputValue}
                     {...register("nickname")}
                     onChange={handleInputChange}
                 />
@@ -98,7 +101,7 @@ const SetNickName: React.FC = () => {
                         )
                     )}
                 <BtnContainer>
-                    <MoveNextRoundBtn nextPage={"/setProfile/image"} disable={isDupilicate}/>
+                    <MoveNextRoundBtn nextPage={"/setProfile/image"} disable={isDupilicate || nickname !== inputValue}/>
                 </BtnContainer>
             </Container>
         </>
