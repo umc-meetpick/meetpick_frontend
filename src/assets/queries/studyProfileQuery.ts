@@ -52,7 +52,7 @@ const studyProfileQuery = [
     {
       "question": ["원하는 학번은요?"],
       "direction": "incoming",
-      "options": ["동기", "선배", "후배", "상관없어"],
+      "options": ["동기", "선배", "후배", "상관없음"],
       "type": "studentNum"
     },
     {

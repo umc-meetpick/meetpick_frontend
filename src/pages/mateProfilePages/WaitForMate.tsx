@@ -1,15 +1,28 @@
 import original from "../../assets/profileImg/프로필2.png";
 import styled from "styled-components";
 import BasicNavbar from "../../components/navbar/BasicNavbar";
+import { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import getRecommendation from "../../apis/profileMatch/getRecommendation";
+import postSecondProfile from "../../apis/profileMatch/postSecondProfile";
 
 const WaitForMate = () =>{
     const navigate = useNavigate();
     const location = useLocation();
     const param = (location.state == "혼밥") ? "food" : (location.state == "운동" ? "exercise" : "study")
     const mateType = (param == "food") ? "MEAL" : param.toUpperCase();
-    const {data, isLoading} = getRecommendation(mateType);
+
+    const postProfileMutation = postSecondProfile(param);
+    const { data, refetch, isLoading } = getRecommendation(mateType);
+
+    useEffect(() => {
+        postProfileMutation.mutate(undefined, {
+          onSuccess: () => {
+            refetch(); // POST 성공 후 GET 실행
+          },
+        });
+    }, []);
+
     return(
         <Wrapper>
             <BasicNavbar title="추천 메이트 찾기"></BasicNavbar>

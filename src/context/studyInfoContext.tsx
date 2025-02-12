@@ -1,11 +1,13 @@
 import { createContext, useState, ReactNode } from "react";
 
 // 타입 정의
-interface StudyProfileInfoContextType {
+export interface StudyProfileInfoContextType {
     gender: string;
     setGender:(gender: string) => void;
     majors: string[];
     setMajors: (majors: string[]) => void;
+    selectedMajors: string[];
+    setSelectedMajors: (majors: string[]) => void;
     studentNum: string;
     setStudentNum: (studentNum: string) => void;
     ageRange: number[];
@@ -24,8 +26,8 @@ interface StudyProfileInfoContextType {
     setPlace: (place:string) => void;
     peopleNum: number;
     setPeopleNum: (peoplenum: number) => void;
-    hobby: string[];
-    setHobby: (hobby: string[]) => void;
+    isHobbySame: boolean;
+    setIsHobbySame: (h:boolean) => void;
     ment: string;
     setMent: (ment: string) => void;
     dateTime: { [key: string]: string[] };
@@ -39,6 +41,8 @@ const defaultValue: StudyProfileInfoContextType = {
     majors: [],
     setMajors: () => {},
     studentNum: "",
+    selectedMajors: [],
+    setSelectedMajors: () => {},
     setStudentNum: () => {},
     ageRange: [],
     setAgeRange: () => {},
@@ -56,8 +60,8 @@ const defaultValue: StudyProfileInfoContextType = {
     setPlace: () => {},
     peopleNum: 0,
     setPeopleNum: () => {},
-    hobby: [],
-    setHobby: () => {},
+    isHobbySame: true,
+    setIsHobbySame: () => {},
     ment: "",
     setMent: () => {},
     dateTime: {},
@@ -74,6 +78,7 @@ interface StudyProfileContextProviderProps {
 export function StudyProfileContextProvider({children}:StudyProfileContextProviderProps){
     const [gender, setGender] = useState<string>("");
     const [majors, setMajors] = useState<string[]>([]);
+    const [selectedMajors, setSelectedMajors] = useState<string[]>([]);
     const [studentNum, setStudentNum] = useState<string>("");
     const [ageRange, setAgeRange] = useState<number[]>([])
     const [mbtiList, setMbtiList] = useState<string[]>([]);
@@ -83,7 +88,7 @@ export function StudyProfileContextProvider({children}:StudyProfileContextProvid
     const [subjectType, setSubjectType] = useState<string>("");
     const [place, setPlace] = useState<string>("");
     const [peopleNum, setPeopleNum] = useState<number>(0);
-    const [hobby, setHobby] = useState<string[]>([]);
+    const [isHobbySame, setIsHobbySame] = useState<boolean>(true);
     const [ment, setMent] = useState<string>("");
     const [dateTime, setDateTime] = useState<{ [key: string]: string[] }>({});
 
@@ -94,6 +99,8 @@ export function StudyProfileContextProvider({children}:StudyProfileContextProvid
                 setGender,
                 majors,
                 setMajors,
+                selectedMajors,
+                setSelectedMajors,
                 studentNum,
                 setStudentNum,
                 ageRange,
@@ -112,8 +119,8 @@ export function StudyProfileContextProvider({children}:StudyProfileContextProvid
                 setPlace,
                 peopleNum,
                 setPeopleNum,
-                hobby,
-                setHobby,
+                isHobbySame,
+                setIsHobbySame,
                 ment,
                 setMent,
                 dateTime,
