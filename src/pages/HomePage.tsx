@@ -86,11 +86,11 @@ const HomePage = () => {
                   />
                   { !isLoadingUniversities && !isTyping && universities?.length > 0 && (
                     <SearchResultContainer>
-                      {universities.map((university:University, index:number) => (
+                      {universities.slice(0, 5).map((university:University, index:number) => (
                         <SearchResultItem 
                           key={university.id ? `${university.id}-${index}` : `university-${index}`} // 🔹 key 수정
                           $isFirst={index === 0}
-                          $isLast={index === universities.length - 1}
+                          $isLast={index === Math.min(5, universities.length) - 1}
                           onClick={() => handleUniversityClick(university)}
                         >
                           <strong>{university.universityName}</strong>
