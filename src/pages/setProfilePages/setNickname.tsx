@@ -15,8 +15,8 @@ import useNicknameCheck from '../../apis/basicProfile/useNicknameCheck';
 const SetNickName: React.FC = () => {
     const [isDupilicate, setIsDupilicate] = useState(true);
     const [btnClicked, setBtnClicked] = useState(false);
-    const [inputValue, setInputValue] = useState("");
     const {nickname, setNickName} = useContext(ProfileInfoContext);
+    const [inputValue, setInputValue] = useState(nickname);
     const inputRef = useRef<HTMLDivElement>(null);
 
     const scrollToBottom = () => {
@@ -101,7 +101,7 @@ const SetNickName: React.FC = () => {
                         )
                     )}
                 <BtnContainer>
-                    <MoveNextRoundBtn nextPage={"/setProfile/image"} disable={isDupilicate || nickname !== inputValue}/>
+                    <MoveNextRoundBtn nextPage={"/setProfile/image"} disable={!isSuccess || nickname !== inputValue}/>
                 </BtnContainer>
             </Container>
         </>
