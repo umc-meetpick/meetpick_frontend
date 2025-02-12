@@ -19,7 +19,7 @@ interface OptionClick{
 const StudyMateProfile = () =>{
     const {messages, addMessage} = useChatContext();
     const [currentQueryIndex, setCurrentQueryIndex] = useState(0); 
-    const { setGender, majors, setStudentNum, ageRange, mbtiList, setMbtiList, subject, subjectType,
+    const { setGender, selectedMajors, setStudentNum, ageRange, mbtiList, setMbtiList, subject, subjectType, setIsHobbySame,
         studyType, setStudyType, place, dateTime, peopleNum, ment } = useContext( StudyProfileInfoContext );
     const [modalOpen, setModalOpen] = useState(false);
     const [modalOpenM, setModalOpenM] = useState(false);
@@ -56,14 +56,14 @@ const StudyMateProfile = () =>{
     }, [ modalOpen, studyType, subject, subjectType]);
 
     useEffect(() => {
-        if ( !modalOpenM && majors.length > 0) {
-            addMessage({ question: [majors.join(", ") + "!"], direction: "outgoing" });
+        if ( !modalOpenM && selectedMajors.length > 0) {
+            addMessage({ question: [selectedMajors.join(", ") + "!"], direction: "outgoing" });
             nextOption(); 
         }
-    }, [ modalOpenM, majors]);
+    }, [ modalOpenM, selectedMajors]);
 
     useEffect(() => {
-        if (mbtiList.length === 4) {
+        if (mbtiList.length === 4 && mbtiList.join("") != "xxxx") {
           addMessage({ question: [mbtiList.join("")], direction: "outgoing" });
         }
       }, [mbtiList]);
@@ -144,6 +144,7 @@ const StudyMateProfile = () =>{
             addMessage({ question: [option], direction: "outgoing" });
             if (option == "상관없어"){
                 setOptionSelectEnd(true); 
+                setMbtiList(["x","x","x","x"])
                 const nextQueryIndex = currentQueryIndex + 5;
                 if (nextQueryIndex < studyProfileQuery.length && !modalOpen) {
                 setCurrentQueryIndex(nextQueryIndex);  
@@ -171,6 +172,8 @@ const StudyMateProfile = () =>{
             setGender(option);
             addMessage({ question: [option], direction: "outgoing" });
         }else if (type == "hobby"){
+            option == "같으면 좋겠어" ? setIsHobbySame(true) : setIsHobbySame(false);
+            addMessage({ question: [option], direction: "outgoing" });
             addMessage({ question: [option], direction: "outgoing" })
             setChatDisable(false);
             setSaveType("ment");

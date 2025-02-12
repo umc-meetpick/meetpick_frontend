@@ -51,7 +51,7 @@ const exerciseProfileQuery = [
     {
       "question": ["원하는 특정 학번이 있어?"],
       "direction": "incoming",
-      "options": ["동기", "선배", "후배", "상관없어"],
+      "options": ["동기", "선배", "후배", "상관없음"],
       "type": "studentNum"
     },
     {

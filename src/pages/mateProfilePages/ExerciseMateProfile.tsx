@@ -20,7 +20,7 @@ interface OptionClick{
 const ExerciseMateProfile = () =>{
     const {messages, addMessage} = useChatContext();
     const [currentQueryIndex, setCurrentQueryIndex] = useState(0); 
-    const { setGender, majors, studentNum, setStudentNum, ageRange, mbtiList, setMbtiList, 
+    const { setGender, selectedMajors, studentNum, setStudentNum, ageRange, mbtiList, setMbtiList, setIsSchool,setIsHobbySame,
             exercise, setExercise, place, dateTime, peopleNum, ment } = useContext(ExerciseProfileInfoContext);
     const [modalOpen, setModalOpen] = useState(false);
     const [modalOpenS, setModalOpenS] = useState(false);
@@ -42,14 +42,14 @@ const ExerciseMateProfile = () =>{
     }, [messages]);
 
     useEffect(() => {
-        if ( !modalOpen && majors.length > 0) {
-            addMessage({ question: [majors.join(", ") + "!"], direction: "outgoing" });
+        if ( !modalOpen && selectedMajors.length > 0) {
+            addMessage({ question: [selectedMajors.join(", ") + "!"], direction: "outgoing" });
             nextOption(); 
         }
-    }, [ modalOpen, majors]);
+    }, [ modalOpen, selectedMajors]);
 
     useEffect(() => {
-        if (mbtiList.length === 4) {
+        if (mbtiList.length === 4 && mbtiList.join("") != "xxxx") {
           addMessage({ question: [mbtiList.join("")], direction: "outgoing" });
           addMessage({ question: ["아하 이제 슬슬 알겠다!"], direction: "incoming" });
         }
@@ -126,14 +126,7 @@ const ExerciseMateProfile = () =>{
             setIsManyOptions(true);
             addMessage({ question: [option], direction: "outgoing" });
         }else if (type == "exercise"){
-            if ( option == "기타"){
-                setChatDisable(false);
-                setSaveType("exercise");
-            }else{
-                setSaveType("");
-                setExercise(option);
-                setChatDisable(true); 
-            }
+            setExercise(option);
         }else if (type == "major" && option != "상관없어"){
             setModalOpen(true); 
         }else if (type == "studentNum" && option != "상관없어"){
@@ -145,6 +138,7 @@ const ExerciseMateProfile = () =>{
             addMessage({ question: [option], direction: "outgoing" });
             if (option == "상관없어"){
                 setOptionSelectEnd(true); 
+                setMbtiList(["x","x","x","x"])
                 const nextQueryIndex = currentQueryIndex + 5;
                 if (nextQueryIndex < exerciseProfileQuery.length && !modalOpen) {
                 setCurrentQueryIndex(nextQueryIndex);  
@@ -172,16 +166,22 @@ const ExerciseMateProfile = () =>{
             setGender(option);
             addMessage({ question: [option], direction: "outgoing" });
         }else if (type == "hobby"){
-            addMessage({ question: [option], direction: "outgoing" })
+            option == "같으면 좋겠어" ? setIsHobbySame(true) : setIsHobbySame(false);
+            addMessage({ question: [option], direction: "outgoing" });
             setChatDisable(false);
             setSaveType("ment");
         } else if (type == "date"){
             setModalOpenD(true);
         }else if (type == "peopleNum"){
             setModalOpenS2(true); 
-        }else if (type == "place" && option == "외부시설"){
-            setSaveType("place")
-            setChatDisable(false);
+        }else if (type == "place"){
+            if(option == "외부시설"){
+                setSaveType("place")
+                setChatDisable(false);
+                setIsSchool(false);
+            }else{
+                setIsSchool(true);
+            }
 
         }else{
             addMessage({ question: [option], direction: "outgoing" });

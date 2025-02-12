@@ -16,7 +16,6 @@ const FirstAndLast = (state:string) =>{
         const hasWaveEmoji = messages.some((msg) =>
             msg.question?.includes("👋")
         );
-    
         if (hasWaveEmoji) {
             if (timerRef.current) {
                 clearTimeout(timerRef.current);
