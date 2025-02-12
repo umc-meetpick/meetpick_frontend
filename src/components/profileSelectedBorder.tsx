@@ -72,6 +72,8 @@ const Container = styled.div`
     justify-content: flex-start; 
     margin-bottom: 30px;
     gap:10px;
+    font-family: 'Pretendard Variable', sans-serif;
+    font-weight:600;
     cursor: pointer;
     &::-webkit-scrollbar {
         display: none;

@@ -4,12 +4,13 @@ import BasicNavbar from "../../components/navbar/BasicNavbar";
 import SignupButton from "../../components/button/SignupButton";
 import SignupInput from "../../components/SignupInput";
 import SignupProgressbar from "../../components/progressbar/SignupProgressbar";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { BsDot } from "react-icons/bs";
-import { MdErrorOutline } from "react-icons/md";
 import { useFetchUniversities } from "../../apis/home/homeFetch";
 import { useVerifyEmail } from "../../apis/signup/vertifyEmail";
 import { useSendEmailCode } from "../../apis/signup/vertifyEmail";
+import { useSavePersonInfo } from "../../apis/signup/savePersonInfo";
+import { Icon } from "@iconify/react/dist/iconify.js";
 
 interface University {
   id:number;
@@ -30,9 +31,16 @@ const Signup2 = () => {
   const { data: universities =[], isLoading: isLoadingUniversities } = useFetchUniversities(search);
 
   const [selectedSchool, setSelectedSchool] = useState<string | null>(null); // 선택된 학교 이름 저장하는 상태
-  
+  const [isVerified, setIsVerified] = useState<boolean>(false);
+
   const sendEmailMutation = useSendEmailCode(); // 이메일 인증 요청 API
   const verifyEmailMutation = useVerifyEmail(); // useMutation 훅 사용 
+
+  const location = useLocation();
+  const navigate = useNavigate();
+  const {mutate: savePersonInfo} = useSavePersonInfo();
+
+  const {name, gender, birthday} = location.state || {};
 
 
   useEffect(() => {
@@ -71,7 +79,7 @@ const Signup2 = () => {
   // 이메일 인증 요청 버튼 클릭 시 실행
   const handleSendEmail = () => {
     if(!validateEmail(email)) {
-      setEmailError("이메일을 확인해주세요!");
+      setEmailError("이메일을 확인해주세요");
       return;
     }
     if(!selectedSchool) {
@@ -103,7 +111,7 @@ const Signup2 = () => {
   // 이메일 인증 코드 검증 버튼 클릭 시 실행 
   const handleVerifyEmail = () => {
     if(verificationCode === ""){
-      setCodeError("인증번호를 입력해주세요!!");
+      setCodeError("인증번호를 입력해주세요");
       return;
     }
     setCodeError("");
@@ -115,6 +123,7 @@ const Signup2 = () => {
       {
         onSuccess:(data)=> {
           console.log("✅이메일 인증 검증 성공!", data);
+          setIsVerified(true);
         },
         onError: (error)=> {
           console.error("❌이메일 인증 검증 실패!", error);
@@ -123,6 +132,26 @@ const Signup2 = () => {
     )
   }
 
+  const handleNextStep = () => {
+    if(!isVerified) {
+      console.log("이메일 인증을 완료해주세요!");
+      return;
+    }
+    console.log("회원 정보 저장 요청", {name, gender, birthday});
+
+    savePersonInfo(
+      {name, gender : gender === "남성"? "MALE":"FEMALE", birthday},
+      {
+        onSuccess:(data) => {
+          console.log("회원 정보 저장 성공!", data);
+          navigate("/Signup3");
+        },
+        onError:(error) => {
+          console.error("회원 정보 저장 실패 :", error);
+        },
+      }
+    );
+  };
 
 
   return (
@@ -158,9 +187,9 @@ const Signup2 = () => {
             />
             <BottomText>
               <BsDot size="15px" color="#34A3FD" />
-              반드시 학교 도메인 이메일로 인증해주세요!<br/>ex) ooooo@soogsil.ac.kr
+              반드시 학교 도메인 이메일로 인증해주세요!<br/>ex) oooooo@soongsil.ac.kr
             </BottomText>
-            {emailError && <ErrorText><MdErrorOutline/>{emailError}</ErrorText>}
+            {emailError && <ErrorText><Icon icon="ci:circle-warning" width="16px" height="16px"/>{emailError}</ErrorText>}
           </SignupInputContainer>
           <SignupInputContainer>
             <SignupInput
@@ -175,7 +204,8 @@ const Signup2 = () => {
               <BsDot size="15px" color="#34A3FD" />
               이메일로 전송받은 인증번호를 입력해주세요!
             </BottomText>
-            {codeError && <ErrorText><MdErrorOutline/>{codeError}</ErrorText>}
+            {codeError && <ErrorText><Icon icon="ci:circle-warning" width="16px" height="16px"/>{codeError}</ErrorText>}
+            {isVerified && <VerifyText><Icon icon="ci:circle-check" width="16px" height="16px" style={{color:"#007AFF"}}/>인증이 완료되었습니다.</VerifyText>}
           </SignupInputContainer>
           <ButtonContainer>
             <Link to="/Signup1">
@@ -186,14 +216,13 @@ const Signup2 = () => {
                 color="black"
               />
             </Link>
-            <Link to="/Signup3">
               <SignupButton
                 text="다음"
                 $backgroundColor="#E7F2FE"
                 width="140px"
                 color="#326DC1"
+                onClick = {handleNextStep}
               />
-            </Link>
           </ButtonContainer>
         </Container>
       </EntireContainer>
@@ -279,14 +308,27 @@ const BottomText = styled.p`
 
 const ErrorText = styled.p`
   color: #DB1818;
-  font-size: 13px;
+  font-size: 14px;
   margin-top: 5px;
   display:flex;
   align-items:center;
-  font-weight:bold;
+  font-weight:500;
 
   svg {
-    margin-right: 5px; /* 아이콘과 텍스트 사이의 간격 */
+    margin-right: 3px; /* 아이콘과 텍스트 사이의 간격 */
+  }
+`;
+
+const VerifyText = styled.p`
+  color:black;
+  font-size: 14px;
+  margin-top: 5px;
+  display:flex;
+  align-items:center;
+  font-weight:500;
+
+  svg {
+    margin-right: 3px; /* 아이콘과 텍스트 사이의 간격 */
   }
 `;
 
