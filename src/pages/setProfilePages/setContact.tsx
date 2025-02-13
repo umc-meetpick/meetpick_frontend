@@ -44,6 +44,7 @@ const SetContact= () => {
     };
     
     useEffect(() => {
+        console.log(contactType)
         if (contactType === "카카오톡 ID") {
             setCtype("kakaoId");
         } else if (contactType === "오픈채팅 링크") {

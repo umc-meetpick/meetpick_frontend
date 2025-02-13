@@ -148,7 +148,7 @@ const ExerciseMateProfile = () =>{
                 }, 100);  
             }}
         }else if (type?.includes("mbti") ) {
-            if (option == "상관없어!"){
+            if (option == "상관없어"){
                 setMbtiList([...mbtiList, "x"]);
             }else{
                 const mbtiMap: { [key: string]: string } = {
@@ -189,7 +189,7 @@ const ExerciseMateProfile = () =>{
         
         if (!((type == "major" && option != "상관없어") || (type == "exercise") 
             || (type == "place" && option == "외부시설") || (type == "age" && option != "상관없어") 
-            || (type == "extraExercise" && option == "없어") || type == "date" || type == "peopleNum"
+            || type == "date" || type == "peopleNum"
             || (type == "mbti" && option == "상관없어")
             )){
                 nextOption();
@@ -251,7 +251,10 @@ const ExerciseMateProfile = () =>{
                                                 || exerciseProfileQuery[currentQueryIndex]?.type == "major" && option != "상관없어"
                                                 || exerciseProfileQuery[currentQueryIndex]?.type == "date" 
                                                 || exerciseProfileQuery[currentQueryIndex]?.type == "peopleNum"}
-                                            $isSelected={exerciseProfileQuery[currentQueryIndex]?.type == "age" && option != "상관없어"}
+                                            $isSelected={
+                                                (exerciseProfileQuery[currentQueryIndex]?.type == "age" && option != "상관없어")
+                                                || (exerciseProfileQuery[currentQueryIndex]?.type == "place" && option =="외부시설" && !chatDisable) 
+                                            }
                                         >
                                             {option}
                                         </Button>

@@ -63,7 +63,7 @@ export function ProfileContextProvider({children}:ProfileContextProviderProps){
     const [mbti, setMbti] = useState<string>("");
     const [major, setMajor] = useState<string>("");
     const [hobby, setHobby] = useState<string[]>([]);
-    const [contactType, setContactType] = useState<string>("");
+    const [contactType, setContactType] = useState<string>("카카오톡 ID");
     const [contact, setContact] = useState<string>("");
     const [mbtiArray, setMbtiArray] = useState<string[]>([]);
     return(

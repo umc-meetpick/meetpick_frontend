@@ -154,7 +154,7 @@ const StudyMateProfile = () =>{
                 }, 100);  
             }}
             }else if (type?.includes("mbti") ) {
-                if (option == "상관없어!"){
+                if (option == "상관없어"){
                     setMbtiList([...mbtiList, "x"]);
                 }else{
                     const mbtiMap: { [key: string]: string } = {

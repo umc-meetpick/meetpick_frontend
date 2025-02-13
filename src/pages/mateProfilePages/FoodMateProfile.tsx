@@ -118,9 +118,9 @@ const FoodMateProfile = () =>{
         if (type == "gender" ){
             setGender(option);
             addMessage({ question: [option], direction: "outgoing" });
-        }else if (type == "major" && option != "상관없어!"){
+        }else if (type == "major" && option != "상관없어"){
             setModalOpen?.(true); 
-        }else if (type == "studentNum" && option != "상관없음"){
+        }else if (type == "studentNum" && option != "상관없어"){
             setStudentNum(option);
             addMessage({ question: [option+"로 부탁해~"], direction: "outgoing" });
         }else if (type == "age" && option == "메이트 나이 설정하기"){
@@ -141,7 +141,7 @@ const FoodMateProfile = () =>{
               }
         }else if (type?.includes("mbti") ) {
             setOptionSelectEnd(false);
-            if (option == "상관없어!"){
+            if (option == "상관없어"){
                 setMbtiList([...mbtiList, "x"]);
             }else{
                 const mbtiMap: { [key: string]: string } = {
@@ -168,7 +168,7 @@ const FoodMateProfile = () =>{
             addMessage({ question: [option], direction: "outgoing" });
         }
         
-        if (!((type == "major" && option != "상관없어!") || 
+        if (!((type == "major" && option != "상관없어") || 
             (type == "age" && option != "상관없어") || 
             type == "mbti" && option=="상관없어" ||
             type == "date" || type == "menu"|| type == "peopleNum")){
@@ -234,7 +234,7 @@ const FoodMateProfile = () =>{
                                             }}
                             
                                             $ismodal={ (foodProfileQuery[currentQueryIndex]?.type == "age" && option != "상관없어") 
-                                                || foodProfileQuery[currentQueryIndex]?.type == "major" && option != "상관없어!"
+                                                || foodProfileQuery[currentQueryIndex]?.type == "major" && option != "상관없어"
                                                 || foodProfileQuery[currentQueryIndex]?.type == "date" 
                                                 || foodProfileQuery[currentQueryIndex]?.type == "peopleNum"}
                                             $isSelected={menuList.includes(option)}

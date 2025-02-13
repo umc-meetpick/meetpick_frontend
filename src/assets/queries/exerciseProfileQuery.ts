@@ -1,6 +1,6 @@
 const exerciseProfileQuery = [
     {
-      "question": ["[닉네임] 하이!\n너만의 메이트 요정 미기야!",
+      "question": ["[닉네임] 하이!\n너만의 메이트 요정 피기야!",
         "함께할 운동 메이트를 찾고 있네~",
         "메이트 관련 질문에 앞서\n운동 관련 질문 몇가지 준비했어!"],
       "direction": "incoming",
@@ -51,7 +51,7 @@ const exerciseProfileQuery = [
     {
       "question": ["원하는 특정 학번이 있어?"],
       "direction": "incoming",
-      "options": ["동기", "선배", "후배", "상관없음"],
+      "options": ["동기", "선배", "후배", "상관없어"],
       "type": "studentNum"
     },
     {
@@ -69,28 +69,28 @@ const exerciseProfileQuery = [
     {
       "question": [ "그렇다면 함께할 메이트는 어떤 성격일까? 🤔"],
       "direction": "incoming",
-      "options": ["활기찬", "조용한","상관없어!"],
+      "options": ["활기찬", "조용한","상관없어"],
       "type": "mbti-EI"
     },
     {
       "direction": "incoming",
-      "options": ["현실적", "창의적","상관없어!"],
+      "options": ["현실적", "창의적","상관없어"],
       "type": "mbti-SN"
     },
     {
       "direction": "incoming",
-      "options": ["객관적", "공감 만땅","상관없어!"],
+      "options": ["객관적", "공감 만땅","상관없어"],
       "type": "mbti-TF"
     },
     {
       "direction": "incoming",
-      "options": ["체계적", "유동적","상관없어!"],
+      "options": ["체계적", "유동적","상관없어"],
       "type": "mbti-JP"
     },
     {
       "question": [  "취미는 어땠으면 좋겠어?\n비슷한 메이트가 좋을 것 같아?"],
       "direction": "incoming",
-      "options": ["같으면 좋겠어","상관없어!"],
+      "options": ["같으면 좋겠어","상관없어"],
       "type": "hobby"
     },
     {

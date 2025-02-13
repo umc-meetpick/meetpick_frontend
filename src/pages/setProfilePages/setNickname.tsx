@@ -17,6 +17,7 @@ const SetNickName: React.FC = () => {
     const [btnClicked, setBtnClicked] = useState(false);
     const {nickname, setNickName} = useContext(ProfileInfoContext);
     const [inputValue, setInputValue] = useState(nickname);
+    const [checkValue, setCheckValue] = useState("");
     const inputRef = useRef<HTMLDivElement>(null);
 
     const scrollToBottom = () => {
@@ -50,18 +51,21 @@ const SetNickName: React.FC = () => {
         setInputValue(e.target.value);
     };
 
-    const {isSuccess} = useNicknameCheck(nickname);
-    
+    const { data: isSuccess, isLoading } = useNicknameCheck(checkValue);
+
     const onSubmit = (data: { nickname: string }) => {
-        console.log('isSuceess',nickname,isSuccess)
+        setCheckValue(data.nickname);
         setBtnClicked(true);
-        if (isSuccess) {
-            setNickName(data.nickname);
-            setIsDupilicate(false);  
-        } else {
-            setIsDupilicate(true); 
-        }
     };
+
+    useEffect(() => {
+        if (isSuccess) {
+            setNickName(checkValue);
+            setIsDupilicate(false);
+        } else {
+            setIsDupilicate(true);
+        }
+    }, [checkValue, isSuccess]);
 
     return (
         <>
@@ -86,7 +90,7 @@ const SetNickName: React.FC = () => {
                             <div>{errors.nickname?.message}</div>
                         </Warning>
                     ) : (
-                        btnClicked && (
+                        btnClicked && !isLoading &&(
                             isDupilicate ? (
                                 <Warning $isRed={isDupilicate}>
                                     <PiWarningCircle color={"#DB1818"} style={{ marginTop: "5px"}}/>

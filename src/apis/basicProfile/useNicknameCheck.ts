@@ -3,18 +3,15 @@ import axiosInstance from "../axiosInstance";
 
 const useNicknameCheck = (nickname: string) => {
   return useQuery({
-    queryKey:['nicknameCheck',nickname],
+    queryKey: ["nicknameCheck", nickname],
     queryFn: async () => {
-      try {
-        const { data } = await axiosInstance.get(
-          `/api/members/nickname/check?nickname=${nickname}`
-        );
-        console.log(nickname, data);
-        return !data?.isSuccess;
-      } catch (error) {
-        return false;
-      }
+      const { data } = await axiosInstance.get(
+        `/api/members/nickname/check?nickname=${nickname}`
+      );
+      return !data.result.includes("중복");
     },
-  })
+    enabled: !!nickname, 
+  });
 };
+
 export default useNicknameCheck;

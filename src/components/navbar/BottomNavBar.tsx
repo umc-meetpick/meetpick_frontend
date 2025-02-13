@@ -10,24 +10,24 @@ const BottomNavBar = () => {
 
   return (
     <BottomNav>
-     <NavItem active={location.pathname === "/"}>
+     <NavItem $active={location.pathname === "/"}>
         <StyledLink to="/">
           <GrHomeRounded size={24} color={location.pathname === "/" ? "#1A6AFF" : "gray"} />
-          <Title active={location.pathname === "/"}>홈</Title>
+          <Title $active={location.pathname === "/"}>홈</Title>
         </StyledLink>
       </NavItem>
 
-      <NavItem active={location.pathname === "/looking"}>
+      <NavItem $active={location.pathname === "/looking"}>
         <StyledLink to="/looking">
           <GoPeople size={24} color={location.pathname === "/looking" ? "#1A6AFF" : "gray"} />
-          <Title active={location.pathname === "/looking"}>매칭</Title>
+          <Title $active={location.pathname === "/looking"}>매칭</Title>
         </StyledLink>
       </NavItem>
 
-      <NavItem active={location.pathname === "/my"}>
+      <NavItem $active={location.pathname === "/my"}>
         <StyledLink to="/my">
           <GoPerson size={24} color={location.pathname === "/my" ? "#1A6AFF" : "gray"} />
-          <Title active={location.pathname === "/my"}>My</Title>
+          <Title $active={location.pathname === "/my"}>My</Title>
         </StyledLink>
       </NavItem>
     </BottomNav>
@@ -52,19 +52,19 @@ const BottomNav = styled.div`
   background-color:white;
 `
 
-const NavItem = styled.div<{active?:boolean}>`
+const NavItem = styled.div<{$active?:boolean}>`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: ${({ active }) => (active ? "#007AFF" : "gray")}; /* 활성화된 경우 색상 변경 */
+  color: ${({ $active }) => ($active ? "#007AFF" : "gray")}; /* 활성화된 경우 색상 변경 */
 `
 
-const Title = styled.p<{active?:boolean}>`
+const Title = styled.p<{$active?:boolean}>`
   margin: 5px 0 0;
   font-size: 12px;
   text-align:center;
-  color: ${({ active }) => (active ? "#007AFF" : "gray")}; /* 활성화된 경우 색상 변경 */
+  color: ${({ $active }) => ($active ? "#007AFF" : "gray")}; /* 활성화된 경우 색상 변경 */
 `
 const StyledLink = styled(Link)`
   display: flex;
