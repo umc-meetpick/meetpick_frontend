@@ -190,8 +190,8 @@ const ExerciseRecommend = () => {
                             {filteredData.map((data) => (
                                 <RecommendBox
                                 category={data.category}
-                                key={data.id}
-                                id={data.id}
+                                key={data.requestId}
+                                requestId={data.requestId}
                                 text1={data.text1}
                                 text2={data.text2}
                                 text3={data.text3}

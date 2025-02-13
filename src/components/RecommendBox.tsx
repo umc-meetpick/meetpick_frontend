@@ -1,93 +1,91 @@
-import React,{useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Icon } from "@iconify/react";
 import RecommendImage from "../assets/images/Recommend3.png";
+import { useLikeMatch } from "../apis/matchingRecommend/matchingHeart";
 
 interface ButtonProps {
-  category:string;
-  id:number;
+  category: string;
+  requestId: number;
   text1: string;
-  text2:string;
-  text3:string;
-  number1:string;
-  number2:string;
+  text2: string;
+  text3: string;
+  number1: string;
+  number2: string;
   $backgroundColor?: string;
   width?: string;
   color?: string;
   disabled?: boolean;
-  detail1?:string;
-  detail2?:string;
-  detail3?:string;
-  detail4?:string;
-  detail5?:string;
-  detail6?:string;
+  detail1?: string;
+  detail2?: string;
+  detail3?: string;
+  detail4?: string;
+  detail5?: string;
+  detail6?: string;
   onClick?: () => void;
 }
 
 const RecommendBox: React.FC<ButtonProps> = ({
   category,
-  id,
+  requestId,
   text1,
   text2,
   text3,
   number1,
   number2,
-  $backgroundColor = "#E3F2FD", // 기본값 설정
-  width = "140px", // 기본값 설정
+  $backgroundColor = "#E3F2FD",
+  width = "140px",
   color = "black",
   disabled = false,
-  detail1,
+  detail1, 
   detail2,
   detail3,
   detail4,
   detail5,
   detail6,
-  onClick,
 }) => {
+  const favoriteKey = `heart_${category}_${requestId}`;
+  const userId = 1; // 🔹 로그인 유저 ID (임시 값)
 
-  const favoriteKey = `heart_${category}_${id}`;
+  const likeMutation = useLikeMatch(); // 좋아요 요청 훅
 
   const [isIconClicked, setIsIconClicked] = useState<boolean>(() => {
     const savedState = localStorage.getItem(favoriteKey);
     return savedState ? JSON.parse(savedState) : false;
-  }); 
+  });
 
-  // useEffect를 사용해 LocalStorage에서 상태 불러오기 
   useEffect(() => {
     const savedState = localStorage.getItem(favoriteKey);
-    if(savedState) {
-      setIsIconClicked(JSON.parse(savedState)); // JSON을 불러와 상태 업데이트 
+    if (savedState) {
+      setIsIconClicked(JSON.parse(savedState));
     }
-  },[favoriteKey]);
+  }, [favoriteKey]);
 
-  // 하트를 클릭하면 상태를 토글하고 로컬 스토리지에 저장 
-  const handleIconClick=(event:React.MouseEvent) => {
-    event.stopPropagation(); // 부모 클릭 방지
+  const handleIconClick = async (event: React.MouseEvent) => {
+    event.stopPropagation();
+    console.log("💖 하트 버튼 클릭됨! -> requestId =", requestId);
+    console.log("👤 userId 확인 =", userId);
+
+
     const newState = !isIconClicked;
-    setIsIconClicked(!isIconClicked); // 클릭 시 상태 토글
+    setIsIconClicked(newState);
     localStorage.setItem(favoriteKey, JSON.stringify(newState));
 
-    // ✅ LocalStorage 변경 시 이벤트 발생 -> 다른 컴포넌트에도 반영
-    window.dispatchEvent(new Event("storage"));
-  }
-
-  useEffect(() => {
-    const updateHeartState=() => {
-      const savedState = localStorage.getItem(favoriteKey);
-      setIsIconClicked(savedState? JSON.parse(savedState):false);
-    };
-
-    window.addEventListener("storage",updateHeartState);
-    return() => {
-      window.removeEventListener("storage", updateHeartState);
+    try {
+      await likeMutation.mutateAsync({ requestId, userId });
+      console.log("좋아요 성공:", requestId);
+    } catch (error) {
+      console.error("좋아요 요청 실패:", error); 
+      setIsIconClicked(!newState); // ✅ 실패 시 기존 상태로 되돌림
+      localStorage.setItem(favoriteKey, JSON.stringify(!newState));
     }
-  },[favoriteKey]);
+  };
 
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const toggleExpand =() => {
+  const toggleExpand = () => {
     setIsExpanded(!isExpanded);
-  }
+  };
 
   return (
     <StyledButton
@@ -97,45 +95,46 @@ const RecommendBox: React.FC<ButtonProps> = ({
       width={width}
       color={color}
       disabled={disabled}
-      $isExpanded ={isExpanded}
-      onClick = {disabled? undefined : onClick}
-    >  
-        <FirstLine>
-            <PersonText>{number1}/{number2}명</PersonText>
-            <StyledIcon 
-            icon= {isIconClicked? "si:heart-fill": "si:heart-line"}
-            width="20"
-            height="20" 
-            $isClicked = {isIconClicked}
-            onClick = {handleIconClick}
-            
-            />
-        </FirstLine>
-        <SecondLine>
-            <StyledImage src={RecommendImage} alt="추천 리스트 이미지" />
-            <Nickname>{text1}</Nickname>
-            <Keyword1>{text2}</Keyword1>
-            <Keyword2>{text3}</Keyword2>
-        </SecondLine>
-    
-        <FourthLine  $isExpanded={isExpanded} onClick={toggleExpand}>
-          <StyledBox>
-                {detail1 && <Box>{detail1}</Box>}
-                {detail2 && <Box>{detail2}</Box>}
-                {detail3 && <Box>{detail3}</Box>}
-                {detail4 && <Box>{detail4}</Box>}
-                {detail5 && <Box>{detail5}</Box>}
-                {detail6 && <Box>{detail6}</Box>}
-          </StyledBox>
-          <StyledArrowIcon 
-            icon={isExpanded ? "akar-icons:chevron-up" : "akar-icons:chevron-down"} 
-            width="20" 
-            height="10"
-          />
-        </FourthLine>
+      $isExpanded={isExpanded}
+    >
+      <FirstLine>
+        <PersonText>
+          {number1}/{number2}명
+        </PersonText>
+        <StyledIcon
+          icon={isIconClicked ? "si:heart-fill" : "si:heart-line"}
+          width="20"
+          height="20"
+          $isClicked={isIconClicked}
+          onClick={handleIconClick}
+        />
+      </FirstLine>
+      <SecondLine>
+        <StyledImage src={RecommendImage} alt="추천 리스트 이미지" />
+        <Nickname>{text1}</Nickname>
+        <Keyword1>{text2}</Keyword1>
+        <Keyword2>{text3}</Keyword2>
+      </SecondLine>
+
+      <FourthLine $isExpanded={isExpanded} onClick={toggleExpand}>
+        <StyledBox>
+          {detail1 && <Box>{detail1}</Box>}
+          {detail2 && <Box>{detail2}</Box>}
+          {detail3 && <Box>{detail3}</Box>}
+          {detail4 && <Box>{detail4}</Box>}
+          {detail5 && <Box>{detail5}</Box>}
+          {detail6 && <Box>{detail6}</Box>}
+        </StyledBox>
+        <StyledArrowIcon
+          icon={isExpanded ? "akar-icons:chevron-up" : "akar-icons:chevron-down"}
+          width="20"
+          height="10"
+        />
+      </FourthLine>
     </StyledButton>
   );
 };
+
 
 const StyledArrowIcon = styled(Icon)`
     align-self: center;
