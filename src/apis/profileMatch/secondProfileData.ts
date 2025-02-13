@@ -50,6 +50,11 @@ switch (type) {
         exerciseTypes: null,
         isSchool: null,
         food: contextData.menuList,
+        studyType:null,
+        majorNameAndProfessorName:null,
+        isOnline:null,
+        studyTimes: null,
+        place:null,
         type: "MEAL"
       };
     }
@@ -61,6 +66,12 @@ switch (type) {
         ...baseData,
         exerciseTypes: contextData.exercise,
         isSchool: contextData.isSchool,
+        food: null,
+        studyType:null,
+        majorNameAndProfessorName:null,
+        isOnline:null,
+        studyTimes: null,
+        place:null,
         type: "EXERCISE"
       };
     }
@@ -70,6 +81,14 @@ switch (type) {
     if (isStudyProfile(contextData)) {
       return {
         ...baseData,
+        exerciseTypes: null,
+        isSchool: null,
+        food: null,
+        studyType:contextData.studyType,
+        majorNameAndProfessorName: null,
+        isOnline: contextData.isOnline,
+        studyTimes: contextData.studyTime,
+        place:null,
         type: "STUDY"
       };
     }

@@ -40,7 +40,7 @@ const defaultValue: ProfileInfoContextType = {
     setMajor: () => {},
     hobby: [],
     setHobby: () => {},
-    contactType: "카카오톡 ID",
+    contactType: "카카오톡",
     setContactType: () => {},
     contact: "",
     setContact: () => {},
@@ -63,7 +63,7 @@ export function ProfileContextProvider({children}:ProfileContextProviderProps){
     const [mbti, setMbti] = useState<string>("");
     const [major, setMajor] = useState<string>("");
     const [hobby, setHobby] = useState<string[]>([]);
-    const [contactType, setContactType] = useState<string>("카카오톡 ID");
+    const [contactType, setContactType] = useState<string>("카카오톡");
     const [contact, setContact] = useState<string>("");
     const [mbtiArray, setMbtiArray] = useState<string[]>([]);
     return(

@@ -19,7 +19,8 @@ interface OptionClick{
 const StudyMateProfile = () =>{
     const {messages, addMessage} = useChatContext();
     const [currentQueryIndex, setCurrentQueryIndex] = useState(0); 
-    const { setGender, selectedMajors, setStudentNum, ageRange, mbtiList, setMbtiList, subject, subjectType, setIsHobbySame,
+    const { setGender, selectedMajors, setStudentNum, ageRange, mbtiList, setMbtiList, 
+        subject, subjectType, setIsHobbySame, setIsOnline, setStudyTime, studyTime,
         studyType, setStudyType, place, dateTime, peopleNum, ment } = useContext( StudyProfileInfoContext );
     const [modalOpen, setModalOpen] = useState(false);
     const [modalOpenM, setModalOpenM] = useState(false);
@@ -178,10 +179,14 @@ const StudyMateProfile = () =>{
             setChatDisable(false);
             setSaveType("ment");
         } else if (type == "date"){
+            setStudyTime(parseInt(option.substring(0,1)));
+            console.log(parseInt(option.substring(0,1)))
             addMessage({ question: [option], direction: "outgoing" });
             setModalOpenD(true);
         }else if (type == "peopleNum"){
             setModalOpenS2(true); 
+        }else if(type == "onoff"){
+            setIsOnline(option == "온라인")
         }else if (type == "place" && option == "있어!"){
             setSaveType("place")
             setChatDisable(false);
@@ -293,6 +298,7 @@ const StudyMateProfile = () =>{
                             title="공부 메이트 시간대"
                             setModalOpen={setModalOpenD}
                             type="study"
+                            max={studyTime}
                         />}
             </Container>
         </>

@@ -18,7 +18,7 @@ const SetContact= () => {
     const {nickname, image, imgNum, studentNum, mbti, major, hobby, contactType, setContactType, setContact} = useContext(ProfileInfoContext);
     const [inputValue, setInputValue] = useState("");
     const [ctype, setCtype] = useState<"kakaoId" | "openKakao" | "phoneNum">("kakaoId");
-    const options = ["카카오톡 ID", "오픈채팅 링크", "전화번호"]
+    const options = ["카카오톡", "오픈채팅", "전화번호"]
     const stdnum = String(studentNum)+"학번";
     const inputRef = useRef<HTMLDivElement>(null);
     
@@ -44,10 +44,9 @@ const SetContact= () => {
     };
     
     useEffect(() => {
-        console.log(contactType)
-        if (contactType === "카카오톡 ID") {
+        if (contactType === "카카오톡") {
             setCtype("kakaoId");
-        } else if (contactType === "오픈채팅 링크") {
+        } else if (contactType === "오픈채팅") {
             setCtype("openKakao");
         } else if (contactType === "전화번호") {
             setCtype("phoneNum");
@@ -56,9 +55,9 @@ const SetContact= () => {
 
     const getSchema = (contactType: string) => {
         switch (contactType) {
-          case "카카오톡 ID":
+          case "카카오톡":
             return yup.object({ kakaoId: yup.string().required("카카오톡 ID를 입력해주세요.") });
-          case "오픈채팅 링크":
+          case "오픈채팅":
             return yup.object({ openKakao: yup
                 .string().matches(
                     /^https:\/\/open\.kakao\.com\/.+$/,
