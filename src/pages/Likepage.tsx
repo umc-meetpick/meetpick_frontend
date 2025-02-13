@@ -22,6 +22,8 @@ const LikePage = () => {
   };
 
   useEffect(() => {
+    console.log("📌 localStorage 변경 감지됨 → 찜 목록 업데이트!");
+
     const storedFavorites: { [key: string]: any[] } = {
       exercise: [],
       food: [],
@@ -41,9 +43,9 @@ const LikePage = () => {
 
             // recommendData에서 해당 ID에 맞는 데이터 찾기
             const foundData = 
-            category === "food" ? recommendData.find((item)=> item.id === parseInt(mateId))
-            :category ==="exercise"? ExerciserecommendData.find((item)=> item.id === parseInt(mateId))
-            : StudyrecommendData.find((item)=> item.id === parseInt(mateId));
+            category === "food" ? recommendData.find((item)=> item.requestId === parseInt(mateId))
+            :category ==="exercise"? ExerciserecommendData.find((item)=> item.requestId === parseInt(mateId))
+            : StudyrecommendData.find((item)=> item.requestId === parseInt(mateId));
 
              // **📌 foundData가 존재하면 해당 카테고리에 추가**
             if (foundData) {
@@ -82,7 +84,7 @@ const LikePage = () => {
             <RecommendBox
               category={data.category}
               key={data.id}
-              id={data.id}
+              requestId={data.requestId}
               text1={data.text1}
               text2={data.text2}
               text3={data.text3}

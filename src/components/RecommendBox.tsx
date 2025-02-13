@@ -71,6 +71,9 @@ const RecommendBox: React.FC<ButtonProps> = ({
     setIsIconClicked(newState);
     localStorage.setItem(favoriteKey, JSON.stringify(newState));
 
+    // ✅ localStorage 변경 이벤트 발생 → LikePage에도 반영되도록 함
+    window.dispatchEvent(new Event("storage"));
+
     try {
       await likeMutation.mutateAsync({ requestId, userId });
       console.log("좋아요 성공:", requestId);
@@ -78,6 +81,9 @@ const RecommendBox: React.FC<ButtonProps> = ({
       console.error("좋아요 요청 실패:", error); 
       setIsIconClicked(!newState); // ✅ 실패 시 기존 상태로 되돌림
       localStorage.setItem(favoriteKey, JSON.stringify(!newState));
+
+      // 실패 시에도 이벤트 발생 (찜 목록에서 빠짐)
+      window.dispatchEvent(new Event("storage"));
     }
   };
 
