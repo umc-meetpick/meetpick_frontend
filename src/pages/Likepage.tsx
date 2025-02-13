@@ -1,62 +1,41 @@
-import { useState, useEffect } from "react";
+import { useState} from "react";
 import BasicNavbar from "../components/navbar/BasicNavbar";
 import styled from "styled-components";
 import { Icon } from "@iconify/react";
 import RecommendBox from "../components/RecommendBox";
-import { recommendData } from "../data/recommendData"; // 전체 데이터를 불러옴
-import { ExerciserecommendData } from "../data/exerciseRecommendData";
-import { StudyrecommendData } from "../data/studyRecommendData";
+import { useFetchLikes } from "../apis/matchingRecommend/matchingHeart";
+
+// ✅ 찜한 데이터 타입 정의
+interface LikedMate {
+  requestId: number;
+  category: string;
+  text1: string;
+  text2: string;
+  text3: string;
+  number1: string;
+  number2: string;
+  $backgroundColor?: string;
+  width?: string;
+  color?: string;
+  detail1?: string;
+  detail2?: string;
+  detail3?: string;
+  detail4?: string;
+  detail5?: string;
+  detail6?: string;
+}
 
 const LikePage = () => {
-  // 카테고리별 찜한 목록 저장하는 상태
-  const [favorites, setFavorites] = useState<{ [key: string]: any[] }>({
-    exercise: [],
-    food: [],
-    study: [],
-  });
-
   const [activeButton, setActiveButton] = useState("혼밥"); // 현재 활성화된 탭 상태
+  const memberId=1; // 추후 수정 필요
+  const mateType = activeButton === "혼밥"? "MEAL" : activeButton === "운동"?  "EXERCISE" : "STUDY";
+
+  // 서버에서 찜한 목록 불러오기
+  const { data: likedMates, isLoading } = useFetchLikes(memberId, mateType);
 
   const handleButtonClick = (button: string) => {
     setActiveButton(button);
   };
-
-  useEffect(() => {
-    console.log("📌 localStorage 변경 감지됨 → 찜 목록 업데이트!");
-
-    const storedFavorites: { [key: string]: any[] } = {
-      exercise: [],
-      food: [],
-      study: [],
-    };
-
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
-      if (key?.startsWith("heart_")) {
-        const isFavorite = JSON.parse(localStorage.getItem(key) || "false");
-        if (isFavorite) {
-          // 키에서 카테고리와 id 추출 (예: heart_food_1 -> food, 1)
-          const parts = key.split("_");
-          if (parts.length === 3) {
-            const category = parts[1]; // "exercise" | "food" | "study"
-            const mateId = parts[2]; // ID 값
-
-            // recommendData에서 해당 ID에 맞는 데이터 찾기
-            const foundData = 
-            category === "food" ? recommendData.find((item)=> item.requestId === parseInt(mateId))
-            :category ==="exercise"? ExerciserecommendData.find((item)=> item.requestId === parseInt(mateId))
-            : StudyrecommendData.find((item)=> item.requestId === parseInt(mateId));
-
-             // **📌 foundData가 존재하면 해당 카테고리에 추가**
-            if (foundData) {
-              storedFavorites[category].push(foundData);
-            }
-          }
-        }
-      }
-    }
-    setFavorites(storedFavorites);
-  }, []);
 
   return (
     <div>
@@ -75,15 +54,16 @@ const LikePage = () => {
           공부
         </Category>
       </Buttons>
-
       <BoxList>
-        {favorites[activeButton === "혼밥" ? "food" : activeButton === "운동" ? "exercise" : "study"].length === 0 ? (
+        {isLoading ? (
+          <NoMateText>로딩 중...</NoMateText>
+        ) : likedMates.length === 0 ? (
           <NoMateText>찜한 메이트가 없습니다.</NoMateText>
         ) : (
-          favorites[activeButton === "혼밥" ? "food" : activeButton === "운동" ? "exercise" : "study"].map((data) => (
-            <RecommendBox
+          likedMates.map((data:LikedMate) => (
+              <RecommendBox
               category={data.category}
-              key={data.id}
+              key={data.requestId}
               requestId={data.requestId}
               text1={data.text1}
               text2={data.text2}
@@ -91,7 +71,7 @@ const LikePage = () => {
               number1={data.number1}
               number2={data.number2}
               $backgroundColor={data.$backgroundColor}
-              width={data.width}
+              width="160px"
               color={data.color}
               detail1={data.detail1}
               detail2={data.detail2}
@@ -99,7 +79,8 @@ const LikePage = () => {
               detail4={data.detail4}
               detail5={data.detail5}
               detail6={data.detail6}
-            />
+              />
+            
           ))
         )}
       </BoxList>
@@ -139,13 +120,13 @@ const BoxList = styled.div`
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
-    padding:0 30px;
+    padding:0 20px;
 `;
 
 const NoMateText = styled.div`
   display:flex;
-  width:330px;
+  width:260px;
   justify-content:center;
-  height:350px;
+  height:300px;
   align-items:center;
 `

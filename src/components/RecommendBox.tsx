@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Icon } from "@iconify/react";
 import RecommendImage from "../assets/images/Recommend3.png";
-import { useLikeMatch } from "../apis/matchingRecommend/matchingHeart";
+import { useLikeMatch, useDeleteLikeMatch } from "../apis/matchingRecommend/matchingHeart";
 
 interface ButtonProps {
   category: string;
@@ -48,6 +48,7 @@ const RecommendBox: React.FC<ButtonProps> = ({
   const userId = 1; // 🔹 로그인 유저 ID (임시 값)
 
   const likeMutation = useLikeMatch(); // 좋아요 요청 훅
+  const deleteLikeMutation = useDeleteLikeMatch(); // 좋아요 취소 요청 훅
 
   const [isIconClicked, setIsIconClicked] = useState<boolean>(() => {
     const savedState = localStorage.getItem(favoriteKey);
@@ -75,14 +76,21 @@ const RecommendBox: React.FC<ButtonProps> = ({
     window.dispatchEvent(new Event("storage"));
 
     try {
-      await likeMutation.mutateAsync({ requestId, userId });
-      console.log("좋아요 성공:", requestId);
+      if (newState) {
+        // 🔹 좋아요 추가 (POST 요청)
+        await likeMutation.mutateAsync({ requestId, userId });
+        console.log("✅ 좋아요 성공:", requestId);
+      } else {
+        // 🔹 좋아요 취소 (DELETE 요청)
+        await deleteLikeMutation.mutateAsync({ requestId, userId });
+        console.log("🚨 좋아요 취소 성공:", requestId);
+      }
     } catch (error) {
-      console.error("좋아요 요청 실패:", error); 
-      setIsIconClicked(!newState); // ✅ 실패 시 기존 상태로 되돌림
+      console.error("❌ 좋아요 요청 실패:", error);
+  
+      // ✅ 실패 시 기존 상태로 되돌림
+      setIsIconClicked(!newState);
       localStorage.setItem(favoriteKey, JSON.stringify(!newState));
-
-      // 실패 시에도 이벤트 발생 (찜 목록에서 빠짐)
       window.dispatchEvent(new Event("storage"));
     }
   };
