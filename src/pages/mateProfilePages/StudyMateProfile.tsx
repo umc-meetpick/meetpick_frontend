@@ -169,6 +169,7 @@ const StudyMateProfile = () =>{
                     const mbtiValue = mbtiMap[mbtiKey];
                     setMbtiList([...mbtiList, mbtiValue]);
                 }
+                nextOption(500);
         }else if (type == "gender" ){
             setGender(option);
             addMessage({ question: [option], direction: "outgoing" });
@@ -197,18 +198,19 @@ const StudyMateProfile = () =>{
         if (!((type == "major" && option != "상관없어") || type == "studyType"
             || (type == "place" && option == "있어!") || (type == "age" && option != "상관없어") 
             || type == "date" || type == "peopleNum"
+            || (type != "mbti" && type?.includes("mbti"))
             || (type == "mbti" && option == "상관없어") 
             )){
                 nextOption();
             }
     };
-    const nextOption = () =>{
+    const nextOption = (time?:number) =>{
         const nextQueryIndex = currentQueryIndex + 1;
         setCurrentQueryIndex(-1); 
         if (nextQueryIndex < studyProfileQuery.length && !modalOpen ) {
             setTimeout(() => {
                 const questions = studyProfileQuery[nextQueryIndex]?.question || [];
-                intervalQ({questions, setCurrentQueryIndex, nextQueryIndex, addMessage});
+                intervalQ({questions, setCurrentQueryIndex, nextQueryIndex, addMessage, time:time});
             },500);
         }
     }

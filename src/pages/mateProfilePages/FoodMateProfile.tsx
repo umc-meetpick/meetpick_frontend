@@ -141,6 +141,7 @@ const FoodMateProfile = () =>{
               }
         }else if (type?.includes("mbti") ) {
             setOptionSelectEnd(false);
+            console.log(option)
             if (option == "상관없어"){
                 setMbtiList([...mbtiList, "x"]);
             }else{
@@ -155,6 +156,7 @@ const FoodMateProfile = () =>{
                 const mbtiValue = mbtiMap[mbtiKey];
                 setMbtiList([...mbtiList, mbtiValue]);
             }
+            nextOption(500);
         }else if (type == "hobby"){
             option == "같으면 좋겠어" ? setIsHobbySame(true) : setIsHobbySame(false);
             addMessage({ question: [option], direction: "outgoing" });
@@ -171,16 +173,17 @@ const FoodMateProfile = () =>{
         if (!((type == "major" && option != "상관없어") || 
             (type == "age" && option != "상관없어") || 
             type == "mbti" && option=="상관없어" ||
+            (type != "mbti" && type?.includes("mbti")) ||
             type == "date" || type == "menu"|| type == "peopleNum")){
                 nextOption();
         }
     };
-    const nextOption = () =>{
+    const nextOption = (time?:number) =>{
         const nextQueryIndex = currentQueryIndex + 1;
         setCurrentQueryIndex(-1); 
         if (nextQueryIndex < foodProfileQuery.length && !modalOpen) {
             const questions = foodProfileQuery[nextQueryIndex]?.question || [];
-            intervalQ({questions, setCurrentQueryIndex, nextQueryIndex, addMessage, setOptionSelectEnd});
+            intervalQ({questions, setCurrentQueryIndex, nextQueryIndex, addMessage, setOptionSelectEnd, time:time});
         }
     }
     return(

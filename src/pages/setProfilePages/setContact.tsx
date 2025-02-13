@@ -95,6 +95,8 @@ const SetContact= () => {
     };
 
     const { mutate } = usePostFirstProfile(); 
+    const removeEmoji = (text: string) => text.replace(/[\p{Emoji}\p{So}]/gu, "").trim();
+    const hobbyListWithoutEmojis = hobby.map(removeEmoji);
     const onSubmit = (data: { kakaoId?: string; openKakao?: string; phoneNum?: string }) => {
         const newContact = data.kakaoId || data.openKakao || data.phoneNum || "";
         setContact(newContact);
@@ -104,7 +106,7 @@ const SetContact= () => {
                 "imageNumber": imgNum,
                 "studentNumber": studentNum,
                 "mbti": mbti,
-                "hobbyList": hobby,
+                "hobbyList": hobbyListWithoutEmojis,
                 "contactType": contactType,
                 "contactInfo": newContact, 
                 "subMajor": major,

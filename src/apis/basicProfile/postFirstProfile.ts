@@ -15,7 +15,7 @@ interface firstProfileType {
 const usePostFirstProfile = () =>{
     const mutation = useMutation({
         mutationFn: async (data:firstProfileType) =>{
-            console.log(data)
+            console.log(JSON.stringify(data, null, 2));
             const response = await axiosInstance.post('/api/members/signup/profile',data);
             console.log("post",response)
         return response.data;
