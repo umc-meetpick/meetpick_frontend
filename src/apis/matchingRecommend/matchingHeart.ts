@@ -41,9 +41,9 @@ export const useFetchLikes = (mateType: string) => {
                 return []; // memberId 없으면 빈 배열 반환
             }
 
-            console.log(`📡 찜한 목록 불러오기 요청: /api/matches/like/${memberId}?mateType=${mateType}`);
+            console.log(`📡 찜한 목록 불러오기 요청: /api/matches/like?mateType=${mateType}`);
 
-            const { data } = await axiosInstance.get(`/api/matches/like/${memberId}`, {
+            const { data } = await axiosInstance.get(`/api/matches/like`, {
                 params: { mateType },
             });
 

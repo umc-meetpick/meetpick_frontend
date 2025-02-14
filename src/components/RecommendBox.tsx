@@ -64,6 +64,7 @@ const RecommendBox: React.FC<ButtonProps> = ({
   const handleIconClick = async (event: React.MouseEvent) => {
     event.stopPropagation();
     console.log("💖 하트 버튼 클릭됨! -> requestId =", requestId);
+    
   
     const newState = !isIconClicked;
     setIsIconClicked(newState);
