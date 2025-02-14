@@ -18,15 +18,16 @@ const Main=styled.div`
   font-family: "Pretendard Variable";
 `;
 
-const ContentWrapper = styled.div`
+const ContentWrapper = styled.div<{ $isHome: boolean }>`
   flex-grow: 1; 
   overflow-y: scroll;
   position: absolute;
   top: 0;
-  bottom: 100px;
+  bottom: ${({ $isHome }) => ($isHome ? "0" : "100px")}; 
   width: 100%;
   
   overflow-x: hidden;
+
   &::-webkit-scrollbar {
     width: 8px; 
   }
@@ -35,7 +36,7 @@ const ContentWrapper = styled.div`
     border-radius: 4px;
   }
   &::-webkit-scrollbar-track {
-    background-color:none;
+    background-color: none;
   }
 `;
 
@@ -53,13 +54,15 @@ const RootLayout = () => {
 
     const isSmallViewport = windowHeight < 700;
     const isKeyboard = windowHeight < 400;
+    const isHome = location.pathname === "/";
+    
     return (
       <Wrapper>
         <Main>
-          <ContentWrapper>
+          <ContentWrapper $isHome={isHome}>
             <Outlet />
           </ContentWrapper>
-          {location.pathname !== "/" && !((isSmallViewport && messages.length > 0) || isKeyboard) && (
+          {!isHome && !(isSmallViewport && messages.length > 0) && !isKeyboard && (
               <BottomNavBar />
           )}
         </Main>
