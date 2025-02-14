@@ -12,12 +12,13 @@ import {useForm} from 'react-hook-form';
 import * as yup from 'yup';
 import {yupResolver} from '@hookform/resolvers/yup';
 import { PiWarningCircle } from "react-icons/pi";
+import usePostFirstProfile from '../../apis/basicProfile/postFirstProfile';
 
 const SetContact= () => {
-    const {nickname, image, studentNum, mbti, major, hobby, contactType, setContactType, setContact} = useContext(ProfileInfoContext);
+    const {nickname, image, imgNum, studentNum, mbti, major, hobby, contactType, setContactType, setContact} = useContext(ProfileInfoContext);
     const [inputValue, setInputValue] = useState("");
-    const [ctype, setCtype] = useState("");
-    const options = ["카카오톡 ID", "오픈채팅 링크", "전화번호"]
+    const [ctype, setCtype] = useState<"kakaoId" | "openKakao" | "phoneNum">("kakaoId");
+    const options = ["카카오톡", "오픈채팅", "전화번호"]
     const stdnum = String(studentNum)+"학번";
     const inputRef = useRef<HTMLDivElement>(null);
     
@@ -39,21 +40,24 @@ const SetContact= () => {
     const handleSelectChange = (selectedOption: { value: string; label: string } | null)  => {
         if (selectedOption) {
             setContactType(selectedOption.value);
-            if (selectedOption.value == "카카오톡 ID"){
-                setCtype("kakaoId");
-            }else if (selectedOption.value == "오픈채팅 링크"){
-                setCtype("openKakao");
-            }else if (selectedOption.value == "전화번호"){
-                setCtype("phoneNum");
-            }
         }
     };
+    
+    useEffect(() => {
+        if (contactType === "카카오톡") {
+            setCtype("kakaoId");
+        } else if (contactType === "오픈채팅") {
+            setCtype("openKakao");
+        } else if (contactType === "전화번호") {
+            setCtype("phoneNum");
+        }
+    }, [contactType]);
 
     const getSchema = (contactType: string) => {
         switch (contactType) {
-          case "카카오톡 ID":
+          case "카카오톡":
             return yup.object({ kakaoId: yup.string().required("카카오톡 ID를 입력해주세요.") });
-          case "오픈채팅 링크":
+          case "오픈채팅":
             return yup.object({ openKakao: yup
                 .string().matches(
                     /^https:\/\/open\.kakao\.com\/.+$/,
@@ -84,18 +88,30 @@ const SetContact= () => {
     });
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if(contactType == "카카오톡 ID"){
-            setValue("kakaoId", e.target.value, { shouldValidate: true });
-        }else if(contactType == "오픈채팅 링크"){
-            setValue("openKakao", e.target.value, { shouldValidate: true });
-        }else if(contactType == "전화번호"){
-            setValue("phoneNum", e.target.value, { shouldValidate: true });
+        if (ctype === "kakaoId" || ctype === "openKakao" || ctype === "phoneNum") {
+            setValue(ctype, e.target.value, { shouldValidate: true });
         }
         setInputValue(e.target.value);
     };
 
+    const { mutate } = usePostFirstProfile(); 
+    const extractKorean = (text: string) => text.match(/[가-힣ㄱ-ㅎㅏ-ㅣ\s]+/g)?.join("").trim() || "";
+    const hobbyListKorean = hobby.map(extractKorean);
     const onSubmit = (data: { kakaoId?: string; openKakao?: string; phoneNum?: string }) => {
-        setContact(data.kakaoId || data.openKakao || data.phoneNum || "");
+        const newContact = data.kakaoId || data.openKakao || data.phoneNum || "";
+        setContact(newContact);
+        setTimeout(() => {
+            mutate({
+                "nickName": nickname,
+                "imageNumber": imgNum,
+                "studentNumber": studentNum,
+                "mbti": mbti,
+                "hobbyList": hobbyListKorean,
+                "contactType": contactType,
+                "contactInfo": newContact, 
+                "subMajor": major,
+            });
+        }, 0)
     };
 
     return (
@@ -112,7 +128,7 @@ const SetContact= () => {
                 <Space/>
                 <GrayBottomInput
                     value={inputValue} 
-                    {...register}
+                    {...register(ctype)}
                     onChange={handleInputChange} 
                 />
                 { (errors as any)[ctype] && 

@@ -19,7 +19,8 @@ interface OptionClick{
 const StudyMateProfile = () =>{
     const {messages, addMessage} = useChatContext();
     const [currentQueryIndex, setCurrentQueryIndex] = useState(0); 
-    const { setGender, selectedMajors, setStudentNum, ageRange, mbtiList, setMbtiList, subject, subjectType, setIsHobbySame,
+    const { setGender, selectedMajors, setStudentNum, ageRange, mbtiList, setMbtiList, setSubject,
+        subject, subjectType, setIsHobbySame, setIsOnline, setStudyTime, studyTime,
         studyType, setStudyType, place, dateTime, peopleNum, ment } = useContext( StudyProfileInfoContext );
     const [modalOpen, setModalOpen] = useState(false);
     const [modalOpenM, setModalOpenM] = useState(false);
@@ -50,7 +51,8 @@ const StudyMateProfile = () =>{
             setModalOpen(false)
             setChatDisable(true)
             addMessage({ question: [studyType], direction: "outgoing" });
-            addMessage({ question: [`${subjectType}/${subject}`], direction: "outgoing" });
+            addMessage({ question: [`${subjectType}-${subject}`], direction: "outgoing" });
+            setSubject(`${subjectType}-${subject}`);
             nextOption(); 
         }
     }, [ modalOpen, studyType, subject, subjectType]);
@@ -154,7 +156,7 @@ const StudyMateProfile = () =>{
                 }, 100);  
             }}
             }else if (type?.includes("mbti") ) {
-                if (option == "상관없어!"){
+                if (option == "상관없어"){
                     setMbtiList([...mbtiList, "x"]);
                 }else{
                     const mbtiMap: { [key: string]: string } = {
@@ -168,6 +170,7 @@ const StudyMateProfile = () =>{
                     const mbtiValue = mbtiMap[mbtiKey];
                     setMbtiList([...mbtiList, mbtiValue]);
                 }
+                nextOption(500);
         }else if (type == "gender" ){
             setGender(option);
             addMessage({ question: [option], direction: "outgoing" });
@@ -178,10 +181,14 @@ const StudyMateProfile = () =>{
             setChatDisable(false);
             setSaveType("ment");
         } else if (type == "date"){
+            setStudyTime(parseInt(option.substring(0,1)));
+            console.log(parseInt(option.substring(0,1)))
             addMessage({ question: [option], direction: "outgoing" });
             setModalOpenD(true);
         }else if (type == "peopleNum"){
             setModalOpenS2(true); 
+        }else if(type == "onoff"){
+            setIsOnline(option == "온라인")
         }else if (type == "place" && option == "있어!"){
             setSaveType("place")
             setChatDisable(false);
@@ -192,18 +199,19 @@ const StudyMateProfile = () =>{
         if (!((type == "major" && option != "상관없어") || type == "studyType"
             || (type == "place" && option == "있어!") || (type == "age" && option != "상관없어") 
             || type == "date" || type == "peopleNum"
+            || (type != "mbti" && type?.includes("mbti"))
             || (type == "mbti" && option == "상관없어") 
             )){
                 nextOption();
             }
     };
-    const nextOption = () =>{
+    const nextOption = (time?:number) =>{
         const nextQueryIndex = currentQueryIndex + 1;
         setCurrentQueryIndex(-1); 
         if (nextQueryIndex < studyProfileQuery.length && !modalOpen ) {
             setTimeout(() => {
                 const questions = studyProfileQuery[nextQueryIndex]?.question || [];
-                intervalQ({questions, setCurrentQueryIndex, nextQueryIndex, addMessage});
+                intervalQ({questions, setCurrentQueryIndex, nextQueryIndex, addMessage, time:time});
             },500);
         }
     }
@@ -293,6 +301,7 @@ const StudyMateProfile = () =>{
                             title="공부 메이트 시간대"
                             setModalOpen={setModalOpenD}
                             type="study"
+                            max={studyTime}
                         />}
             </Container>
         </>

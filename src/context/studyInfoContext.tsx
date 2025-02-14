@@ -22,6 +22,8 @@ export interface StudyProfileInfoContextType {
     setSubject:(subject: string) => void;
     subjectType: string;
     setSubjectType:(subjectT: string) => void;
+    isOnline:boolean;
+    setIsOnline: (o:boolean) => void;
     place:string;
     setPlace: (place:string) => void;
     peopleNum: number;
@@ -30,6 +32,8 @@ export interface StudyProfileInfoContextType {
     setIsHobbySame: (h:boolean) => void;
     ment: string;
     setMent: (ment: string) => void;
+    studyTime: number;
+    setStudyTime: (s:number) => void;
     dateTime: { [key: string]: string[] };
     setDateTime: (dateTime: { [key: string]: string[] }) => void;
   }
@@ -56,6 +60,8 @@ const defaultValue: StudyProfileInfoContextType = {
     setSubject:() => {},
     subjectType:"",
     setSubjectType:() => {},
+    isOnline: true,
+    setIsOnline: () => {},
     place: "",
     setPlace: () => {},
     peopleNum: 0,
@@ -64,6 +70,8 @@ const defaultValue: StudyProfileInfoContextType = {
     setIsHobbySame: () => {},
     ment: "",
     setMent: () => {},
+    studyTime: 0,
+    setStudyTime: () =>{},
     dateTime: {},
     setDateTime: () => {},
   };
@@ -86,10 +94,12 @@ export function StudyProfileContextProvider({children}:StudyProfileContextProvid
     const [studyType, setStudyType] = useState<string>("");
     const [subject, setSubject] = useState<string>("");
     const [subjectType, setSubjectType] = useState<string>("");
+    const [isOnline, setIsOnline] = useState<boolean>(true);
     const [place, setPlace] = useState<string>("");
     const [peopleNum, setPeopleNum] = useState<number>(0);
     const [isHobbySame, setIsHobbySame] = useState<boolean>(true);
     const [ment, setMent] = useState<string>("");
+    const [studyTime, setStudyTime] = useState<number>(0);
     const [dateTime, setDateTime] = useState<{ [key: string]: string[] }>({});
 
     return(
@@ -115,6 +125,8 @@ export function StudyProfileContextProvider({children}:StudyProfileContextProvid
                 setSubject,
                 subjectType,
                 setSubjectType,
+                isOnline,
+                setIsOnline,
                 place,
                 setPlace,
                 peopleNum,
@@ -123,6 +135,8 @@ export function StudyProfileContextProvider({children}:StudyProfileContextProvid
                 setIsHobbySame,
                 ment,
                 setMent,
+                studyTime,
+                setStudyTime,
                 dateTime,
                 setDateTime,
             }}

@@ -148,7 +148,7 @@ const ExerciseMateProfile = () =>{
                 }, 100);  
             }}
         }else if (type?.includes("mbti") ) {
-            if (option == "상관없어!"){
+            if (option == "상관없어"){
                 setMbtiList([...mbtiList, "x"]);
             }else{
                 const mbtiMap: { [key: string]: string } = {
@@ -162,6 +162,7 @@ const ExerciseMateProfile = () =>{
                 const mbtiValue = mbtiMap[mbtiKey];
                 setMbtiList([...mbtiList, mbtiValue]);
             }
+            nextOption(500);
         }else if (type == "gender" ){
             setGender(option);
             addMessage({ question: [option], direction: "outgoing" });
@@ -189,19 +190,20 @@ const ExerciseMateProfile = () =>{
         
         if (!((type == "major" && option != "상관없어") || (type == "exercise") 
             || (type == "place" && option == "외부시설") || (type == "age" && option != "상관없어") 
-            || (type == "extraExercise" && option == "없어") || type == "date" || type == "peopleNum"
+            || type == "date" || type == "peopleNum"
+            || (type != "mbti" && type?.includes("mbti")) 
             || (type == "mbti" && option == "상관없어")
             )){
                 nextOption();
             }
     };
-    const nextOption = () =>{
+    const nextOption = (time?:number) =>{
         const nextQueryIndex = currentQueryIndex + 1;
         setCurrentQueryIndex(-1); 
         if (nextQueryIndex < exerciseProfileQuery.length && !modalOpen ) {
             setTimeout(() => {
                 const questions = exerciseProfileQuery[nextQueryIndex]?.question || [];
-                intervalQ({questions, setCurrentQueryIndex, nextQueryIndex, addMessage});
+                intervalQ({questions, setCurrentQueryIndex, nextQueryIndex, addMessage, time:time});
             },500);
         }
     }
@@ -251,7 +253,10 @@ const ExerciseMateProfile = () =>{
                                                 || exerciseProfileQuery[currentQueryIndex]?.type == "major" && option != "상관없어"
                                                 || exerciseProfileQuery[currentQueryIndex]?.type == "date" 
                                                 || exerciseProfileQuery[currentQueryIndex]?.type == "peopleNum"}
-                                            $isSelected={exerciseProfileQuery[currentQueryIndex]?.type == "age" && option != "상관없어"}
+                                            $isSelected={
+                                                (exerciseProfileQuery[currentQueryIndex]?.type == "age" && option != "상관없어")
+                                                || (exerciseProfileQuery[currentQueryIndex]?.type == "place" && option =="외부시설" && !chatDisable) 
+                                            }
                                         >
                                             {option}
                                         </Button>
