@@ -1,6 +1,6 @@
 const studyProfileQuery = [
     {
-      "question": ["Hi hello~ 메이트 요정 미기입니다.",
+      "question": ["Hi hello~ 메이트 요정 피기입니다.",
         "Study 메이트 찾으시는군요.\n빠르게 questions 드릴게요!"],
       "direction": "incoming",
       "options": ["좋아!"],
@@ -8,7 +8,7 @@ const studyProfileQuery = [
     },
     {
       "question": ["mate와 어떤 공부를\n투게더하고 싶으신가요?",
-        "전공/교양 선택시, 구체적인\n[교수명/과목명]을 알려주세요."],
+        "전공/교양 선택시, 구체적인\n[과목명-'교수명]을 알려주세요."],
       "direction": "incoming",
       "options": ["전공", "교양", "스터디"],
       "type": "studyType"
@@ -52,7 +52,7 @@ const studyProfileQuery = [
     {
       "question": ["원하는 학번은요?"],
       "direction": "incoming",
-      "options": ["동기", "선배", "후배", "상관없음"],
+      "options": ["동기", "선배", "후배", "상관없어"],
       "type": "studentNum"
     },
     {
@@ -69,28 +69,28 @@ const studyProfileQuery = [
     },
     {
       "direction": "incoming",
-      "options": ["활기찬", "조용한","상관없어!"],
+      "options": ["활기찬", "조용한","상관없어"],
       "type": "mbti-EI"
     },
     {
       "direction": "incoming",
-      "options": ["현실적", "창의적","상관없어!"],
+      "options": ["현실적", "창의적","상관없어어"],
       "type": "mbti-SN"
     },
     {
       "direction": "incoming",
-      "options": ["객관적", "공감 만땅","상관없어!"],
+      "options": ["객관적", "공감 만땅","상관없어"],
       "type": "mbti-TF"
     },
     {
       "direction": "incoming",
-      "options": ["체계적", "유동적","상관없어!"],
+      "options": ["체계적", "유동적","상관없어"],
       "type": "mbti-JP"
     },
     {
       "question": [  "취미는 비슷하면 좋을까요?\nhobby? same?"],
       "direction": "incoming",
-      "options": ["같으면 좋겠어","상관없어!"],
+      "options": ["같으면 좋겠어","상관없어"],
       "type": "hobby"
     },
     {

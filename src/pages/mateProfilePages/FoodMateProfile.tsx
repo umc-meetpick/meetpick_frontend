@@ -118,9 +118,9 @@ const FoodMateProfile = () =>{
         if (type == "gender" ){
             setGender(option);
             addMessage({ question: [option], direction: "outgoing" });
-        }else if (type == "major" && option != "상관없어!"){
+        }else if (type == "major" && option != "상관없어"){
             setModalOpen?.(true); 
-        }else if (type == "studentNum" && option != "상관없음"){
+        }else if (type == "studentNum" && option != "상관없어"){
             setStudentNum(option);
             addMessage({ question: [option+"로 부탁해~"], direction: "outgoing" });
         }else if (type == "age" && option == "메이트 나이 설정하기"){
@@ -141,7 +141,8 @@ const FoodMateProfile = () =>{
               }
         }else if (type?.includes("mbti") ) {
             setOptionSelectEnd(false);
-            if (option == "상관없어!"){
+            console.log(option)
+            if (option == "상관없어"){
                 setMbtiList([...mbtiList, "x"]);
             }else{
                 const mbtiMap: { [key: string]: string } = {
@@ -155,6 +156,7 @@ const FoodMateProfile = () =>{
                 const mbtiValue = mbtiMap[mbtiKey];
                 setMbtiList([...mbtiList, mbtiValue]);
             }
+            nextOption(500);
         }else if (type == "hobby"){
             option == "같으면 좋겠어" ? setIsHobbySame(true) : setIsHobbySame(false);
             addMessage({ question: [option], direction: "outgoing" });
@@ -168,19 +170,20 @@ const FoodMateProfile = () =>{
             addMessage({ question: [option], direction: "outgoing" });
         }
         
-        if (!((type == "major" && option != "상관없어!") || 
+        if (!((type == "major" && option != "상관없어") || 
             (type == "age" && option != "상관없어") || 
             type == "mbti" && option=="상관없어" ||
+            (type != "mbti" && type?.includes("mbti")) ||
             type == "date" || type == "menu"|| type == "peopleNum")){
                 nextOption();
         }
     };
-    const nextOption = () =>{
+    const nextOption = (time?:number) =>{
         const nextQueryIndex = currentQueryIndex + 1;
         setCurrentQueryIndex(-1); 
         if (nextQueryIndex < foodProfileQuery.length && !modalOpen) {
             const questions = foodProfileQuery[nextQueryIndex]?.question || [];
-            intervalQ({questions, setCurrentQueryIndex, nextQueryIndex, addMessage, setOptionSelectEnd});
+            intervalQ({questions, setCurrentQueryIndex, nextQueryIndex, addMessage, setOptionSelectEnd, time:time});
         }
     }
     return(
@@ -234,7 +237,7 @@ const FoodMateProfile = () =>{
                                             }}
                             
                                             $ismodal={ (foodProfileQuery[currentQueryIndex]?.type == "age" && option != "상관없어") 
-                                                || foodProfileQuery[currentQueryIndex]?.type == "major" && option != "상관없어!"
+                                                || foodProfileQuery[currentQueryIndex]?.type == "major" && option != "상관없어"
                                                 || foodProfileQuery[currentQueryIndex]?.type == "date" 
                                                 || foodProfileQuery[currentQueryIndex]?.type == "peopleNum"}
                                             $isSelected={menuList.includes(option)}

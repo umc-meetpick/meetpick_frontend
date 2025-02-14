@@ -25,6 +25,7 @@ const ContentWrapper = styled.div<{ $isHome: boolean }>`
   top: 0;
   bottom: ${({ $isHome }) => ($isHome ? "0" : "100px")}; 
   width: 100%;
+  
   overflow-x: hidden;
 
   &::-webkit-scrollbar {
