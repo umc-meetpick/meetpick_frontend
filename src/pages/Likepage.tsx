@@ -27,11 +27,10 @@ interface LikedMate {
 
 const LikePage = () => {
   const [activeButton, setActiveButton] = useState("혼밥"); // 현재 활성화된 탭 상태
-  const memberId=1; // 추후 수정 필요
   const mateType = activeButton === "혼밥"? "MEAL" : activeButton === "운동"?  "EXERCISE" : "STUDY";
 
   // 서버에서 찜한 목록 불러오기
-  const { data: likedMates, isLoading } = useFetchLikes(memberId, mateType);
+  const { data: likedMates=[], isLoading } = useFetchLikes(mateType);
 
   const handleButtonClick = (button: string) => {
     setActiveButton(button);
@@ -95,6 +94,7 @@ const Buttons = styled.div`
   gap: 10px;
   margin-bottom: 10px;
   margin-left: 15px;
+  margin-top:10px;
   z-index: 1000; /* 다른 요소 위로 배치 */
 `;
 
@@ -125,7 +125,7 @@ const BoxList = styled.div`
 
 const NoMateText = styled.div`
   display:flex;
-  width:260px;
+  width:330px;
   justify-content:center;
   height:300px;
   align-items:center;

@@ -45,7 +45,6 @@ const RecommendBox: React.FC<ButtonProps> = ({
   detail6,
 }) => {
   const favoriteKey = `heart_${category}_${requestId}`;
-  const userId = 1; // 🔹 로그인 유저 ID (임시 값)
 
   const likeMutation = useLikeMatch(); // 좋아요 요청 훅
   const deleteLikeMutation = useDeleteLikeMatch(); // 좋아요 취소 요청 훅
@@ -65,36 +64,34 @@ const RecommendBox: React.FC<ButtonProps> = ({
   const handleIconClick = async (event: React.MouseEvent) => {
     event.stopPropagation();
     console.log("💖 하트 버튼 클릭됨! -> requestId =", requestId);
-    console.log("👤 userId 확인 =", userId);
-
-
+  
     const newState = !isIconClicked;
     setIsIconClicked(newState);
     localStorage.setItem(favoriteKey, JSON.stringify(newState));
-
+  
     // ✅ localStorage 변경 이벤트 발생 → LikePage에도 반영되도록 함
     window.dispatchEvent(new Event("storage"));
-
+  
     try {
       if (newState) {
-        // 🔹 좋아요 추가 (POST 요청)
-        await likeMutation.mutateAsync({ requestId, userId });
+        console.log("🟢 좋아요 요청 전송 중...");
+        await likeMutation.mutateAsync({ requestId});
         console.log("✅ 좋아요 성공:", requestId);
       } else {
-        // 🔹 좋아요 취소 (DELETE 요청)
-        await deleteLikeMutation.mutateAsync({ requestId, userId });
+        console.log("🔴 좋아요 취소 요청 전송 중...");
+        await deleteLikeMutation.mutateAsync({ requestId});
         console.log("🚨 좋아요 취소 성공:", requestId);
       }
     } catch (error) {
       console.error("❌ 좋아요 요청 실패:", error);
   
       // ✅ 실패 시 기존 상태로 되돌림
-      setIsIconClicked(!newState);
-      localStorage.setItem(favoriteKey, JSON.stringify(!newState));
+      //setIsIconClicked(!newState);
+      //localStorage.setItem(favoriteKey, JSON.stringify(!newState));
       window.dispatchEvent(new Event("storage"));
     }
   };
-
+  
   const [isExpanded, setIsExpanded] = useState(false);
 
   const toggleExpand = () => {

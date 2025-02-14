@@ -60,5 +60,25 @@ export const recommendData: RecommendDataType[] = [
     time:"18:00",
     date:"수",
     food : "양식"
+  },
+  {
+    requestId:3,
+    category:"food",
+    text1: "미기피기",
+    text2: "#여성 #22살",
+    text3: "#24학번 #ISFP",
+    number1: "2",
+    number2: "4",
+    $backgroundColor: "#C0E5FF",
+    width: "160px",
+    color: "#5D5D5D",
+    detail1: "여성만",
+    detail2: "선배",
+    detail3: "24살",
+    gender: "여성",
+    grade: "24학번",
+    time:"18:00",
+    date:"수",
+    food : "양식"
   }
 ];
