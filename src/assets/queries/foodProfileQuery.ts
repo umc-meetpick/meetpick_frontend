@@ -1,8 +1,9 @@
+const nickname = localStorage.getItem("nickname");
 const foodProfileQuery = [
     {
-      "question": ["[닉네임]님 안녕하세요!\n당신만의 메이트 요정 피기예요!",
+      "question": [`${nickname}님 안녕하세요!\n당신만의 메이트 요정 피기예요!`,
         "🍚혼밥에서 구제해줄\n메이트를 찾고 계신가요?",
-        "[닉네임]님의 완벽한 메이트를\n찾기 위해 몇가지 질문을 준비했어요!"],
+        `${nickname}님의 완벽한 메이트를\n찾기 위해 몇가지 질문을 준비했어요!`],
       "direction": "incoming",
       "options": ["좋아!"]
     },
@@ -58,7 +59,7 @@ const foodProfileQuery = [
       "type": "mbti-JP"
     },
     {
-      "question": [ "아하! 알겠습니다", "그럼, 취미가 [닉네임]님과\n비슷한 메이트를 원하세요?"],
+      "question": [ "아하! 알겠습니다", `그럼, 취미가 ${nickname}님과\n비슷한 메이트를 원하세요?`],
       "direction": "incoming",
       "options": ["같으면 좋겠어","상관없어"],
       "type": "hobby"
@@ -70,7 +71,7 @@ const foodProfileQuery = [
       "type": "date"
     },
     {
-      "question": [ "[닉네임]님과 시간이 맞는\n메이트를 찾아드릴게요", "메이트와 어떤 음식을\n드시고 싶으세요?"],
+      "question": [ `[${nickname}님과 시간이 맞는\n메이트를 찾아드릴게요`, "메이트와 어떤 음식을\n드시고 싶으세요?"],
       "direction": "incoming",
       "options": ["한식", "양식", "일식", "중식", "베트남식", "기타"],
       "type": "menu"

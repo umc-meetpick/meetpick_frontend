@@ -12,6 +12,7 @@ import RejectButton from '../components/button/RejectButton';
 import { Link } from 'react-router-dom';
 import BasicNavbar from '../components/navbar/BasicNavbar';
 import Modal from '../components/modal/detailedModal';
+import getMyProfile from '../apis/basicProfile/getMyProfile';
 
 // Styled Components
 const Container = styled.div`
@@ -243,7 +244,8 @@ const MyPage = () => {
     const handleCloseModal = () => {
       setIsModalOpen(false);
     };
-
+    
+    const {data} = getMyProfile();
   return (
     <>
       <Container>
@@ -256,7 +258,7 @@ const MyPage = () => {
         <ProfileSection>
           <ProfileImage src={ProfileImg} alt="Profile" />
           <ProfileInfo>
-              <ProfileName>베티 (나윤빈)</ProfileName>
+              <ProfileName>{data}</ProfileName>
               <Link to ="/modify">
                 <EditProfileButton>프로필 수정하기 <BsChevronRight /></EditProfileButton>
               </Link>
