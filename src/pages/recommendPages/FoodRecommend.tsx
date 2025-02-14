@@ -11,14 +11,17 @@ import SwiperCore from 'swiper';
 import { Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
-import { slidesData } from "../../data/slidesData"
 import { Link } from "react-router-dom";
 import FoodMateList from "../../data/foodmateoption";
 import { useSwiper } from "swiper/react";
+import { useFetchRecommendations } from "../../apis/matchingRecommend/memberRecommend";
+
 
 SwiperCore.use([Pagination]);
 
 const FoodRecommend = () => {
+
+    const {data:recommendations} = useFetchRecommendations("MEAL");
 
     const swiper = useSwiper();
     
@@ -28,10 +31,8 @@ const FoodRecommend = () => {
     const [selectedGrade, setSelectedGrade] = useState<string | null>(null);
     const [selectedDate, setSelectedDate] = useState<string | null>(null);
     const [selectedFood, setSelectedFood] = useState<string|null>(null);
-    const [currentSlide, setCurrentSlide] = useState(slidesData[0]); // 현재 슬라이트 상태 관리
+    const [currentSlide, setCurrentSlide] = useState(recommendations?.[0] ||null); // 현재 슬라이트 상태 관리
     
-    // recommendData에서 현재 슬라이드에 해당하는 데이터 찾기 
-    const currentRecommend = slidesData.find(data => data.id === currentSlide.id);
 
     const handleDropdownHeight= (isOpen:boolean) => {
         console.log("선택 ", isOpen);
@@ -39,13 +40,13 @@ const FoodRecommend = () => {
             swiper.updateAutoHeight(); // Swiper 강제 업데이트
           } 
       };
-
+      
       
 
     const handleSlideChange = (swiper : any) => {
         const activeIndex = swiper.activeIndex;
-        setCurrentSlide(slidesData[activeIndex]); // 슬라이드가 변경되면 상태 업데이트 
-        
+        if (!recommendations || recommendations.length === 0) return; // 🔹 데이터가 없을 경우 아무것도 안함
+        setCurrentSlide(recommendations[activeIndex] || null);
     }
 
     const handleTabClick = (tab:string) => {
@@ -68,7 +69,7 @@ const FoodRecommend = () => {
     };
 
     // recommendData를 사용해 필터링 
-    const filteredData = recommendData.filter(
+    const filteredData = (recommendData||[]).filter(
         (item) =>
           (selectedGender === null || item.gender === selectedGender) &&
           (selectedGrade === null || item.grade === selectedGrade) &&
@@ -113,12 +114,13 @@ const FoodRecommend = () => {
                 {activeTab === "recommendList" && (
                     <RecommendationSection>
                         <Emoji>
-                            <EmojiBubble1><BubbleText1>{currentRecommend?.grade || "기본 텍스트"}</BubbleText1></EmojiBubble1>
-                            <EmojiBubble2><BubbleText2>{currentRecommend?.food || "기본 텍스트"}</BubbleText2></EmojiBubble2>
-                            <EmojiBubble3><BubbleText3>{currentRecommend?.gender || "기본 텍스트"}</BubbleText3></EmojiBubble3>
-                            <EmojiBubble4><BubbleText4>{currentRecommend?.hobby || "기본 텍스트"}</BubbleText4></EmojiBubble4>
+                            <EmojiBubble1><BubbleText1>{currentSlide?.memberId || ""}</BubbleText1></EmojiBubble1>
+                            <EmojiBubble2><BubbleText2>{currentSlide?.foodType?.[0] || ""}</BubbleText2></EmojiBubble2>
+                            <EmojiBubble3><BubbleText3>{currentSlide?.gender || ""}</BubbleText3></EmojiBubble3>
+                            <EmojiBubble4><BubbleText4>{currentSlide?.hobby?.[0] || ""}</BubbleText4></EmojiBubble4>
 
                         </Emoji>
+                        {(recommendations || []).length > 0 ? (
                         <Swiper
                         spaceBetween={30}
                         slidesPerView={1.7}
@@ -127,20 +129,24 @@ const FoodRecommend = () => {
                         onSlideChange={handleSlideChange} // 슬라이드 변경 이벤트 핸들러
                         centeredSlides={true}
                         >
-                            {slidesData.map((slidesData) => (
+                            {(recommendations||[]).map((slidesData) => (
                                 
-                                <SwiperSlide key={slidesData.id}>
+                                <SwiperSlide key={slidesData.memberId}>
                                     <SlideContent>
                                         <Link to ="/application/food">
-                                            <StyledImage src={RecommendImage} alt={`${slidesData.name} 이미지`} />
+                                            <StyledImage src={RecommendImage} alt={`${slidesData.memberId} 이미지`} />
                                         </Link>
                                     </SlideContent>
                                 </SwiperSlide>
                                 ))}
                         </Swiper>
+                        ) : (
+                            <NoDataMessage>추천할 데이터가 없습니다.</NoDataMessage>
+                        )
+                    }
                         <Link to ='/application/food'>
                         <Description> 
-                            <Name>{currentSlide.name}</Name>님 프로필 구경하러가기
+                            <Name>{currentSlide?.memberId}</Name>님 프로필 구경하러가기
                         </Description>
                         </Link>
                         <Text>👀옆으로 밀어서 원하는 메이트를 찾아보세요!</Text>
@@ -502,4 +508,11 @@ const EmojiBubble4 = styled.div`
   right: -50px; /* 우측 위치 */
   top:40px;
   z-index:1;
+`;
+
+const NoDataMessage = styled.p`
+  text-align: center;
+  color: #69707E;
+  font-size: 14px;
+  margin-top: 20px;
 `;

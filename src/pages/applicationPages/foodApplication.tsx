@@ -7,8 +7,13 @@ import ApplicationGrayButton from "../../components/button/ApplicationGrayButton
 import ApplicationGrayBox from "../../components/ApplicationGrayBox";
 import { IoHeart } from "react-icons/io5";
 import { FaCheck } from "react-icons/fa6";
+import { useJoinRequest } from "../../apis/application/joinRequest";
+
+
 
 const FoodApplication = () => {
+
+    const {mutate:joinRequest} = useJoinRequest();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [message, setMessage]= useState<string | null>(null); // 메세지 상태 추가
     const [buttonMessage, setButtonMessage] = useState<string>("메이트 신청하기"); // 버튼에 있는 텍스트
@@ -20,13 +25,23 @@ const FoodApplication = () => {
     const handleOpenModal = () => setIsModalOpen(true); // 팝업 열기
 
     const handleConfirm = () => {
-        setMessage("신청이 완료되었습니다.");
-        setIsModalOpen(false); // 팝업 닫기
-        setButtonMessage("신청 완료"); // 버튼 텍스트 변경
-        setButtonStyle({ // 버튼 스타일 변경
-            color: "white",
-            background: "#101010",
-        });
+        const requestId=1;
+
+        joinRequest(
+            {requestId}, 
+            {
+                onSuccess: (data) => {
+                    console.log("신청 완료!", data);
+                    setMessage("신청이 완료되었습니다.");
+                    setIsModalOpen(false);
+                    setButtonMessage("신청 완료");
+                    setButtonStyle({ // 버튼 스타일 변경
+                        color: "white",
+                        background: "#101010",
+                    });
+                }
+            }
+        );
     };
 
     const handleCancel = () => {
