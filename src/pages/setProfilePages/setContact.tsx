@@ -95,18 +95,18 @@ const SetContact= () => {
     };
 
     const { mutate } = usePostFirstProfile(); 
-    const removeEmoji = (text: string) => text.replace(/[\p{Emoji}\p{So}]/gu, "").trim();
-    const hobbyListWithoutEmojis = hobby.map(removeEmoji);
+    const extractKorean = (text: string) => text.match(/[가-힣ㄱ-ㅎㅏ-ㅣ\s]+/g)?.join("").trim() || "";
+    const hobbyListKorean = hobby.map(extractKorean);
     const onSubmit = (data: { kakaoId?: string; openKakao?: string; phoneNum?: string }) => {
         const newContact = data.kakaoId || data.openKakao || data.phoneNum || "";
         setContact(newContact);
         setTimeout(() => {
             mutate({
-                "name": nickname,
+                "nickName": nickname,
                 "imageNumber": imgNum,
                 "studentNumber": studentNum,
                 "mbti": mbti,
-                "hobbyList": hobbyListWithoutEmojis,
+                "hobbyList": hobbyListKorean,
                 "contactType": contactType,
                 "contactInfo": newContact, 
                 "subMajor": major,

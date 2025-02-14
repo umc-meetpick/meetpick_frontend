@@ -2,7 +2,7 @@ import { useMutation } from "@tanstack/react-query"
 import axiosInstance from "../axiosInstance"
 
 interface firstProfileType {
-    name:string;
+    nickName:string;
     imageNumber:number;
     studentNumber: number;
     mbti: string;

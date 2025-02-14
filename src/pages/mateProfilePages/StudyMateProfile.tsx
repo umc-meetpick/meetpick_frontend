@@ -19,7 +19,7 @@ interface OptionClick{
 const StudyMateProfile = () =>{
     const {messages, addMessage} = useChatContext();
     const [currentQueryIndex, setCurrentQueryIndex] = useState(0); 
-    const { setGender, selectedMajors, setStudentNum, ageRange, mbtiList, setMbtiList, 
+    const { setGender, selectedMajors, setStudentNum, ageRange, mbtiList, setMbtiList, setSubject,
         subject, subjectType, setIsHobbySame, setIsOnline, setStudyTime, studyTime,
         studyType, setStudyType, place, dateTime, peopleNum, ment } = useContext( StudyProfileInfoContext );
     const [modalOpen, setModalOpen] = useState(false);
@@ -51,7 +51,8 @@ const StudyMateProfile = () =>{
             setModalOpen(false)
             setChatDisable(true)
             addMessage({ question: [studyType], direction: "outgoing" });
-            addMessage({ question: [`${subjectType}/${subject}`], direction: "outgoing" });
+            addMessage({ question: [`${subjectType}-${subject}`], direction: "outgoing" });
+            setSubject(`${subjectType}-${subject}`);
             nextOption(); 
         }
     }, [ modalOpen, studyType, subject, subjectType]);

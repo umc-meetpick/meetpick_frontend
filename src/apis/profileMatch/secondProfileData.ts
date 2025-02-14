@@ -26,10 +26,10 @@ const secondProfileData = (type: ProfileType, contextData: ProfileContextType) =
    // 공통 데이터
    const baseData = {
     "gender": (contextData.gender == "상관없음") ? null : (contextData.gender == "남성" ? "MALE" : "FEMALE"),
-    "subMajorName": contextData.majors,
+    "subMajorName": (contextData.majors.length === 0) ? null : contextData.majors,
     "studentNumber": (contextData.studentNum == "상관없음") ? null : contextData.studentNum,
-    "minAge": contextData.ageRange[0] ? contextData.ageRange[0] : 0,
-    "maxAge": contextData.ageRange[1] ? contextData.ageRange[1] : 0,
+    "minAge": contextData.ageRange[0] ? contextData.ageRange[0] : null,
+    "maxAge": contextData.ageRange[1] ? contextData.ageRange[1] : null,
     "mbti": contextData.mbtiList.join(""),
     "isHobbySame": contextData.isHobbySame || false,
     "memberSecondProfileTimes": Object.entries(contextData.dateTime || {}).map(([week, times]) => ({
@@ -69,10 +69,10 @@ switch (type) {
         isSchool: contextData.isSchool,
         food: null,
         studyType:null,
-        majorNameAndProfessorName: contextData.isSchool ? null : contextData.place,
+        majorNameAndProfessorName: null,
         isOnline:null,
         studyTimes: null,
-        place:null,
+        place: contextData.isSchool ? null : contextData.place,
         type: "EXERCISE"
       };
     }
@@ -86,7 +86,7 @@ switch (type) {
         isSchool: null,
         food: null,
         studyType:contextData.studyType,
-        majorNameAndProfessorName: null,
+        majorNameAndProfessorName: contextData.subject,
         isOnline: contextData.isOnline,
         studyTimes: contextData.studyTime,
         place:null,
