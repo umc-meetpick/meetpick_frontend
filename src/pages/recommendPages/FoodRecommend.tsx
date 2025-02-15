@@ -250,7 +250,7 @@ const FoodRecommend = () => {
                                 text3={`# ${profile.studentNumber}학번 # ${profile.mbti}`}
                                 number1={profile.slotInfo.currentPeople}
                                 number2={profile.slotInfo.maxPeople}
-                                $backgroundColor="#C0E5FF"
+                                $backgroundColor={index% 3 ===0 ? "#EEF5FD" : index%3 ===1? "#C0E5FF": "#EEF5FD"}
                                 width="160px"
                                 color="#5D5D5D"
                                 detail1={profile.preferenceInfo?.preferredGender}  // ✅ 수정

@@ -9,6 +9,7 @@ export interface RecommendationType {
     memberNumber: number;
     gender: string;
     foodType: string[];
+    exerciseType:string[];
     hobby: string[];
     mateType: MateType;
   }
