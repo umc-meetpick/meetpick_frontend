@@ -159,8 +159,8 @@ const StyledButton = styled.button<{
   $backgroundColor: string;
   width: string;
   color: string;
-  number1:string;
-  number2:string;
+  number1:string|number;
+  number2:string|number;
   $isExpanded:boolean;
 }>`
   background-color: ${({ $backgroundColor }) => $backgroundColor};
