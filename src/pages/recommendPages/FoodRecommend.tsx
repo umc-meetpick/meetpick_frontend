@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { Icon } from "@iconify/react";
 import RecommendBox from "../../components/RecommendBox";
 import DropdownButton from "../../components/RecommendDownList";
-import { recommendData} from "../../data/recommendData";
 import RecommendImage from "../../assets/images/Recommend.png";
 import emojiImage from "../../assets/images/SpeechBubble1.png"
 import {Swiper, SwiperSlide} from "swiper/react";
@@ -11,6 +10,7 @@ import SwiperCore from 'swiper';
 import { Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
+import 'swiper/css/free-mode';
 import { Link } from "react-router-dom";
 import FoodMateList from "../../data/foodmateoption";
 import { useSwiper } from "swiper/react";
@@ -31,8 +31,24 @@ interface Profile {
         foodTypes?: string[];
         preferredGender?: string;
         preferredMajors?: string;
+        availableTimes?:string[];
+        availableDays?:string[];
     };
 }
+
+const foodTypeMap: Record<string, string> = {
+    "KOREAN": "한식",
+    "JAPANESE": "일식",
+    "CHINESE": "중식",
+    "VIETNAMESE": "베트남식",
+    "WESTERN": "양식",
+    "OTHER": "기타",
+};
+
+ // 2️⃣ foodTypes 변환 함수
+ const convertFoodTypes = (foodTypes: string[] | undefined) => {
+    return foodTypes?.map(type => foodTypeMap[type] || type).join(", ") || "선택 안 함";
+};
 
 
 SwiperCore.use([Pagination]);
@@ -44,25 +60,12 @@ const FoodRecommend = () => {
         mateType:"MEAL"
     });
 
-    const foodTypeMap: Record<string, string> = {
-        "KOREAN": "한식",
-        "JAPANESE": "일식",
-        "CHINESE": "중식",
-        "VIETNAMESE": "베트남식",
-        "WESTERN": "양식",
-        "OTHER": "기타",
-    };
-    
-    // 2️⃣ foodTypes 변환 함수
-    const convertFoodTypes = (foodTypes: string[] | undefined) => {
-        return foodTypes?.map(type => foodTypeMap[type] || type).join(", ") || "선택 안 함";
-    };
-
     console.log("전체 프로필 데이터:", profiles);
 
     const swiper = useSwiper();
     
     const [activeTab, setActiveTab] = useState("recommendList"); // 현재 활성화된 탭 상태 
+
     const [selectedGender, setSelectedGender] = useState<string | null>(null);
     const [selectedTime, setSelectedTime] = useState<string | null>(null);
     const [selectedGrade, setSelectedGrade] = useState<string | null>(null);
@@ -105,15 +108,16 @@ const FoodRecommend = () => {
         }
     };
 
-    // recommendData를 사용해 필터링 
-    const filteredData = (recommendData||[]).filter(
-        (item) =>
-          (selectedGender === null || item.gender === selectedGender) &&
-          (selectedGrade === null || item.grade === selectedGrade) &&
-          (selectedTime === null || item.time === selectedTime) &&
-          (selectedDate === null || item.date === selectedDate) &&
-          (selectedFood === null || item.food === selectedFood)
-      );
+    const filteredData = (profiles || []).filter(
+        (item :Profile) =>
+            (selectedGender === null || item.gender === selectedGender) &&
+            (selectedGrade === null || item.studentNumber?.toString() === selectedGrade) &&
+            (selectedTime === null || item.preferenceInfo?.availableTimes?.includes(selectedTime)) &&
+            (selectedDate === null || item.preferenceInfo?.availableDays?.includes(selectedDate)) &&
+            (selectedFood === null || item.preferenceInfo?.foodTypes?.some(food => foodTypeMap[food] === selectedFood))
+
+    );
+    
       
 
     return (
@@ -165,6 +169,8 @@ const FoodRecommend = () => {
                         pagination={{clickable:true}}
                         onSlideChange={handleSlideChange} // 슬라이드 변경 이벤트 핸들러
                         centeredSlides={true}
+                        allowTouchMove={true}
+                        freeMode={true}
                         >
                             {(recommendations||[]).map((slidesData) => (
                                 
@@ -197,11 +203,11 @@ const FoodRecommend = () => {
                             slidesPerView="auto" // 자동으로 여러 슬라이드 표시
                             freeMode={true} // 자유롭게 드래그 가능
                             allowTouchMove={true} // 드래그 허용
-                            style={{ paddingRight: "50px", overflow:"visible" }} // Swiper의 오른쪽 패딩 추가
+                            style={{ paddingRight: "100px", overflow:"visible" }} // Swiper의 오른쪽 패딩 추가
                             
                             >
                                 {FoodMateList.map((item) => (
-                                    <SwiperSlide key={item.id} style={{ width: "auto"}}>
+                                    <SwiperSlide key={item.id} style={{ width: "auto" }}>
                                         <DropdownButton
                                         left="60px" // 원하는 위치
                                         top="-83px"  // 원하는 위치
@@ -219,7 +225,11 @@ const FoodRecommend = () => {
                                             ? selectedFood
                                             : `${item.option} ∨`
                                         }
-                                        width={item.option === "음식 종류" ? "95px" : "auto"}
+                                        width={item.option === "음식 종류" ? "95px" :
+                                             item.option==="성별"? "70px" : 
+                                             item.option ==="요일"? "70px":
+                                             item.option ==="학번"? "70px" :
+                                             "auto"}
                                         options={item.option === "시간" ? FoodMateList.find((f) => f.option === "시간")?.lists || [] : item.lists || []}
                                         onSelect={(option) => handleSelect(item.option, option)}
                                         onToggle={handleDropdownHeight}
@@ -230,7 +240,7 @@ const FoodRecommend = () => {
                             </Swiper>
                         </List>
                         <FullListSection>
-                        {profiles.map((profile: Profile, index: number) => (
+                        {filteredData.map((profile: Profile, index: number) => (
                             <RecommendBox
                                 category="MEAL"
                                 key={index}
@@ -251,7 +261,7 @@ const FoodRecommend = () => {
                                 detail6={convertFoodTypes(profile.preferenceInfo?.foodTypes)}
                             />
                         ))}
-</FullListSection>
+                        </FullListSection>
                     </Wrapper>
                 )}
             </Content>
@@ -454,7 +464,7 @@ const List = styled.div`
     margin-bottom:10px;
     max-width:390px;
     display:flex;
-    padding-left:30px;
+    padding-left:10px;
     padding-right:5px;
 `   
 
