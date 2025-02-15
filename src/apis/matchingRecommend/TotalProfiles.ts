@@ -13,6 +13,7 @@ interface TotalProfileParams {
     certificateType?:string;
     exerciseTypes?:string[];
     foodTypes?:string[];
+    studyTypes?:string[];
 }
 
 export const useTotalProfiles = (params: TotalProfileParams)=> {

@@ -12,6 +12,7 @@ export interface RecommendationType {
     exerciseType:string[];
     hobby: string[];
     mateType: MateType;
+    studyType:string[];
   }
 
 
