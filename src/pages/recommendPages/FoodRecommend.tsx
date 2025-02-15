@@ -15,6 +15,24 @@ import { Link } from "react-router-dom";
 import FoodMateList from "../../data/foodmateoption";
 import { useSwiper } from "swiper/react";
 import { useFetchRecommendations } from "../../apis/matchingRecommend/memberRecommend";
+import { useTotalProfiles } from "../../apis/matchingRecommend/TotalProfiles";
+
+interface Profile {
+    nickname: string;
+    gender: string;
+    age: number;
+    studentNumber?: string;
+    mbti?: string;
+    slotInfo: {
+        currentPeople: number;
+        maxPeople: number;
+    };
+    preferenceInfo?: {
+        foodTypes?: string[];
+        preferredGender?: string;
+        preferredMajors?: string;
+    };
+}
 
 
 SwiperCore.use([Pagination]);
@@ -22,6 +40,25 @@ SwiperCore.use([Pagination]);
 const FoodRecommend = () => {
 
     const {data:recommendations} = useFetchRecommendations("MEAL");
+    const {data:profiles=[]} = useTotalProfiles({
+        mateType:"MEAL"
+    });
+
+    const foodTypeMap: Record<string, string> = {
+        "KOREAN": "한식",
+        "JAPANESE": "일식",
+        "CHINESE": "중식",
+        "VIETNAMESE": "베트남식",
+        "WESTERN": "양식",
+        "OTHER": "기타",
+    };
+    
+    // 2️⃣ foodTypes 변환 함수
+    const convertFoodTypes = (foodTypes: string[] | undefined) => {
+        return foodTypes?.map(type => foodTypeMap[type] || type).join(", ") || "선택 안 함";
+    };
+
+    console.log("전체 프로필 데이터:", profiles);
 
     const swiper = useSwiper();
     
@@ -193,27 +230,28 @@ const FoodRecommend = () => {
                             </Swiper>
                         </List>
                         <FullListSection>
-                            {filteredData.map((data) => (
-                                <RecommendBox
-                                category={data.category}
-                                key={data.requestId}
-                                requestId={data.requestId}
-                                text1={data.text1}
-                                text2={data.text2}
-                                text3={data.text3}
-                                number1={data.number1}
-                                number2={data.number2}
-                                $backgroundColor={data.$backgroundColor}
-                                width={data.width}
-                                color={data.color}
-                                detail1={data.detail1}
-                                detail2={data.detail2}
-                                detail3={data.detail3}
-                                detail4={data.detail4}
-                                
-                                />
-                            ))}
-                        </FullListSection>
+                        {profiles.map((profile: Profile, index: number) => (
+                            <RecommendBox
+                                category="MEAL"
+                                key={index}
+                                requestId={index}
+                                text1={profile.nickname}
+                                text2={`# ${profile.gender} # ${profile.age}살`} 
+                                text3={`# ${profile.studentNumber}학번 # ${profile.mbti}`}
+                                number1={profile.slotInfo.currentPeople}
+                                number2={profile.slotInfo.maxPeople}
+                                $backgroundColor="#C0E5FF"
+                                width="160px"
+                                color="#5D5D5D"
+                                detail1={profile.preferenceInfo?.preferredGender}  // ✅ 수정
+                                detail2={profile.preferenceInfo?.preferredMajors}  // ✅ 수정
+                                detail3={profile.mbti}
+                                detail4={convertFoodTypes(profile.preferenceInfo?.foodTypes)}
+                                detail5={convertFoodTypes(profile.preferenceInfo?.foodTypes)}
+                                detail6={convertFoodTypes(profile.preferenceInfo?.foodTypes)}
+                            />
+                        ))}
+</FullListSection>
                     </Wrapper>
                 )}
             </Content>

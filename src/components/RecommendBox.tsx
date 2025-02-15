@@ -10,8 +10,8 @@ interface ButtonProps {
   text1: string;
   text2: string;
   text3: string;
-  number1: string;
-  number2: string;
+  number1: string |number;
+  number2: string | number;
   $backgroundColor?: string;
   width?: string;
   color?: string;
