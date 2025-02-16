@@ -9,23 +9,16 @@ import { useAlarmList } from "../../apis/alarm/alarmAPI";
 // ✅ Alarm 데이터 타입 가져오기
 interface AlarmData {
     mappingId: number;
-    mateType: "MEAL" | "EXERCISE" | "STUDY";
+    mateType: "혼밥" | "운동" | "공부" |"전체";
     content: string;
     createdAt: string;
   }
 
-  // ✅ API 값 ↔ 한글 값 매핑
-    const categoryMap: { [key: string]: string } = {
-        "ALL": "전체",
-        "MEAL": "혼밥",
-        "EXERCISE": "운동",
-        "STUDY": "공부",
-    };
-
 
 const Alarm = () => { 
+    
     const [clickedAlerts, setClickedAlerts] = useState<{ [key: number]: boolean }>({});
-    const [selectedCategory, setSelectedCategory] = useState<string>("ALL");
+    const [selectedCategory, setSelectedCategory] = useState<string>("전체");
 
     const {data:alerts=[], isPending} = useAlarmList(selectedCategory); // API 호출
 
@@ -46,8 +39,8 @@ const Alarm = () => {
     }
 
     // API 데이터 필터링 수정 
-    const filteredAlerts = alerts.filter((alert : AlarmData) => {
-        selectedCategory === "ALL" || alert.mateType === selectedCategory
+    const filteredAlerts = alerts?.filter((alert : AlarmData) => {
+        selectedCategory === "전체" || alert.mateType === selectedCategory
     });
 
     return (
@@ -56,16 +49,12 @@ const Alarm = () => {
             <Container>
             <DropdownButton 
             color="#3F3F3F" 
-            text={categoryMap[selectedCategory] || "전체 ∨"} // 🔥 한글 변환 적용
+            text={selectedCategory || "전체 ∨"} // 🔥 한글 변환 적용
             height="32px" 
             width="80px"
-            options={["ALL", "MEAL", "EXERCISE", "STUDY"].map((value) => categoryMap[value])} // 🔥 한글로 변환
+            options={["전체", "혼밥", "운동", "공부"].map((value) => value)} 
             onSelect={(option) => {
-                // 🔥 선택된 한글 값을 API에서 사용하는 영어 값으로 변환
-                const apiValue = Object.keys(categoryMap).find(key => categoryMap[key] === option);
-                if (apiValue) {
-                    setSelectedCategory(apiValue);
-                }
+                setSelectedCategory(option) 
             }}
             />
 
@@ -82,16 +71,16 @@ const Alarm = () => {
                             <AlertItem key = {alert.mappingId}>
                                 <Container2>
                                     <Title>
-                                        {alert.mateType === "MEAL" && (
+                                        {alert.mateType === "혼밥" && (
                                             <Icon icon="fluent-color:food-20" width="24" height="24" />
                                         )}
-                                        {alert.mateType === "EXERCISE" && (
+                                        {alert.mateType === "운동" && (
                                             <Icon icon="fluent-color:sport-16" width="24" height="24" />
                                         )}
-                                        {alert.mateType === "STUDY" && (
+                                        {alert.mateType === "공부" && (
                                             <Icon icon="fluent-color:edit-24" width="24" height="24" />
                                         )}
-                                        <CategoryBadge> {categoryMap[alert.mateType]}</CategoryBadge>
+                                        <CategoryBadge> {alert.mateType}</CategoryBadge>
 
                                     </Title>
                                     <Time>

@@ -3,23 +3,25 @@ import { useQuery } from "@tanstack/react-query";
 
 interface AlarmData {
     mappingId :number;
-    mateType:"혼밥" | "운동" | "공부";
+    mateType:"혼밥" | "운동" | "공부" | "전체";
     content:string;
     createdAt : string;
 }
 
 export const useAlarmList = (mateType :string)=> {
+    
     return useQuery<AlarmData[]>({
         queryKey:["alarmList", mateType],
         queryFn: async() => {
-            const {data} = await axiosInstance.get(`/api/matches/alarm?mateType=${mateType}`, {
-                params: {
-                mateType,
-                page:0,
-                size:10,
+            const {data} = await axiosInstance.get(`/api/matches/alarm`, {
+                params:{
+                    mateType:mateType,
+                    page:0,
+                    size:10,
                 }
             });
-            return data?.result||[]; // API 응답에서 result 부분만 반환 
+            console.log("✅ 응답 데이터:", data);
+            return data.result.alarms || []; // API 응답에서 result 부분만 반환 
         },
         staleTime:60000, // 1분동안 데이터 유지 
     });
