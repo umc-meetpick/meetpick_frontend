@@ -176,7 +176,6 @@ const StudyMateProfile = () =>{
         }else if (type == "hobby"){
             option == "같으면 좋겠어" ? setIsHobbySame(true) : setIsHobbySame(false);
             addMessage({ question: [option], direction: "outgoing" });
-            addMessage({ question: [option], direction: "outgoing" })
             setChatDisable(false);
             setSaveType("ment");
         } else if (type == "date"){
