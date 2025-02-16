@@ -10,28 +10,72 @@ import SwiperCore from 'swiper';
 import { Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
-import { ExerciserecommendData } from "../../data/exerciseRecommendData";
-import exerciseSlidesData from "../../data/exerciseSlidesData";
 import { Link } from "react-router-dom";
 import ExerciseMateList from "../../data/exercisemateoption";
 import { useSwiper } from "swiper/react";
+import { useFetchRecommendations } from "../../apis/matchingRecommend/memberRecommend";
+import { useTotalProfiles } from "../../apis/matchingRecommend/TotalProfiles";
+
+interface Profile {
+    nickname: string;
+    gender: string;
+    age: number;
+    studentNumber?: string;
+    mbti?: string;
+    slotInfo: {
+        currentPeople: number;
+        maxPeople: number;
+    };
+    preferenceInfo?: {
+        exerciseTypes?:string[];
+        preferredGender?: string;
+        preferredMajors?: string;
+        availableTimes?:string[];
+        availableDays?:string[];
+    };
+}
+
+
+const exerciseTypeMap: Record<string, string> = {
+    "BOWLING": "볼링",
+    "CLIMBING": "클라이밍",
+    "TABLE_TENNIS": "탁구",
+    "FITNESS": "헬스",
+    "RUNNING": "러닝/조깅",
+    "SOCCER": "축구/풋살",
+    "BASKETBALL" :"농구",
+    "TENNIS_BADMINTON" :"배드민턴",
+    "OTHER":"기타"
+};
+
+ // 2️⃣ exerciseTypes 변환 함수
+ const convertExerciseTypes = (exerciseTypes: string[] | undefined) => {
+    return exerciseTypes?.map(type => exerciseTypeMap[type] || type).join(", ") || "선택 안 함";
+};
 
 SwiperCore.use([Pagination]);
 
 const ExerciseRecommend = () => {
+    const {data:recommendations} = useFetchRecommendations("EXERCISE");
+    const {data:profiles=[]} = useTotalProfiles({
+        mateType:"EXERCISE"
+    });
+
+    console.log("전체 프로필 데이터:", profiles);
+
 
     const swiper = useSwiper();
     
     const [activeTab, setActiveTab] = useState("recommendList"); // 현재 활성화된 탭 상태 
+
     const [selectedGender, setSelectedGender] = useState<string | null>(null);
     const [selectedTime, setSelectedTime] = useState<string | null>(null);
     const [selectedGrade, setSelectedGrade] = useState<string | null>(null);
     const [selectedDate, setSelectedDate] = useState<string | null>(null);
     const [selectedExercise, setSelectedExercise] = useState<string|null>(null);
-    const [currentSlide, setCurrentSlide] = useState(exerciseSlidesData[0]); // 현재 슬라이트 상태 관리
-    
-    // recommendData에서 현재 슬라이드에 해당하는 데이터 찾기 
-    const currentRecommend = exerciseSlidesData.find(data => data.id === currentSlide.id);
+    const [currentSlide, setCurrentSlide] = useState(recommendations?.[0]||null); // 현재 슬라이트 상태 관리
+    console.log("현재 슬라이드 데이터:", currentSlide);
+
 
     const handleDropdownHeight= (isOpen:boolean) => {
         console.log("선택 ", isOpen);
@@ -44,7 +88,8 @@ const ExerciseRecommend = () => {
 
     const handleSlideChange = (swiper : any) => {
         const activeIndex = swiper.activeIndex;
-        setCurrentSlide(exerciseSlidesData[activeIndex]); // 슬라이드가 변경되면 상태 업데이트 
+        if (!recommendations || recommendations.length === 0) return; // 🔹 데이터가 없을 경우 아무것도 안함
+        setCurrentSlide(recommendations[activeIndex] || null);
         
     }
 
@@ -67,15 +112,15 @@ const ExerciseRecommend = () => {
         }
     };
 
-    // recommendData를 사용해 필터링 
-    const filteredData = ExerciserecommendData.filter(
-        (item) =>
-          (selectedGender === null || item.gender === selectedGender) &&
-          (selectedGrade === null || item.grade === selectedGrade) &&
-          (selectedTime === null || item.time === selectedTime) &&
-          (selectedDate === null || item.date === selectedDate) &&
-          (selectedExercise === null || item.exercise === selectedExercise)
-      );
+    const filteredData = (profiles || []).filter(
+        (item :Profile) =>
+            (selectedGender === null || item.gender === selectedGender) &&
+            (selectedGrade === null || item.studentNumber?.toString() === selectedGrade) &&
+            (selectedTime === null || item.preferenceInfo?.availableTimes?.includes(selectedTime)) &&
+            (selectedDate === null || item.preferenceInfo?.availableDays?.includes(selectedDate)) &&
+            (selectedExercise === null || item.preferenceInfo?.exerciseTypes?.some(exercise => exerciseTypeMap[exercise] === selectedExercise))
+
+    );
       
 
     return (
@@ -111,14 +156,16 @@ const ExerciseRecommend = () => {
             </Tabs>
             <Content>
                 {activeTab === "recommendList" && (
+                    
                     <RecommendationSection>
                         <Emoji>
-                            <EmojiBubble1><BubbleText1>{currentRecommend?.grade || "기본 텍스트"}</BubbleText1></EmojiBubble1>
-                            <EmojiBubble2><BubbleText2>{currentRecommend?.exercise || "기본 텍스트"}</BubbleText2></EmojiBubble2>
-                            <EmojiBubble3><BubbleText3>{currentRecommend?.gender || "기본 텍스트"}</BubbleText3></EmojiBubble3>
-                            <EmojiBubble4><BubbleText4>{currentRecommend?.hobby || "기본 텍스트"}</BubbleText4></EmojiBubble4>
+                            <EmojiBubble1><BubbleText1>{currentSlide?.memberId || ""}</BubbleText1></EmojiBubble1>
+                            <EmojiBubble2><BubbleText2>{currentSlide?.exerciseType?.[0] || ""}</BubbleText2></EmojiBubble2>
+                            <EmojiBubble3><BubbleText3>{currentSlide?.gender || ""}</BubbleText3></EmojiBubble3>
+                            <EmojiBubble4><BubbleText4>{currentSlide?.hobby || ""}</BubbleText4></EmojiBubble4>
 
-                        </Emoji>
+                            </Emoji>
+                        {(recommendations || []).length > 0 ? (
                         <Swiper
                         spaceBetween={30}
                         slidesPerView={1.7}
@@ -126,21 +173,27 @@ const ExerciseRecommend = () => {
                         pagination={{clickable:true}}
                         onSlideChange={handleSlideChange} // 슬라이드 변경 이벤트 핸들러
                         centeredSlides={true}
+                        allowTouchMove={true}
+                        freeMode={true}
                         >
-                            {exerciseSlidesData.map((slidesData) => (
+                            {(recommendations||[]).map((slidesData) => (
                                 
-                                <SwiperSlide key={slidesData.id}>
+                                <SwiperSlide key={slidesData.memberId}>
                                     <SlideContent>
                                         <Link to ="/application/exercise">
-                                            <StyledImage src={RecommendImage} alt={`${slidesData.name} 이미지`} />
+                                            <StyledImage src={RecommendImage} alt={`${slidesData.memberId} 이미지`} />
                                         </Link>
                                     </SlideContent>
                                 </SwiperSlide>
                                 ))}
                         </Swiper>
+                        ) : (
+                            <NoDataMessage>추천할 데이터가 없습니다.</NoDataMessage>
+                        )
+                    }
                         <Link to ='/application/exercise'>
                         <Description> 
-                            <Name>{currentSlide.name}</Name>님 프로필 구경하러가기
+                            <Name>{currentSlide?.memberId}</Name>님 프로필 구경하러가기
                         </Description>
                         </Link>
                         <Text>👀옆으로 밀어서 원하는 메이트를 찾아보세요!</Text>
@@ -176,8 +229,12 @@ const ExerciseRecommend = () => {
                                             ? selectedTime
                                             : `${item.option} ∨`
                                         }
-                                        width="auto"
-                                        options={item.option === "시간" ? ExerciseMateList.find((f) => f.option === "시간")?.lists || [] : item.lists || []}
+                                        width={item.option === "운동 종류" ? "95px" :
+                                            item.option==="성별"? "70px" : 
+                                            item.option ==="요일"? "70px":
+                                            item.option ==="학번"? "70px" :
+                                            "auto"}
+                                            options={item.option === "시간" ? ExerciseMateList.find((f) => f.option === "시간")?.lists || [] : item.lists || []}
                                         onSelect={(option) => handleSelect(item.option, option)}
                                         onToggle={handleDropdownHeight}
                                         />
@@ -187,28 +244,27 @@ const ExerciseRecommend = () => {
                             </Swiper>
                         </List>
                         <FullListSection>
-                            {filteredData.map((data) => (
-                                <RecommendBox
-                                category={data.category}
-                                key={data.id}
-                                id={data.id}
-                                text1={data.text1}
-                                text2={data.text2}
-                                text3={data.text3}
-                                number1={data.number1}
-                                number2={data.number2}
-                                $backgroundColor={data.$backgroundColor}
-                                width={data.width}
-                                color={data.color}
-                                detail1={data.detail1}
-                                detail2={data.detail2}
-                                detail3={data.detail3}
-                                detail4={data.detail4}
-                                detail5={data.detail5}
-                                detail6={data.detail6}
-                                
-                                />
-                            ))}
+                            {filteredData.map((profile: Profile, index: number) => (
+                            <RecommendBox
+                                category="EXERCISE"
+                                key={index}
+                                requestId={index}
+                                text1={profile.nickname}
+                                text2={`# ${profile.gender} # ${profile.age}살`} 
+                                text3={`# ${profile.studentNumber}학번 # ${profile.mbti}`}
+                                number1={profile.slotInfo.currentPeople}
+                                number2={profile.slotInfo.maxPeople}
+                                $backgroundColor={index% 3 ===0 ? "#EEF5FD" : index%3 ===1? "#C0E5FF": "#EEF5FD"}
+                                width="160px"
+                                color="#5D5D5D"
+                                detail1={profile.preferenceInfo?.preferredGender}  // ✅ 수정
+                                detail2={profile.preferenceInfo?.preferredMajors}  // ✅ 수정
+                                detail3={profile.mbti}
+                                detail4={convertExerciseTypes(profile.preferenceInfo?.exerciseTypes)}
+                                detail5={convertExerciseTypes(profile.preferenceInfo?.exerciseTypes)}
+                                detail6={convertExerciseTypes(profile.preferenceInfo?.exerciseTypes)}
+                            />
+                        ))}
                         </FullListSection>
                     </Wrapper>
                 )}
@@ -414,7 +470,7 @@ const List = styled.div`
     margin-bottom:10px;
     max-width:390px;
     display:flex;
-    padding-left:30px;
+    padding-left:10px;
     padding-right:5px;
 `   
 
@@ -506,4 +562,10 @@ const EmojiBubble4 = styled.div`
   right: -50px; /* 우측 위치 */
   top:40px;
   z-index:1;
+`;
+const NoDataMessage = styled.p`
+  text-align: center;
+  color: #69707E;
+  font-size: 14px;
+  margin-top: 20px;
 `;
