@@ -8,7 +8,7 @@ const Login = () => {
     const handleKakaoLogin = async() =>{
         window.location.href = import.meta.env.VITE_KAKAO_AUTH_URL;
     };
- 
+
     return (
         <>
             <TopNavbar>

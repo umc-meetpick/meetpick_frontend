@@ -1,6 +1,7 @@
+const nickname = localStorage.getItem("nickname");
 const studyProfileQuery = [
     {
-      "question": ["Hi hello~ 메이트 요정 피기입니다.",
+      "question": [`hello ${nickname}~ 메이트 요정 피기입니다.`,
         "Study 메이트 찾으시는군요.\n빠르게 questions 드릴게요!"],
       "direction": "incoming",
       "options": ["좋아!"],

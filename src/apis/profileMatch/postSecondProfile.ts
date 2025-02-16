@@ -25,7 +25,6 @@ const postSecondProfile = (type: ProfileType) => {
   const mutation = useMutation({
     mutationFn: async () => {
       console.log(JSON.stringify(secondProfileData(type, contextData), null, 2));
-
       const response = await axiosInstance.post("/api/request/add", secondProfileData(type,contextData));
       console.log("post",response)
       return response.data;

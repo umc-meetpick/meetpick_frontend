@@ -1,6 +1,7 @@
+const nickname = localStorage.getItem("nickname");
 const exerciseProfileQuery = [
     {
-      "question": ["[닉네임] 하이!\n너만의 메이트 요정 피기야!",
+      "question": [`${nickname} 하이!\n너만의 메이트 요정 피기야!`,
         "함께할 운동 메이트를 찾고 있네~",
         "메이트 관련 질문에 앞서\n운동 관련 질문 몇가지 준비했어!"],
       "direction": "incoming",
@@ -32,7 +33,7 @@ const exerciseProfileQuery = [
         "type": "place"
     },
     {
-        "question": ["응 알겠어 😊","이제 [닉네임](이)의 완벽한\n메이트를 찾기 위한 질문을 할게."],
+        "question": ["응 알겠어 😊",`이제 ${nickname}(이)의 완벽한\n메이트를 찾기 위한 질문을 할게.`],
         "direction": "incoming",
         "options": ["좋아!"]
     },
