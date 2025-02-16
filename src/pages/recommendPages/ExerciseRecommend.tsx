@@ -28,6 +28,7 @@ interface Profile {
     };
     preferenceInfo?: {
         exerciseTypes?:string[];
+        studentNumber?:string;
         preferredGender?: string;
         preferredMajors?: string;
         availableTimes?:string[];
@@ -45,12 +46,14 @@ const exerciseTypeMap: Record<string, string> = {
     "SOCCER": "축구/풋살",
     "BASKETBALL" :"농구",
     "TENNIS_BADMINTON" :"배드민턴",
-    "OTHER":"기타"
+    "OTHER":"기타",
+    "JUNIOR":"후배"
 };
 
- // 2️⃣ exerciseTypes 변환 함수
- const convertExerciseTypes = (exerciseTypes: string[] | undefined) => {
-    return exerciseTypes?.map(type => exerciseTypeMap[type] || type).join(", ") || "선택 안 함";
+const convertExerciseTypes = (exerciseTypes: string | string[] | undefined) => {
+    if (!exerciseTypes) return; // undefined 처리
+    if (typeof exerciseTypes === "string") return exerciseTypeMap[exerciseTypes] || exerciseTypes; // 단일 값 처리
+    return exerciseTypes.map(type => exerciseTypeMap[type] || type).join(", ");
 };
 
 SwiperCore.use([Pagination]);
@@ -260,7 +263,7 @@ const ExerciseRecommend = () => {
                                 detail1={profile.preferenceInfo?.preferredGender}  // ✅ 수정
                                 detail2={profile.preferenceInfo?.preferredMajors}  // ✅ 수정
                                 detail3={profile.mbti}
-                                detail4={convertExerciseTypes(profile.preferenceInfo?.exerciseTypes)}
+                                detail4={convertExerciseTypes(profile.preferenceInfo?.studentNumber)}
                                 detail5={convertExerciseTypes(profile.preferenceInfo?.exerciseTypes)}
                                 detail6={convertExerciseTypes(profile.preferenceInfo?.exerciseTypes)}
                             />
