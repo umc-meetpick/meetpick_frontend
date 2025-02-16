@@ -71,7 +71,7 @@ const foodProfileQuery = [
       "type": "date"
     },
     {
-      "question": [ `[${nickname}님과 시간이 맞는\n메이트를 찾아드릴게요`, "메이트와 어떤 음식을\n드시고 싶으세요?"],
+      "question": [ `${nickname}님과 시간이 맞는\n메이트를 찾아드릴게요`, "메이트와 어떤 음식을\n드시고 싶으세요?"],
       "direction": "incoming",
       "options": ["한식", "양식", "일식", "중식", "베트남식", "기타"],
       "type": "menu"
