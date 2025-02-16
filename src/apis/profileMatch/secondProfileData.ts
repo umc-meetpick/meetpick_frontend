@@ -20,15 +20,16 @@ const isStudyProfile = (contextData: ProfileContextType): contextData is StudyPr
   return !(isFoodProfile(contextData) || isExerciseProfile(contextData));
 };
 
+const removeEmoji = (text: string) => text.replace(/[\p{Emoji}\p{So}]/gu, "");
+
 const secondProfileData = (type: ProfileType, contextData: ProfileContextType) => {
    // 공통 데이터
    const baseData = {
-    "writerId": 20,
     "gender": (contextData.gender == "상관없음") ? null : (contextData.gender == "남성" ? "MALE" : "FEMALE"),
-    "subMajorName": contextData.majors,
+    "subMajorName": (contextData.majors.length === 0) ? null : contextData.majors,
     "studentNumber": (contextData.studentNum == "상관없음") ? null : contextData.studentNum,
-    "minAge": contextData.ageRange[0] ? contextData.ageRange[0] : 0,
-    "maxAge": contextData.ageRange[1] ? contextData.ageRange[1] : 0,
+    "minAge": contextData.ageRange[0] ? contextData.ageRange[0] : null,
+    "maxAge": contextData.ageRange[1] ? contextData.ageRange[1] : null,
     "mbti": contextData.mbtiList.join(""),
     "isHobbySame": contextData.isHobbySame || false,
     "memberSecondProfileTimes": Object.entries(contextData.dateTime || {}).map(([week, times]) => ({
@@ -50,6 +51,11 @@ switch (type) {
         exerciseTypes: null,
         isSchool: null,
         food: contextData.menuList,
+        studyType:null,
+        majorNameAndProfessorName:null,
+        isOnline:null,
+        studyTimes: null,
+        place:null,
         type: "MEAL"
       };
     }
@@ -59,8 +65,14 @@ switch (type) {
     if (isExerciseProfile(contextData)) {
       return {
         ...baseData,
-        exerciseTypes: contextData.exercise,
+        exerciseTypes: contextData.exercise == "기타" ? "기타" : removeEmoji(contextData.exercise),
         isSchool: contextData.isSchool,
+        food: null,
+        studyType:null,
+        majorNameAndProfessorName: null,
+        isOnline:null,
+        studyTimes: null,
+        place: contextData.isSchool ? null : contextData.place,
         type: "EXERCISE"
       };
     }
@@ -70,6 +82,14 @@ switch (type) {
     if (isStudyProfile(contextData)) {
       return {
         ...baseData,
+        exerciseTypes: null,
+        isSchool: null,
+        food: null,
+        studyType:contextData.studyType,
+        majorNameAndProfessorName: contextData.subject,
+        isOnline: contextData.isOnline,
+        studyTimes: contextData.studyTime,
+        place:null,
         type: "STUDY"
       };
     }
