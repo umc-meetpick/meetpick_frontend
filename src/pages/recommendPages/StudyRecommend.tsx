@@ -67,7 +67,6 @@ const StudyRecommend = () => {
     const [selectedDate, setSelectedDate] = useState<string | null>(null);
     const [selectedStudy, setSelectedStudy] = useState<string|null>(null);
     const [currentSlide, setCurrentSlide] = useState(recommendations?.[0]||null); // 현재 슬라이트 상태 관리
-
     const handleDropdownHeight= (isOpen:boolean) => {
         console.log("선택 ", isOpen);
         if (isOpen && swiper) {
