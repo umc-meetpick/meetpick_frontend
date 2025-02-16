@@ -5,9 +5,12 @@ import AgreeItem from "../../components/SignupAgree";
 import SignupButton from "../../components/button/SignupButton";
 import { Link } from "react-router-dom";
 import getToken from "../../apis/login/getToken";
+import { termsData } from "../../data/termsData";
 
 const Signup = () => {
   const [allChecked, setAllChecked] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState("");
   const [agreements, setAgreements] = useState({
     age: false,
     terms: false,
@@ -26,6 +29,15 @@ const Signup = () => {
       marketing: newState,
     });
   };
+
+  const handleClickView = (type:"terms" | "privacy") => {
+    setIsModalOpen(true);
+    setModalContent(termsData[type]);
+  }
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  }
 
   useEffect(() => {
     getToken();
@@ -73,12 +85,14 @@ const Signup = () => {
               hasViewButton={true}
               checked={agreements.terms}
               onChange={() => handleIndividualCheck("terms")}
+              onViewClick ={() => handleClickView("terms")}
             />
             <AgreeItem
               text="(필수) 개인정보 수집 / 이용 동의"
               hasViewButton={true}
               checked={agreements.privacy}
               onChange={() => handleIndividualCheck("privacy")}
+              onViewClick ={() => handleClickView("privacy")}
             />
             <AgreeItem
               text="(선택) 마케팅 수신 동의"
@@ -115,6 +129,14 @@ const Signup = () => {
         </ButtonContainer>
       </Container>
 
+      {isModalOpen && (
+                <ModalOverlay>
+                    <Box>
+
+                    </Box>
+                </ModalOverlay>
+            )}
+
     </>
   );
 };
@@ -147,3 +169,26 @@ const AgreeList = styled.div`
 const SecondAgree = styled.div`
   padding: 8px;
 `;
+
+
+const ModalOverlay = styled.div`
+  position:absolute;
+  top: 0;
+  left:0;
+  width: 100vw; /* 🔥 뷰포트 전체를 덮도록 수정 */
+  max-width:393px;
+  height: 100vh; 
+  background: rgba(0, 0, 0, 0.29); /* 반투명 배경 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99; /* 최상위 배치 */
+`;
+
+const Box = styled.div`
+  width:300px;
+  background-color:white;
+  height:500px;
+  display:flex;
+  justify-content:center;
+`
