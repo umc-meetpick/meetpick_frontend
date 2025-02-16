@@ -11,6 +11,7 @@ const Signup = () => {
   const [allChecked, setAllChecked] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState("");
+  const [modalType, setModalType] = useState<"terms"|"privacy"|null>(null);
   const [agreements, setAgreements] = useState({
     age: false,
     terms: false,
@@ -33,10 +34,12 @@ const Signup = () => {
   const handleClickView = (type:"terms" | "privacy") => {
     setIsModalOpen(true);
     setModalContent(termsData[type]);
+    setModalType(type);
   }
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
+    setModalType(null);
   }
 
   useEffect(() => {
@@ -132,7 +135,11 @@ const Signup = () => {
       {isModalOpen && (
                 <ModalOverlay>
                     <Box>
-
+                        <Title>{modalType === "terms"? "이용약관" : "개인정보 처리방침"} </Title>
+                        <Content>{modalContent}</Content>
+                        <Button>
+                        <CloseButton onClick={handleCloseModal}>닫기</CloseButton>
+                        </Button>
                     </Box>
                 </ModalOverlay>
             )}
@@ -172,23 +179,70 @@ const SecondAgree = styled.div`
 
 
 const ModalOverlay = styled.div`
-  position:absolute;
+  position: fixed;
   top: 0;
-  left:0;
-  width: 100vw; /* 🔥 뷰포트 전체를 덮도록 수정 */
-  max-width:393px;
-  height: 100vh; 
+  width: 393px;
+  height: 100vh;
   background: rgba(0, 0, 0, 0.29); /* 반투명 배경 */
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 99; /* 최상위 배치 */
+  z-index: 9999; /* 최상위 배치 */
 `;
 
 const Box = styled.div`
-  width:300px;
+  width:285px;
+  border-radius:10px;
+  position:relative;
+  left:-4px;
+  top:-20px;
   background-color:white;
-  height:500px;
+  height:430px;
+
+  justify-content:center;
+  overflow-y:scroll;
+  max-height:430px;
+
+   &::-webkit-scrollbar {
+    width: 8px; 
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: rgb(0,0,0,0.1); 
+    border-radius: 4px;
+  }
+  &::-webkit-scrollbar-track {
+    background-color:none;
+  }
+`
+
+const Title = styled.div`
+  height:40px;
   display:flex;
   justify-content:center;
+  align-items:center;
+  font-weight:700;
+  margin-top:15px;
+  font-size:17px;
+  color:#326DC1;
+`
+const Content = styled.div`
+  padding:0 10px;
+  white-space:pre-wrap;
+  font-family: "Pretendard Variable";
+`
+
+const CloseButton = styled.button`
+  width:200px;
+  background-color:#E7F2FE;
+  color:#326DC1;
+  border-radius:20px;
+  font-family: "Pretendard Variable";
+  font-weight:700;
+`
+
+const Button = styled.div`
+  display:flex;
+  justify-content:center;
+  margin-bottom:20px;
+  font-family: "Pretendard Variable";
 `
