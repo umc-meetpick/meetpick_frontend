@@ -39,11 +39,12 @@ const studyTypeMap: Record<string, string> = {
     "MAJOR": "전공",
     "LIBERAL_ART": "교양",
     "CERTIFICATE": "자격증",
+    "PEER" : "동기"
 };
 
  // 2️⃣ foodTypes 변환 함수
  const convertStudyTypes = (studyTypes: string[] | undefined) => {
-    return studyTypes?.map(type => studyTypeMap[type] || type).join(", ") || "선택 안 함";
+    return studyTypes?.map(type => studyTypeMap[type] || type).join(", ") || "";
 };
 
 SwiperCore.use([Pagination]);
