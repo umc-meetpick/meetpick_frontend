@@ -32,6 +32,7 @@ const StudyRecommend = () => {
     
     // recommendData에서 현재 슬라이드에 해당하는 데이터 찾기 
     const currentRecommend = studyslidesData.find(data => data.id === currentSlide.id);
+    const loginNickname = localStorage.getItem('nickname')
 
     const handleDropdownHeight= (isOpen:boolean) => {
         console.log("선택 ", isOpen);

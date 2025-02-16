@@ -45,7 +45,7 @@ const ToggleList: React.FC<ToggleListProps> = ({button, multi, setModalOpen, typ
     const handleMajor = (major:string, title:string, all:string[]) =>{
         if (type == "study"){
             setSubjectType(title)
-            setSubject(major)
+            setSubject(`${title}-${major}`)
         }else{
             if (multi) {
                 if (major === "all") {
@@ -98,11 +98,11 @@ const ToggleList: React.FC<ToggleListProps> = ({button, multi, setModalOpen, typ
                                 key={`major-${item.id}-${index}`}
                                 onClick={() => handleMajor(i, item.title, item.items)}
                                 $isSelected={multi ? majors.includes(i) 
-                                    : (type == "study" ? (subject === i && subjectType == item.title) : major == i)}
+                                    : (type == "study" ? (subject.split('-')[1] === i && subjectType == item.title) : major == i)}
                                 >
                                 {i}
                                 </Detail>
-                                {(i == "기타" && (subject === i || value != "")) && subjectType == item.title &&
+                                {(i == "기타" && (subject.split('-')[1] === i || value != "")) && subjectType == item.title &&
                                     <Input 
                                         placeholder="스터디 과목을 입력해주세요!" 
                                         value={value}
