@@ -6,7 +6,7 @@ export const studyslidesData = [
       grade: "20학번",
       study: "✏️전공 공부",
       gender: "남성",
-      major: "IT 계열",
+      major: "핸드메이드 퍼즐맞추기 바이올린",
     },
     {
         id: 2,

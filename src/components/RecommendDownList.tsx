@@ -149,7 +149,7 @@ const DropdownList = styled.ul<{$width?:string; $top?: string; $left?: string }>
   width: ${({ $width }) => ($width ? `${parseInt($width) - 16}px` : "auto")};
   white-space: nowrap; /* 텍스트 줄바꿈 방지 */
   top: ${({ $top }) => $top || "0px"};
-  left: ${({ $left }) => $left || "0px"};
+  left: ${({ $left }) => $left || "px"};
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.27);
 `;
 
