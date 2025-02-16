@@ -281,6 +281,8 @@ const SearchIcon = styled(IoSearchOutline)`
 
 const SearchResultContainer = styled.div`
   width: 81.5%;
+  height: 140px;
+  overflow-y:auto;
   border-radius: 5px;
   margin-top: 10px;
   left: 35px;
