@@ -27,7 +27,8 @@ interface Profile {
         maxPeople: number;
     };
     preferenceInfo?: {
-        studyTypes?: string[];
+        studyType?: string;
+        studentNumber:string;
         preferredGender?: string;
         preferredMajors?: string;
         availableTimes?:string[];
@@ -93,10 +94,10 @@ const StudyRecommend = () => {
     const filteredData = (profiles || []).filter(
         (item :Profile) =>
             (selectedGender === null || item.gender === selectedGender) &&
-            (selectedGrade === null || item.studentNumber?.toString() === selectedGrade) &&
+            (selectedGrade === null || item.preferenceInfo?.studentNumber === selectedGrade) &&
             (selectedTime === null || item.preferenceInfo?.availableTimes?.includes(selectedTime)) &&
-            (selectedDate === null || item.preferenceInfo?.availableDays?.includes(selectedDate)) &&
-            (selectedStudy === null || item.preferenceInfo?.studyTypes?.some(study => study === selectedStudy))
+            (selectedDate === null || (item.preferenceInfo?.availableDays || []).length === 0 || item.preferenceInfo?.availableDays?.includes(selectedDate)) &&
+            (selectedStudy === null || item.preferenceInfo?.studyType === selectedStudy) 
 
     );
       
@@ -237,9 +238,9 @@ const StudyRecommend = () => {
                                 detail1={profile.preferenceInfo?.preferredGender}  // ✅ 수정
                                 detail2={profile.preferenceInfo?.preferredMajors}  // ✅ 수정
                                 detail3={profile.mbti}
-                                detail4={profile.preferenceInfo?.studyTypes?.join(", ") || ""}
-                                detail5={profile.preferenceInfo?.studyTypes?.join(", ") || ""}
-                                detail6={profile.preferenceInfo?.studyTypes?.join(", ") || ""}
+                                detail4={profile.preferenceInfo?.studentNumber}
+                                detail5={profile.preferenceInfo?.studyType || ""}
+                                detail6={profile.preferenceInfo?.studyType || ""}
                             />
                         ))}
                         </FullListSection>
