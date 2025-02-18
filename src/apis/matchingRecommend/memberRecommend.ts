@@ -1,7 +1,7 @@
 import axiosInstance from "../axiosInstance";
 import { useQuery } from "@tanstack/react-query";
 
-export type MateType = "STUDY" | "EXERCISE" | "MEAL" | "ALL";
+export type MateType = "공부" | "운동" | "혼밥" | "전체";
 
 export interface RecommendationType {
     memberId: number;
