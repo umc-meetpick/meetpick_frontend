@@ -36,28 +36,14 @@ interface Profile {
     };
 }
 
-const foodTypeMap: Record<string, string> = {
-    "KOREAN": "한식",
-    "JAPANESE": "일식",
-    "CHINESE": "중식",
-    "VIETNAMESE": "베트남식",
-    "WESTERN": "양식",
-    "OTHER": "기타",
-};
-
- // 2️⃣ foodTypes 변환 함수
- const convertFoodTypes = (foodTypes: string[] | undefined) => {
-    return foodTypes?.map(type => foodTypeMap[type] || type).join(", ") || "선택 안 함";
-};
-
 
 SwiperCore.use([Pagination]);
 
 const FoodRecommend = () => {
 
-    const {data:recommendations} = useFetchRecommendations("MEAL");
+    const {data:recommendations} = useFetchRecommendations("혼밥");
     const {data:profiles=[]} = useTotalProfiles({
-        mateType:"MEAL"
+        mateTypeStr:"혼밥"
     });
 
     console.log("전체 프로필 데이터:", profiles);
@@ -114,7 +100,7 @@ const FoodRecommend = () => {
             (selectedGrade === null || item.studentNumber?.toString() === selectedGrade) &&
             (selectedTime === null || item.preferenceInfo?.availableTimes?.includes(selectedTime)) &&
             (selectedDate === null || item.preferenceInfo?.availableDays?.includes(selectedDate)) &&
-            (selectedFood === null || item.preferenceInfo?.foodTypes?.some(food => foodTypeMap[food] === selectedFood))
+            (selectedFood === null || item.preferenceInfo?.foodTypes?.some(food => food === selectedFood))
 
     );
     
@@ -256,9 +242,9 @@ const FoodRecommend = () => {
                                 detail1={profile.preferenceInfo?.preferredGender}  // ✅ 수정
                                 detail2={profile.preferenceInfo?.preferredMajors}  // ✅ 수정
                                 detail3={profile.mbti}
-                                detail4={convertFoodTypes(profile.preferenceInfo?.foodTypes)}
-                                detail5={convertFoodTypes(profile.preferenceInfo?.foodTypes)}
-                                detail6={convertFoodTypes(profile.preferenceInfo?.foodTypes)}
+                                detail4={profile.preferenceInfo?.foodTypes?.join(", ") || ""}
+                                detail5={profile.preferenceInfo?.foodTypes?.join(", ") || ""}
+                                detail6={profile.preferenceInfo?.foodTypes?.join(", ") || ""}
                             />
                         ))}
                         </FullListSection>
