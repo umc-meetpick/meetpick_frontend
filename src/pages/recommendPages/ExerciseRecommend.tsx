@@ -27,7 +27,7 @@ interface Profile {
         maxPeople: number;
     };
     preferenceInfo?: {
-        exerciseTypes?:string[];
+        exerciseType?:string;
         studentNumber?:string;
         preferredGender?: string;
         preferredMajors?: string;
@@ -97,15 +97,17 @@ const ExerciseRecommend = () => {
         }
     };
 
-    const filteredData = (profiles || []).filter(
-        (item :Profile) =>
-            (selectedGender === null || item.gender === selectedGender) &&
-            (selectedGrade === null || item.studentNumber?.toString() === selectedGrade) &&
-            (selectedTime === null || item.preferenceInfo?.availableTimes?.includes(selectedTime)) &&
-            (selectedDate === null || item.preferenceInfo?.availableDays?.includes(selectedDate)) &&
-            (selectedExercise === null || item.preferenceInfo?.exerciseTypes?.some(exercise => exerciseTypeMap[exercise] === selectedExercise))
 
+    const filteredData = (profiles || []).filter(
+        (item: Profile) =>
+            (selectedGender === null || item.gender === selectedGender) &&
+            (selectedGrade === null || item.preferenceInfo?.studentNumber === selectedGrade) &&
+            (selectedTime === null || item.preferenceInfo?.availableTimes?.includes(selectedTime)) &&
+            (selectedDate === null || (item.preferenceInfo?.availableDays || []).length === 0 || item.preferenceInfo?.availableDays?.includes(selectedDate)) &&
+            (selectedExercise === null || item.preferenceInfo?.exerciseType === selectedExercise)
     );
+    
+    
       
 
     return (
@@ -245,9 +247,11 @@ const ExerciseRecommend = () => {
                                 detail1={profile.preferenceInfo?.preferredGender}  // ✅ 수정
                                 detail2={profile.preferenceInfo?.preferredMajors}  // ✅ 수정
                                 detail3={profile.mbti}
-                                detail4={profile.preferenceInfo?.exerciseTypes?.join(", ") || ""}
-                                detail5={profile.preferenceInfo?.exerciseTypes?.join(", ") || ""}
-                                detail6={profile.preferenceInfo?.exerciseTypes?.join(", ") || ""}
+                                detail4={profile.preferenceInfo?.exerciseType || ""}
+                                detail5={profile.preferenceInfo?.exerciseType || ""}
+                                detail6={profile.preferenceInfo?.exerciseType || ""}
+
+
                             />
                         ))}
                         </FullListSection>
