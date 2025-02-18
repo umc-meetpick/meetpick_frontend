@@ -1,4 +1,5 @@
-import React, { useRef, useState } from "react";
+import * as React from "react";
+import { useRef, useState } from "react";
 import styled from "styled-components";
 
 const SliderWrapper = styled.div`
@@ -71,12 +72,12 @@ const Slider: React.FC<SliderProps> = ({ children }) => {
   return (
     <SliderWrapper>
       <SliderContainer ref={sliderRef} onScroll={handleScroll}>
-        {React.Children.map(children, (child, index) => (
+        {React.Children.map(children, (child: React.ReactNode, index: number) => (
           <Slide key={index}>{child}</Slide>
         ))}
       </SliderContainer>
       <DotsContainer>
-        {React.Children.map(children, (_, index) => (
+        {React.Children.map(children, (_: React.ReactNode, index: number) => (
           <Dot
             key={index}
             $active={currentSlide === index}

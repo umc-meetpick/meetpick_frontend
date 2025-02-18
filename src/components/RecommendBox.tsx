@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Icon } from "@iconify/react";
 import RecommendImage from "../assets/images/Recommend3.png";

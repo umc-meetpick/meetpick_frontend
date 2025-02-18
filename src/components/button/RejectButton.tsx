@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 
 const Button = styled.button<{ width?: string; height?: string; fontSize?: string; fontWeight?: string; $borderRadius?: string;}>`

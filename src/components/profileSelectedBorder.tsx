@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import { IoClose } from "react-icons/io5";
 import { useContext,useRef, useState } from "react";

@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import ellipsepurple from '../homeImg/EllipsePurple.png';
 import ellipseyellow from '../homeImg/EllipseYellow.png';

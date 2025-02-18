@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import ListTabs from "../components/ListTabs";
 import Navbar from "../components/navbar/BasicNavbar"
