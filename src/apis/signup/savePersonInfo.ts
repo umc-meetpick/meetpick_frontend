@@ -3,7 +3,7 @@ import axiosInstance from "../axiosInstance";
 
 interface SavePersonInfoParams {
     name: string;
-    gender:"MALE" | "FEMALE";
+    gender:"남성" | "여성";
     birthday:string; // ISO 형식 날짜 ("2025-02-09T08:17:19.456Z")
 }
 

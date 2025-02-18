@@ -140,7 +140,7 @@ const Signup2 = () => {
     console.log("회원 정보 저장 요청", {name, gender, birthday});
 
     savePersonInfo(
-      {name, gender : gender === "남성"? "MALE":"FEMALE", birthday},
+      {name, gender : gender === "남성"? "남성":"여성", birthday},
       {
         onSuccess:(data) => {
           console.log("회원 정보 저장 성공!", data);
