@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import { useState, useContext } from 'react';
 import styled from "styled-components";
 import { FaChevronDown } from "react-icons/fa6";
 import majorList from '../assets/majorList';
@@ -17,7 +17,7 @@ interface ToggleListProps {
     type?:string;
 }
 
-const ToggleList: React.FC<ToggleListProps> = ({button, multi, setModalOpen, type}) =>{
+const ToggleList = ({ button, multi, setModalOpen, type }: ToggleListProps) => {
     const navigate = useNavigate();
     const lists = (type == "study") ? studyLists : majorList;
     function useProfileContext(type: string) {
@@ -93,7 +93,7 @@ const ToggleList: React.FC<ToggleListProps> = ({button, multi, setModalOpen, typ
                                 </Detail>
                             }
                             {item.items.map((i, index) => (
-                            <React.Fragment key={`fragment-${item.id}-${index}`}>
+                            <>
                                 <Detail
                                 key={`major-${item.id}-${index}`}
                                 onClick={() => handleMajor(i, item.title, item.items)}
@@ -106,10 +106,10 @@ const ToggleList: React.FC<ToggleListProps> = ({button, multi, setModalOpen, typ
                                     <Input 
                                         placeholder="스터디 과목을 입력해주세요!" 
                                         value={value}
-                                        onChange={(e)=>{setValue(e.target.value)}}
-                                        onBlur={(e) => setSubject(e.target.value)}
+                                        onChange={(e: React.FocusEvent<HTMLInputElement>)=>setValue(e.target.value)}
+                                        onBlur={(e: React.FocusEvent<HTMLInputElement>) => setSubject(e.target.value)}
                                     />}
-                            </React.Fragment>
+                            </>
                             ))}
                         </>
                     )}
@@ -199,7 +199,7 @@ const Btn = styled.button<{$isDisable:boolean}>`
     }
 `;
 const Btn2 = styled.button<{$isDisable:boolean}>`
-    width:312px;
+    width: 312px;
     height:48px;
     color:${({$isDisable})=>$isDisable ? "#373E4B" : "#326DC1"};
     font-size:15px;

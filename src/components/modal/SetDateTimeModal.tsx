@@ -200,7 +200,7 @@ const Container = styled.div<{$isSmall:boolean}>`
     flex-direction: column;
     align-items: center;
     position: absolute;
-    bottom: ${({$isSmall})=>$isSmall ? "0px" : "0px"};
+    bottom: ${({$isSmall})=>$isSmall ? "-40px" : "30px"};
     overflow-y: auto;
     border-radius: 30px 30px 0 0;
 `;
@@ -240,6 +240,7 @@ const Box =  styled.button<{$isSelected:boolean}>`
     height:40px;
     display:flex;
     justify-content: center;
+    color: black;
     border:${({$isSelected})=> $isSelected ? "1px solid #007AFF" : "1px solid #E7E7E7"};
     background-color: ${({$isSelected}) => $isSelected ? "#EFF3FE" : "white"};
     box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1); 
@@ -253,6 +254,7 @@ const Box2 =  styled.button<{$isSelected:boolean}>`
     height:40px;
     display:flex;
     justify-content: center;
+    color: black;
     border:${({$isSelected})=> $isSelected ? "1px solid #007AFF" : "1px solid #E7E7E7"};
     background-color: ${({$isSelected}) => $isSelected ? "#EFF3FE" : "white"};
     box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1); 

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { IoCloseOutline } from "react-icons/io5";
-import React, { useState } from 'react';
+import { useState } from 'react';
 import AcceptButton from '../button/AcceptButton';
 import RejectButton from '../button/RejectButton';
 import DialogButton from '../button/DialogButton';

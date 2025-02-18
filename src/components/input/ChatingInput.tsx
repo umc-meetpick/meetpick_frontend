@@ -20,6 +20,7 @@ const ChatingInput = ({disable, setChatDisable, keyboard, isExtra, save, type}:C
     const { setExercise, setPlace: setExercisePlace, setMent: setExerciseMent } = useContext(ExerciseProfileInfoContext);
     const { setSubject, setPlace: setStudyPlace, setMent: setStudyMent} = useContext(StudyProfileInfoContext);
     const isSmallViewport = window.innerHeight < 700; 
+    const longWidth = window.innerWidth > 393;
 
     const handleSendBtn = () =>{
         if (value != ""){
@@ -51,7 +52,7 @@ const ChatingInput = ({disable, setChatDisable, keyboard, isExtra, save, type}:C
             <Input 
                 placeholder="채팅 입력"
                 value={value}
-                onChange={(e)=>setValue(e.target.value)}
+                onChange={(e: React.FocusEvent<HTMLInputElement>)=>setValue(e.target.value)}
                 disabled={disable}
                 $keyboard={keyboard}
                 $isSmallView={isSmallViewport}
@@ -62,6 +63,7 @@ const ChatingInput = ({disable, setChatDisable, keyboard, isExtra, save, type}:C
                 $isExtra={isExtra}
                 $isSmallView={isSmallViewport}
                 $isDisabled={disable}
+                $longWidth={longWidth}
             >{
                 isExtra ? "저장" :
                 <FaPaperPlane size={20}/>
@@ -90,10 +92,10 @@ const Input = styled.textarea<{$keyboard:boolean, $isSmallView:boolean}>`
         outline: none;
     }
 `;
-const IconPosition = styled.div<{$keyboard:boolean, $isExtra?:boolean, $isSmallView:boolean, $isDisabled:boolean}>`
+const IconPosition = styled.div<{$keyboard:boolean, $isExtra?:boolean, $isSmallView:boolean, $isDisabled:boolean, $longWidth:boolean}>`
     position:fixed;
     bottom:${({$keyboard, $isSmallView})=> $keyboard ? "3px" : ($isSmallView ? "5px" : "90px")};
-    left: calc(50vw + 140px);
+    left: ${({$longWidth})=> $longWidth ? "calc(50vw + 140px)" : "calc(100vw - 50px)"};
     width:${({$isExtra})=> $isExtra ? "35px" : "30px"};
     heignt:36px;
     border-radius:${({$isExtra})=> $isExtra ? "20px" : "100%"};

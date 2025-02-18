@@ -8,12 +8,12 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   width: calc(100vw); 
-  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
 `;
 const Main=styled.div`
   width: calc(100vw); 
   max-width: 393px; 
-  height:100vh;
+  height: calc(var(--vh, 1vh) * 100);
   position: relative; 
   font-family: "Pretendard Variable";
 `;
