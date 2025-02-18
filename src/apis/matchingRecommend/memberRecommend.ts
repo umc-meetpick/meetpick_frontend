@@ -5,7 +5,6 @@ export type MateType = "공부" | "운동" | "혼밥" | "전체";
 
 export interface RecommendationType {
     memberId: number;
-    requestId: number;
     memberNumber: number;
     gender: string;
     foodType: string[];
@@ -17,7 +16,6 @@ export interface RecommendationType {
 
 
 export const useFetchRecommendations = (mateType: string) => {
-  console.log("📡 추천 매칭 목록 조회 API 호출 시작! mateType:", mateType);
   return useQuery({
     queryKey: ["recommendations", mateType],
     queryFn: async () => {
@@ -25,7 +23,7 @@ export const useFetchRecommendations = (mateType: string) => {
         params: { mateType },
       });
 
-      console.log("✅ API 응답 성공:", data);
+      console.log("✅ 추천 매칭 목록 API 응답 성공:", data);
       if (!data || !Array.isArray(data.result)) {
         console.warn("❌ API 응답 데이터가 예상한 형식이 아닙니다:", data);
         return [];

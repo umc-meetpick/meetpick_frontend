@@ -37,31 +37,13 @@ interface Profile {
 }
 
 
-const exerciseTypeMap: Record<string, string> = {
-    "BOWLING": "볼링",
-    "CLIMBING": "클라이밍",
-    "TABLE_TENNIS": "탁구",
-    "FITNESS": "헬스",
-    "RUNNING": "러닝/조깅",
-    "SOCCER": "축구/풋살",
-    "BASKETBALL" :"농구",
-    "TENNIS_BADMINTON" :"배드민턴",
-    "OTHER":"기타",
-    "JUNIOR":"후배"
-};
-
-const convertExerciseTypes = (exerciseTypes: string | string[] | undefined) => {
-    if (!exerciseTypes) return; // undefined 처리
-    if (typeof exerciseTypes === "string") return exerciseTypeMap[exerciseTypes] || exerciseTypes; // 단일 값 처리
-    return exerciseTypes.map(type => exerciseTypeMap[type] || type).join(", ");
-};
 
 SwiperCore.use([Pagination]);
 
 const ExerciseRecommend = () => {
-    const {data:recommendations} = useFetchRecommendations("EXERCISE");
+    const {data:recommendations} = useFetchRecommendations("운동");
     const {data:profiles=[]} = useTotalProfiles({
-        mateType:"EXERCISE"
+        mateTypeStr:"운동"
     });
 
     console.log("전체 프로필 데이터:", profiles);
@@ -263,9 +245,9 @@ const ExerciseRecommend = () => {
                                 detail1={profile.preferenceInfo?.preferredGender}  // ✅ 수정
                                 detail2={profile.preferenceInfo?.preferredMajors}  // ✅ 수정
                                 detail3={profile.mbti}
-                                detail4={convertExerciseTypes(profile.preferenceInfo?.studentNumber)}
-                                detail5={convertExerciseTypes(profile.preferenceInfo?.exerciseTypes)}
-                                detail6={convertExerciseTypes(profile.preferenceInfo?.exerciseTypes)}
+                                detail4={profile.preferenceInfo?.exerciseTypes?.join(", ") || ""}
+                                detail5={profile.preferenceInfo?.exerciseTypes?.join(", ") || ""}
+                                detail6={profile.preferenceInfo?.exerciseTypes?.join(", ") || ""}
                             />
                         ))}
                         </FullListSection>

@@ -35,24 +35,13 @@ interface Profile {
     };
 }
 
-const studyTypeMap: Record<string, string> = {
-    "MAJOR": "전공",
-    "LIBERAL_ART": "교양",
-    "CERTIFICATE": "자격증",
-};
-
- // 2️⃣ foodTypes 변환 함수
- const convertStudyTypes = (studyTypes: string[] | undefined) => {
-    return studyTypes?.map(type => studyTypeMap[type] || type).join(", ") || "선택 안 함";
-};
-
 SwiperCore.use([Pagination]);
 
 const StudyRecommend = () => {
 
-    const {data:recommendations} = useFetchRecommendations("STUDY");
+    const {data:recommendations} = useFetchRecommendations("공부");
     const {data:profiles=[]} = useTotalProfiles({
-        mateType:"STUDY"
+        mateTypeStr:"공부"
     });
 
     console.log("전체 프로필 데이터:", profiles);
@@ -107,7 +96,7 @@ const StudyRecommend = () => {
             (selectedGrade === null || item.studentNumber?.toString() === selectedGrade) &&
             (selectedTime === null || item.preferenceInfo?.availableTimes?.includes(selectedTime)) &&
             (selectedDate === null || item.preferenceInfo?.availableDays?.includes(selectedDate)) &&
-            (selectedStudy === null || item.preferenceInfo?.studyTypes?.some(study => studyTypeMap[study] === selectedStudy))
+            (selectedStudy === null || item.preferenceInfo?.studyTypes?.some(study => study === selectedStudy))
 
     );
       
@@ -248,9 +237,9 @@ const StudyRecommend = () => {
                                 detail1={profile.preferenceInfo?.preferredGender}  // ✅ 수정
                                 detail2={profile.preferenceInfo?.preferredMajors}  // ✅ 수정
                                 detail3={profile.mbti}
-                                detail4={convertStudyTypes(profile.preferenceInfo?.studyTypes)}
-                                detail5={convertStudyTypes(profile.preferenceInfo?.studyTypes)}
-                                detail6={convertStudyTypes(profile.preferenceInfo?.studyTypes)}
+                                detail4={profile.preferenceInfo?.studyTypes?.join(", ") || ""}
+                                detail5={profile.preferenceInfo?.studyTypes?.join(", ") || ""}
+                                detail6={profile.preferenceInfo?.studyTypes?.join(", ") || ""}
                             />
                         ))}
                         </FullListSection>

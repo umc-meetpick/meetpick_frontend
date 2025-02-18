@@ -18,6 +18,7 @@ import { useFetchRecommendations } from "../../apis/matchingRecommend/memberReco
 import { useTotalProfiles } from "../../apis/matchingRecommend/TotalProfiles";
 
 interface Profile {
+    requestId :number;
     nickname: string;
     gender: string;
     age: number;
@@ -95,13 +96,12 @@ const FoodRecommend = () => {
     };
 
     const filteredData = (profiles || []).filter(
-        (item :Profile) =>
+        (item: Profile) =>
             (selectedGender === null || item.gender === selectedGender) &&
             (selectedGrade === null || item.studentNumber?.toString() === selectedGrade) &&
             (selectedTime === null || item.preferenceInfo?.availableTimes?.includes(selectedTime)) &&
-            (selectedDate === null || item.preferenceInfo?.availableDays?.includes(selectedDate)) &&
+            (selectedDate === null || (item.preferenceInfo?.availableDays || []).length === 0 || item.preferenceInfo?.availableDays?.includes(selectedDate)) &&
             (selectedFood === null || item.preferenceInfo?.foodTypes?.some(food => food === selectedFood))
-
     );
     
       
@@ -228,9 +228,9 @@ const FoodRecommend = () => {
                         <FullListSection>
                         {filteredData.map((profile: Profile, index: number) => (
                             <RecommendBox
-                                category="MEAL"
-                                key={index}
-                                requestId={index}
+                                category="혼밥"
+                                key={profile.requestId}
+                                requestId={profile.requestId}
                                 text1={profile.nickname}
                                 text2={`# ${profile.gender} # ${profile.age}살`} 
                                 text3={`# ${profile.studentNumber}학번 # ${profile.mbti}`}

@@ -27,7 +27,7 @@ interface LikedMate {
 
 const LikePage = () => {
   const [activeButton, setActiveButton] = useState("혼밥"); // 현재 활성화된 탭 상태
-  const mateType = activeButton === "혼밥"? "MEAL" : activeButton === "운동"?  "EXERCISE" : "STUDY";
+  const mateType = activeButton === "혼밥"? "혼밥" : activeButton === "운동"?  "운동" : "공부";
 
   // 서버에서 찜한 목록 불러오기
   const { data: likedMates=[], isLoading } = useFetchLikes(mateType);

@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 
 interface LikeRequestParams {
     requestId : number;
-    mateType?:"STUDY" | "EXERCISE" | "MEAL";
+    mateType?:"공부" | "운동" | "혼밥" |"전체";
 }
 
 export const useLikeMatch = () => {
