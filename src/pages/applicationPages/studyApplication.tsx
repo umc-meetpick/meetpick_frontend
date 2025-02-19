@@ -8,7 +8,6 @@ import ApplicationGrayBox from "../../components/ApplicationGrayBox";
 import { IoHeart } from "react-icons/io5";
 import { FaCheck } from "react-icons/fa6";
 import getDetailProfile from "../../apis/detailMemberInfo/getDetailProfile";
-import usePagination from "@mui/material/usePagination/usePagination";
 import { useParams } from "react-router-dom";
 
 const StudyApplication = () => {

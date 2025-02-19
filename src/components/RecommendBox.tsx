@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { Icon } from "@iconify/react";
 import RecommendImage from "../assets/images/Recommend3.png";
 import { useLikeMatch, useDeleteLikeMatch } from "../apis/matchingRecommend/matchingHeart";
-import ImageNumberSwitch from "./ImageNumberSwitch";
 
 
 interface ButtonProps {
