@@ -5,7 +5,10 @@ const getToken = () => {
       localStorage.setItem("access_token", token);
 
       window.history.replaceState({}, document.title, window.location.pathname);
+      return token; // 토큰을 반환하도록 변경
     } 
+
+    return localStorage.getItem("access_token"); // 기존 토큰 반환
   };
 
 export default getToken;

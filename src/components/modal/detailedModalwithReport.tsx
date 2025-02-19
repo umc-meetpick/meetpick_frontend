@@ -1,11 +1,13 @@
 import styled from 'styled-components';
-import { useState, useEffect } from 'react';
+import * as React from 'react';
+import { useState, useEffect, SetStateAction } from 'react';
 import { IoCloseOutline } from "react-icons/io5";
 import DialogButton from '../button/DialogButton';
 import { GoChevronLeft, GoChevronDown, GoChevronUp } from "react-icons/go";
 import { AiFillCheckCircle } from "react-icons/ai";
 import reportIcon from "../../assets/images/report.png"
 import MateProfileImg from "../../assets/profileImg/프로필3.png"
+import usePostReport from '../../apis/report/postReport';
 
 // Modal Overlay
 const ModalOverlay = styled.div`
@@ -470,7 +472,11 @@ const ReportModal: React.FC<ReportModalProps> = ({ isOpen, onClose }) => {
     <>
 
       {isReportPageOpen ? (
-        <ReportPage onClose={handleCloseAll} />
+        <ReportPage 
+          onClose={handleCloseAll} 
+          reporterId={1} 
+          reportedUserId={1} 
+        />
       ) : (
         <ReportModalOverlay>
           <DialogButton
@@ -671,17 +677,20 @@ const ToastIcon = styled.div`
 
 
 // 신고 페이지 컴포넌트
-const ReportPage = ({ onClose }: { onClose: () => void }) => {
+const ReportPage = ({ onClose, reporterId, reportedUserId }: { onClose: () => void; reporterId: number; reportedUserId: number }) => {
   const [selectedReason, setSelectedReason] = useState("신고 유형을 선택해주세요");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false); // Dialog open state
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isToastVisible, setIsToastVisible] = useState(false);
   const [reportText, setReportText] = useState(""); // 신고 내용 상태
+  const [isSubmitButtonEnabled, setIsSubmitButtonEnabled] = useState(false); // 버튼 활성화 상태
+
+  const mutation = usePostReport();
 
   // 텍스트 입력 길이에 따라 버튼 활성화 여부 업데이트
   useEffect(() => {
-    (reportText.length >= 10); 
+    setIsSubmitButtonEnabled(reportText.length >= 10);
   }, [reportText]);
 
 
@@ -692,11 +701,41 @@ const ReportPage = ({ onClose }: { onClose: () => void }) => {
     "그 외 다른 문제가 있어요",
   ];
 
-  const handleConfirm = () => {
-    setIsToastVisible(true); // Show toast message
-    setIsSubmitModalOpen(false); // Close dialog
-    setIsSubmitted(true); // 제출 완료 상태로 변경
-    setTimeout(() => setIsToastVisible(false), 3000); // Hide toast after 3 seconds
+
+  // 신고 유형을 reportType으로 매핑
+  const reportTypeMapping: { [key: string]: string } = {
+    "기재된 정보랑 달라요": "기재된 정보랑 달라요",
+    "매칭 후 연락이 없어요": "매칭 후 연락이 없어요",
+    "만남에서 문제가 발생했어요": "만남에서 문제가 발생했어요",
+    "그 외 다른 문제가 있어요": "그 외 다른 문제가 있어요",
+  };
+
+  const handleConfirm = async () => {
+
+    if (!selectedReason || !reportText || !isSubmitButtonEnabled) return; // 버튼 비활성화 시 신고 불가
+
+    const reportData = {
+      reporterId,
+      reportedId: reportedUserId,
+      reportType: reportTypeMapping[selectedReason] || "그 외 다른 문제가 있어요",
+      content: reportText,
+    };
+
+    console.log("🔍 신고 데이터:", reportData); // 디버깅을 위해 추가
+
+    mutation.mutate(reportData, {
+      onSuccess: () => {
+        setIsToastVisible(true);
+        setIsSubmitModalOpen(false);
+        setIsSubmitted(true);
+        setTimeout(() => setIsToastVisible(false), 3000);
+      },
+      onError: (error:Error) => {
+        console.error("신고 실패:", error);
+        alert("신고 접수 중 오류가 발생했습니다.");
+        console.log("🔑 저장된 accessToken:", localStorage.getItem("accessToken"));
+      },
+    });
   };
 
   return (
@@ -746,7 +785,7 @@ const ReportPage = ({ onClose }: { onClose: () => void }) => {
         <DescriptionWrapper>
           <ReportDescription
             value={reportText}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setReportText(e.target.value)}
+            onChange={(e: { target: { value: SetStateAction<string>; }; }) => setReportText(e.target.value)}
           />
         {!reportText && ( // reportText가 비어 있으면 Placeholder 표시
             <Placeholder className="placeholder">
@@ -772,7 +811,7 @@ const ReportPage = ({ onClose }: { onClose: () => void }) => {
                 }
             }}
             $isactive={reportText.length >= 10}
-            disabled={reportText.length < 10}
+            disabled={reportText.length < 10 && !isSubmitButtonEnabled}
         >
             {isSubmitted ? "제출 완료" : "제출하기"}
         </SubmitButton>

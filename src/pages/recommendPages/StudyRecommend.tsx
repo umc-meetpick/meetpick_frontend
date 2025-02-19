@@ -1,9 +1,8 @@
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import styled from "styled-components";
 import { Icon } from "@iconify/react";
 import RecommendBox from "../../components/RecommendBox";
 import DropdownButton from "../../components/RecommendDownList";
-import RecommendImage from "../../assets/images/Recommend4.png";
 import emojiImage from "../../assets/images/SpeechBubble1.png"
 import {Swiper, SwiperSlide} from "swiper/react";
 import SwiperCore from 'swiper';
@@ -15,11 +14,14 @@ import StudyMateList from "../../data/studymateoption";
 import { useSwiper } from "swiper/react";
 import { useFetchRecommendations } from "../../apis/matchingRecommend/memberRecommend";
 import { useTotalProfiles } from "../../apis/matchingRecommend/TotalProfiles";
+import { useNavigate } from "react-router-dom";
 
 interface Profile {
+    profileImage:string;
     nickname: string;
     gender: string;
     age: number;
+    requestId:number;
     studentNumber?: string;
     mbti?: string;
     slotInfo: {
@@ -27,38 +29,42 @@ interface Profile {
         maxPeople: number;
     };
     preferenceInfo?: {
-        studyTypes?: string[];
+        studyType?: string;
+        studentNumber:string;
         preferredGender?: string;
         preferredMajors?: string;
         availableTimes?:string[];
         availableDays?:string[];
+        maxAge:number;
+        minAge:number;
     };
 }
 
-const studyTypeMap: Record<string, string> = {
-    "MAJOR": "전공",
-    "LIBERAL_ART": "교양",
-    "CERTIFICATE": "자격증",
-    "PEER" : "동기"
-};
-
- // 2️⃣ foodTypes 변환 함수
- const convertStudyTypes = (studyTypes: string[] | undefined) => {
-    return studyTypes?.map(type => studyTypeMap[type] || type).join(", ") || "";
-};
+interface RecommendProfile {
+    requestId: number;
+    nickName: string;
+    studentNumber: string;
+    gender: string;
+    mbti: string;
+    imageUrl: string;
+    foodTypes?: string[]; // 음식 추천 데이터일 경우
+    exerciseType?: string; // 운동 추천 데이터일 경우
+    studyType?: string; // 공부 추천 데이터일 경우
+}
 
 SwiperCore.use([Pagination]);
 
 const StudyRecommend = () => {
 
-    const {data:recommendations} = useFetchRecommendations("STUDY");
+    const {data:recommendations} = useFetchRecommendations("공부");
     const {data:profiles=[]} = useTotalProfiles({
-        mateType:"STUDY"
+        mateTypeStr:"공부"
     });
 
     console.log("전체 프로필 데이터:", profiles);
 
     const swiper = useSwiper();
+    const navigate = useNavigate();
     
     const [activeTab, setActiveTab] = useState("recommendList"); // 현재 활성화된 탭 상태 
     const [selectedGender, setSelectedGender] = useState<string | null>(null);
@@ -66,7 +72,17 @@ const StudyRecommend = () => {
     const [selectedGrade, setSelectedGrade] = useState<string | null>(null);
     const [selectedDate, setSelectedDate] = useState<string | null>(null);
     const [selectedStudy, setSelectedStudy] = useState<string|null>(null);
-    const [currentSlide, setCurrentSlide] = useState(recommendations?.[0]||null); // 현재 슬라이트 상태 관리
+    const [currentSlide, setCurrentSlide] = useState<RecommendProfile | null>(null);
+
+    const loginNickname = localStorage.getItem("nickname");
+    
+    useEffect(() => {
+        if (recommendations && recommendations.length > 0) {
+            setCurrentSlide(recommendations[0]); // 첫 번째 데이터 설정
+        }
+    }, [recommendations]);
+    
+
     const handleDropdownHeight= (isOpen:boolean) => {
         console.log("선택 ", isOpen);
         if (isOpen && swiper) {
@@ -93,7 +109,7 @@ const StudyRecommend = () => {
         } else if (option === "성별") {
             setSelectedGender(value);
         } else if (option === "시간") {
-            setSelectedTime(value);
+            setSelectedTime(value.replace(":00",""));
         } else if (option === "요일") {
             setSelectedDate(value);
         } else if (option == "공부 과목") {
@@ -104,10 +120,10 @@ const StudyRecommend = () => {
     const filteredData = (profiles || []).filter(
         (item :Profile) =>
             (selectedGender === null || item.gender === selectedGender) &&
-            (selectedGrade === null || item.studentNumber?.toString() === selectedGrade) &&
+            (selectedGrade === null || item.preferenceInfo?.studentNumber === "상관없어" || item.preferenceInfo?.studentNumber === selectedGrade) &&
             (selectedTime === null || item.preferenceInfo?.availableTimes?.includes(selectedTime)) &&
-            (selectedDate === null || item.preferenceInfo?.availableDays?.includes(selectedDate)) &&
-            (selectedStudy === null || item.preferenceInfo?.studyTypes?.some(study => studyTypeMap[study] === selectedStudy))
+            (selectedDate === null || (item.preferenceInfo?.availableDays || []).length === 0 || item.preferenceInfo?.availableDays?.includes(selectedDate)) &&
+            (selectedStudy === null || item.preferenceInfo?.studyType === selectedStudy) 
 
     );
       
@@ -126,18 +142,18 @@ const StudyRecommend = () => {
                 </TwoIcon>
             </Top>
             <Message>
-                <Name>베티</Name>
+                <Name>{loginNickname}</Name>
                 <Comment>님을 원하는 공부 메이트를 찾아보세요<Icon icon="fluent-color:edit-24" width="20" height="20" /></Comment>
             </Message>
             <Tabs>
                 <Tab
-                active={activeTab === "recommendList"}
+                $active={activeTab === "recommendList"}
                 onClick = {() => handleTabClick("recommendList")}
                 >
                     추천 리스트
                 </Tab>
                 <Tab
-                    active={activeTab === "fullList"}
+                    $active={activeTab === "fullList"}
                     onClick={() => handleTabClick("fullList")}
                 >
                     전체 리스트
@@ -147,10 +163,10 @@ const StudyRecommend = () => {
                 {activeTab === "recommendList" && (
                     <RecommendationSection>
                         <Emoji>
-                            <EmojiBubble1><BubbleText1>{currentSlide?.memberId || ""}</BubbleText1></EmojiBubble1>
-                            <EmojiBubble2><BubbleText2>{currentSlide?.studyType?.[0] || ""}</BubbleText2></EmojiBubble2>
+                            <EmojiBubble1><BubbleText1>{currentSlide?.studentNumber || ""}</BubbleText1></EmojiBubble1>
+                            <EmojiBubble2><BubbleText2>{currentSlide?.studyType || ""}</BubbleText2></EmojiBubble2>
                             <EmojiBubble3><BubbleText3>{currentSlide?.gender || ""}</BubbleText3></EmojiBubble3>
-                            <EmojiBubble4><BubbleText4>{currentSlide?.hobby?.[0] || ""}</BubbleText4></EmojiBubble4>
+                            <EmojiBubble4><BubbleText4>{currentSlide?.mbti || ""}</BubbleText4></EmojiBubble4>
 
                         </Emoji>
                         {(recommendations || []).length > 0 ? (
@@ -166,10 +182,10 @@ const StudyRecommend = () => {
                         >
                             {(recommendations||[]).map((slidesData) => (
                                 
-                                <SwiperSlide key={slidesData.memberId}>
+                                <SwiperSlide key={slidesData.requestId}>
                                     <SlideContent>
-                                        <Link to ="/application/study">
-                                            <StyledImage src={RecommendImage} alt={`${slidesData.memberId} 이미지`} />
+                                        <Link to ="/application/study/:memberSecondProfileId">
+                                            <StyledImage src={slidesData.imageUrl} alt={`${slidesData.requestId} 이미지`} />
                                         </Link>
                                     </SlideContent>
                                 </SwiperSlide>
@@ -179,9 +195,9 @@ const StudyRecommend = () => {
                             <NoDataMessage>추천할 데이터가 없습니다.</NoDataMessage>
                         )
                     }
-                        <Link to ='/application/study'>
+                        <Link to ='/application/study/:memberSecondProfileId'>
                         <Description> 
-                            <Name>{currentSlide?.memberId}</Name>님 프로필 구경하러가기
+                            <Name>{currentSlide?.nickName}</Name>님 프로필 구경하러가기
                         </Description>
                         </Link>
                         <Text>👀옆으로 밀어서 원하는 메이트를 찾아보세요!</Text>
@@ -210,7 +226,7 @@ const StudyRecommend = () => {
                                             : item.option === "성별" && selectedGender
                                             ? selectedGender
                                             : item.option === "시간" && selectedTime
-                                            ? selectedTime
+                                            ? `${selectedTime}:00`
                                             : item.option === "요일" && selectedDate
                                             ? selectedDate
                                             : item.option === "학번" && selectedGrade
@@ -233,25 +249,31 @@ const StudyRecommend = () => {
                         </List>
                         <FullListSection>
                         {filteredData.map((profile: Profile, index: number) => (
-                            <RecommendBox
-                                category="MEAL"
-                                key={index}
-                                requestId={index}
-                                text1={profile.nickname}
-                                text2={`# ${profile.gender} # ${profile.age}살`} 
-                                text3={`# ${profile.studentNumber}학번 # ${profile.mbti}`}
-                                number1={profile.slotInfo.currentPeople}
-                                number2={profile.slotInfo.maxPeople}
-                                $backgroundColor={index% 3 ===0 ? "#EEF5FD" : index%3 ===1? "#C0E5FF": "#EEF5FD"}
-                                width="160px"
-                                color="#5D5D5D"
-                                detail1={profile.preferenceInfo?.preferredGender}  // ✅ 수정
-                                detail2={profile.preferenceInfo?.preferredMajors}  // ✅ 수정
-                                detail3={profile.mbti}
-                                detail4={convertStudyTypes(profile.preferenceInfo?.studyTypes)}
-                                detail5={convertStudyTypes(profile.preferenceInfo?.studyTypes)}
-                                detail6={convertStudyTypes(profile.preferenceInfo?.studyTypes)}
-                            />
+                            <div key={profile.requestId} onClick ={() => navigate(`/application/study/${profile.requestId}`)}>
+                                { loginNickname !== profile.nickname &&
+                                <RecommendBox
+                                    category="공부"
+                                    showHeart={true}
+                                    key={index}
+                                    requestId={profile.requestId}
+                                    profileImage={profile.profileImage || "https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png"}
+                                    text1={profile.nickname}
+                                    text2={`# ${profile.gender} # ${profile.age}살`} 
+                                    text3={`# ${profile.studentNumber}학번 # ${profile.mbti}`}
+                                    $number1={profile.slotInfo.currentPeople}
+                                    $number2={profile.slotInfo.maxPeople}
+                                    $backgroundColor={index% 4 ===0 ? "#EEF5FD" : index%4 ===1? "#C0E5FF": index%4 ===2? "#C0E5FF" :"#EEF5FD"}
+                                    width="160px"
+                                    color="#5D5D5D"
+                                    detail1={profile.preferenceInfo?.preferredGender}  // ✅ 수정
+                                    detail2={profile.preferenceInfo?.preferredMajors}  // ✅ 수정
+                                    detail3={profile.mbti}
+                                    detail4={profile.preferenceInfo?.studentNumber}
+                                    detail5={`${profile.preferenceInfo?.minAge} ~ ${profile.preferenceInfo?.maxAge}살`}
+                                    detail6={profile.preferenceInfo?.studyType || ""}
+                                />
+                                }
+                            </div>
                         ))}
                         </FullListSection>
                     </Wrapper>
@@ -395,7 +417,7 @@ const Tabs = styled.div`
     font-family: "Pretendard Variable";
 `;
 
-const Tab = styled.button<{ active: boolean }>`
+const Tab = styled.button<{ $active: boolean }>`
     width:131px;
     margin-top:20px;
     font-size: 14px;
@@ -405,7 +427,7 @@ const Tab = styled.button<{ active: boolean }>`
     border: none;
     cursor: pointer;
     border-radius: 0; /* border-radius 제거 */
-    border-bottom: ${({ active }) => (active ? "3px solid #03347F" : "none")}; /* 활성화된 탭에 스타일 적용 */
+    border-bottom: ${({ $active }) => ($active ? "3px solid #03347F" : "none")}; /* 활성화된 탭에 스타일 적용 */
 
     &:hover {
         border-bottom:3px solid #03347F;

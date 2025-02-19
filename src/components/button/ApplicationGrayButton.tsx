@@ -22,7 +22,7 @@ const StyledButton = styled.button`
   height: 30px;
   border: 2px solid #CECECE;
   border-radius: 20px; /* 둥근 테두리 */
-  font-size: 13px;
+  font-size: 12px;
   color: black;
   background-color: white; /* 버튼 배경색 */
   display: flex;

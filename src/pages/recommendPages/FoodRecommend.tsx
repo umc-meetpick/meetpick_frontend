@@ -1,9 +1,8 @@
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import styled from "styled-components";
 import { Icon } from "@iconify/react";
 import RecommendBox from "../../components/RecommendBox";
 import DropdownButton from "../../components/RecommendDownList";
-import RecommendImage from "../../assets/images/Recommend.png";
 import emojiImage from "../../assets/images/SpeechBubble1.png"
 import {Swiper, SwiperSlide} from "swiper/react";
 import SwiperCore from 'swiper';
@@ -16,13 +15,16 @@ import FoodMateList from "../../data/foodmateoption";
 import { useSwiper } from "swiper/react";
 import { useFetchRecommendations } from "../../apis/matchingRecommend/memberRecommend";
 import { useTotalProfiles } from "../../apis/matchingRecommend/TotalProfiles";
+import { useNavigate } from "react-router-dom";
 
 interface Profile {
+    requestId :number;
     nickname: string;
     gender: string;
     age: number;
     studentNumber?: string;
     mbti?: string;
+    profileImage?:string;
     slotInfo: {
         currentPeople: number;
         maxPeople: number;
@@ -33,36 +35,40 @@ interface Profile {
         preferredMajors?: string;
         availableTimes?:string[];
         availableDays?:string[];
+        studentNumber?:string;
+        minAge?:number;
+        maxAge?:number;
     };
 }
 
-const foodTypeMap: Record<string, string> = {
-    "KOREAN": "한식",
-    "JAPANESE": "일식",
-    "CHINESE": "중식",
-    "VIETNAMESE": "베트남식",
-    "WESTERN": "양식",
-    "OTHER": "기타",
-};
+interface RecommendProfile {
+    requestId: number;
+    nickName: string;
+    studentNumber: string;
+    gender: string;
+    mbti: string;
+    imageUrl: string;
+    foodTypes?: string[]; // 음식 추천 데이터일 경우
+    exerciseType?: string; // 운동 추천 데이터일 경우
+    studyType?: string; // 공부 추천 데이터일 경우
+}
 
- // 2️⃣ foodTypes 변환 함수
- const convertFoodTypes = (foodTypes: string[] | undefined) => {
-    return foodTypes?.map(type => foodTypeMap[type] || type).join(", ") || "선택 안 함";
-};
 
 
 SwiperCore.use([Pagination]);
 
 const FoodRecommend = () => {
 
-    const {data:recommendations} = useFetchRecommendations("MEAL");
+    const {data:recommendations} = useFetchRecommendations("혼밥");
     const {data:profiles=[]} = useTotalProfiles({
-        mateType:"MEAL"
+        mateTypeStr:"혼밥"
     });
 
     console.log("전체 프로필 데이터:", profiles);
 
     const swiper = useSwiper();
+
+    const navigate = useNavigate();
 
     const [activeTab, setActiveTab] = useState("recommendList"); // 현재 활성화된 탭 상태 
 
@@ -71,7 +77,17 @@ const FoodRecommend = () => {
     const [selectedGrade, setSelectedGrade] = useState<string | null>(null);
     const [selectedDate, setSelectedDate] = useState<string | null>(null);
     const [selectedFood, setSelectedFood] = useState<string|null>(null);
-    const [currentSlide, setCurrentSlide] = useState(recommendations?.[0] ||null); // 현재 슬라이트 상태 관리
+    const [currentSlide, setCurrentSlide] = useState<RecommendProfile | null>(null);
+
+    const loginNickname = localStorage.getItem("nickname");
+
+    useEffect(() => {
+        if (recommendations && recommendations.length > 0) {
+            setCurrentSlide(recommendations[0]); // 첫 번째 데이터 설정
+        }
+    }, [recommendations]);
+
+   
     
 
     const handleDropdownHeight= (isOpen:boolean) => {
@@ -100,7 +116,7 @@ const FoodRecommend = () => {
         } else if (option === "성별") {
             setSelectedGender(value);
         } else if (option === "시간") {
-            setSelectedTime(value);
+            setSelectedTime(value.replace(":00",""));
         } else if (option === "요일") {
             setSelectedDate(value);
         } else if (option == "음식 종류") {
@@ -109,13 +125,12 @@ const FoodRecommend = () => {
     };
 
     const filteredData = (profiles || []).filter(
-        (item :Profile) =>
+        (item: Profile) =>
             (selectedGender === null || item.gender === selectedGender) &&
-            (selectedGrade === null || item.studentNumber?.toString() === selectedGrade) &&
+            (selectedGrade === null || item.preferenceInfo?.studentNumber === "상관없어" || item.preferenceInfo?.studentNumber === selectedGrade) &&
             (selectedTime === null || item.preferenceInfo?.availableTimes?.includes(selectedTime)) &&
-            (selectedDate === null || item.preferenceInfo?.availableDays?.includes(selectedDate)) &&
-            (selectedFood === null || item.preferenceInfo?.foodTypes?.some(food => foodTypeMap[food] === selectedFood))
-
+            (selectedDate === null || (item.preferenceInfo?.availableDays || []).length === 0 || item.preferenceInfo?.availableDays?.includes(selectedDate)) &&
+            (selectedFood === null || item.preferenceInfo?.foodTypes?.some(food => food === selectedFood))
     );
     
       
@@ -134,18 +149,18 @@ const FoodRecommend = () => {
                 </TwoIcon>
             </Top>
             <Message>
-                <Name>베티</Name>
+                <Name>{loginNickname}</Name>
                 <Comment>님을 원하는 혼밥 메이트를 찾아보세요<Icon icon="fluent-color:food-20" width="20" height="20" /></Comment>
             </Message>
             <Tabs>
                 <Tab
-                active={activeTab === "recommendList"}
+                $active={activeTab === "recommendList"}
                 onClick = {() => handleTabClick("recommendList")}
                 >
                     추천 리스트
                 </Tab>
                 <Tab
-                    active={activeTab === "fullList"}
+                    $active={activeTab === "fullList"}
                     onClick={() => handleTabClick("fullList")}
                 >
                     전체 리스트
@@ -155,10 +170,10 @@ const FoodRecommend = () => {
                 {activeTab === "recommendList" && (
                     <RecommendationSection>
                         <Emoji>
-                            <EmojiBubble1><BubbleText1>{currentSlide?.memberId || ""}</BubbleText1></EmojiBubble1>
-                            <EmojiBubble2><BubbleText2>{currentSlide?.foodType?.[0] || ""}</BubbleText2></EmojiBubble2>
+                            <EmojiBubble1><BubbleText1>{currentSlide?.studentNumber || ""}</BubbleText1></EmojiBubble1>
+                            <EmojiBubble2><BubbleText2>{currentSlide?.foodTypes?.join(", ") || ""}</BubbleText2></EmojiBubble2>
                             <EmojiBubble3><BubbleText3>{currentSlide?.gender || ""}</BubbleText3></EmojiBubble3>
-                            <EmojiBubble4><BubbleText4>{currentSlide?.hobby?.[0] || ""}</BubbleText4></EmojiBubble4>
+                            <EmojiBubble4><BubbleText4>{currentSlide?.mbti || ""}</BubbleText4></EmojiBubble4>
 
                         </Emoji>
                         {(recommendations || []).length > 0 ? (
@@ -174,10 +189,10 @@ const FoodRecommend = () => {
                         >
                             {(recommendations||[]).map((slidesData) => (
                                 
-                                <SwiperSlide key={slidesData.memberId}>
+                                <SwiperSlide key={slidesData.requestId}>
                                     <SlideContent>
-                                        <Link to ="/application/food">
-                                            <StyledImage src={RecommendImage} alt={`${slidesData.memberId} 이미지`} />
+                                        <Link to ="/application/food/:requestId">
+                                            <StyledImage src={slidesData.imageUrl} alt={`${slidesData.requestId} 이미지`} />
                                         </Link>
                                     </SlideContent>
                                 </SwiperSlide>
@@ -187,9 +202,9 @@ const FoodRecommend = () => {
                             <NoDataMessage>추천할 데이터가 없습니다.</NoDataMessage>
                         )
                     }
-                        <Link to ='/application/food'>
+                        <Link to ='/application/food/:memberSecondProfileId'>
                         <Description> 
-                            <Name>{currentSlide?.memberId}</Name>님 프로필 구경하러가기
+                            <Name>{currentSlide?.nickName}</Name>님 프로필 구경하러가기
                         </Description>
                         </Link>
                         <Text>👀옆으로 밀어서 원하는 메이트를 찾아보세요!</Text>
@@ -218,7 +233,7 @@ const FoodRecommend = () => {
                                             : item.option === "학번" && selectedGrade
                                             ? selectedGrade
                                             : item.option === "시간" && selectedTime
-                                            ? selectedTime
+                                            ? `${selectedTime}:00`
                                             : item.option === "요일" && selectedDate
                                             ? selectedDate
                                             : item.option === "음식 종류" && selectedFood
@@ -241,25 +256,32 @@ const FoodRecommend = () => {
                         </List>
                         <FullListSection>
                         {filteredData.map((profile: Profile, index: number) => (
-                            <RecommendBox
-                                category="MEAL"
-                                key={index}
-                                requestId={index}
-                                text1={profile.nickname}
-                                text2={`# ${profile.gender} # ${profile.age}살`} 
-                                text3={`# ${profile.studentNumber}학번 # ${profile.mbti}`}
-                                number1={profile.slotInfo.currentPeople}
-                                number2={profile.slotInfo.maxPeople}
-                                $backgroundColor={index% 3 ===0 ? "#EEF5FD" : index%3 ===1? "#C0E5FF": "#EEF5FD"}
-                                width="160px"
-                                color="#5D5D5D"
-                                detail1={profile.preferenceInfo?.preferredGender}  // ✅ 수정
-                                detail2={profile.preferenceInfo?.preferredMajors}  // ✅ 수정
-                                detail3={profile.mbti}
-                                detail4={convertFoodTypes(profile.preferenceInfo?.foodTypes)}
-                                detail5={convertFoodTypes(profile.preferenceInfo?.foodTypes)}
-                                detail6={convertFoodTypes(profile.preferenceInfo?.foodTypes)}
-                            />
+                            <div key={profile.requestId} onClick ={() => navigate(`/application/food/${profile.requestId}`)}>
+                                {
+                                    loginNickname !== profile.nickname &&
+                                    <RecommendBox
+                                    category="공부"
+                                    showHeart={true}
+                                    key={index}
+                                    requestId={profile.requestId}
+                                    profileImage={profile.profileImage || "https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png"}
+                                    text1={profile.nickname}
+                                    text2={`# ${profile.gender} # ${profile.age}살`} 
+                                    text3={`# ${profile.studentNumber}학번 # ${profile.mbti}`}
+                                    $number1={profile.slotInfo.currentPeople}
+                                    $number2={profile.slotInfo.maxPeople}
+                                    $backgroundColor={index% 4 ===0 ? "#EEF5FD" : index%4 ===1? "#C0E5FF": index%4 ===2? "#C0E5FF" :"#EEF5FD"}
+                                    width="160px"
+                                    color="#5D5D5D"
+                                    detail1={profile.preferenceInfo?.preferredGender}  // ✅ 수정
+                                    detail2={profile.preferenceInfo?.preferredMajors}  // ✅ 수정
+                                    detail3={profile.mbti}
+                                    detail4={profile.preferenceInfo?.studentNumber}
+                                    detail5={`${profile.preferenceInfo?.minAge} ~ ${profile.preferenceInfo?.maxAge}살`}
+                                    detail6={profile.preferenceInfo?.foodTypes?.join(", ") || ""}
+                                />
+                                }
+                            </div>
                         ))}
                         </FullListSection>
                     </Wrapper>
@@ -403,7 +425,7 @@ const Tabs = styled.div`
     font-family: "Pretendard Variable";
 `;
 
-const Tab = styled.button<{ active: boolean }>`
+const Tab = styled.button<{ $active: boolean }>`
     width:131px;
     margin-top:20px;
     font-size: 14px;
@@ -413,7 +435,7 @@ const Tab = styled.button<{ active: boolean }>`
     border: none;
     cursor: pointer;
     border-radius: 0; /* border-radius 제거 */
-    border-bottom: ${({ active }) => (active ? "3px solid #03347F" : "none")}; /* 활성화된 탭에 스타일 적용 */
+    border-bottom: ${({ $active }) => ($active ? "3px solid #03347F" : "none")}; /* 활성화된 탭에 스타일 적용 */
 
     &:hover {
         border-bottom:3px solid #03347F;

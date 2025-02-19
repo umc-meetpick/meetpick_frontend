@@ -108,15 +108,15 @@ const router = createBrowserRouter([
             element:<SetContact/>
           },
           {
-            path:'application/food',
+            path:'application/food/:requestId',
             element:<FoodApplication/>
           },
           {
-            path:'application/exercise',
+            path:'application/exercise/:requestId',
             element:<ExerciseApplication/>
           },
           {
-            path:'application/study',
+            path:'application/study/:requestId',
             element:<StudyApplication/>
           },
           {

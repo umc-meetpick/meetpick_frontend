@@ -135,8 +135,10 @@ const Signup = () => {
       {isModalOpen && (
                 <ModalOverlay>
                     <Box>
-                        <Title>{modalType === "terms"? "이용약관" : "개인정보 처리방침"} </Title>
-                        <Content>{modalContent}</Content>
+                      <ScrollContainer>
+                          <Title>{modalType === "terms"? "이용약관" : "개인정보 처리방침"} </Title>
+                          <Content>{modalContent}</Content>
+                      </ScrollContainer>
                         <Button>
                         <CloseButton onClick={handleCloseModal}>닫기</CloseButton>
                         </Button>
@@ -181,7 +183,8 @@ const SecondAgree = styled.div`
 const ModalOverlay = styled.div`
   position: fixed;
   top: 0;
-  width: 393px;
+  width: 100%;
+  max-width:393px;
   height: 100vh;
   background: rgba(0, 0, 0, 0.29); /* 반투명 배경 */
   display: flex;
@@ -191,17 +194,15 @@ const ModalOverlay = styled.div`
 `;
 
 const Box = styled.div`
-  width:285px;
   border-radius:10px;
   position:relative;
-  left:-4px;
   top:-20px;
   background-color:white;
-  height:430px;
-
+  height:515px;
   justify-content:center;
-  overflow-y:scroll;
-  max-height:430px;
+  max-height:515px;
+  margin-left:2px;
+  justify-content:centter;
 
    &::-webkit-scrollbar {
     width: 8px; 
@@ -226,7 +227,7 @@ const Title = styled.div`
   color:#326DC1;
 `
 const Content = styled.div`
-  padding:0 10px;
+  padding:0 15px 0 15px;
   white-space:pre-wrap;
   font-family: "Pretendard Variable";
 `
@@ -245,4 +246,22 @@ const Button = styled.div`
   justify-content:center;
   margin-bottom:20px;
   font-family: "Pretendard Variable";
+`
+
+const ScrollContainer = styled.div`
+  overflow-y:scroll;
+  width:310px;
+  max-height:460px;
+  margin-bottom:10px;
+
+   &::-webkit-scrollbar {
+    width: 8px; 
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: rgb(0,0,0,0.1); 
+    border-radius: 4px;
+  }
+  &::-webkit-scrollbar-track {
+    background-color:none;
+  }
 `

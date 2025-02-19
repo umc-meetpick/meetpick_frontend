@@ -7,6 +7,8 @@ import ApplicationGrayButton from "../../components/button/ApplicationGrayButton
 import ApplicationGrayBox from "../../components/ApplicationGrayBox";
 import { IoHeart } from "react-icons/io5";
 import { FaCheck } from "react-icons/fa6";
+import getDetailProfile from "../../apis/detailMemberInfo/getDetailProfile";
+import { useParams } from "react-router-dom";
 
 const StudyApplication = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -16,6 +18,9 @@ const StudyApplication = () => {
         color: "#2760AD",
         background: "#E7F2FE",
     });
+
+    const {requestId} = useParams();
+    const {data:profileData} = getDetailProfile(Number(requestId));
 
     const handleOpenModal = () => setIsModalOpen(true); // 팝업 열기
 
@@ -47,7 +52,7 @@ const StudyApplication = () => {
 
     return (
         <>
-            <Navbar title ="제이시의 프로필" before = {true}/>
+            <Navbar title ={profileData?.result?.공통?.nickName + "의 프로필"} before = {true}/>
             <Wrapper>
                 <ImageContainer>
                     <StyledImage src={ApplicationImage} alt="회원가입 완료 이미지" />
@@ -55,22 +60,22 @@ const StudyApplication = () => {
                 <Container>
                     <Text1>나이•학번</Text1>
                     <Button>
-                        <ApplicationGrayButton text="23살"/>
-                        <ApplicationGrayButton text="20학번"/>
+                        <ApplicationGrayButton text={profileData?.result?.공통?.age}/>
+                        <ApplicationGrayButton text={profileData?.result?.공통?.studentNumber}/>
                     </Button>
                 </Container>
                 <DoubleContainer>
                     <Container>
                         <Text1>성별</Text1>
                         <Button>
-                            <ApplicationGrayButton text="남성"/>
+                            <ApplicationGrayButton text={profileData?.result?.공통?.gender}/>
                         </Button>
                     </Container>
                     <Container>
                         <Text1>전공</Text1>
                         <Button>
-                            <ApplicationGrayButton text="자연과학계열" width="90"/>
-                            <ApplicationGrayButton text="물리학과" width="68"/>
+                            <ApplicationGrayButton text={profileData?.result?.공통?.major} width="95"/>
+                            <ApplicationGrayButton text={profileData?.result?.공통?.subMajor} width="68"/>
                         </Button>
                     </Container>
                 </DoubleContainer>
@@ -78,15 +83,15 @@ const StudyApplication = () => {
                     <Container>
                         <Text1>MBTI</Text1>
                         <Button>
-                            <ApplicationGrayButton text="ISFP" width="60"/>
+                            <ApplicationGrayButton text={profileData?.result?.공통?.mbti} width="60"/>
                         </Button>
                     </Container>
                     <Container>
                         <Text1>취미</Text1>
                         <Button>
-                            <ApplicationGrayButton text="🧘🏻명상" width="60"/>
-                            <ApplicationGrayButton text="🧩바둑" width="60"/>
-                            <ApplicationGrayButton text="💤 잠" width="60"/>
+                        {(profileData?.result?.공통?.hobbies || []).map((hobby: string, index: number) => (
+                            <ApplicationGrayButton key={index} text={hobby} width="60"/>
+                        ))}
                         </Button>
                     </Container>
                 </DoubleContainer>
@@ -100,36 +105,36 @@ const StudyApplication = () => {
                 </Text2>
             </Mate>
             <Mate1>
-                <ApplicationGrayBox text1="공부 과목" text2="전공" width="152px" />
-                <ApplicationGrayBox text1="전공" text2="IT 계열" width="152px" />
+                <ApplicationGrayBox text1="공부 과목" text2={profileData?.result?.타입?.study} width="152px" />
+                <ApplicationGrayBox text1="전공" text2={profileData?.result?.타입?.major.join(", ")} width="152px" />
             </Mate1>
             <Mate1>
-                <ApplicationGrayBox text1="강의명" text2="알고리즘" width="152px" />
-                <ApplicationGrayBox text1="교수명" text2="김영모" width="152px" />
+                <ApplicationGrayBox text1="강의명" text2={profileData?.result?.타입?.courseName} width="152px" />
+                <ApplicationGrayBox text1="교수명" text2={profileData?.result?.타입?.professorName} width="152px" />
             </Mate1>
             <Mate1>
-                <ApplicationGrayBox text1="스터디 횟수" text2="1~2회" width="152px" />
-                <ApplicationGrayBox text1="온/오프라인" text2="오프라인" width="152px" />
+                <ApplicationGrayBox text1="스터디 횟수" text2={profileData?.result?.타입?.studyTimes} width="152px" />
+                <ApplicationGrayBox text1="온/오프라인" text2={profileData?.result?.타입?.isOnline} width="152px" />
             </Mate1>
             <Mate1>
-                <ApplicationGrayBox text1="성별" text2="무관" width="152px"/>
-                <ApplicationGrayBox text1="나이/학번" text2="22살/동기" width="152px"/>
+                <ApplicationGrayBox text1="성별" text2={profileData?.result?.타입?.gender} width="152px"/>
+                <ApplicationGrayBox text1="나이/학번" text2={profileData?.result?.타입?.ageAndPeer} width="152px"/>
             </Mate1>
             <Mate1>
-                <ApplicationGrayBox text1="인원수" text2="5/10" width="152px"/>
-                <ApplicationGrayBox text1="MBTI" text2="상관없음" width="152px"/>
+                <ApplicationGrayBox text1="인원수" text2={profileData?.result?.타입?.currentPeople} width="152px"/>
+                <ApplicationGrayBox text1="MBTI" text2={profileData?.result?.타입?.mbti} width="152px"/>
             </Mate1>
             <Mate1>
-                <ApplicationGrayBox text1="공부 장소" text2="00관 강의실 502호" width="318px"/>
+                <ApplicationGrayBox text1="공부 장소" text2={profileData?.result?.타입?.place} width="318px"/>
             </Mate1>
             <Mate1>
-                <ApplicationGrayBox text1="시간대" text2="월 12:00, 13:00, 18:00 / 화 15:00" width="318px"/>
+                <ApplicationGrayBox text1="시간대" text2={profileData?.result?.타입?.weekAndTime} width="318px"/>
             </Mate1>
             <Mate1>
-                <ApplicationGrayBox text1="취미" text2="상관없음" width="318px"/>
+                <ApplicationGrayBox text1="취미" text2={profileData?.result?.타입?.hobby} width="318px"/>
             </Mate1>
             <Mate1>
-                <ApplicationGrayBox text1="하고 싶은 말" text2="같이 재밌게 해봐요!" width="318px"/>
+                <ApplicationGrayBox text1="하고 싶은 말" text2={profileData?.result?.타입?.comment} width="318px"/>
             </Mate1>
             <Button2>
                 <ApplicationButton style={buttonStyle} onClick={handleOpenModal}>
