@@ -50,6 +50,5 @@ export const useFetchLikes = (mateType: string) => {
             console.log("✅ 찜한 목록 데이터:", data);
             return data.result || [];
         },
-        staleTime: 5 * 60 * 1000, // 5분 동안 캐시 유지
     });
 };

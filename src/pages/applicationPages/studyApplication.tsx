@@ -106,8 +106,8 @@ const StudyApplication = () => {
                 </Text2>
             </Mate>
             <Mate1>
-                <ApplicationGrayBox text1="공부 과목" text2="전공" width="152px" />
-                <ApplicationGrayBox text1="전공" text2="IT 계열" width="152px" />
+                <ApplicationGrayBox text1="공부 과목" text2={profileData?.result?.타입?.study} width="152px" />
+                <ApplicationGrayBox text1="전공" text2={profileData?.result?.타입?.major.join(", ")} width="152px" />
             </Mate1>
             <Mate1>
                 <ApplicationGrayBox text1="강의명" text2={profileData?.result?.타입?.courseName} width="152px" />
