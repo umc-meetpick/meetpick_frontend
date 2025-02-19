@@ -18,6 +18,7 @@ import { useTotalProfiles } from "../../apis/matchingRecommend/TotalProfiles";
 import { useNavigate } from "react-router-dom";
 
 interface Profile {
+    profileImage:string;
     requestId:number;
     nickname: string;
     gender: string;
@@ -243,6 +244,7 @@ const ExerciseRecommend = () => {
                                     showHeart={true}
                                     key={index}
                                     requestId={profile.requestId}
+                                    profileImage={profile.profileImage || "https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png"}
                                     text1={profile.nickname}
                                     text2={`# ${profile.gender} # ${profile.age}살`} 
                                     text3={`# ${profile.studentNumber}학번 # ${profile.mbti}`}

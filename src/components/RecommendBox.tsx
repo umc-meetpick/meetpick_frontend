@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Icon } from "@iconify/react";
-import RecommendImage from "../assets/images/Recommend3.png";
 import { useLikeMatch, useDeleteLikeMatch } from "../apis/matchingRecommend/matchingHeart";
 
 
 interface ButtonProps {
+  profileImage:string;
   category: string;
   requestId: number;
   text1: string;
@@ -28,6 +28,7 @@ interface ButtonProps {
 }
 
 const RecommendBox: React.FC<ButtonProps> = ({
+  profileImage,
   category,
   requestId,
   text1,
@@ -135,7 +136,7 @@ const RecommendBox: React.FC<ButtonProps> = ({
       />}
       </FirstLine>
       <SecondLine>
-        <StyledImage src={RecommendImage} alt="추천 리스트 이미지" />
+        <StyledImage src={profileImage} alt="사용자 프로필" />
         <Nickname>{text1}</Nickname>
         <Keyword1>{text2}</Keyword1>
         <Keyword2>{text3}</Keyword2>
