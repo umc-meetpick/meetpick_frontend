@@ -25,9 +25,9 @@ const removeEmoji = (text: string) => text.replace(/[\p{Emoji}\p{So}]/gu, "");
 const secondProfileData = (type: ProfileType, contextData: ProfileContextType) => {
    // 공통 데이터
    const baseData = {
-    "gender": (contextData.gender == "상관없음") ? null : contextData.gender,
+    "gender": (contextData.gender == "상관없어") ? null : contextData.gender,
     "subMajorName": (contextData.majors.length === 0) ? null : contextData.majors,
-    "studentNumber": (contextData.studentNum == "상관없음") ? null : contextData.studentNum,
+    "studentNumber": (contextData.studentNum == "상관없어") ? null : contextData.studentNum,
     "minAge": contextData.ageRange[0] ? contextData.ageRange[0] : null,
     "maxAge": contextData.ageRange[1] ? contextData.ageRange[1] : null,
     "mbti": contextData.mbtiList.join(""),
