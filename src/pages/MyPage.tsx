@@ -13,6 +13,7 @@ import { Link } from 'react-router-dom';
 import BasicNavbar from '../components/navbar/BasicNavbar';
 import Modal from '../components/modal/detailedModal';
 import getMyProfile from '../apis/basicProfile/getMyProfile';
+import { usePatchRequest } from '../apis/matches/patchRequest';
 
 // Styled Components
 const Container = styled.div`
@@ -208,15 +209,22 @@ const FooterItem2 = styled.div`
   
 `;
 
+
 // ButtonGroup Component
-const ButtonGroup: React.FC = () => {
+interface ButtonGroupProps {
+  onAccept: () => void;
+  onReject: () => void;
+}
+
+// ButtonGroup Component
+const ButtonGroup: React.FC<ButtonGroupProps> = ({ onAccept, onReject }) => {
     
     const handleAccept = () => {
-      console.log("수락 버튼 클릭");
+      onAccept(); // 수락 핸들러 호출
     };
   
     const handleReject = () => {
-      console.log("거절 버튼 클릭");
+      onReject(); // 거절 핸들러 호출
     };
   
     return (
@@ -230,22 +238,48 @@ const ButtonGroup: React.FC = () => {
 
 // Main Component
 const MyPage = () => {
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedRequestId, setSelectedRequestId] = useState<number | undefined>(undefined);
+  const navigate = useNavigate();
 
-    const handleViewAllClick = () => {
-      navigate('/viewRequest'); // Replace '/viewRequest' with the correct path
-    };
+  const { mutate: patchRequest } = usePatchRequest();
 
-    const handleOpenModal = () => {
-      setIsModalOpen(true);
-    };
+  const handleViewAllClick = () => {
+    navigate('/viewRequest'); // Replace '/viewRequest' with the correct path
+  };
 
-    const handleCloseModal = () => {
-      setIsModalOpen(false);
-    };
-    
-    const {data} = getMyProfile();
+  const handleOpenModal = (requestId: number) => {
+    setSelectedRequestId(requestId); // 선택한 요청 ID 저장
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedRequestId(undefined); // 모달 닫을 때 ID 초기화
+  };
+  
+  const {data} = getMyProfile();
+
+  const handleAccept = () => {
+  console.log("수락 요청 발생");
+
+  if (selectedRequestId !== undefined) {
+    patchRequest({ isAccepted: true, matchingRequestId: selectedRequestId });
+  } else {
+    console.warn("요청 ID가 없습니다.");
+  }
+  };
+  
+  const handleReject = () => {
+    console.log("거절 요청 발생");
+
+    if (selectedRequestId !== undefined) {
+      patchRequest({ isAccepted: false, matchingRequestId: selectedRequestId });
+    } else {
+      console.warn("요청 ID가 없습니다.");
+    }
+  };
+
   return (
     <>
       <Container>
@@ -285,9 +319,9 @@ const MyPage = () => {
                       <MateInfo>남성, 20학번, 23살</MateInfo>
                       <MateInfo>경영학부</MateInfo>
                       </MatchInfo>
-                      <ChevronButton onClick={handleOpenModal} />
+                      <ChevronButton onClick={() => handleOpenModal(index)} />
                   </MatchCardHeader>
-                  <ButtonGroup />
+                  <ButtonGroup onAccept={handleAccept} onReject={handleReject} />
               </MatchCard>
           ))}
         </MatchSlider>
@@ -304,7 +338,7 @@ const MyPage = () => {
         </FooterMenu>
       </Container>
       {/* ✅ Modal을 Container 바깥에서 렌더링 */}
-      <Modal isOpen={isModalOpen} onClose={handleCloseModal} />
+      <Modal isOpen={isModalOpen} onClose={handleCloseModal}/>
     </>
   );
 };
