@@ -42,7 +42,7 @@ interface Profile {
 
 
 interface RecommendProfile {
-    memberSecondProfileId: number;
+    requestId: number;
     nickName: string;
     studentNumber: string;
     gender: string;
@@ -187,10 +187,10 @@ const ExerciseRecommend = () => {
                         >
                             {(recommendations||[]).map((slidesData) => (
                                 
-                                <SwiperSlide key={slidesData.memberSecondProfileId}>
+                                <SwiperSlide key={slidesData.requestId}>
                                     <SlideContent>
-                                        <Link to ="/application/exercise">
-                                            <StyledImage src={slidesData.imageUrl} alt={`${slidesData.memberSecondProfileId} 이미지`} />
+                                        <Link to ="/application/exercise/:memberProfileId">
+                                            <StyledImage src={slidesData.imageUrl} alt={`${slidesData.requestId} 이미지`} />
                                         </Link>
                                     </SlideContent>
                                 </SwiperSlide>
@@ -200,7 +200,7 @@ const ExerciseRecommend = () => {
                             <NoDataMessage>추천할 데이터가 없습니다.</NoDataMessage>
                         )
                     }
-                        <Link to ='/application/exercise'>
+                        <Link to ='/application/exercise/:memberSecondProfileId'>
                         <Description> 
                             <Name>{currentSlide?.nickName}</Name>님 프로필 구경하러가기
                         </Description>

@@ -14,7 +14,7 @@ export interface RecommendationType {
     studyType:string[];
   }
   export interface RecommendationProfile {
-    memberSecondProfileId: number;
+    requestId: number;
     nickName: string;
     studentNumber: string;
     foodTypes?: string[];
