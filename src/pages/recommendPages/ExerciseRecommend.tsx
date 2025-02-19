@@ -124,6 +124,7 @@ const ExerciseRecommend = () => {
 
     const filteredData = (profiles || []).filter(
         (item: Profile) =>
+            (loginNickname !== item.nickname) &&
             (selectedGender === null || item.gender === selectedGender) &&
             (selectedGrade === null || item.preferenceInfo?.studentNumber === "상관없어" || item.preferenceInfo?.studentNumber === selectedGrade) &&
             (selectedTime === null || item.preferenceInfo?.availableTimes?.includes(selectedTime)) &&
@@ -257,8 +258,6 @@ const ExerciseRecommend = () => {
                         <FullListSection>
                         {filteredData.map((profile: Profile, index: number) => (
                             <div key={profile.requestId} onClick ={() => navigate(`/application/exercise/${profile.requestId}`)}>
-                                {
-                                    loginNickname !== profile.nickname &&
                                     <RecommendBox
                                     category="공부"
                                     showHeart={true}
@@ -280,7 +279,7 @@ const ExerciseRecommend = () => {
                                     detail5={`${profile.preferenceInfo?.minAge} ~ ${profile.preferenceInfo?.maxAge}살`}
                                     detail6={profile.preferenceInfo?.exerciseType}
                                 />
-                                }
+                                
                             </div>
                         ))}
                         </FullListSection>

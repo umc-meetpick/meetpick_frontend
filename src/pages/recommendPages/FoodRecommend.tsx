@@ -63,7 +63,6 @@ const FoodRecommend = () => {
     const {data:profiles=[]} = useTotalProfiles({
         mateTypeStr:"혼밥"
     });
-
     console.log("전체 프로필 데이터:", profiles);
 
     const swiper = useSwiper();
@@ -126,6 +125,7 @@ const FoodRecommend = () => {
 
     const filteredData = (profiles || []).filter(
         (item: Profile) =>
+            (loginNickname !== item.nickname) &&
             (selectedGender === null || item.gender === selectedGender) &&
             (selectedGrade === null || item.preferenceInfo?.studentNumber === "상관없어" || item.preferenceInfo?.studentNumber === selectedGrade) &&
             (selectedTime === null || item.preferenceInfo?.availableTimes?.includes(selectedTime)) &&
@@ -257,8 +257,7 @@ const FoodRecommend = () => {
                         <FullListSection>
                         {filteredData.map((profile: Profile, index: number) => (
                             <div key={profile.requestId} onClick ={() => navigate(`/application/food/${profile.requestId}`)}>
-                                {
-                                    loginNickname !== profile.nickname &&
+                                
                                     <RecommendBox
                                     category="공부"
                                     showHeart={true}
@@ -280,7 +279,7 @@ const FoodRecommend = () => {
                                     detail5={`${profile.preferenceInfo?.minAge} ~ ${profile.preferenceInfo?.maxAge}살`}
                                     detail6={profile.preferenceInfo?.foodTypes?.join(", ") || ""}
                                 />
-                                }
+                                
                             </div>
                         ))}
                         </FullListSection>

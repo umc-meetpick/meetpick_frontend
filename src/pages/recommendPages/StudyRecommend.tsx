@@ -119,6 +119,7 @@ const StudyRecommend = () => {
 
     const filteredData = (profiles || []).filter(
         (item :Profile) =>
+            (loginNickname !== item.nickname) &&
             (selectedGender === null || item.gender === selectedGender) &&
             (selectedGrade === null || item.preferenceInfo?.studentNumber === "상관없어" || item.preferenceInfo?.studentNumber === selectedGrade) &&
             (selectedTime === null || item.preferenceInfo?.availableTimes?.includes(selectedTime)) &&
@@ -250,7 +251,7 @@ const StudyRecommend = () => {
                         <FullListSection>
                         {filteredData.map((profile: Profile, index: number) => (
                             <div key={profile.requestId} onClick ={() => navigate(`/application/study/${profile.requestId}`)}>
-                                { loginNickname !== profile.nickname &&
+                                
                                 <RecommendBox
                                     category="공부"
                                     showHeart={true}
@@ -272,7 +273,7 @@ const StudyRecommend = () => {
                                     detail5={`${profile.preferenceInfo?.minAge} ~ ${profile.preferenceInfo?.maxAge}살`}
                                     detail6={profile.preferenceInfo?.studyType || ""}
                                 />
-                                }
+                                
                             </div>
                         ))}
                         </FullListSection>
