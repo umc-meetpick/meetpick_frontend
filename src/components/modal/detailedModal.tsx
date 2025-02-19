@@ -264,7 +264,7 @@ const Modal = ({ isOpen, onClose }: ModalProps) => {
   const [isProcessing, setIsProcessing] = useState(false); // 요청 중 여부
   
   const patchRequest = usePatchRequest();
-  const matchingRequestId = 1; // 임의의 값으로 설정
+  const matchingRequestId = 94; // 임의의 값으로 설정
 
   const handleOpenAcceptDialog = () => {
     setIsAcceptDialogOpen(true);

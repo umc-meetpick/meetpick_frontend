@@ -46,7 +46,7 @@ const Container = styled.div<{$fixed: boolean}>`
 
 const IconPosition = styled.div`
     position:relative;
-    top: -35px;
+    top: -15px;
     left:-35%;
 `;
 const IconPosition2 = styled.div`
