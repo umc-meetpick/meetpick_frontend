@@ -73,6 +73,8 @@ const StudyRecommend = () => {
     const [selectedDate, setSelectedDate] = useState<string | null>(null);
     const [selectedStudy, setSelectedStudy] = useState<string|null>(null);
     const [currentSlide, setCurrentSlide] = useState<RecommendProfile | null>(null);
+
+    const loginNickname = localStorage.getItem("nickname");
     
     useEffect(() => {
         if (recommendations && recommendations.length > 0) {
@@ -140,7 +142,7 @@ const StudyRecommend = () => {
                 </TwoIcon>
             </Top>
             <Message>
-                <Name>베티</Name>
+                <Name>{loginNickname}</Name>
                 <Comment>님을 원하는 공부 메이트를 찾아보세요<Icon icon="fluent-color:edit-24" width="20" height="20" /></Comment>
             </Message>
             <Tabs>
@@ -248,6 +250,7 @@ const StudyRecommend = () => {
                         <FullListSection>
                         {filteredData.map((profile: Profile, index: number) => (
                             <div key={profile.requestId} onClick ={() => navigate(`/application/study/${profile.requestId}`)}>
+                                { loginNickname !== profile.nickname &&
                                 <RecommendBox
                                     category="공부"
                                     showHeart={true}
@@ -269,6 +272,7 @@ const StudyRecommend = () => {
                                     detail5={`${profile.preferenceInfo?.minAge} ~ ${profile.preferenceInfo?.maxAge}살`}
                                     detail6={profile.preferenceInfo?.studyType || ""}
                                 />
+                                }
                             </div>
                         ))}
                         </FullListSection>

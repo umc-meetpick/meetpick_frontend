@@ -78,11 +78,13 @@ const FoodRecommend = () => {
     const [selectedFood, setSelectedFood] = useState<string|null>(null);
     const [currentSlide, setCurrentSlide] = useState<RecommendProfile | null>(null);
 
-useEffect(() => {
-    if (recommendations && recommendations.length > 0) {
-        setCurrentSlide(recommendations[0]); // 첫 번째 데이터 설정
-    }
-}, [recommendations]);
+    const loginNickname = localStorage.getItem("nickname");
+
+    useEffect(() => {
+        if (recommendations && recommendations.length > 0) {
+            setCurrentSlide(recommendations[0]); // 첫 번째 데이터 설정
+        }
+    }, [recommendations]);
 
    
     
@@ -146,7 +148,7 @@ useEffect(() => {
                 </TwoIcon>
             </Top>
             <Message>
-                <Name>베티</Name>
+                <Name>{loginNickname}</Name>
                 <Comment>님을 원하는 혼밥 메이트를 찾아보세요<Icon icon="fluent-color:food-20" width="20" height="20" /></Comment>
             </Message>
             <Tabs>
@@ -254,7 +256,9 @@ useEffect(() => {
                         <FullListSection>
                         {filteredData.map((profile: Profile, index: number) => (
                             <div key={profile.requestId} onClick ={() => navigate(`/application/food/${profile.requestId}`)}>
-                                <RecommendBox
+                                {
+                                    loginNickname !== profile.nickname &&
+                                    <RecommendBox
                                     category="공부"
                                     showHeart={true}
                                     key={index}
@@ -275,6 +279,7 @@ useEffect(() => {
                                     detail5={`${profile.preferenceInfo?.minAge} ~ ${profile.preferenceInfo?.maxAge}살`}
                                     detail6={profile.preferenceInfo?.foodTypes?.join(", ") || ""}
                                 />
+                                }
                             </div>
                         ))}
                         </FullListSection>

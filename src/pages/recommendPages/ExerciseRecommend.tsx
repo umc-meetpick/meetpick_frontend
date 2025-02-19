@@ -77,6 +77,8 @@ const ExerciseRecommend = () => {
     const [selectedExercise, setSelectedExercise] = useState<string|null>(null);
     const [currentSlide, setCurrentSlide] = useState<RecommendProfile | null>(null);
     
+    const loginNickname = localStorage.getItem("nickname");
+
     useEffect(() => {
         if (recommendations && recommendations.length > 0) {
             setCurrentSlide(recommendations[0]); // 첫 번째 데이터 설정
@@ -146,7 +148,7 @@ const ExerciseRecommend = () => {
                 </TwoIcon>  
             </Top>
             <Message>
-                <Name>베티</Name>
+                <Name>{loginNickname}</Name>
                 <Comment>님을 위한 운동 메이트를 찾아보세요<Icon icon="fluent-color:sport-16" width="20" height="20"/></Comment>
             </Message>
             <Tabs>
@@ -255,7 +257,9 @@ const ExerciseRecommend = () => {
                         <FullListSection>
                         {filteredData.map((profile: Profile, index: number) => (
                             <div key={profile.requestId} onClick ={() => navigate(`/application/exercise/${profile.requestId}`)}>
-                                <RecommendBox
+                                {
+                                    loginNickname !== profile.nickname &&
+                                    <RecommendBox
                                     category="공부"
                                     showHeart={true}
                                     key={index}
@@ -276,6 +280,7 @@ const ExerciseRecommend = () => {
                                     detail5={`${profile.preferenceInfo?.minAge} ~ ${profile.preferenceInfo?.maxAge}살`}
                                     detail6={profile.preferenceInfo?.exerciseType}
                                 />
+                                }
                             </div>
                         ))}
                         </FullListSection>
