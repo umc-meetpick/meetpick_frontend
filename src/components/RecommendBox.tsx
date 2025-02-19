@@ -108,8 +108,8 @@ const RecommendBox: React.FC<ButtonProps> = ({
   return (
     <StyledButton
       $backgroundColor={$backgroundColor}
-      number1={$number1}
-      number2={$number2}
+      $number1={$number1}
+      $number2={$number2}
       width={width}
       color={color}
       disabled={disabled}
@@ -176,8 +176,8 @@ const StyledButton = styled.button<{
   $backgroundColor: string;
   width: string;
   color: string;
-  number1:string|number;
-  number2:string|number;
+  $number1:string|number;
+  $number2:string|number;
   $isExpanded:boolean;
 }>`
   background-color: ${({ $backgroundColor }) => $backgroundColor};
