@@ -1,11 +1,10 @@
 import axiosInstance from "../axiosInstance";
 import { useQuery } from "@tanstack/react-query";
 
-export type MateType = "STUDY" | "EXERCISE" | "MEAL" | "ALL";
+export type MateType = "공부" | "운동" | "혼밥" | "전체";
 
 export interface RecommendationType {
     memberId: number;
-    requestId: number;
     memberNumber: number;
     gender: string;
     foodType: string[];
@@ -14,10 +13,34 @@ export interface RecommendationType {
     mateType: MateType;
     studyType:string[];
   }
+  export interface RecommendationProfile {
+    requestId: number;
+    nickName: string;
+    studentNumber: string;
+    foodTypes?: string[];
+    exerciseType?: string;
+    studyType?: string;
+    gender: string;
+    imageUrl: string;
+    mbti: string;
+}
+
+export interface RecommendationResponse {
+    isSuccess: boolean;
+    code: string;
+    message: string;
+    result: {
+        foodRecommendDtos?: RecommendationProfile[];
+        exerciseRecommendDtos?: RecommendationProfile[];
+        studyRecommendDtos?: RecommendationProfile[];
+        currentPage?: number;
+        hasNextPage?: boolean;
+    };
+}
 
 
+  
 export const useFetchRecommendations = (mateType: string) => {
-  console.log("📡 추천 매칭 목록 조회 API 호출 시작! mateType:", mateType);
   return useQuery({
     queryKey: ["recommendations", mateType],
     queryFn: async () => {
@@ -25,13 +48,26 @@ export const useFetchRecommendations = (mateType: string) => {
         params: { mateType },
       });
 
-      console.log("✅ API 응답 성공:", data);
-      if (!data || !Array.isArray(data.result)) {
+      console.log("✅ 추천 매칭 목록 API 응답 성공:", data);
+
+      if (!data?.result) {
         console.warn("❌ API 응답 데이터가 예상한 형식이 아닙니다:", data);
         return [];
       }
-      return (data.result as RecommendationType[]) || [];
+
+      // 🔥 mateType에 따라 적절한 추천 리스트 선택
+      let recommendations: RecommendationProfile[] = [];
+
+      if (mateType === "혼밥") {
+        recommendations = data.result.foodRecommendDtos || [];
+      } else if (mateType === "운동") {
+        recommendations = data.result.exerciseRecommendDtos || [];
+      } else if (mateType === "공부") {
+        recommendations = data.result.studyRecommendDtos || [];
+      }
+
+      return recommendations;
     },
-    staleTime: 1000 * 60 * 5, // ✅ 5분 동안 데이터 유지 (이전 요청 재사용)
+    staleTime: 1000 * 60 * 5,
   });
 };

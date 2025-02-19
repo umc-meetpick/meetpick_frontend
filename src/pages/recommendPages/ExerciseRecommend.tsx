@@ -1,9 +1,8 @@
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import styled from "styled-components";
 import { Icon } from "@iconify/react";
 import RecommendBox from "../../components/RecommendBox";
 import DropdownButton from "../../components/RecommendDownList";
-import RecommendImage from "../../assets/images/Recommend4.png";
 import emojiImage from "../../assets/images/SpeechBubble1.png"
 import {Swiper, SwiperSlide} from "swiper/react";
 import SwiperCore from 'swiper';
@@ -15,8 +14,11 @@ import ExerciseMateList from "../../data/exercisemateoption";
 import { useSwiper } from "swiper/react";
 import { useFetchRecommendations } from "../../apis/matchingRecommend/memberRecommend";
 import { useTotalProfiles } from "../../apis/matchingRecommend/TotalProfiles";
+import { useNavigate } from "react-router-dom";
 
 interface Profile {
+    profileImage:string;
+    requestId:number;
     nickname: string;
     gender: string;
     age: number;
@@ -27,47 +29,44 @@ interface Profile {
         maxPeople: number;
     };
     preferenceInfo?: {
-        exerciseTypes?:string[];
+        exerciseType?:string;
         studentNumber?:string;
         preferredGender?: string;
         preferredMajors?: string;
         availableTimes?:string[];
         availableDays?:string[];
+        maxAge?:number;
+        minAge?:number;
     };
 }
 
 
-const exerciseTypeMap: Record<string, string> = {
-    "BOWLING": "볼링",
-    "CLIMBING": "클라이밍",
-    "TABLE_TENNIS": "탁구",
-    "FITNESS": "헬스",
-    "RUNNING": "러닝/조깅",
-    "SOCCER": "축구/풋살",
-    "BASKETBALL" :"농구",
-    "TENNIS_BADMINTON" :"배드민턴",
-    "OTHER":"기타",
-    "JUNIOR":"후배"
-};
+interface RecommendProfile {
+    requestId: number;
+    nickName: string;
+    studentNumber: string;
+    gender: string;
+    mbti: string;
+    imageUrl: string;
+    foodTypes?: string[]; // 음식 추천 데이터일 경우
+    exerciseType?: string; // 운동 추천 데이터일 경우
+    studyType?: string; // 공부 추천 데이터일 경우
+}
 
-const convertExerciseTypes = (exerciseTypes: string | string[] | undefined) => {
-    if (!exerciseTypes) return; // undefined 처리
-    if (typeof exerciseTypes === "string") return exerciseTypeMap[exerciseTypes] || exerciseTypes; // 단일 값 처리
-    return exerciseTypes.map(type => exerciseTypeMap[type] || type).join(", ");
-};
 
 SwiperCore.use([Pagination]);
 
 const ExerciseRecommend = () => {
-    const {data:recommendations} = useFetchRecommendations("EXERCISE");
+    const {data:recommendations} = useFetchRecommendations("운동");
     const {data:profiles=[]} = useTotalProfiles({
-        mateType:"EXERCISE"
+        mateTypeStr:"운동"
     });
 
     console.log("전체 프로필 데이터:", profiles);
 
 
     const swiper = useSwiper();
+    const navigate = useNavigate();
     
     const [activeTab, setActiveTab] = useState("recommendList"); // 현재 활성화된 탭 상태 
 
@@ -76,9 +75,14 @@ const ExerciseRecommend = () => {
     const [selectedGrade, setSelectedGrade] = useState<string | null>(null);
     const [selectedDate, setSelectedDate] = useState<string | null>(null);
     const [selectedExercise, setSelectedExercise] = useState<string|null>(null);
-    const [currentSlide, setCurrentSlide] = useState(recommendations?.[0]||null); // 현재 슬라이트 상태 관리
-    console.log("현재 슬라이드 데이터:", currentSlide);
-
+    const [currentSlide, setCurrentSlide] = useState<RecommendProfile | null>(null);
+    
+    useEffect(() => {
+        if (recommendations && recommendations.length > 0) {
+            setCurrentSlide(recommendations[0]); // 첫 번째 데이터 설정
+        }
+    }, [recommendations]);
+    
 
     const handleDropdownHeight= (isOpen:boolean) => {
         console.log("선택 ", isOpen);
@@ -107,7 +111,7 @@ const ExerciseRecommend = () => {
         } else if (option === "성별") {
             setSelectedGender(value);
         } else if (option === "시간") {
-            setSelectedTime(value);
+            setSelectedTime(value.replace(":00",""));
         } else if (option === "요일") {
             setSelectedDate(value);
         } else if (option == "운동 종류") {
@@ -115,15 +119,17 @@ const ExerciseRecommend = () => {
         }
     };
 
-    const filteredData = (profiles || []).filter(
-        (item :Profile) =>
-            (selectedGender === null || item.gender === selectedGender) &&
-            (selectedGrade === null || item.studentNumber?.toString() === selectedGrade) &&
-            (selectedTime === null || item.preferenceInfo?.availableTimes?.includes(selectedTime)) &&
-            (selectedDate === null || item.preferenceInfo?.availableDays?.includes(selectedDate)) &&
-            (selectedExercise === null || item.preferenceInfo?.exerciseTypes?.some(exercise => exerciseTypeMap[exercise] === selectedExercise))
 
+    const filteredData = (profiles || []).filter(
+        (item: Profile) =>
+            (selectedGender === null || item.gender === selectedGender) &&
+            (selectedGrade === null || item.preferenceInfo?.studentNumber === "상관없어" || item.preferenceInfo?.studentNumber === selectedGrade) &&
+            (selectedTime === null || item.preferenceInfo?.availableTimes?.includes(selectedTime)) &&
+            (selectedDate === null || (item.preferenceInfo?.availableDays || []).length === 0 || item.preferenceInfo?.availableDays?.includes(selectedDate)) &&
+            (selectedExercise === null || item.preferenceInfo?.exerciseType === selectedExercise)
     );
+    
+    
       
 
     return (
@@ -145,13 +151,13 @@ const ExerciseRecommend = () => {
             </Message>
             <Tabs>
                 <Tab
-                active={activeTab === "recommendList"}
+                $active={activeTab === "recommendList"}
                 onClick = {() => handleTabClick("recommendList")}
                 >
                     추천 리스트
                 </Tab>
                 <Tab
-                    active={activeTab === "fullList"}
+                    $active={activeTab === "fullList"}
                     onClick={() => handleTabClick("fullList")}
                 >
                     전체 리스트
@@ -162,10 +168,10 @@ const ExerciseRecommend = () => {
                     
                     <RecommendationSection>
                         <Emoji>
-                            <EmojiBubble1><BubbleText1>{currentSlide?.memberId || ""}</BubbleText1></EmojiBubble1>
-                            <EmojiBubble2><BubbleText2>{currentSlide?.exerciseType?.[0] || ""}</BubbleText2></EmojiBubble2>
+                            <EmojiBubble1><BubbleText1>{currentSlide?.studentNumber || ""}</BubbleText1></EmojiBubble1>
+                            <EmojiBubble2><BubbleText2>{currentSlide?.exerciseType || ""}</BubbleText2></EmojiBubble2>
                             <EmojiBubble3><BubbleText3>{currentSlide?.gender || ""}</BubbleText3></EmojiBubble3>
-                            <EmojiBubble4><BubbleText4>{currentSlide?.hobby || ""}</BubbleText4></EmojiBubble4>
+                            <EmojiBubble4><BubbleText4>{currentSlide?.mbti || ""}</BubbleText4></EmojiBubble4>
 
                             </Emoji>
                         {(recommendations || []).length > 0 ? (
@@ -181,10 +187,10 @@ const ExerciseRecommend = () => {
                         >
                             {(recommendations||[]).map((slidesData) => (
                                 
-                                <SwiperSlide key={slidesData.memberId}>
+                                <SwiperSlide key={slidesData.requestId}>
                                     <SlideContent>
-                                        <Link to ="/application/exercise">
-                                            <StyledImage src={RecommendImage} alt={`${slidesData.memberId} 이미지`} />
+                                        <Link to ="/application/exercise/:memberProfileId">
+                                            <StyledImage src={slidesData.imageUrl} alt={`${slidesData.requestId} 이미지`} />
                                         </Link>
                                     </SlideContent>
                                 </SwiperSlide>
@@ -194,9 +200,9 @@ const ExerciseRecommend = () => {
                             <NoDataMessage>추천할 데이터가 없습니다.</NoDataMessage>
                         )
                     }
-                        <Link to ='/application/exercise'>
+                        <Link to ='/application/exercise/:memberSecondProfileId'>
                         <Description> 
-                            <Name>{currentSlide?.memberId}</Name>님 프로필 구경하러가기
+                            <Name>{currentSlide?.nickName}</Name>님 프로필 구경하러가기
                         </Description>
                         </Link>
                         <Text>👀옆으로 밀어서 원하는 메이트를 찾아보세요!</Text>
@@ -229,7 +235,7 @@ const ExerciseRecommend = () => {
                                             : item.option === "요일" && selectedDate
                                             ? selectedDate
                                             : item.option === "시간" && selectedTime
-                                            ? selectedTime
+                                            ? `${selectedTime}:00`
                                             : `${item.option} ∨`
                                         }
                                         width={item.option === "운동 종류" ? "95px" :
@@ -247,26 +253,30 @@ const ExerciseRecommend = () => {
                             </Swiper>
                         </List>
                         <FullListSection>
-                            {filteredData.map((profile: Profile, index: number) => (
-                            <RecommendBox
-                                category="EXERCISE"
-                                key={index}
-                                requestId={index}
-                                text1={profile.nickname}
-                                text2={`# ${profile.gender} # ${profile.age}살`} 
-                                text3={`# ${profile.studentNumber}학번 # ${profile.mbti}`}
-                                number1={profile.slotInfo.currentPeople}
-                                number2={profile.slotInfo.maxPeople}
-                                $backgroundColor={index% 3 ===0 ? "#EEF5FD" : index%3 ===1? "#C0E5FF": "#EEF5FD"}
-                                width="160px"
-                                color="#5D5D5D"
-                                detail1={profile.preferenceInfo?.preferredGender}  // ✅ 수정
-                                detail2={profile.preferenceInfo?.preferredMajors}  // ✅ 수정
-                                detail3={profile.mbti}
-                                detail4={convertExerciseTypes(profile.preferenceInfo?.studentNumber)}
-                                detail5={convertExerciseTypes(profile.preferenceInfo?.exerciseTypes)}
-                                detail6={convertExerciseTypes(profile.preferenceInfo?.exerciseTypes)}
-                            />
+                        {filteredData.map((profile: Profile, index: number) => (
+                            <div key={profile.requestId} onClick ={() => navigate(`/application/exercise/${profile.requestId}`)}>
+                                <RecommendBox
+                                    category="공부"
+                                    showHeart={true}
+                                    key={index}
+                                    requestId={profile.requestId}
+                                    profileImage={profile.profileImage || "https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png"}
+                                    text1={profile.nickname}
+                                    text2={`# ${profile.gender} # ${profile.age}살`} 
+                                    text3={`# ${profile.studentNumber}학번 # ${profile.mbti}`}
+                                    $number1={profile.slotInfo.currentPeople}
+                                    $number2={profile.slotInfo.maxPeople}
+                                    $backgroundColor={index% 4 ===0 ? "#EEF5FD" : index%4 ===1? "#C0E5FF": index%4 ===2? "#C0E5FF" :"#EEF5FD"}
+                                    width="160px"
+                                    color="#5D5D5D"
+                                    detail1={profile.preferenceInfo?.preferredGender}  // ✅ 수정
+                                    detail2={profile.preferenceInfo?.preferredMajors}  // ✅ 수정
+                                    detail3={profile.mbti}
+                                    detail4={profile.preferenceInfo?.studentNumber}
+                                    detail5={`${profile.preferenceInfo?.minAge} ~ ${profile.preferenceInfo?.maxAge}살`}
+                                    detail6={profile.preferenceInfo?.exerciseType}
+                                />
+                            </div>
                         ))}
                         </FullListSection>
                     </Wrapper>
@@ -413,7 +423,7 @@ const Tabs = styled.div`
     font-family: "Pretendard Variable";
 `;
 
-const Tab = styled.button<{ active: boolean }>`
+const Tab = styled.button<{ $active: boolean }>`
     width:131px;
     margin-top:20px;
     font-size: 14px;
@@ -423,7 +433,7 @@ const Tab = styled.button<{ active: boolean }>`
     border: none;
     cursor: pointer;
     border-radius: 0; /* border-radius 제거 */
-    border-bottom: ${({ active }) => (active ? "3px solid #03347F" : "none")}; /* 활성화된 탭에 스타일 적용 */
+    border-bottom: ${({ $active }) => ($active ? "3px solid #03347F" : "none")}; /* 활성화된 탭에 스타일 적용 */
 
     &:hover {
         border-bottom:3px solid #03347F;

@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Icon } from "@iconify/react";
-import RecommendImage from "../assets/images/Recommend3.png";
 import { useLikeMatch, useDeleteLikeMatch } from "../apis/matchingRecommend/matchingHeart";
 
+
 interface ButtonProps {
+  profileImage:string;
   category: string;
   requestId: number;
   text1: string;
   text2: string;
   text3: string;
-  number1: string |number;
-  number2: string | number;
+  $number1: string | number;
+  $number2: string | number;
   $backgroundColor?: string;
   width?: string;
   color?: string;
@@ -23,16 +24,18 @@ interface ButtonProps {
   detail5?: string;
   detail6?: string;
   onClick?: () => void;
+  showHeart?:boolean;
 }
 
 const RecommendBox: React.FC<ButtonProps> = ({
+  profileImage,
   category,
   requestId,
   text1,
   text2,
   text3,
-  number1,
-  number2,
+  $number1,
+  $number2,
   $backgroundColor = "#E3F2FD",
   width = "140px",
   color = "black",
@@ -43,6 +46,7 @@ const RecommendBox: React.FC<ButtonProps> = ({
   detail4,
   detail5,
   detail6,
+  showHeart,
 }) => {
   const favoriteKey = `heart_${category}_${requestId}`;
 
@@ -64,6 +68,7 @@ const RecommendBox: React.FC<ButtonProps> = ({
   const handleIconClick = async (event: React.MouseEvent) => {
     event.stopPropagation();
     console.log("💖 하트 버튼 클릭됨! -> requestId =", requestId);
+    
     
   
     const newState = !isIconClicked;
@@ -97,13 +102,14 @@ const RecommendBox: React.FC<ButtonProps> = ({
 
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
+    
   };
 
   return (
     <StyledButton
       $backgroundColor={$backgroundColor}
-      number1={number1}
-      number2={number2}
+      $number1={$number1}
+      $number2={$number2}
       width={width}
       color={color}
       disabled={disabled}
@@ -111,24 +117,35 @@ const RecommendBox: React.FC<ButtonProps> = ({
     >
       <FirstLine>
         <PersonText>
-          {number1}/{number2}명
+          {$number1}/{$number2}명
         </PersonText>
+        {showHeart ? (
+          <StyledIcon
+            icon={isIconClicked ? "si:heart-fill" : "si:heart-line"}
+            width="20"
+            height="20"
+            $isClicked={isIconClicked}
+            onClick={handleIconClick}
+          />
+        ) : 
         <StyledIcon
-          icon={isIconClicked ? "si:heart-fill" : "si:heart-line"}
+          icon="si:heart-fill"
           width="20"
           height="20"
-          $isClicked={isIconClicked}
-          onClick={handleIconClick}
-        />
+          $isClicked={true}
+      />}
       </FirstLine>
       <SecondLine>
-        <StyledImage src={RecommendImage} alt="추천 리스트 이미지" />
+        <StyledImage src={profileImage} alt="사용자 프로필" />
         <Nickname>{text1}</Nickname>
         <Keyword1>{text2}</Keyword1>
         <Keyword2>{text3}</Keyword2>
       </SecondLine>
 
-      <FourthLine $isExpanded={isExpanded} onClick={toggleExpand}>
+      <FourthLine $isExpanded={isExpanded} onClick={(e) => {
+        e.stopPropagation();
+        toggleExpand();
+      }}>
         <StyledBox>
           {detail1 && <Box>{detail1}</Box>}
           {detail2 && <Box>{detail2}</Box>}
@@ -159,8 +176,8 @@ const StyledButton = styled.button<{
   $backgroundColor: string;
   width: string;
   color: string;
-  number1:string|number;
-  number2:string|number;
+  $number1:string|number;
+  $number2:string|number;
   $isExpanded:boolean;
 }>`
   background-color: ${({ $backgroundColor }) => $backgroundColor};

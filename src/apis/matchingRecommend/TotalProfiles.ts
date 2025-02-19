@@ -2,7 +2,7 @@ import axiosInstance from "../axiosInstance";
 import {useQuery} from "@tanstack/react-query"
 
 interface TotalProfileParams {
-    mateType:string;
+    mateTypeStr:string;
     gender?:string;
     studentNumber?:string;
     minAge?:number;

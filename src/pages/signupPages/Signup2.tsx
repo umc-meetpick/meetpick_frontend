@@ -16,6 +16,7 @@ interface University {
   id:number;
   universityName:string;
   address:string;
+  univName:string;
 }
 
 const Signup2 = () => {
@@ -140,7 +141,7 @@ const Signup2 = () => {
     console.log("회원 정보 저장 요청", {name, gender, birthday});
 
     savePersonInfo(
-      {name, gender : gender === "남성"? "MALE":"FEMALE", birthday},
+      {name, gender : gender === "남성"? "남성":"여성", birthday},
       {
         onSuccess:(data) => {
           console.log("회원 정보 저장 성공!", data);
@@ -167,7 +168,7 @@ const Signup2 = () => {
             {!isLoadingUniversities && !isTyping && universities?.length > 0 && (
             <DropdownContainer>
               {universities.map((university:University) => (
-                <DropdownItem key={university.id} onClick={() => handleSelectSchool(university.universityName)}>
+                <DropdownItem key={university.univName} onClick={() => handleSelectSchool(university.universityName)}>
                     <UniversityName>{university.universityName}</UniversityName>
                     <Address>{university.address}</Address>
                 </DropdownItem>
