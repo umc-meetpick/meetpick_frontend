@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 import { IoCloseOutline } from "react-icons/io5";
-import React, { useState } from 'react';
+import { useState } from 'react';
 import AcceptButton from '../button/AcceptButton';
 import RejectButton from '../button/RejectButton';
 import DialogButton from '../button/DialogButton';
 import MateProfileImg from "../../assets/profileImg/프로필3.png"
 import { usePatchRequest } from '../../apis/matches/patchRequest';
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 
 // Modal Overlay
 const ModalOverlay = styled.div`
@@ -264,7 +264,7 @@ const Modal = ({ isOpen, onClose }: ModalProps) => {
   const [isProcessing, setIsProcessing] = useState(false); // 요청 중 여부
   
   const patchRequest = usePatchRequest();
-  const matchingRequestId = 6; // 임의의 값으로 설정
+  const matchingRequestId = 1; // 임의의 값으로 설정
 
   const handleOpenAcceptDialog = () => {
     setIsAcceptDialogOpen(true);

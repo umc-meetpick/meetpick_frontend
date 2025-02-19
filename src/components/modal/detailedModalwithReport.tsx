@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import React, { useState, useEffect } from 'react';
+import * as React from 'react';
+import { useState, useEffect, SetStateAction } from 'react';
 import { IoCloseOutline } from "react-icons/io5";
 import DialogButton from '../button/DialogButton';
 import { GoChevronLeft, GoChevronDown, GoChevronUp } from "react-icons/go";
@@ -784,7 +785,7 @@ const ReportPage = ({ onClose, reporterId, reportedUserId }: { onClose: () => vo
         <DescriptionWrapper>
           <ReportDescription
             value={reportText}
-            onChange={(e) => setReportText(e.target.value)}
+            onChange={(e: { target: { value: SetStateAction<string>; }; }) => setReportText(e.target.value)}
           />
         {!reportText && ( // reportText가 비어 있으면 Placeholder 표시
             <Placeholder className="placeholder">
