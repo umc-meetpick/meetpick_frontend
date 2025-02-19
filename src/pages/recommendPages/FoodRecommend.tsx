@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import styled from "styled-components";
 import { Icon } from "@iconify/react";
 import RecommendBox from "../../components/RecommendBox";
@@ -42,6 +42,19 @@ interface Profile {
     };
 }
 
+interface RecommendProfile {
+    memberSecondProfileId: number;
+    nickName: string;
+    studentNumber: string;
+    gender: string;
+    mbti: string;
+    imageUrl: string;
+    foodTypes?: string[]; // 음식 추천 데이터일 경우
+    exerciseType?: string; // 운동 추천 데이터일 경우
+    studyType?: string; // 공부 추천 데이터일 경우
+}
+
+
 
 SwiperCore.use([Pagination]);
 
@@ -64,7 +77,15 @@ const FoodRecommend = () => {
     const [selectedGrade, setSelectedGrade] = useState<string | null>(null);
     const [selectedDate, setSelectedDate] = useState<string | null>(null);
     const [selectedFood, setSelectedFood] = useState<string|null>(null);
-    const [currentSlide, setCurrentSlide] = useState(recommendations?.[0] ||null); // 현재 슬라이트 상태 관리
+    const [currentSlide, setCurrentSlide] = useState<RecommendProfile | null>(null);
+
+useEffect(() => {
+    if (recommendations && recommendations.length > 0) {
+        setCurrentSlide(recommendations[0]); // 첫 번째 데이터 설정
+    }
+}, [recommendations]);
+
+   
     
 
     const handleDropdownHeight= (isOpen:boolean) => {
