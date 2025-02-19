@@ -168,18 +168,18 @@ const ViewRequest: React.FC = () => {
               tabs={["매칭 신청", "매칭 완료"]}
               activeTab={mainTab}
               onTabClick={(tab: React.SetStateAction<string>) => setMainTab(tab)}
-            />
+          />
           <FilterContainer>
             <SelectToggle
               options={["카테고리", "밥", "운동", "공부"]}
-              onChange={(selectedOption: { value: React.SetStateAction<string | null>; }) =>
+              onChange={(selectedOption: { value: string; label: string } | null ) => {
                 setCategoryFilter(
                   selectedOption && selectedOption.value !== "카테고리"
                     ? selectedOption.value
                     : null
                 )
               }
-            />
+              }/>
           </FilterContainer>
           <MateList>{renderList()}</MateList>
       </PageContainer>
