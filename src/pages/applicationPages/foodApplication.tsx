@@ -24,15 +24,14 @@ const FoodApplication = () => {
     });
 
     const {requestId} = useParams();
-    const {data:profileData} = getDetailProfile(Number(requestId));
+    const {data:profileData, isError} = getDetailProfile(Number(requestId));
 
     const handleOpenModal = () => setIsModalOpen(true); // 팝업 열기
 
     const handleConfirm = () => {
-        const requestId=1;
 
         joinRequest(
-            {requestId}, 
+            {requestId : Number(requestId)}, 
             {
                 onSuccess: (data) => {
                     console.log("신청 완료!", data);
@@ -43,13 +42,22 @@ const FoodApplication = () => {
                         color: "white",
                         background: "#101010",
                     });
+                },
+            onError:(error) => {
+                if(error){
+                    handleError();
                 }
+            }
             }
         );
     };
 
-    const handleCancel = () => {
+    const handleError = () => {
         setMessage("신청 조건을 다시 확인해주세요!");
+        setIsModalOpen(false); // 팝업 닫기
+    };
+
+    const handleCancel = () => {
         setIsModalOpen(false); // 팝업 닫기
     };
 
@@ -62,7 +70,15 @@ const FoodApplication = () => {
 
             return () => clearTimeout(timer); // 컴포넌트가 unmount 되거나 message가 바뀌면 타이머 클리어
         }
+        
     }, [message]);
+
+    useEffect(() => {
+        if (isError) {
+          handleError(); // 에러 발생 시 handleCancel 실행
+        }
+      }, [isError]); // isError 값이 변경될 때 실행
+      
 
     return (
         <>
@@ -160,7 +176,7 @@ const FoodApplication = () => {
                 </ModalOverlay>
             )}
 
-            {message && (
+            {message &&  (
                 <ModalOverlay>
                     <MessageContainer>
                         {message === "신청이 완료되었습니다." ? (
