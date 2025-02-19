@@ -424,9 +424,10 @@ const Button = styled.button<{$ismodal: boolean, $isSelected:boolean}>`
 const FoodBtn = styled.button<{$isSmall:boolean;}>`
     background-color: #38ABFF;
     color: white;
+    width:100px;
     border-radius:4px;
     position: absolute;
-    left: calc(50vw);
+    left: calc(min(50vw, 195px));
     transform: translateX(-50%);
     z-index:100;
 `;

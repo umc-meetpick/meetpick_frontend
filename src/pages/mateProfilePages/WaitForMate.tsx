@@ -13,10 +13,10 @@ const WaitForMate = () =>{
     const navigate = useNavigate();
     const location = useLocation();
     const param = (location.state == "혼밥") ? "food" : (location.state == "운동" ? "exercise" : "study")
-    const mateType = (param == "food") ? "MEAL" : param.toUpperCase();
     const lastImg = (location.state == "혼밥") ? recommend_food : (location.state == "운동" ? recommend_exercise : recommend_study)
     const postProfileMutation = postSecondProfile(param);
-    const { data, refetch, isLoading } = getRecommendation(mateType);
+    console.log(location.state)
+    const { data, refetch, isLoading } = getRecommendation(location.state);
 
     useEffect(() => {
         postProfileMutation.mutate(undefined, {
