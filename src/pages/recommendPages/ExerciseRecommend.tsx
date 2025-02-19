@@ -152,10 +152,10 @@ const ExerciseRecommend = () => {
                     
                     <RecommendationSection>
                         <Emoji>
-                            <EmojiBubble1><BubbleText1>{currentSlide?.memberId || ""}</BubbleText1></EmojiBubble1>
-                            <EmojiBubble2><BubbleText2>{currentSlide?.exerciseType?.[0] || ""}</BubbleText2></EmojiBubble2>
+                            <EmojiBubble1><BubbleText1>{currentSlide?.studentNumber || ""}</BubbleText1></EmojiBubble1>
+                            <EmojiBubble2><BubbleText2>{currentSlide?.exerciseType || ""}</BubbleText2></EmojiBubble2>
                             <EmojiBubble3><BubbleText3>{currentSlide?.gender || ""}</BubbleText3></EmojiBubble3>
-                            <EmojiBubble4><BubbleText4>{currentSlide?.hobby || ""}</BubbleText4></EmojiBubble4>
+                            <EmojiBubble4><BubbleText4>{currentSlide?.mbti || ""}</BubbleText4></EmojiBubble4>
 
                             </Emoji>
                         {(recommendations || []).length > 0 ? (
@@ -171,10 +171,10 @@ const ExerciseRecommend = () => {
                         >
                             {(recommendations||[]).map((slidesData) => (
                                 
-                                <SwiperSlide key={slidesData.memberId}>
+                                <SwiperSlide key={slidesData.memberSecondProfileId}>
                                     <SlideContent>
                                         <Link to ="/application/exercise">
-                                            <StyledImage src={RecommendImage} alt={`${slidesData.memberId} 이미지`} />
+                                            <StyledImage src={slidesData.imageUrl} alt={`${slidesData.memberSecondProfileId} 이미지`} />
                                         </Link>
                                     </SlideContent>
                                 </SwiperSlide>
@@ -186,7 +186,7 @@ const ExerciseRecommend = () => {
                     }
                         <Link to ='/application/exercise'>
                         <Description> 
-                            <Name>{currentSlide?.memberId}</Name>님 프로필 구경하러가기
+                            <Name>{currentSlide?.nickName}</Name>님 프로필 구경하러가기
                         </Description>
                         </Link>
                         <Text>👀옆으로 밀어서 원하는 메이트를 찾아보세요!</Text>

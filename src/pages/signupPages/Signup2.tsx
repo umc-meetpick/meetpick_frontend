@@ -16,6 +16,7 @@ interface University {
   id:number;
   universityName:string;
   address:string;
+  univName:string;
 }
 
 const Signup2 = () => {
@@ -167,7 +168,7 @@ const Signup2 = () => {
             {!isLoadingUniversities && !isTyping && universities?.length > 0 && (
             <DropdownContainer>
               {universities.map((university:University) => (
-                <DropdownItem key={university.id} onClick={() => handleSelectSchool(university.universityName)}>
+                <DropdownItem key={university.univName} onClick={() => handleSelectSchool(university.universityName)}>
                     <UniversityName>{university.universityName}</UniversityName>
                     <Address>{university.address}</Address>
                 </DropdownItem>
