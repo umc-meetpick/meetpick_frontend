@@ -188,7 +188,7 @@ const FoodMateProfile = () =>{
     }
     return(
         <>
-            <BasicNavbar title="혼밥 메이트 찾기"></BasicNavbar>
+            <BasicNavbar title="혼밥 메이트 찾기" fixed={true}></BasicNavbar>
             <Container>
                 <StyledMainContainer>
                     <MessagesContainer>
@@ -292,7 +292,7 @@ export default FoodMateProfile;
 const Container = styled.div`
     width: calc(100vw); 
     max-width: 393px; 
-    height:calc(100vh - 100px);
+    height:calc(100vh - 130px);
     position:fixed;
     top:60px;
     background: linear-gradient(to bottom, #F1F8FF, #D1E8FF);

@@ -82,7 +82,7 @@ const ToggleList = ({ button, multi, setModalOpen, type }: ToggleListProps) => {
                         <FaChevronDown style={{color:"#AAAAAA"}}/>
                     </Toggle>
                     {openItems.includes(item.id) && (
-                        <>  
+                        <div key={`toggle-${item.id}`}>  
                             {multi && 
                                 <Detail 
                                     onClick={()=>handleMajor("all", item.title+" 전체", item.items)} 
@@ -93,7 +93,7 @@ const ToggleList = ({ button, multi, setModalOpen, type }: ToggleListProps) => {
                                 </Detail>
                             }
                             {item.items.map((i, index) => (
-                            <>
+                            <div key={`major-wrap-${item.id}-${index}`}>
                                 <Detail
                                 key={`major-${item.id}-${index}`}
                                 onClick={() => handleMajor(i, item.title, item.items)}
@@ -109,9 +109,9 @@ const ToggleList = ({ button, multi, setModalOpen, type }: ToggleListProps) => {
                                         onChange={(e: React.FocusEvent<HTMLInputElement>)=>setValue(e.target.value)}
                                         onBlur={(e: React.FocusEvent<HTMLInputElement>) => setSubject(e.target.value)}
                                     />}
-                            </>
+                            </div>
                             ))}
-                        </>
+                        </div>
                     )}
                 </div>
             ))}
@@ -142,7 +142,7 @@ export default ToggleList;
 const Container = styled.div`
     width:312px;
     height:500px;
-    margin-top:20px;
+    margin-top:80px;
     max-height: calc(100vh - 150px);
     position:relative;
     overflow-y:auto;

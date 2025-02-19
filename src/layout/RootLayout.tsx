@@ -8,12 +8,13 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   width: calc(100vw); 
-  height: calc(var(--vh, 1vh) * 100);
+  height:100dvh;
+  }
 `;
 const Main=styled.div`
   width: calc(100vw); 
   max-width: 393px; 
-  height: calc(var(--vh, 1vh) * 100);
+  height:100vh;
   position: relative; 
   font-family: "Pretendard Variable";
 `;
@@ -47,12 +48,19 @@ const RootLayout = () => {
 
     useEffect(() => {
       const handleResize = () => setWindowHeight(window.innerHeight);
-
+      const setVH = () => {
+        document.documentElement.style.setProperty("--vh", `${window.innerHeight * 0.01}px`);
+      };
+    
+      setVH(); // 초기 실행
       window.addEventListener("resize", handleResize);
-      return () => window.removeEventListener("resize", handleResize);
-    }, []);
-
-    const isSmallViewport = windowHeight < 700;
+      window.addEventListener("resize", setVH);
+      return () => {
+        window.removeEventListener("resize", handleResize);
+        window.removeEventListener("resize", setVH);
+      };
+    }, []);    
+    
     const isKeyboard = windowHeight < 400;
     const isHome = location.pathname === "/";
     
@@ -62,7 +70,7 @@ const RootLayout = () => {
           <ContentWrapper $isHome={isHome}>
             <Outlet />
           </ContentWrapper>
-          {!isHome && !(isSmallViewport && messages.length > 0) && !isKeyboard && (
+          {!isHome && !(messages.length > 0) && !isKeyboard && (
               <BottomNavBar />
           )}
         </Main>

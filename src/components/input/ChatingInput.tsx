@@ -19,7 +19,6 @@ const ChatingInput = ({disable, setChatDisable, keyboard, isExtra, save, type}:C
     const { setMent: setFoodMent, setExtraMenu } = useContext(FoodProfileInfoContext);
     const { setExercise, setPlace: setExercisePlace, setMent: setExerciseMent } = useContext(ExerciseProfileInfoContext);
     const { setSubject, setPlace: setStudyPlace, setMent: setStudyMent} = useContext(StudyProfileInfoContext);
-    const isSmallViewport = window.innerHeight < 700; 
     const longWidth = window.innerWidth > 393;
 
     const handleSendBtn = () =>{
@@ -55,13 +54,11 @@ const ChatingInput = ({disable, setChatDisable, keyboard, isExtra, save, type}:C
                 onChange={(e: React.FocusEvent<HTMLInputElement>)=>setValue(e.target.value)}
                 disabled={disable}
                 $keyboard={keyboard}
-                $isSmallView={isSmallViewport}
             />
             <IconPosition 
                 onClick={handleSendBtn}
                 $keyboard={keyboard}
                 $isExtra={isExtra}
-                $isSmallView={isSmallViewport}
                 $isDisabled={disable}
                 $longWidth={longWidth}
             >{
@@ -74,14 +71,14 @@ const ChatingInput = ({disable, setChatDisable, keyboard, isExtra, save, type}:C
 }
 export default ChatingInput;
 
-const Input = styled.textarea<{$keyboard:boolean, $isSmallView:boolean}>`
+const Input = styled.textarea<{$keyboard:boolean}>`
     font-family: "Pretendard Variable", sans-serif;
     width:100%;
     max-width:373px;
-    height:${({$isSmallView})=> $isSmallView ? "40px" : "63px"};
+    height: 40px;
     border:none;
     position:fixed;
-    bottom:${({$keyboard, $isSmallView})=> $keyboard ? "0px" : ($isSmallView ? "0px" : "80px")};
+    bottom: 0px;
     padding: 10px; 
     line-height: 1.5;
     text-align: left;
@@ -92,9 +89,9 @@ const Input = styled.textarea<{$keyboard:boolean, $isSmallView:boolean}>`
         outline: none;
     }
 `;
-const IconPosition = styled.div<{$keyboard:boolean, $isExtra?:boolean, $isSmallView:boolean, $isDisabled:boolean, $longWidth:boolean}>`
+const IconPosition = styled.div<{$keyboard:boolean, $isExtra?:boolean, $isDisabled:boolean, $longWidth:boolean}>`
     position:fixed;
-    bottom:${({$keyboard, $isSmallView})=> $keyboard ? "3px" : ($isSmallView ? "5px" : "90px")};
+    bottom:3px;
     left: ${({$longWidth})=> $longWidth ? "calc(50vw + 140px)" : "calc(100vw - 50px)"};
     width:${({$isExtra})=> $isExtra ? "35px" : "30px"};
     heignt:36px;
