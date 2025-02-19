@@ -78,7 +78,7 @@ const LikePage = () => {
                 color="#5D5D5D"
                 detail1={data.gender}
                 detail2={data.isPeer}
-                detail3={data.foodTypes?.join(", ") || ""}
+                detail3={mateType === "혼밥" ? data.foodTypes?.join(", ") || "" : mateType === "운동" ? data.exerciseType || "" : data.studyType}
                 detail4={`${data.age}살`}
             />
         ))
