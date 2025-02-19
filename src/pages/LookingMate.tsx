@@ -32,6 +32,10 @@ const LookingMate = () => {
     const location = useLocation();
     const universityName = location.state?.universityName || "대학교";
 
+    useEffect(() => {
+      getToken();
+    }, []);
+    
     const handleBellClick = () => {
       const token = getToken(); // 토큰 확인
       if (token) {
