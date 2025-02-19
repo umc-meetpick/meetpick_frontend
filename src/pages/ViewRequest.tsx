@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import * as React from 'react';
+import { useState } from "react";
 import styled from "styled-components";
 import ListTabs from "../components/ListTabs";
 import Navbar from "../components/navbar/BasicNavbar"
 import AcceptButton from "../components/button/AcceptButton";
 import RejectButton from "../components/button/RejectButton";
 import SelectToggle from "../components/SelectToggle";
-import mateImg from "../assets/profileImg/프로필3.png"
 import { Icon } from '@iconify/react';
 import { IoCloseOutline } from "react-icons/io5";
 import Modal from '../components/modal/detailedModal';
@@ -24,18 +24,6 @@ interface Mate {
   avatar: string;
   date: string;
 }
-
-const BackButton = styled.button`
-  background: none;
-  border: none;
-  position: absolute;
-  top: 30px;
-  left: 10px;
-  cursor: pointer;
-`;
-
-import { GoChevronLeft } from "react-icons/go";
-
 
 const ViewRequest: React.FC = () => {
   const [mainTab, setMainTab] = useState<string>("매칭 신청");
@@ -179,12 +167,12 @@ const ViewRequest: React.FC = () => {
           <ListTabs
               tabs={["매칭 신청", "매칭 완료"]}
               activeTab={mainTab}
-              onTabClick={(tab) => setMainTab(tab)}
+              onTabClick={(tab: React.SetStateAction<string>) => setMainTab(tab)}
             />
           <FilterContainer>
             <SelectToggle
               options={["카테고리", "밥", "운동", "공부"]}
-              onChange={(selectedOption) =>
+              onChange={(selectedOption: { value: React.SetStateAction<string | null>; }) =>
                 setCategoryFilter(
                   selectedOption && selectedOption.value !== "카테고리"
                     ? selectedOption.value
@@ -193,11 +181,6 @@ const ViewRequest: React.FC = () => {
               }
             />
           </FilterContainer>
-          <BackButton onClick={handleOpenModal}>
-            <GoChevronLeft size={24} />
-          </BackButton>
-          <ModalwithReport isOpen={isModalOpen} onClose={handleCloseModal} />  // 신고 api 확인용!!! (삭제)
-          {/* 리스트 출력 */}
           <MateList>{renderList()}</MateList>
       </PageContainer>
 
