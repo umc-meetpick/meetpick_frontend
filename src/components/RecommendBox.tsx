@@ -97,6 +97,7 @@ const RecommendBox: React.FC<ButtonProps> = ({
 
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
+    
   };
 
   return (
@@ -128,7 +129,10 @@ const RecommendBox: React.FC<ButtonProps> = ({
         <Keyword2>{text3}</Keyword2>
       </SecondLine>
 
-      <FourthLine $isExpanded={isExpanded} onClick={toggleExpand}>
+      <FourthLine $isExpanded={isExpanded} onClick={(e) => {
+        e.stopPropagation();
+        toggleExpand();
+      }}>
         <StyledBox>
           {detail1 && <Box>{detail1}</Box>}
           {detail2 && <Box>{detail2}</Box>}
