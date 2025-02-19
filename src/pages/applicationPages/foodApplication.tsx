@@ -8,7 +8,7 @@ import ApplicationGrayBox from "../../components/ApplicationGrayBox";
 import { IoHeart } from "react-icons/io5";
 import { FaCheck } from "react-icons/fa6";
 import { useJoinRequest } from "../../apis/application/joinRequest";
-
+import getDetailProfile from "../../apis/detailMemberInfo/getDetailProfile";
 
 
 const FoodApplication = () => {
@@ -21,6 +21,9 @@ const FoodApplication = () => {
         color: "#2760AD",
         background: "#E7F2FE",
     });
+
+    const memberId=1; 
+    const {data:profileData} = getDetailProfile(memberId);
 
     const handleOpenModal = () => setIsModalOpen(true); // 팝업 열기
 
@@ -62,7 +65,7 @@ const FoodApplication = () => {
 
     return (
         <>
-            <Navbar title ="제이시의 프로필" before = {true}/>
+            <Navbar title ={profileData?.result?.공통?.memberId + "의 프로필"} before = {true}/>
             <Wrapper>
                 <ImageContainer>
                     <StyledImage src={ApplicationImage} alt="회원가입 완료 이미지" />
@@ -70,22 +73,22 @@ const FoodApplication = () => {
                 <Container>
                     <Text1>나이•학번</Text1>
                     <Button>
-                        <ApplicationGrayButton text="23살"/>
-                        <ApplicationGrayButton text="20학번"/>
+                        <ApplicationGrayButton text={profileData?.result?.공통?.age}/>
+                        <ApplicationGrayButton text={profileData?.result?.공통?.studentNumber}/>
                     </Button>
                 </Container>
                 <DoubleContainer>
                     <Container>
                         <Text1>성별</Text1>
                         <Button>
-                            <ApplicationGrayButton text="남성"/>
+                            <ApplicationGrayButton text={profileData?.result?.공통?.gender}/>
                         </Button>
                     </Container>
                     <Container>
                         <Text1>전공</Text1>
                         <Button>
-                            <ApplicationGrayButton text="자연과학계열" width="90"/>
-                            <ApplicationGrayButton text="물리학과" width="68"/>
+                            <ApplicationGrayButton text={profileData?.result?.공통?.major} width="95"/>
+                            <ApplicationGrayButton text={profileData?.result?.공통?.subMajor} width="68"/>
                         </Button>
                     </Container>
                 </DoubleContainer>
@@ -93,15 +96,16 @@ const FoodApplication = () => {
                     <Container>
                         <Text1>MBTI</Text1>
                         <Button>
-                            <ApplicationGrayButton text="ISFP" width="60"/>
+                            <ApplicationGrayButton text={profileData?.result?.공통?.mbti} width="60"/>
                         </Button>
                     </Container>
                     <Container>
                         <Text1>취미</Text1>
                         <Button>
-                            <ApplicationGrayButton text="🧘🏻명상" width="60"/>
-                            <ApplicationGrayButton text="🧩바둑" width="60"/>
-                            <ApplicationGrayButton text="💤 잠" width="60"/>
+                        {(profileData?.result?.공통?.hobbies || []).map((hobby: string, index: number) => (
+                            <ApplicationGrayButton key={index} text={hobby} width="60"/>
+                        ))}
+
                         </Button>
                     </Container>
                 </DoubleContainer>
@@ -133,7 +137,7 @@ const FoodApplication = () => {
                 <ApplicationGrayBox text1="시간대" text2="월 12:00 / 화 15:00" width="318px"/>
             </Mate1>
             <Mate1>
-                <ApplicationGrayBox text1="하고 싶은 말" text2="맛난 거 먹어요~" width="318px"/>
+                <ApplicationGrayBox text1="하고 싶은 말" text2={profileData?.result?.타입?.comment} width="318px"/>
             </Mate1>
             <Button2>
                 <ApplicationButton style={buttonStyle} onClick={handleOpenModal}>
