@@ -4,9 +4,9 @@ import recommend_exercise from "../../assets/profileImg/recommend_exercise.png"
 import recommend_study from "../../assets/profileImg/recommend_study.png"
 import styled from "styled-components";
 import BasicNavbar from "../../components/navbar/BasicNavbar";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import getRecommendation from "../../apis/profileMatch/getRecommendation";
+//import getRecommendation from "../../apis/profileMatch/getRecommendation";
 import postSecondProfile from "../../apis/profileMatch/postSecondProfile";
 
 const WaitForMate = () =>{
@@ -15,34 +15,42 @@ const WaitForMate = () =>{
     const param = (location.state == "혼밥") ? "food" : (location.state == "운동" ? "exercise" : "study")
     const lastImg = (location.state == "혼밥") ? recommend_food : (location.state == "운동" ? recommend_exercise : recommend_study)
     const postProfileMutation = postSecondProfile(param);
-    console.log(location.state)
-    const { data, refetch, isLoading } = getRecommendation(location.state);
+    const [isLoading, setIsLoading] = useState(true);
+    //const { data, refetch, isLoading } = getRecommendation(location.state);
+
+    // useEffect(() => {
+    //     postProfileMutation.mutate(undefined, {
+    //       onSuccess: () => {
+    //         refetch(); // POST 성공 후 GET 실행
+    //       },
+    //     });
+    // }, []);
 
     useEffect(() => {
-        postProfileMutation.mutate(undefined, {
-          onSuccess: () => {
-            refetch(); // POST 성공 후 GET 실행
-          },
-        });
+        postProfileMutation.mutate(undefined);
+        const timer = setTimeout(() => {
+            setIsLoading(false); // 5초 후에 isLoading을 false로 변경
+        }, 5000);
+
+        return () => clearTimeout(timer); // 컴포넌트 언마운트 시 타이머 클리어
     }, []);
 
     return(
         <Wrapper>
             <BasicNavbar title="추천 메이트 찾기"></BasicNavbar>
             <Container>
-                { data &&
-                    <>
-                        <Img src={lastImg} alt="프로필"/>
-                        <Btn onClick={()=>navigate(`/recommend/${param}`, {state:data})}>{location.state} 메이트 만나러 가기</Btn>
-                    </> 
-                }
-                { isLoading && 
+                { isLoading ?
                     <>
                         <Img src={waiting} alt="프로필"/>
                         <Div>
                             작성해주신 내용으로 <br/> 
                             메이트를 찾고 있어요~
                         </Div> 
+                    </>
+                    :
+                    <>
+                        <Img src={lastImg} alt="프로필"/>
+                        <Btn onClick={()=>navigate(`/recommend/${param}`)}>{location.state} 메이트 만나러 가기</Btn>
                     </>
                 }
             </Container>
