@@ -33,6 +33,8 @@ interface Profile {
         preferredMajors?: string;
         availableTimes?:string[];
         availableDays?:string[];
+        maxAge?:number;
+        minAge?:number;
     };
 }
 
@@ -101,7 +103,7 @@ const ExerciseRecommend = () => {
     const filteredData = (profiles || []).filter(
         (item: Profile) =>
             (selectedGender === null || item.gender === selectedGender) &&
-            (selectedGrade === null || item.preferenceInfo?.studentNumber === selectedGrade) &&
+            (selectedGrade === null || item.preferenceInfo?.studentNumber === "상관없어" || item.preferenceInfo?.studentNumber === selectedGrade) &&
             (selectedTime === null || item.preferenceInfo?.availableTimes?.includes(selectedTime)) &&
             (selectedDate === null || (item.preferenceInfo?.availableDays || []).length === 0 || item.preferenceInfo?.availableDays?.includes(selectedDate)) &&
             (selectedExercise === null || item.preferenceInfo?.exerciseType === selectedExercise)
@@ -233,7 +235,7 @@ const ExerciseRecommend = () => {
                         <FullListSection>
                             {filteredData.map((profile: Profile, index: number) => (
                             <RecommendBox
-                                category="EXERCISE"
+                                category="운동"
                                 key={index}
                                 requestId={index}
                                 text1={profile.nickname}
@@ -241,14 +243,14 @@ const ExerciseRecommend = () => {
                                 text3={`# ${profile.studentNumber}학번 # ${profile.mbti}`}
                                 number1={profile.slotInfo.currentPeople}
                                 number2={profile.slotInfo.maxPeople}
-                                $backgroundColor={index% 3 ===0 ? "#EEF5FD" : index%3 ===1? "#C0E5FF": "#EEF5FD"}
+                                $backgroundColor={index% 4 ===0 ? "#EEF5FD" : index%4 ===1? "#C0E5FF": index%4 ===2? "#C0E5FF" :"#EEF5FD"}
                                 width="160px"
                                 color="#5D5D5D"
                                 detail1={profile.preferenceInfo?.preferredGender}  // ✅ 수정
                                 detail2={profile.preferenceInfo?.preferredMajors}  // ✅ 수정
                                 detail3={profile.mbti}
-                                detail4={profile.preferenceInfo?.exerciseType || ""}
-                                detail5={profile.preferenceInfo?.exerciseType || ""}
+                                detail4={profile.preferenceInfo?.studentNumber||""}
+                                detail5={`${profile.preferenceInfo?.minAge} ~ ${profile.preferenceInfo?.maxAge}살`}
                                 detail6={profile.preferenceInfo?.exerciseType || ""}
 
 
