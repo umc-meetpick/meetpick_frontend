@@ -33,7 +33,6 @@ const Container = styled.div<{$fixed: boolean}>`
   justify-content: center;
   align-items: center; /* 오타 수정: align-item → align-items */
   font-family: "Pretendard Variable";
-  
   ${({ $fixed }) => 
     $fixed &&
     `
@@ -47,12 +46,12 @@ const Container = styled.div<{$fixed: boolean}>`
 
 const IconPosition = styled.div`
     position:relative;
-    top:20px;
+    top: -35px;
     left:-35%;
 `;
 const IconPosition2 = styled.div`
     position:relative;
-    top:-5px;
+    top: -35px;
     left:40%;
 `;
 const Title = styled.div<{$fixed:boolean;}>`

@@ -57,9 +57,9 @@ const Container = styled.div`
     border: 1px solid white;
     background-color: white;
     display: flex;
-    /flex-direction: column;
+    flex-direction: column;
     justify-content: center;
-    //align-items: center;
+    align-items: center;
     position: absolute;
     bottom: -65px;
     overflow-y: auto;

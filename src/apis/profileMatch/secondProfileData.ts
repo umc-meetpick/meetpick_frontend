@@ -25,7 +25,7 @@ const removeEmoji = (text: string) => text.replace(/[\p{Emoji}\p{So}]/gu, "");
 const secondProfileData = (type: ProfileType, contextData: ProfileContextType) => {
    // 공통 데이터
    const baseData = {
-    "gender": (contextData.gender == "상관없음") ? null : (contextData.gender == "남성" ? "MALE" : "FEMALE"),
+    "gender": (contextData.gender == "상관없음") ? null : contextData.gender,
     "subMajorName": (contextData.majors.length === 0) ? null : contextData.majors,
     "studentNumber": (contextData.studentNum == "상관없음") ? null : contextData.studentNum,
     "minAge": contextData.ageRange[0] ? contextData.ageRange[0] : null,
@@ -56,7 +56,7 @@ switch (type) {
         isOnline:null,
         studyTimes: null,
         place:null,
-        type: "MEAL"
+        type: "혼밥"
       };
     }
     break;
@@ -73,7 +73,7 @@ switch (type) {
         isOnline:null,
         studyTimes: null,
         place: contextData.isSchool ? null : contextData.place,
-        type: "EXERCISE"
+        type: "운동"
       };
     }
     break;
@@ -90,7 +90,7 @@ switch (type) {
         isOnline: contextData.isOnline,
         studyTimes: contextData.studyTime,
         place:null,
-        type: "STUDY"
+        type: "공부"
       };
     }
     break;

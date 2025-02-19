@@ -63,7 +63,7 @@ const FoodRecommend = () => {
     console.log("전체 프로필 데이터:", profiles);
 
     const swiper = useSwiper();
-    
+
     const [activeTab, setActiveTab] = useState("recommendList"); // 현재 활성화된 탭 상태 
 
     const [selectedGender, setSelectedGender] = useState<string | null>(null);

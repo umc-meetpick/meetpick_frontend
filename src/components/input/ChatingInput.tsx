@@ -79,6 +79,7 @@ const Input = styled.textarea<{$keyboard:boolean}>`
     border:none;
     position:fixed;
     bottom: 0px;
+    bottom: env(safe-area-inset-bottom);
     padding: 10px; 
     line-height: 1.5;
     text-align: left;
@@ -91,7 +92,7 @@ const Input = styled.textarea<{$keyboard:boolean}>`
 `;
 const IconPosition = styled.div<{$keyboard:boolean, $isExtra?:boolean, $isDisabled:boolean, $longWidth:boolean}>`
     position:fixed;
-    bottom:3px;
+    bottom:5px;
     left: ${({$longWidth})=> $longWidth ? "calc(50vw + 140px)" : "calc(100vw - 50px)"};
     width:${({$isExtra})=> $isExtra ? "35px" : "30px"};
     heignt:36px;

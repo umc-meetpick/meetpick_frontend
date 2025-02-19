@@ -292,11 +292,11 @@ export default FoodMateProfile;
 const Container = styled.div`
     width: calc(100vw); 
     max-width: 393px; 
-    height:calc(100vh - 130px);
+    height:calc(100vh - 120px);
     position:fixed;
     top:60px;
     background: linear-gradient(to bottom, #F1F8FF, #D1E8FF);
-    font-family: "Pretendard Variable";
+    font-family: "Pretendard Variable";      
 `;
 const StyledMainContainer = styled.div`
     width: calc(100vw); 
@@ -339,6 +339,7 @@ const OptionsContainer = styled.div<{ $isMenu: boolean , $isSmall:boolean}>`
                   padding: 10px 20px;
                   overflow-y:auto;
                   position:relative;
+                  margin-top: 30px;
                   *{
                     font-size:14px;
                     padding:10px;
@@ -349,7 +350,8 @@ const OptionsContainer = styled.div<{ $isMenu: boolean , $isSmall:boolean}>`
                   display: flex;
                   flex-wrap: wrap;
                   justify-content: center;
-                  margin-top: ${$isSmall ? "calc(100vh * 0.15)" : "calc(100vh * 0.05)"};
+                  position:relative;
+                  margin-top: ${$isSmall ? "calc(100vh * 0.15)" : "calc(100vh * 0.1)"};
                   margin-bottom: calc(100vh * 0.1);
                   gap: 15px;
               `}
@@ -359,6 +361,8 @@ const FoodMent = styled.div`
     font-weight:400;
     display:flex;
     justify-content:center;
+    position:relative;
+    top:30px;
 `;
 const BaseMessage = styled.div<{ direction: string, $isImg : boolean, $length:number }>`
     font-size:13px;
@@ -421,10 +425,9 @@ const FoodBtn = styled.button<{$isSmall:boolean;}>`
     background-color: #38ABFF;
     color: white;
     border-radius:4px;
-    position: fixed;
+    position: absolute;
     left: calc(50vw);
     transform: translateX(-50%);
-    bottom: ${({$isSmall})=>$isSmall ? "calc(100vh * 0.05 + 45px)" : "calc(100vh * 0.1 + 85px)"};
     z-index:100;
 `;
 const ByeImoticon = styled.div`

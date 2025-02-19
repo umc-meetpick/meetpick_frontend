@@ -199,8 +199,8 @@ const Container = styled.div<{$isSmall:boolean}>`
     display: flex;
     flex-direction: column;
     align-items: center;
-    position: absolute;
-    bottom: ${({$isSmall})=>$isSmall ? "-40px" : "30px"};
+    position: fixed;
+    bottom: -40px;
     overflow-y: auto;
     border-radius: 30px 30px 0 0;
 `;
