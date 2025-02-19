@@ -15,8 +15,10 @@ import ExerciseMateList from "../../data/exercisemateoption";
 import { useSwiper } from "swiper/react";
 import { useFetchRecommendations } from "../../apis/matchingRecommend/memberRecommend";
 import { useTotalProfiles } from "../../apis/matchingRecommend/TotalProfiles";
+import { useNavigate } from "react-router-dom";
 
 interface Profile {
+    requestId:number;
     nickname: string;
     gender: string;
     age: number;
@@ -52,6 +54,7 @@ const ExerciseRecommend = () => {
 
 
     const swiper = useSwiper();
+    const navigate = useNavigate();
     
     const [activeTab, setActiveTab] = useState("recommendList"); // 현재 활성화된 탭 상태 
 
@@ -233,28 +236,28 @@ const ExerciseRecommend = () => {
                             </Swiper>
                         </List>
                         <FullListSection>
-                            {filteredData.map((profile: Profile, index: number) => (
-                            <RecommendBox
-                                category="운동"
-                                key={index}
-                                requestId={index}
-                                text1={profile.nickname}
-                                text2={`# ${profile.gender} # ${profile.age}살`} 
-                                text3={`# ${profile.studentNumber}학번 # ${profile.mbti}`}
-                                number1={profile.slotInfo.currentPeople}
-                                number2={profile.slotInfo.maxPeople}
-                                $backgroundColor={index% 4 ===0 ? "#EEF5FD" : index%4 ===1? "#C0E5FF": index%4 ===2? "#C0E5FF" :"#EEF5FD"}
-                                width="160px"
-                                color="#5D5D5D"
-                                detail1={profile.preferenceInfo?.preferredGender}  // ✅ 수정
-                                detail2={profile.preferenceInfo?.preferredMajors}  // ✅ 수정
-                                detail3={profile.mbti}
-                                detail4={profile.preferenceInfo?.studentNumber||""}
-                                detail5={`${profile.preferenceInfo?.minAge} ~ ${profile.preferenceInfo?.maxAge}살`}
-                                detail6={profile.preferenceInfo?.exerciseType || ""}
-
-
-                            />
+                        {filteredData.map((profile: Profile, index: number) => (
+                            <div key={profile.requestId} onClick ={() => navigate(`/application/exercise/${profile.requestId}`)}>
+                                <RecommendBox
+                                    category="공부"
+                                    key={index}
+                                    requestId={profile.requestId}
+                                    text1={profile.nickname}
+                                    text2={`# ${profile.gender} # ${profile.age}살`} 
+                                    text3={`# ${profile.studentNumber}학번 # ${profile.mbti}`}
+                                    number1={profile.slotInfo.currentPeople}
+                                    number2={profile.slotInfo.maxPeople}
+                                    $backgroundColor={index% 4 ===0 ? "#EEF5FD" : index%4 ===1? "#C0E5FF": index%4 ===2? "#C0E5FF" :"#EEF5FD"}
+                                    width="160px"
+                                    color="#5D5D5D"
+                                    detail1={profile.preferenceInfo?.preferredGender}  // ✅ 수정
+                                    detail2={profile.preferenceInfo?.preferredMajors}  // ✅ 수정
+                                    detail3={profile.mbti}
+                                    detail4={profile.preferenceInfo?.studentNumber}
+                                    detail5={`${profile.preferenceInfo?.minAge} ~ ${profile.preferenceInfo?.maxAge}살`}
+                                    detail6={profile.preferenceInfo?.exerciseType}
+                                />
+                            </div>
                         ))}
                         </FullListSection>
                     </Wrapper>

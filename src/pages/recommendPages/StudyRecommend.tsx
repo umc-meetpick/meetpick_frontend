@@ -15,11 +15,13 @@ import StudyMateList from "../../data/studymateoption";
 import { useSwiper } from "swiper/react";
 import { useFetchRecommendations } from "../../apis/matchingRecommend/memberRecommend";
 import { useTotalProfiles } from "../../apis/matchingRecommend/TotalProfiles";
+import { useNavigate } from "react-router-dom";
 
 interface Profile {
     nickname: string;
     gender: string;
     age: number;
+    requestId:number;
     studentNumber?: string;
     mbti?: string;
     slotInfo: {
@@ -50,6 +52,7 @@ const StudyRecommend = () => {
     console.log("전체 프로필 데이터:", profiles);
 
     const swiper = useSwiper();
+    const navigate = useNavigate();
     
     const [activeTab, setActiveTab] = useState("recommendList"); // 현재 활성화된 탭 상태 
     const [selectedGender, setSelectedGender] = useState<string | null>(null);
@@ -225,25 +228,27 @@ const StudyRecommend = () => {
                         </List>
                         <FullListSection>
                         {filteredData.map((profile: Profile, index: number) => (
-                            <RecommendBox
-                                category="공부"
-                                key={index}
-                                requestId={index}
-                                text1={profile.nickname}
-                                text2={`# ${profile.gender} # ${profile.age}살`} 
-                                text3={`# ${profile.studentNumber}학번 # ${profile.mbti}`}
-                                number1={profile.slotInfo.currentPeople}
-                                number2={profile.slotInfo.maxPeople}
-                                $backgroundColor={index% 4 ===0 ? "#EEF5FD" : index%4 ===1? "#C0E5FF": index%4 ===2? "#C0E5FF" :"#EEF5FD"}
-                                width="160px"
-                                color="#5D5D5D"
-                                detail1={profile.preferenceInfo?.preferredGender}  // ✅ 수정
-                                detail2={profile.preferenceInfo?.preferredMajors}  // ✅ 수정
-                                detail3={profile.mbti}
-                                detail4={profile.preferenceInfo?.studentNumber}
-                                detail5={`${profile.preferenceInfo?.minAge} ~ ${profile.preferenceInfo?.maxAge}살`}
-                                detail6={profile.preferenceInfo?.studyType || ""}
-                            />
+                            <div key={profile.requestId} onClick ={() => navigate(`/application/study/${profile.requestId}`)}>
+                                <RecommendBox
+                                    category="공부"
+                                    key={index}
+                                    requestId={profile.requestId}
+                                    text1={profile.nickname}
+                                    text2={`# ${profile.gender} # ${profile.age}살`} 
+                                    text3={`# ${profile.studentNumber}학번 # ${profile.mbti}`}
+                                    number1={profile.slotInfo.currentPeople}
+                                    number2={profile.slotInfo.maxPeople}
+                                    $backgroundColor={index% 4 ===0 ? "#EEF5FD" : index%4 ===1? "#C0E5FF": index%4 ===2? "#C0E5FF" :"#EEF5FD"}
+                                    width="160px"
+                                    color="#5D5D5D"
+                                    detail1={profile.preferenceInfo?.preferredGender}  // ✅ 수정
+                                    detail2={profile.preferenceInfo?.preferredMajors}  // ✅ 수정
+                                    detail3={profile.mbti}
+                                    detail4={profile.preferenceInfo?.studentNumber}
+                                    detail5={`${profile.preferenceInfo?.minAge} ~ ${profile.preferenceInfo?.maxAge}살`}
+                                    detail6={profile.preferenceInfo?.studyType || ""}
+                                />
+                            </div>
                         ))}
                         </FullListSection>
                     </Wrapper>

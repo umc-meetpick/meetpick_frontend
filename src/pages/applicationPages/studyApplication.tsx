@@ -8,6 +8,8 @@ import ApplicationGrayBox from "../../components/ApplicationGrayBox";
 import { IoHeart } from "react-icons/io5";
 import { FaCheck } from "react-icons/fa6";
 import getDetailProfile from "../../apis/detailMemberInfo/getDetailProfile";
+import usePagination from "@mui/material/usePagination/usePagination";
+import { useParams } from "react-router-dom";
 
 const StudyApplication = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -18,8 +20,8 @@ const StudyApplication = () => {
         background: "#E7F2FE",
     });
 
-    const memberId=1; 
-    const {data:profileData} = getDetailProfile(memberId);
+    const {requestId} = useParams();
+    const {data:profileData} = getDetailProfile(Number(requestId));
 
     const handleOpenModal = () => setIsModalOpen(true); // 팝업 열기
 
@@ -51,7 +53,7 @@ const StudyApplication = () => {
 
     return (
         <>
-            <Navbar title ={profileData?.result?.공통?.memberId + "의 프로필"} before = {true}/>
+            <Navbar title ={profileData?.result?.공통?.nickName + "의 프로필"} before = {true}/>
             <Wrapper>
                 <ImageContainer>
                     <StyledImage src={ApplicationImage} alt="회원가입 완료 이미지" />
