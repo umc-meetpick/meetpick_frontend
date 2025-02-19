@@ -10,6 +10,31 @@ import { Icon } from '@iconify/react';
 import { IoCloseOutline } from "react-icons/io5";
 import Modal from '../components/modal/detailedModal';
 import ModalwithReport from '../components/modal/detailedModalwithReport';
+import useGetCompletedMatch from '../apis/matches/getCompletedMatch'
+import useGetRequestMatch from "../apis/matches/getRequestMatch";
+
+interface Mate {
+  id: number;
+  category: string;
+  name: string;
+  //gender: string;
+  age: number;
+  major: string;
+  studentId: string;
+  avatar: string;
+  date: string;
+}
+
+const BackButton = styled.button`
+  background: none;
+  border: none;
+  position: absolute;
+  top: 30px;
+  left: 10px;
+  cursor: pointer;
+`;
+
+import { GoChevronLeft } from "react-icons/go";
 
 
 const ViewRequest: React.FC = () => {
@@ -19,55 +44,32 @@ const ViewRequest: React.FC = () => {
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const [modalType, setModalType] = useState<"default" | "report">("default");
 
-  const matchRequests = [
-    {
-      id: 1,
-      category: "운동",
-      name: "제이시",
-      gender: "남성",
-      age: 23,
-      major: "경영학부",
-      studentId: 20,
-      avatar: mateImg,
-      date: "24.01.07",
-    },
-    {
-      id: 2,
-      category: "밥",
-      name: "제이시",
-      gender: "남성",
-      age: 23,
-      major: "경영학부",
-      studentId: 20,
-      avatar: mateImg,
-      date: "24.01.07",
-    },
-  ];
 
-  const matchComplete = [
-    {
-      id: 3,
-      category: "밥",
-      name: "제이시",
-      gender: "남성",
-      age: 23,
-      major: "경영학부",
-      studentId: 20,
-      avatar: mateImg,
-      date: "24.01.09",
-    },
-    {
-      id: 4,
-      category: "공부",
-      name: "제이시",
-      gender: "남성",
-      age: 23,
-      major: "경영학부",
-      studentId: 20,
-      avatar: mateImg,
-      date: "24.01.07",
-    },
-  ];
+  const { data: completedMatchData } = useGetCompletedMatch("전체", 0, 10); // 예시: type=all, 첫 번째 페이지, 10개 조회
+  const { data: requestMatchData } = useGetRequestMatch("전체", 0, 10); // 예시: type=all, 영영 번째 페이지, 0개 조회
+
+  const matchRequests: Mate[] = requestMatchData?.map((item) => ({
+    id: item.memberSecondProfileId,
+    category: item.mateType,
+    name: item.studentNumber.toString(),
+    age: item.age,
+    major: item.major,
+    studentId: item.studentNumber,
+    avatar: "", // 이미지 제공 여부 확인 필요
+    date: "",  // 매칭 신청에는 생성일자가 없으므로 빈 문자열로 처리
+  })) || [];
+
+  const matchComplete: Mate[] = completedMatchData?.map((item: any) => ({
+    id: item.id,
+    category: item.category,
+    name: item.name,
+    gender: item.gender, // API에 맞게 수정
+    age: item.age,
+    major: item.major,
+    studentId: item.studentId,
+    avatar: item.avatar, // API에서 이미지 제공 여부 확인 필요
+    date: item.date, 
+  })) || [];
 
 
   const handleOpenModal = () => {
@@ -125,7 +127,7 @@ const ViewRequest: React.FC = () => {
     const currentList =
       mainTab === "매칭 신청" ? matchRequests : matchComplete;
 
-      const filteredList = categoryFilter
+    const filteredList = categoryFilter
       ? currentList.filter((mate) => mate.category === categoryFilter)
       : currentList; // 카테고리 필터링 적용
 
@@ -146,7 +148,7 @@ const ViewRequest: React.FC = () => {
           <MateDetails>
             <MateName>{mate.name}</MateName>
             <MateSubDetails>
-              <div>{mate.gender}</div>
+              <div>남성</div>
               <div>{mate.studentId}학번, {mate.age}살</div>
               <div>{mate.major}</div>
             </MateSubDetails>
@@ -191,13 +193,17 @@ const ViewRequest: React.FC = () => {
               }
             />
           </FilterContainer>
+          <BackButton onClick={handleOpenModal}>
+            <GoChevronLeft size={24} />
+          </BackButton>
+          <ModalwithReport isOpen={isModalOpen} onClose={handleCloseModal} />  // 신고 api 확인용!!! (삭제)
           {/* 리스트 출력 */}
           <MateList>{renderList()}</MateList>
       </PageContainer>
 
       {isModalOpen && (
         modalType === "default" ? (
-          <Modal isOpen={isModalOpen} onClose={handleCloseModal} />
+          <Modal isOpen={isModalOpen} onClose={handleCloseModal} matchingRequestId={1}/>
         ) : (
           <ModalwithReport isOpen={isModalOpen} onClose={handleCloseModal} />
         )
