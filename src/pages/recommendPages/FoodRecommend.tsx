@@ -131,13 +131,13 @@ const FoodRecommend = () => {
             </Message>
             <Tabs>
                 <Tab
-                active={activeTab === "recommendList"}
+                $active={activeTab === "recommendList"}
                 onClick = {() => handleTabClick("recommendList")}
                 >
                     추천 리스트
                 </Tab>
                 <Tab
-                    active={activeTab === "fullList"}
+                    $active={activeTab === "fullList"}
                     onClick={() => handleTabClick("fullList")}
                 >
                     전체 리스트
@@ -399,7 +399,7 @@ const Tabs = styled.div`
     font-family: "Pretendard Variable";
 `;
 
-const Tab = styled.button<{ active: boolean }>`
+const Tab = styled.button<{ $active: boolean }>`
     width:131px;
     margin-top:20px;
     font-size: 14px;
@@ -409,7 +409,7 @@ const Tab = styled.button<{ active: boolean }>`
     border: none;
     cursor: pointer;
     border-radius: 0; /* border-radius 제거 */
-    border-bottom: ${({ active }) => (active ? "3px solid #03347F" : "none")}; /* 활성화된 탭에 스타일 적용 */
+    border-bottom: ${({ $active }) => ($active ? "3px solid #03347F" : "none")}; /* 활성화된 탭에 스타일 적용 */
 
     &:hover {
         border-bottom:3px solid #03347F;

@@ -43,15 +43,15 @@ const LikePage = () => {
     <div>
       <BasicNavbar title="찜한 mate" before={true} />
       <Buttons>
-        <Category active={activeButton === "혼밥"} onClick={() => handleButtonClick("혼밥")}>
+        <Category $active={activeButton === "혼밥"} onClick={() => handleButtonClick("혼밥")}>
           <Icon icon="fluent-color:food-20" width="15" height="15" />
           혼밥
         </Category>
-        <Category active={activeButton === "운동"} onClick={() => handleButtonClick("운동")}>
+        <Category $active={activeButton === "운동"} onClick={() => handleButtonClick("운동")}>
           <Icon icon="fluent-color:sport-16" width="15" height="15" />
           운동
         </Category>
-        <Category active={activeButton === "공부"} onClick={() => handleButtonClick("공부")}>
+        <Category $active={activeButton === "공부"} onClick={() => handleButtonClick("공부")}>
           <Icon icon="fluent-color:edit-24" width="15" height="15" />
           공부
         </Category>
@@ -68,7 +68,7 @@ const LikePage = () => {
                 showHeart={false}
                 key={data.memberProfile.profileId}  
                 requestId={data.memberProfile.profileId} 
-                profileImage={"https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png"}
+                profileImage={data.memberProfile?.imageUrl}
                 text1={data.memberProfile.nickName}
                 text2={`# ${data.memberProfile.gender} # ${data.memberProfile.profileAge}`}
                 text3={`# ${data.memberProfile.studentNumber} # ${data.memberProfile.mbti}`}
@@ -101,11 +101,11 @@ const Buttons = styled.div`
   z-index: 1000; /* 다른 요소 위로 배치 */
 `;
 
-const Category = styled.button<{ active: boolean }>`
+const Category = styled.button<{ $active: boolean }>`
   position: relative;
-  border: 1px solid ${(props) => (props.active ? "#1A6AFF" : "#E5E6E9")};
-  background-color: ${(props) => (props.active ? "#1A6AFF" : "white")};
-  color: ${(props) => (props.active ? "white" : "black")};
+  border: 1px solid ${(props) => (props.$active ? "#1A6AFF" : "#E5E6E9")};
+  background-color: ${(props) => (props.$active ? "#1A6AFF" : "white")};
+  color: ${(props) => (props.$active ? "white" : "black")};
   border-radius: 100px;
   width: 68px;
   height: 32px;
