@@ -225,7 +225,7 @@ const StudyRecommend = () => {
                                             : item.option === "성별" && selectedGender
                                             ? selectedGender
                                             : item.option === "시간" && selectedTime
-                                            ? selectedTime
+                                            ? `${selectedTime}:00`
                                             : item.option === "요일" && selectedDate
                                             ? selectedDate
                                             : item.option === "학번" && selectedGrade

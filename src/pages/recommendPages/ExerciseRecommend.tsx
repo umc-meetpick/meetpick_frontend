@@ -235,7 +235,7 @@ const ExerciseRecommend = () => {
                                             : item.option === "요일" && selectedDate
                                             ? selectedDate
                                             : item.option === "시간" && selectedTime
-                                            ? selectedTime
+                                            ? `${selectedTime}:00`
                                             : `${item.option} ∨`
                                         }
                                         width={item.option === "운동 종류" ? "95px" :
