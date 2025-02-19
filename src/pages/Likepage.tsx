@@ -7,7 +7,7 @@ import { useFetchLikes } from "../apis/matchingRecommend/matchingHeart";
 
 
 const LikePage = () => {
-  const [activeButton, setActiveButton] = useState("혼밥"); // 현재 활성화된 탭 상태
+  const [activeButton, setActiveButton] = useState("혼밥"); 
   const mateType = activeButton === "혼밥"? "혼밥" : activeButton === "운동"?  "운동" : "공부";
   
 
@@ -28,7 +28,7 @@ const LikePage = () => {
       }
     });
   
-    // ✅ LikePage가 변경될 때 하트 상태 반영
+    //LikePage가 변경될 때 하트 상태 반영
     window.dispatchEvent(new Event("storage"));
   }, [likedMates, mateType]);
   
@@ -66,13 +66,14 @@ const LikePage = () => {
             <RecommendBox
                 category="혼밥"
                 showHeart={false}
-                key={data.memberProfile.profileId}  // profileId를 requestId로 사용
-                requestId={data.memberProfile.profileId}  // requestId가 필요한 곳에 매핑
+                key={data.memberProfile.profileId}  
+                requestId={data.memberProfile.profileId} 
+                profileImage={"https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png"}
                 text1={data.memberProfile.nickName}
                 text2={`# ${data.memberProfile.gender} # ${data.memberProfile.profileAge}`}
                 text3={`# ${data.memberProfile.studentNumber} # ${data.memberProfile.mbti}`}
-                number1={data.currentPeople} // 기본값 설정
-                number2={data.maxPeople} // 기본값 설정
+                $number1={data.currentPeople} 
+                $number2={data.maxPeople} 
                 $backgroundColor="#EEF5FD"
                 width="160px"
                 color="#5D5D5D"

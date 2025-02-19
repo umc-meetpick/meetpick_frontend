@@ -243,8 +243,8 @@ const FoodRecommend = () => {
                                     text1={profile.nickname}
                                     text2={`# ${profile.gender} # ${profile.age}살`} 
                                     text3={`# ${profile.studentNumber}학번 # ${profile.mbti}`}
-                                    number1={profile.slotInfo.currentPeople}
-                                    number2={profile.slotInfo.maxPeople}
+                                    $number1={profile.slotInfo.currentPeople}
+                                    $number2={profile.slotInfo.maxPeople}
                                     $backgroundColor={index% 4 ===0 ? "#EEF5FD" : index%4 ===1? "#C0E5FF": index%4 ===2? "#C0E5FF" :"#EEF5FD"}
                                     width="160px"
                                     color="#5D5D5D"

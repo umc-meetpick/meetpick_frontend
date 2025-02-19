@@ -11,8 +11,8 @@ interface ButtonProps {
   text1: string;
   text2: string;
   text3: string;
-  number1: string |number;
-  number2: string | number;
+  $number1: string | number;
+  $number2: string | number;
   $backgroundColor?: string;
   width?: string;
   color?: string;
@@ -34,8 +34,8 @@ const RecommendBox: React.FC<ButtonProps> = ({
   text1,
   text2,
   text3,
-  number1,
-  number2,
+  $number1,
+  $number2,
   $backgroundColor = "#E3F2FD",
   width = "140px",
   color = "black",
@@ -108,8 +108,8 @@ const RecommendBox: React.FC<ButtonProps> = ({
   return (
     <StyledButton
       $backgroundColor={$backgroundColor}
-      number1={number1}
-      number2={number2}
+      number1={$number1}
+      number2={$number2}
       width={width}
       color={color}
       disabled={disabled}
@@ -117,7 +117,7 @@ const RecommendBox: React.FC<ButtonProps> = ({
     >
       <FirstLine>
         <PersonText>
-          {number1}/{number2}명
+          {$number1}/{$number2}명
         </PersonText>
         {showHeart ? (
           <StyledIcon
