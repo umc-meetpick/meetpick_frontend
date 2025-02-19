@@ -34,6 +34,7 @@ interface Profile {
         preferredMajors?: string;
         availableTimes?:string[];
         availableDays?:string[];
+        studentNumber?:string;
     };
 }
 
@@ -98,7 +99,7 @@ const FoodRecommend = () => {
     const filteredData = (profiles || []).filter(
         (item: Profile) =>
             (selectedGender === null || item.gender === selectedGender) &&
-            (selectedGrade === null || item.studentNumber?.toString() === selectedGrade) &&
+            (selectedGrade === null || item.preferenceInfo?.studentNumber?.toString() === selectedGrade) &&
             (selectedTime === null || item.preferenceInfo?.availableTimes?.includes(selectedTime)) &&
             (selectedDate === null || (item.preferenceInfo?.availableDays || []).length === 0 || item.preferenceInfo?.availableDays?.includes(selectedDate)) &&
             (selectedFood === null || item.preferenceInfo?.foodTypes?.some(food => food === selectedFood))
@@ -242,7 +243,7 @@ const FoodRecommend = () => {
                                 detail1={profile.preferenceInfo?.preferredGender}  // ✅ 수정
                                 detail2={profile.preferenceInfo?.preferredMajors}  // ✅ 수정
                                 detail3={profile.mbti}
-                                detail4={profile.preferenceInfo?.foodTypes?.join(", ") || ""}
+                                detail4={profile.preferenceInfo?.studentNumber}
                                 detail5={profile.preferenceInfo?.foodTypes?.join(", ") || ""}
                                 detail6={profile.preferenceInfo?.foodTypes?.join(", ") || ""}
                             />
