@@ -82,7 +82,7 @@ const HomePage = () => {
                     type="text" 
                     placeholder="학교명 검색" 
                     value={query}
-                    onChange={(e)=>setQuery(e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>)=>setQuery(e.target.value)}
                   />
                   { !isLoadingUniversities && !isTyping && universities?.length > 0 && (
                     <SearchResultContainer>

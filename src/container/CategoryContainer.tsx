@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import trust from '../assets/homeImg/trust.png';
 import hotdog from '../assets/homeImg/hotdog.png';

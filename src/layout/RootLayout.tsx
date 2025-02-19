@@ -1,5 +1,5 @@
 import { Outlet, useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
+//import { useEffect } from "react";
 import styled from "styled-components";
 import BottomNavBar from '../components/navbar/BottomNavBar';
 import { useChatContext } from "../context/useChatContext";
@@ -7,67 +7,70 @@ import { useChatContext } from "../context/useChatContext";
 const Wrapper = styled.div`
   display: flex;
   justify-content: center;
-  width: calc(100vw); 
-  height: 100vh;
-`;
-const Main=styled.div`
-  width: calc(100vw); 
-  max-width: 393px; 
+  width: 100vw;
+  //height: -webkit-fill-available;
+  //height: fill-available;
+  //padding-top: env(safe-area-inset-top); // iOS Safe Area 대응
   height:100vh;
-  position: relative; 
+  height: calc(var(--vh, 1vh) * 100); 
+`;
+
+const Main = styled.div`
+  width: 100vw;
+  max-width: 393px;
+  //height: -webkit-fill-available;
+  //height: fill-available;
+  height:100vh;
+  height: calc(var(--vh, 1vh) * 100);
+  position: relative;
   font-family: "Pretendard Variable";
+  //padding-top: env(safe-area-inset-top); // iOS Safe Area 대응
 `;
 
 const ContentWrapper = styled.div<{ $isHome: boolean }>`
-  flex-grow: 1; 
-  overflow-y: scroll;
-  position: absolute;
-  top: 0;
-  bottom: ${({ $isHome }) => ($isHome ? "0" : "100px")}; 
+  flex-grow: 1;
+  overflow-y: auto; /* 스크롤 문제 방지 */
+  position: relative; /* absolute → relative로 변경 */
   width: 100%;
-  
+  height: ${({ $isHome }) => ($isHome ? "100%" : "calc(100% - 100px)")};
   overflow-x: hidden;
 
   &::-webkit-scrollbar {
-    width: 8px; 
+    width: 8px;
   }
   &::-webkit-scrollbar-thumb {
-    background-color: rgb(0,0,0,0.1); 
+    background-color: rgba(0, 0, 0, 0.1);
     border-radius: 4px;
   }
   &::-webkit-scrollbar-track {
-    background-color: none;
+    background-color: transparent;
   }
 `;
 
 const RootLayout = () => {
-    const [windowHeight, setWindowHeight] = useState(window.innerHeight);
-    const { messages } = useChatContext();
-    const location = useLocation();
+  const { messages } = useChatContext();
+  const location = useLocation();
 
-    useEffect(() => {
-      const handleResize = () => setWindowHeight(window.innerHeight);
+  let vh = window.innerHeight * 0.01
+  document.documentElement.style.setProperty('--vh', `${vh}px`)
+  window.addEventListener('resize', () => {
+    let vh = window.innerHeight * 0.01
+    document.documentElement.style.setProperty('--vh', `${vh}px`)
+  })
 
-      window.addEventListener("resize", handleResize);
-      return () => window.removeEventListener("resize", handleResize);
-    }, []);
+  const isKeyboard = window.innerHeight < 400;
+  const isHome = location.pathname === "/";
 
-    const isSmallViewport = windowHeight < 700;
-    const isKeyboard = windowHeight < 400;
-    const isHome = location.pathname === "/";
-    
-    return (
-      <Wrapper>
-        <Main>
-          <ContentWrapper $isHome={isHome}>
-            <Outlet />
-          </ContentWrapper>
-          {!isHome && !(isSmallViewport && messages.length > 0) && !isKeyboard && (
-              <BottomNavBar />
-          )}
-        </Main>
-      </Wrapper>
-    );
+  return (
+    <Wrapper>
+      <Main>
+        <ContentWrapper $isHome={isHome}>
+          <Outlet />
+        </ContentWrapper>
+        {!isHome && !(messages.length > 0) && !isKeyboard && <BottomNavBar />}
+      </Main>
+    </Wrapper>
+  );
 };
 
 export default RootLayout;

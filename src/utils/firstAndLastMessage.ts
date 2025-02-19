@@ -7,7 +7,7 @@ import studyProfileQuery from "../assets/queries/studyProfileQuery";
 
 const FirstAndLast = (state:string) =>{
     const query = (state == "혼밥") ? foodProfileQuery : ((state == "운동") ? exerciseProfileQuery : studyProfileQuery)
-    const timerRef = useRef<number | null>(null);
+    const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const hasRun = useRef(false);
     const {messages, resetMessages, addMessage} = useChatContext();
     const navigate = useNavigate();

@@ -209,7 +209,7 @@ const ExerciseMateProfile = () =>{
     }
     return(
         <>
-            <BasicNavbar title="운동 메이트 찾기"></BasicNavbar>
+            <BasicNavbar title="운동 메이트 찾기" fixed={true}></BasicNavbar>
             <Container>
                 <StyledMainContainer $short={isManyOptions}>
                     <MessagesContainer>

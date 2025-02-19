@@ -22,13 +22,12 @@ const ToggleListModal: React.FC<ToggleListModalProps> = ({setModalOpen, type}) =
         }
     }
     const { selectedMajors } = useProfileContext(type);
-    const isSmall = window.innerHeight < 700; 
 
     return(
         <Wrapper>
-            <Background $isSmall={isSmall}/>
-            <Container $isSmall={isSmall}>
-                <Selected $isSmall={isSmall}>
+            <Background/>
+            <Container>
+                <Selected>
                     {type !== "study" && selectedMajors.length ==0 && <div> 원하는 전공을 모두 선택해주세요! </div> }
                     <ProfileSelectedBorder input={[...selectedMajors]} multi/>
                 </Selected>
@@ -43,7 +42,7 @@ const Wrapper = styled.div`
     display: flex;
     width: 100vw;
 `;
-const Background = styled.div<{$isSmall:boolean;}>`
+const Background = styled.div`
     width:100%;
     max-width:393px;
     height: 100%;
@@ -51,7 +50,7 @@ const Background = styled.div<{$isSmall:boolean;}>`
     position: fixed;
     bottom:0;
 `;
-const Container = styled.div<{$isSmall:boolean;}>`
+const Container = styled.div`
     width: calc(100vw); 
     max-width: 393px; 
     height: calc(100vh * 0.8);
@@ -62,11 +61,12 @@ const Container = styled.div<{$isSmall:boolean;}>`
     justify-content: center;
     align-items: center;
     position: absolute;
-    bottom: ${({$isSmall})=>$isSmall ? "-38px" : "-30px"};
+    bottom: -65px;
     overflow-y: auto;
     border-radius: 30px 30px 0 0;
 `;
-const Selected= styled.div<{$isSmall:boolean;}>`
-    margin-top: ${({$isSmall})=>$isSmall ? "70px" : "0px"};
+const Selected= styled.div`
+    position: absolute;
+    top:30px;
     height:30px;
 `;

@@ -1,8 +1,8 @@
-import React from "react";
 import styled from "styled-components";
 import { IoClose } from "react-icons/io5";
 import { useContext,useRef, useState } from "react";
 import { FoodProfileInfoContext } from "../context/foodProfileInfo";
+import majorList from "../assets/majorList";
 
 interface SelectedProps {
     input: string[];
@@ -10,7 +10,7 @@ interface SelectedProps {
 }
 
 const ProfileSelectedBorder:React.FC<SelectedProps> = ({input, multi}) =>{
-    const { selectedMajors, setSelectedMajors } = useContext(FoodProfileInfoContext);
+    const { selectedMajors, setSelectedMajors, majors, setMajors } = useContext(FoodProfileInfoContext);
     const scrollRef = useRef<HTMLDivElement>(null);
     const [isDragging, setIsDragging] = useState(false);
     const [startX, setStartX] = useState<number | null>(null);
@@ -18,6 +18,15 @@ const ProfileSelectedBorder:React.FC<SelectedProps> = ({input, multi}) =>{
         if (multi) {
             if (selectedMajors.includes(major)) {
                 setSelectedMajors(selectedMajors.filter((m) => m !== major));
+                setMajors(majors.filter((m) =>  m !== major))
+                if (major.includes("전체")){
+                    majorList.map((college)=>{
+                        if (college.title+" 전체" == major){
+                            setMajors(majors.filter((m) => !college.items.includes(m)))
+                        }
+                    })
+                    setMajors
+                }
             } else {
                 setSelectedMajors([...selectedMajors, major]);
             }

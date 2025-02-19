@@ -4,6 +4,7 @@ import react from '@vitejs/plugin-react-swc'
 // https://vite.dev/config/
 export default defineConfig({
   define: {
+    'process.env.NODE_ENV': JSON.stringify('development'),
     __WS_TOKEN__: JSON.stringify(process.env.VITE_WS_TOKEN || 'default_token_value'),
   },
   plugins: [react()],
