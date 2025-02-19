@@ -191,7 +191,7 @@ const FoodRecommend = () => {
                                 
                                 <SwiperSlide key={slidesData.requestId}>
                                     <SlideContent>
-                                        <Link to ="/application/food/:requestId">
+                                        <Link to={`/application/food/${slidesData.requestId}`}>
                                             <StyledImage src={slidesData.imageUrl} alt={`${slidesData.requestId} 이미지`} />
                                         </Link>
                                     </SlideContent>
@@ -202,7 +202,7 @@ const FoodRecommend = () => {
                             <NoDataMessage>추천할 데이터가 없습니다.</NoDataMessage>
                         )
                     }
-                        <Link to ='/application/food/:memberSecondProfileId'>
+                        <Link to={`/application/food/${currentSlide?.requestId}`}>
                         <Description> 
                             <Name>{currentSlide?.nickName}</Name>님 프로필 구경하러가기
                         </Description>

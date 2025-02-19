@@ -191,7 +191,7 @@ const ExerciseRecommend = () => {
                                 
                                 <SwiperSlide key={slidesData.requestId}>
                                     <SlideContent>
-                                        <Link to ="/application/exercise/:memberProfileId">
+                                    <Link to={`/application/exercise/${slidesData.requestId}`}>
                                             <StyledImage src={slidesData.imageUrl} alt={`${slidesData.requestId} 이미지`} />
                                         </Link>
                                     </SlideContent>
@@ -202,7 +202,7 @@ const ExerciseRecommend = () => {
                             <NoDataMessage>추천할 데이터가 없습니다.</NoDataMessage>
                         )
                     }
-                        <Link to ='/application/exercise/:memberSecondProfileId'>
+                        <Link to={`/application/food/${currentSlide?.requestId}`}>
                         <Description> 
                             <Name>{currentSlide?.nickName}</Name>님 프로필 구경하러가기
                         </Description>
