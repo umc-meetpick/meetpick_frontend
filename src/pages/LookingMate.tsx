@@ -1,74 +1,112 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import logoImage from '../assets/images/MeetPickLogo.png'
 import mateImage from '../assets/images/MateImage.png'
 import Slider from '../components/Slider'
-import { useLocation } from "react-router-dom";
+import LoginAlert from '../components/button/LoginAlertBtn';
+import { useLocation, useNavigate } from "react-router-dom";
 import { Icon } from '@iconify/react';
 import { GoArrowRight } from "react-icons/go";
-import { Link } from 'react-router-dom';
 import getToken from '../apis/login/getToken';
 
-const LookingMate = () => {
 
+// Modal Overlay
+const ModalOverlay = styled.div`
+  width: 100%; 
+  max-width: 393px; 
+  height:100vh;
+  position: fixed;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+`;
+
+
+const LookingMate = () => {
+    const [isAlertModalOpen, setIsAlertModalOpen] = useState(false);
+
+    const navigate = useNavigate();
     const location = useLocation();
     const universityName = location.state?.universityName || "대학교";
 
-    useEffect(() => {
-      getToken();
-    }, []);
+    const handleBellClick = () => {
+      const token = getToken(); // 토큰 확인
+      if (token) {
+        navigate("/alarm"); // 로그인 되어 있으면 이동
+      } else {
+        setIsAlertModalOpen(true); // 로그인 안 되어 있으면 모달 표시
+      }
+    };
 
+    const handleCardClick = (path: string) => {
+      const token = getToken();
+      if (token) {
+        navigate(path); // 로그인되어 있으면 이동
+      } else {
+        setIsAlertModalOpen(true); // 로그인 안 되어 있으면 모달 표시
+      }
+    };
+  
+    const handleAccept = () => {
+      setIsAlertModalOpen(false);
+    };
+
+    
     return (
+      <>
         <LookingPageWrapper>
             <TopNavbar>
-                <LogoIcon src={logoImage}/>
+              <LogoIcon src={logoImage}/>
+              <BellIcon 
+                icon="ci:bell" 
+                width="24" 
+                height="24" 
+                onClick={handleBellClick} // 클릭 이벤트 수정
+              />
             </TopNavbar>
             <SubTitle>
-                {universityName}에서 
-                <br className="break" /> {/* 줄바꿈 추가 */}
-                나와 맞는 <span>메이트</span>를 찾아보세요 😉
+              {universityName}에서 
+              <br className="break" /> {/* 줄바꿈 추가 */}
+              나와 맞는 <span>메이트</span>를 찾아보세요 😉
             </SubTitle>
             <CardContainer>
               <Container1>
                 {/* 혼밥 카드 */}
-                <Card>
-                  <Link to ="/foodMateProfile">
-                    <CardTitle>
-                      혼밥 구제 <Icon icon="fluent-color:food-20" width="24" height="24" />
-                    </CardTitle>
-                    <CardDescription>취향에 맞는 혼밥 메이트 찾아보세요!</CardDescription>
-                    <Button>
-                      <GoArrowRight />
-                    </Button>
-                  </Link>
+                <Card onClick={() => handleCardClick("/foodMateProfile")}>
+                  <CardTitle>
+                    혼밥 구제 <Icon icon="fluent-color:food-20" width="24" height="24" />
+                  </CardTitle>
+                  <CardDescription>취향에 맞는 혼밥 메이트 찾아보세요!</CardDescription>
+                  <Button>
+                    <GoArrowRight />
+                  </Button>
                 </Card>
 
                 {/* 공부 카드 */}
-                <Card>
-                  <Link to = "/studyMateProfile">
-                    <CardTitle>
-                      열심히 공부 <Icon icon="fluent-color:edit-24" width="24" height="24" />
-                    </CardTitle>
-                    <CardDescription>같이 공부할 때, 집중력 UP!</CardDescription>
-                    <Button>
-                      <GoArrowRight />
-                    </Button>
-                  </Link>
+                <Card onClick={() => handleCardClick("/studyMateProfile")}>
+                  <CardTitle>
+                    열심히 공부 <Icon icon="fluent-color:edit-24" width="24" height="24" />
+                  </CardTitle>
+                  <CardDescription>같이 공부할 때, 집중력 UP!</CardDescription>
+                  <Button>
+                    <GoArrowRight />
+                  </Button>
                 </Card>
               </Container1>
                 
               <Container2>
                 {/* 운동 카드 */}
-                <Card $align="center" $justify="center">
-                  <Link to ="/exerciseMateProfile">
-                    <CardTitle>
-                      함께 운동 <Icon icon="fluent-color:sport-16" width="24" height="24" />
-                    </CardTitle>
-                    <CardDescription>운동하기 심심할 때는? 운동 메이트와 함께!</CardDescription>
-                    <Button>
-                      <GoArrowRight />
-                    </Button>
-                  </Link>
+                <Card onClick={() => handleCardClick("/exerciseMateProfile")} $align="center" $justify="center">
+                  <CardTitle>
+                    함께 운동 <Icon icon="fluent-color:sport-16" width="24" height="24" />
+                  </CardTitle>
+                  <CardDescription>운동하기 심심할 때는? 운동 메이트와 함께!</CardDescription>
+                  <Button>
+                    <GoArrowRight/>
+                  </Button>
                 </Card>
               </Container2> 
             </CardContainer>
@@ -104,6 +142,14 @@ const LookingMate = () => {
                   </Slider>
             </CategorySection>
         </LookingPageWrapper>
+
+        {/* 로그인 확인 Dialog */}
+        {isAlertModalOpen && (
+          <ModalOverlay>
+            <LoginAlert onClick={handleAccept} />
+          </ModalOverlay>
+        )}
+      </>
     );
 };
 
@@ -126,6 +172,14 @@ const LogoIcon = styled.img`
   height: 37px;    
   object-fit: cover;
   margin-left: -15px; /* 로고를 왼쪽으로 더 이동 */
+`;
+
+const BellIcon = styled(Icon)`
+  position: absolute; /* 절대 위치 설정 */
+  right: 15px; /* 오른쪽 여백 설정 */
+  color: #000;
+  top: 26px;
+  cursor: pointer;
 `;
 
 const SubTitle = styled.p`

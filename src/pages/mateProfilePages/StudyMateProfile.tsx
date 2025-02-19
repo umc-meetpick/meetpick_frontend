@@ -19,7 +19,7 @@ interface OptionClick{
 const StudyMateProfile = () =>{
     const {messages, addMessage} = useChatContext();
     const [currentQueryIndex, setCurrentQueryIndex] = useState(0); 
-    const { setGender, selectedMajors, setStudentNum, ageRange, mbtiList, setMbtiList, setSubject,
+    const { setGender, selectedMajors, setStudentNum, ageRange, mbtiList, setMbtiList,
         subject, subjectType, setIsHobbySame, setIsOnline, setStudyTime, studyTime,
         studyType, setStudyType, place, dateTime, peopleNum, ment } = useContext( StudyProfileInfoContext );
     const [modalOpen, setModalOpen] = useState(false);
@@ -51,8 +51,7 @@ const StudyMateProfile = () =>{
             setModalOpen(false)
             setChatDisable(true)
             addMessage({ question: [studyType], direction: "outgoing" });
-            addMessage({ question: [`${subjectType}-${subject}`], direction: "outgoing" });
-            setSubject(`${subjectType}-${subject}`);
+            addMessage({ question: [subject], direction: "outgoing" });
             nextOption(); 
         }
     }, [ modalOpen, studyType, subject, subjectType]);
@@ -177,7 +176,6 @@ const StudyMateProfile = () =>{
         }else if (type == "hobby"){
             option == "같으면 좋겠어" ? setIsHobbySame(true) : setIsHobbySame(false);
             addMessage({ question: [option], direction: "outgoing" });
-            addMessage({ question: [option], direction: "outgoing" })
             setChatDisable(false);
             setSaveType("ment");
         } else if (type == "date"){

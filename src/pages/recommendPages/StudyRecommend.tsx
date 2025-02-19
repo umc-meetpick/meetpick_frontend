@@ -40,7 +40,6 @@ interface Profile {
     };
 }
 
-
 interface RecommendProfile {
     requestId: number;
     nickName: string;

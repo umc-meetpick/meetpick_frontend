@@ -1,10 +1,12 @@
 import styled from 'styled-components';
 import { IoCloseOutline } from "react-icons/io5";
-import React, { useState } from 'react';
+import { useState } from 'react';
 import AcceptButton from '../button/AcceptButton';
 import RejectButton from '../button/RejectButton';
 import DialogButton from '../button/DialogButton';
 import MateProfileImg from "../../assets/profileImg/프로필3.png"
+import { usePatchRequest } from '../../apis/matches/patchRequest';
+import axios from 'axios';
 
 // Modal Overlay
 const ModalOverlay = styled.div`
@@ -252,13 +254,18 @@ const CopyButton = styled(Button)`
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
+  matchingRequestId?: number;
 }
 
 // Modal Component
 const Modal = ({ isOpen, onClose }: ModalProps) => {
   const [isAcceptDialogOpen, setIsAcceptDialogOpen] = useState(false);
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false); // 요청 중 여부
   
+  const patchRequest = usePatchRequest();
+  const matchingRequestId = 1; // 임의의 값으로 설정
+
   const handleOpenAcceptDialog = () => {
     setIsAcceptDialogOpen(true);
   };
@@ -269,9 +276,88 @@ const Modal = ({ isOpen, onClose }: ModalProps) => {
   };
 
   const handleAccept = () => {
-    setIsAcceptDialogOpen(false);
-    setIsContactModalOpen(true);
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      console.warn("토큰이 없습니다.");
+      return;
+    }
+    console.log("🔍 handleAccept 호출됨");
+    console.log("📌 matchingRequestId:", matchingRequestId);
+    console.log("📌 isProcessing:", isProcessing);
+
+    if (matchingRequestId === undefined || isProcessing) {
+      console.warn("⚠️ 이미 요청 중이거나 매칭 ID 없음.");
+      return;
+    }
+  
+    setIsProcessing(true); // 중복 요청 방지
+    console.log(`🚀 수락 요청 보냄 (matchingRequestId: ${matchingRequestId})`);
+    patchRequest.mutate(
+      { isAccepted: true, matchingRequestId },
+      {
+        onSuccess: (data) => {
+          console.log("✅ 수락 요청 성공", data);
+          if (data.isSuccess) {
+            setIsAcceptDialogOpen(false);
+            setIsContactModalOpen(true);
+          } else {
+            alert(`요청 실패: ${data.result || data.message}`);
+          }
+        },
+        onError: (error: unknown) => {
+          if (axios.isAxiosError(error)) {
+            // AxiosError인 경우
+            console.error("❌ 오류 발생:", error.response?.data || error.message);
+            alert(`서버 요청 중 오류가 발생했습니다: ${error.response?.data?.message || error.message}`);
+          } else {
+            // 일반 Error인 경우
+            console.error("❌ 일반 오류 발생:", error);
+            alert(`오류가 발생했습니다: ${error}`);
+          }
+        },
+        onSettled: () => {
+          console.log("🔄 요청 완료 (isProcessing false로 변경)");
+          setIsProcessing(false);
+        }
+      }
+    );
   };
+
+
+  const handleReject = () => {
+
+    console.log('🔍 handleReject 호출됨');
+    console.log('📌 matchingRequestId:', matchingRequestId);
+    console.log('📌 isProcessing:', isProcessing);
+
+    if (matchingRequestId == null || isProcessing) {
+      console.warn("⚠️ 이미 요청 중이거나 매칭 ID 없음.");
+      return;
+    }
+
+    setIsProcessing(true);
+    console.log(`🚀 거절 요청 보냄 (matchingRequestId: ${matchingRequestId})`);
+
+    patchRequest.mutate(
+      { isAccepted: false, matchingRequestId },
+      {
+        onSuccess: (data) => {
+          console.log("✅ 거절 요청 성공", data);
+          if (data.isSuccess) {
+            alert("매칭 요청이 거절되었습니다.");
+            onClose(); // 모달 닫기
+          } else {
+            alert(`요청 실패: ${data.result || data.message}`);
+          }
+        },
+        onError: (error) => {
+          console.error("❌ 오류 발생:", error);
+        },
+        onSettled: () => setIsProcessing(false),
+      }
+    );
+  };
+
 
   const handleCopy = () => {
     navigator.clipboard.writeText("kakao_id_example");
@@ -360,7 +446,8 @@ const Modal = ({ isOpen, onClose }: ModalProps) => {
             fontWeight='600'
             width='117px'
             height='35px'/>
-            <RejectButton onClick={() => console.log("거절 버튼 클릭")} 
+            <RejectButton 
+            onClick={handleReject} 
             borderRadius='5px'
             fontSize='14px'
             fontWeight='600'
