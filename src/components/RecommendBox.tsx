@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { Icon } from "@iconify/react";
 import RecommendImage from "../assets/images/Recommend3.png";
 import { useLikeMatch, useDeleteLikeMatch } from "../apis/matchingRecommend/matchingHeart";
+import ImageNumberSwitch from "./ImageNumberSwitch";
+
 
 interface ButtonProps {
   category: string;
@@ -23,6 +25,7 @@ interface ButtonProps {
   detail5?: string;
   detail6?: string;
   onClick?: () => void;
+  showHeart?:boolean;
 }
 
 const RecommendBox: React.FC<ButtonProps> = ({
@@ -43,6 +46,7 @@ const RecommendBox: React.FC<ButtonProps> = ({
   detail4,
   detail5,
   detail6,
+  showHeart,
 }) => {
   const favoriteKey = `heart_${category}_${requestId}`;
 
@@ -64,6 +68,7 @@ const RecommendBox: React.FC<ButtonProps> = ({
   const handleIconClick = async (event: React.MouseEvent) => {
     event.stopPropagation();
     console.log("💖 하트 버튼 클릭됨! -> requestId =", requestId);
+    
     
   
     const newState = !isIconClicked;
@@ -114,13 +119,21 @@ const RecommendBox: React.FC<ButtonProps> = ({
         <PersonText>
           {number1}/{number2}명
         </PersonText>
+        {showHeart ? (
+          <StyledIcon
+            icon={isIconClicked ? "si:heart-fill" : "si:heart-line"}
+            width="20"
+            height="20"
+            $isClicked={isIconClicked}
+            onClick={handleIconClick}
+          />
+        ) : 
         <StyledIcon
-          icon={isIconClicked ? "si:heart-fill" : "si:heart-line"}
+          icon="si:heart-fill"
           width="20"
           height="20"
-          $isClicked={isIconClicked}
-          onClick={handleIconClick}
-        />
+          $isClicked={true}
+      />}
       </FirstLine>
       <SecondLine>
         <StyledImage src={RecommendImage} alt="추천 리스트 이미지" />

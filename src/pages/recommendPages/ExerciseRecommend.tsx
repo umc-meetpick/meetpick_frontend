@@ -240,6 +240,7 @@ const ExerciseRecommend = () => {
                             <div key={profile.requestId} onClick ={() => navigate(`/application/exercise/${profile.requestId}`)}>
                                 <RecommendBox
                                     category="공부"
+                                    showHeart={true}
                                     key={index}
                                     requestId={profile.requestId}
                                     text1={profile.nickname}

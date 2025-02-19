@@ -20,7 +20,23 @@ const LikePage = () => {
 
   useEffect(() => {
     console.log("🔍 찜한 목록 데이터:", likedMates);
+  
+    (likedMates || []).forEach((data: any) => {
+      if (data?.memberProfile?.profileId) { // ✅ undefined 체크 추가
+        const favoriteKey = `heart_${mateType}_${data.memberProfile.profileId}`;
+        localStorage.setItem(favoriteKey, JSON.stringify(true));
+      }
+    });
+  
+    // ✅ LikePage가 변경될 때 하트 상태 반영
+    window.dispatchEvent(new Event("storage"));
+  }, [likedMates, mateType]);
+  
+
+  useEffect(() => {
+  console.log("🔍 찜한 목록 데이터:", likedMates);
 }, [likedMates]);
+
 
 
   return (
@@ -49,13 +65,14 @@ const LikePage = () => {
           likedMates.flat().map((data: any) => (
             <RecommendBox
                 category="혼밥"
+                showHeart={false}
                 key={data.memberProfile.profileId}  // profileId를 requestId로 사용
                 requestId={data.memberProfile.profileId}  // requestId가 필요한 곳에 매핑
                 text1={data.memberProfile.nickName}
                 text2={`# ${data.memberProfile.gender} # ${data.memberProfile.profileAge}`}
                 text3={`# ${data.memberProfile.studentNumber} # ${data.memberProfile.mbti}`}
-                number1={"0"} // 기본값 설정
-                number2={"3"} // 기본값 설정
+                number1={data.currentPeople} // 기본값 설정
+                number2={data.maxPeople} // 기본값 설정
                 $backgroundColor="#EEF5FD"
                 width="160px"
                 color="#5D5D5D"
