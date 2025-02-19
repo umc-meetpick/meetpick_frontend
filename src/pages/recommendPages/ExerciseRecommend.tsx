@@ -111,7 +111,7 @@ const ExerciseRecommend = () => {
         } else if (option === "성별") {
             setSelectedGender(value);
         } else if (option === "시간") {
-            setSelectedTime(value);
+            setSelectedTime(value.replace(":00",""));
         } else if (option === "요일") {
             setSelectedDate(value);
         } else if (option == "운동 종류") {
