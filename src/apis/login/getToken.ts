@@ -8,7 +8,7 @@ const getToken = () => {
       return token; // 토큰을 반환하도록 변경
     } 
 
-    return localStorage.getItem("access_token"); // 기존 토큰 반환
+    return token || localStorage.getItem("access_token");  // 기존 토큰 반환
   };
 
 export default getToken;

@@ -142,7 +142,6 @@ export default ToggleList;
 const Container = styled.div`
     width:312px;
     height:500px;
-    margin-top:80px;
     max-height: calc(100vh - 150px);
     position:relative;
     overflow-y:auto;
