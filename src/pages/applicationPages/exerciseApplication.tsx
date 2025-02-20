@@ -100,7 +100,7 @@ const ExerciseApplication = () => {
             <Navbar title ={profileData?.result?.공통?.nickName + "의 프로필"} before = {true}/>
             <Wrapper>
                 <ImageContainer>
-                    <StyledImage src={ApplicationImage} alt="회원가입 완료 이미지" />
+                    <StyledImage src={profileData?.result?.공통?.imageUrl} alt="회원가입 완료 이미지" />
                 </ImageContainer>
                 <Container>
                     <Text1>나이•학번</Text1>
