@@ -1,5 +1,4 @@
 import axios from "axios";
-import.meta.env.API; 
 
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL,
@@ -20,5 +19,6 @@ axiosInstance.interceptors.request.use(
   },
   (error) => Promise.reject(error)
 );
+
 
 export default axiosInstance;

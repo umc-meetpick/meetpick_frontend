@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from "react-router-dom";
 import { Icon } from "@iconify/react";
@@ -7,49 +6,59 @@ interface TitleProps{
     title:string;
     before?: boolean;
     bell?:boolean;
+    fixed?:boolean;
 }
 
-const BasicNavbar: React.FC<TitleProps> = ({title, before, bell}) =>{
+const BasicNavbar: React.FC<TitleProps> = ({title, before, bell, fixed}) =>{
     const navigate = useNavigate();
     const handleGoBack = () => {
         navigate(-1);
       };
     return(
-        <Container>
+        <Container $fixed={fixed}>
             {before && <IconPosition onClick={handleGoBack}><BackIcon icon="mdi:keyboard-arrow-left" width="24" height="24"/></IconPosition>}
-            <Title>{title}</Title>
+            <Title $fixed={fixed}>{title}</Title>
             {bell && <IconPosition2 onClick={()=>navigate("/alarm")}><BellIcon icon="ci:bell" width="24" height="24" /></IconPosition2>}
         </Container>
     )
 }
 export default BasicNavbar
 
-const Container = styled.div`
-    width:100%;
-    max-width:393px;
-    height:60px;
-    background-color:white;
-    display:flex;
-    justify-content: center;
-    align-item:center;
-    font-family: "Pretendard Variable";
+const Container = styled.div<{$fixed: boolean}>`
+  width: 100%;
+  max-width: 393px;
+  height: 60px;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center; /* 오타 수정: align-item → align-items */
+  font-family: "Pretendard Variable";
+  ${({ $fixed }) => 
+    $fixed &&
+    `
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+  `}
 `;
+
 const IconPosition = styled.div`
     position:relative;
-    top:20px;
+    top: -15px;
     left:-35%;
-
 `;
 const IconPosition2 = styled.div`
     position:relative;
-    top:-5px;
+    top: -35px;
     left:40%;
 `;
-const Title = styled.div`
+const Title = styled.div<{$fixed:boolean;}>`
     font-size:17px;
     font-weight:500;
     color:black;
-    position:relative;
+    position: ${({$fixed})=> $fixed ? "fixed" : "relative"}
     top:20px;
 `
 const BellIcon = styled(Icon)`

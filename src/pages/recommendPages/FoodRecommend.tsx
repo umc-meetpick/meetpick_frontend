@@ -1,37 +1,93 @@
-import React,{useEffect, useState} from "react";
+import {useState, useEffect} from "react";
 import styled from "styled-components";
 import { Icon } from "@iconify/react";
 import RecommendBox from "../../components/RecommendBox";
 import DropdownButton from "../../components/RecommendDownList";
-import { recommendData} from "../../data/recommendData";
-import RecommendImage from "../../assets/images/Recommend.png";
 import emojiImage from "../../assets/images/SpeechBubble1.png"
 import {Swiper, SwiperSlide} from "swiper/react";
 import SwiperCore from 'swiper';
 import { Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
-import { slidesData } from "../../data/slidesData"
+import 'swiper/css/free-mode';
 import { Link } from "react-router-dom";
 import FoodMateList from "../../data/foodmateoption";
 import { useSwiper } from "swiper/react";
+import { useFetchRecommendations } from "../../apis/matchingRecommend/memberRecommend";
+import { useTotalProfiles } from "../../apis/matchingRecommend/TotalProfiles";
+import { useNavigate } from "react-router-dom";
+
+interface Profile {
+    requestId :number;
+    nickname: string;
+    gender: string;
+    age: number;
+    studentNumber?: string;
+    mbti?: string;
+    profileImage?:string;
+    slotInfo: {
+        currentPeople: number;
+        maxPeople: number;
+    };
+    preferenceInfo?: {
+        foodTypes?: string[];
+        preferredGender?: string;
+        preferredMajors?: string;
+        availableTimes?:string[];
+        availableDays?:string[];
+        studentNumber?:string;
+        minAge?:number;
+        maxAge?:number;
+    };
+}
+
+interface RecommendProfile {
+    requestId: number;
+    nickName: string;
+    studentNumber: string;
+    gender: string;
+    mbti: string;
+    imageUrl: string;
+    foodTypes?: string[]; // 음식 추천 데이터일 경우
+    exerciseType?: string; // 운동 추천 데이터일 경우
+    studyType?: string; // 공부 추천 데이터일 경우
+}
+
+
 
 SwiperCore.use([Pagination]);
 
 const FoodRecommend = () => {
 
+    const {data:recommendations} = useFetchRecommendations("혼밥");
+    const {data:profiles=[]} = useTotalProfiles({
+        mateTypeStr:"혼밥"
+    });
+    console.log("전체 프로필 데이터:", profiles);
+
     const swiper = useSwiper();
-    
+
+    const navigate = useNavigate();
+
     const [activeTab, setActiveTab] = useState("recommendList"); // 현재 활성화된 탭 상태 
+
     const [selectedGender, setSelectedGender] = useState<string | null>(null);
     const [selectedTime, setSelectedTime] = useState<string | null>(null);
     const [selectedGrade, setSelectedGrade] = useState<string | null>(null);
     const [selectedDate, setSelectedDate] = useState<string | null>(null);
     const [selectedFood, setSelectedFood] = useState<string|null>(null);
-    const [currentSlide, setCurrentSlide] = useState(slidesData[0]); // 현재 슬라이트 상태 관리
+    const [currentSlide, setCurrentSlide] = useState<RecommendProfile | null>(null);
+
+    const loginNickname = localStorage.getItem("nickname");
+
+    useEffect(() => {
+        if (recommendations && recommendations.length > 0) {
+            setCurrentSlide(recommendations[0]); // 첫 번째 데이터 설정
+        }
+    }, [recommendations]);
+
+   
     
-    // recommendData에서 현재 슬라이드에 해당하는 데이터 찾기 
-    const currentRecommend = slidesData.find(data => data.id === currentSlide.id);
 
     const handleDropdownHeight= (isOpen:boolean) => {
         console.log("선택 ", isOpen);
@@ -39,13 +95,13 @@ const FoodRecommend = () => {
             swiper.updateAutoHeight(); // Swiper 강제 업데이트
           } 
       };
-
+      
       
 
     const handleSlideChange = (swiper : any) => {
         const activeIndex = swiper.activeIndex;
-        setCurrentSlide(slidesData[activeIndex]); // 슬라이드가 변경되면 상태 업데이트 
-        
+        if (!recommendations || recommendations.length === 0) return; // 🔹 데이터가 없을 경우 아무것도 안함
+        setCurrentSlide(recommendations[activeIndex] || null);
     }
 
     const handleTabClick = (tab:string) => {
@@ -59,7 +115,7 @@ const FoodRecommend = () => {
         } else if (option === "성별") {
             setSelectedGender(value);
         } else if (option === "시간") {
-            setSelectedTime(value);
+            setSelectedTime(value.replace(":00",""));
         } else if (option === "요일") {
             setSelectedDate(value);
         } else if (option == "음식 종류") {
@@ -67,38 +123,44 @@ const FoodRecommend = () => {
         }
     };
 
-    // recommendData를 사용해 필터링 
-    const filteredData = recommendData.filter(
-        (item) =>
-          (selectedGender === null || item.gender === selectedGender) &&
-          (selectedGrade === null || item.grade === selectedGrade) &&
-          (selectedTime === null || item.time === selectedTime) &&
-          (selectedDate === null || item.date === selectedDate) &&
-          (selectedFood === null || item.food === selectedFood)
-      );
+    const filteredData = (profiles || []).filter(
+        (item: Profile) =>
+            (loginNickname !== item.nickname) &&
+            (selectedGender === null || item.gender === selectedGender) &&
+            (selectedGrade === null || item.preferenceInfo?.studentNumber === "상관없어" || item.preferenceInfo?.studentNumber === selectedGrade) &&
+            (selectedTime === null || item.preferenceInfo?.availableTimes?.includes(selectedTime)) &&
+            (selectedDate === null || (item.preferenceInfo?.availableDays || []).length === 0 || item.preferenceInfo?.availableDays?.includes(selectedDate)) &&
+            (selectedFood === null || item.preferenceInfo?.foodTypes?.some(food => food === selectedFood))
+    );
+    
       
 
     return (
         <Container>
             <Top>
                 <Title>혼밥 구제 MATE</Title>
-                <Link to ='/alarm'>
-                    <BellIcon icon="ci:bell" width="24" height="24" />
-                </Link>
+                <TwoIcon>
+                    <Link to ="/Likepage">
+                        <Icon icon="ci:heart-01" width="24" height="24" style={{color:"black"}}></Icon>
+                    </Link>
+                    <Link to ="/alarm">
+                        <Icon icon="ci:bell" width="24" height="24" style={{color:"black"}}/>
+                    </Link>
+                </TwoIcon>
             </Top>
             <Message>
-                <Name>베티</Name>
+                <Name>{loginNickname}</Name>
                 <Comment>님을 원하는 혼밥 메이트를 찾아보세요<Icon icon="fluent-color:food-20" width="20" height="20" /></Comment>
             </Message>
             <Tabs>
                 <Tab
-                active={activeTab === "recommendList"}
+                $active={activeTab === "recommendList"}
                 onClick = {() => handleTabClick("recommendList")}
                 >
                     추천 리스트
                 </Tab>
                 <Tab
-                    active={activeTab === "fullList"}
+                    $active={activeTab === "fullList"}
                     onClick={() => handleTabClick("fullList")}
                 >
                     전체 리스트
@@ -108,12 +170,13 @@ const FoodRecommend = () => {
                 {activeTab === "recommendList" && (
                     <RecommendationSection>
                         <Emoji>
-                            <EmojiBubble1><BubbleText1>{currentRecommend?.grade || "기본 텍스트"}</BubbleText1></EmojiBubble1>
-                            <EmojiBubble2><BubbleText2>{currentRecommend?.food || "기본 텍스트"}</BubbleText2></EmojiBubble2>
-                            <EmojiBubble3><BubbleText3>{currentRecommend?.gender || "기본 텍스트"}</BubbleText3></EmojiBubble3>
-                            <EmojiBubble4><BubbleText4>{currentRecommend?.hobby || "기본 텍스트"}</BubbleText4></EmojiBubble4>
+                            <EmojiBubble1><BubbleText1>{currentSlide?.studentNumber || ""}</BubbleText1></EmojiBubble1>
+                            <EmojiBubble2><BubbleText2>{currentSlide?.foodTypes?.join(", ") || ""}</BubbleText2></EmojiBubble2>
+                            <EmojiBubble3><BubbleText3>{currentSlide?.gender || ""}</BubbleText3></EmojiBubble3>
+                            <EmojiBubble4><BubbleText4>{currentSlide?.mbti || ""}</BubbleText4></EmojiBubble4>
 
                         </Emoji>
+                        {(recommendations || []).length > 0 ? (
                         <Swiper
                         spaceBetween={30}
                         slidesPerView={1.7}
@@ -121,19 +184,27 @@ const FoodRecommend = () => {
                         pagination={{clickable:true}}
                         onSlideChange={handleSlideChange} // 슬라이드 변경 이벤트 핸들러
                         centeredSlides={true}
+                        allowTouchMove={true}
+                        freeMode={true}
                         >
-                            {slidesData.map((slidesData) => (
+                            {(recommendations||[]).map((slidesData) => (
                                 
-                                <SwiperSlide key={slidesData.id}>
+                                <SwiperSlide key={slidesData.requestId}>
                                     <SlideContent>
-                                        <StyledImage src={RecommendImage} alt={`${slidesData.name} 이미지`} />
+                                        <Link to={`/application/food/${slidesData.requestId}`}>
+                                            <StyledImage src={slidesData.imageUrl} alt={`${slidesData.requestId} 이미지`} />
+                                        </Link>
                                     </SlideContent>
                                 </SwiperSlide>
                                 ))}
                         </Swiper>
-                        <Link to ='/application/food'>
+                        ) : (
+                            <NoDataMessage>추천할 데이터가 없습니다.</NoDataMessage>
+                        )
+                    }
+                        <Link to={`/application/food/${currentSlide?.requestId}`}>
                         <Description> 
-                            <Name>{currentSlide.name}</Name>님 프로필 구경하러가기
+                            <Name>{currentSlide?.nickName}</Name>님 프로필 구경하러가기
                         </Description>
                         </Link>
                         <Text>👀옆으로 밀어서 원하는 메이트를 찾아보세요!</Text>
@@ -147,13 +218,13 @@ const FoodRecommend = () => {
                             slidesPerView="auto" // 자동으로 여러 슬라이드 표시
                             freeMode={true} // 자유롭게 드래그 가능
                             allowTouchMove={true} // 드래그 허용
-                            style={{ paddingRight: "50px" }} // Swiper의 오른쪽 패딩 추가
+                            style={{ paddingRight: "100px", overflow:"visible" }} // Swiper의 오른쪽 패딩 추가
                             
                             >
                                 {FoodMateList.map((item) => (
-                                    <SwiperSlide key={item.id} style={{ width: "auto"}}>
+                                    <SwiperSlide key={item.id} style={{ width: "auto" }}>
                                         <DropdownButton
-                                        left="85px" // 원하는 위치
+                                        left="60px" // 원하는 위치
                                         top="-83px"  // 원하는 위치
                                         height="33px"
                                         text={
@@ -162,14 +233,18 @@ const FoodRecommend = () => {
                                             : item.option === "학번" && selectedGrade
                                             ? selectedGrade
                                             : item.option === "시간" && selectedTime
-                                            ? selectedTime
+                                            ? `${selectedTime}:00`
                                             : item.option === "요일" && selectedDate
                                             ? selectedDate
                                             : item.option === "음식 종류" && selectedFood
                                             ? selectedFood
                                             : `${item.option} ∨`
                                         }
-                                        width="85px"
+                                        width={item.option === "음식 종류" ? "95px" :
+                                             item.option==="성별"? "70px" : 
+                                             item.option ==="요일"? "70px":
+                                             item.option ==="학번"? "70px" :
+                                             "auto"}
                                         options={item.option === "시간" ? FoodMateList.find((f) => f.option === "시간")?.lists || [] : item.lists || []}
                                         onSelect={(option) => handleSelect(item.option, option)}
                                         onToggle={handleDropdownHeight}
@@ -180,25 +255,33 @@ const FoodRecommend = () => {
                             </Swiper>
                         </List>
                         <FullListSection>
-                            {filteredData.map((data) => (
-                                <RecommendBox
-                                key={data.id}
-                                id={data.id}
-                                text1={data.text1}
-                                text2={data.text2}
-                                text3={data.text3}
-                                number1={data.number1}
-                                number2={data.number2}
-                                $backgroundColor={data.$backgroundColor}
-                                width={data.width}
-                                color={data.color}
-                                detail1={data.detail1}
-                                detail2={data.detail2}
-                                detail3={data.detail3}
-                                detail4={data.detail4}
+                        {filteredData.map((profile: Profile, index: number) => (
+                            <div key={profile.requestId} onClick ={() => navigate(`/application/food/${profile.requestId}`)}>
                                 
+                                    <RecommendBox
+                                    category="공부"
+                                    showHeart={true}
+                                    key={index}
+                                    requestId={profile.requestId}
+                                    profileImage={profile.profileImage || "https://hangeulbucket.s3.ap-northeast-2.amazonaws.com/default.png"}
+                                    text1={profile.nickname}
+                                    text2={`# ${profile.gender} # ${profile.age}살`} 
+                                    text3={`# ${profile.studentNumber}학번 # ${profile.mbti}`}
+                                    $number1={profile.slotInfo.currentPeople}
+                                    $number2={profile.slotInfo.maxPeople}
+                                    $backgroundColor={index% 4 ===0 ? "#EEF5FD" : index%4 ===1? "#C0E5FF": index%4 ===2? "#C0E5FF" :"#EEF5FD"}
+                                    width="160px"
+                                    color="#5D5D5D"
+                                    detail1={profile.preferenceInfo?.preferredGender}  // ✅ 수정
+                                    detail2={profile.preferenceInfo?.preferredMajors}  // ✅ 수정
+                                    detail3={profile.mbti}
+                                    detail4={profile.preferenceInfo?.studentNumber}
+                                    detail5={`${profile.preferenceInfo?.minAge} ~ ${profile.preferenceInfo?.maxAge}살`}
+                                    detail6={profile.preferenceInfo?.foodTypes?.join(", ") || ""}
                                 />
-                            ))}
+                                
+                            </div>
+                        ))}
                         </FullListSection>
                     </Wrapper>
                 )}
@@ -225,7 +308,7 @@ const BubbleText1 = styled.p`
 `
 const BubbleText2 = styled.p`
     color:#636D77;
-    font-size: 12px;
+    font-size: 11.5px;
     font-weight: 600;
     transform:scaleX(-1) rotate(-10deg);
     display:flex;
@@ -233,9 +316,9 @@ const BubbleText2 = styled.p`
     align-items:center;
     justify-content:center;
     height:75px;
-    padding:3px 22px 0 22px;
+    padding:15px 23px 15px 20px;
     margin:0;
-    width:53px;
+    width:100px;
 `
 
 const BubbleText3 = styled.p`
@@ -303,12 +386,15 @@ const Title = styled.p`
     font-family: "Pretendard Variable";
 `;
 
-const BellIcon = styled(Icon)`
-    position: absolute; /* 절대 위치 설정 */
-    right: 35px; /* 오른쪽 여백 설정 */
-    color: #000;
+const TwoIcon = styled.div`
+    position:absolute;
+    right:20px;
+    display:flex;
+    align-items:center;
     top:20px;
-`;
+    gap:5px;
+`
+
 const Message = styled.p`
     display:flex;
     padding-left:30px;
@@ -338,7 +424,7 @@ const Tabs = styled.div`
     font-family: "Pretendard Variable";
 `;
 
-const Tab = styled.button<{ active: boolean }>`
+const Tab = styled.button<{ $active: boolean }>`
     width:131px;
     margin-top:20px;
     font-size: 14px;
@@ -348,7 +434,7 @@ const Tab = styled.button<{ active: boolean }>`
     border: none;
     cursor: pointer;
     border-radius: 0; /* border-radius 제거 */
-    border-bottom: ${({ active }) => (active ? "3px solid #03347F" : "none")}; /* 활성화된 탭에 스타일 적용 */
+    border-bottom: ${({ $active }) => ($active ? "3px solid #03347F" : "none")}; /* 활성화된 탭에 스타일 적용 */
 
     &:hover {
         border-bottom:3px solid #03347F;
@@ -389,10 +475,9 @@ const FullListSection = styled.div`
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
-    padding:0 30px;
-    background-color:none;
+    padding:0 25px;
     position:absolute;
-    top:265px;
+    top:260px;
     height:auto;
 `;
 
@@ -400,7 +485,7 @@ const List = styled.div`
     margin-bottom:10px;
     max-width:390px;
     display:flex;
-    padding-left:30px;
+    padding-left:10px;
     padding-right:5px;
 `   
 
@@ -453,14 +538,14 @@ const EmojiBubble1 = styled.div`
 
 const EmojiBubble2 = styled.div`
   position: absolute;
-  width: 90px;
-  height: 90px;
+  width: 130px;
+  height: 130px;
   font-size: 50px;
   background-image: url(${emojiImage});
   background-size: cover;
   background-position: center;
-  top: -22px;
-  left: 32px; /* 우측 위치 */
+  top: -50px;
+  left: 2px; /* 우측 위치 */
   transform: scaleX(-1) rotate(-10deg); /* 좌우 반전 및 회전 */
   z-index:1;
 `;
@@ -492,4 +577,11 @@ const EmojiBubble4 = styled.div`
   right: -50px; /* 우측 위치 */
   top:40px;
   z-index:1;
+`;
+
+const NoDataMessage = styled.p`
+  text-align: center;
+  color: #69707E;
+  font-size: 14px;
+  margin-top: 20px;
 `;

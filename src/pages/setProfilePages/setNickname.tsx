@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef, useEffect } from 'react';
+import { useState, useContext, useRef, useEffect } from 'react';
 import SetProfileNavbar from '../../components/navbar/BasicNavbar';
 import ProgressBar from '../../components/progressbar/ProgressBar';
 import styled from 'styled-components';
@@ -10,11 +10,14 @@ import { ProfileInfoContext } from '../../context/profileInfoContext';
 import {useForm} from 'react-hook-form';
 import * as yup from 'yup';
 import {yupResolver} from '@hookform/resolvers/yup';
+import useNicknameCheck from '../../apis/basicProfile/useNicknameCheck';
 
 const SetNickName: React.FC = () => {
-    const [isDupilicate, setIsDupilicate] = useState(false);
+    const [isDupilicate, setIsDupilicate] = useState(true);
     const [btnClicked, setBtnClicked] = useState(false);
     const {nickname, setNickName} = useContext(ProfileInfoContext);
+    const [inputValue, setInputValue] = useState(nickname);
+    const [checkValue, setCheckValue] = useState("");
     const inputRef = useRef<HTMLDivElement>(null);
 
     const scrollToBottom = () => {
@@ -43,22 +46,26 @@ const SetNickName: React.FC = () => {
         resolver: yupResolver(schema),
     });
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setBtnClicked(false);
         setValue("nickname", e.target.value, { shouldValidate: true });
-        setNickName(e.target.value);
+        setInputValue(e.target.value);
     };
+
+    const { data: isSuccess, isLoading } = useNicknameCheck(checkValue);
 
     const onSubmit = (data: { nickname: string }) => {
-        if (!errors.nickname){
-            // 서버에 닉네임 중복 여부 확인 요청
-            const isDuplicateCheck = false; // 서버 결과 가정
-            setIsDupilicate(isDuplicateCheck);
-            setBtnClicked(true);
-
-            if (!isDuplicateCheck) {
-                setNickName(data.nickname);
-            }
-        }
+        setCheckValue(data.nickname);
+        setBtnClicked(true);
     };
+
+    useEffect(() => {
+        if (isSuccess) {
+            setNickName(checkValue);
+            setIsDupilicate(false);
+        } else {
+            setIsDupilicate(true);
+        }
+    }, [checkValue, isSuccess]);
 
     return (
         <>
@@ -71,7 +78,7 @@ const SetNickName: React.FC = () => {
                 </Title>
                 <SubInfo>공백 제외 한글, 영문 10자까지 가능</SubInfo>
                 <GrayBottomInput
-                    value={nickname}
+                    value={inputValue}
                     {...register("nickname")}
                     onChange={handleInputChange}
                 />
@@ -83,7 +90,7 @@ const SetNickName: React.FC = () => {
                             <div>{errors.nickname?.message}</div>
                         </Warning>
                     ) : (
-                        btnClicked && (
+                        btnClicked && !isLoading &&(
                             isDupilicate ? (
                                 <Warning $isRed={isDupilicate}>
                                     <PiWarningCircle color={"#DB1818"} style={{ marginTop: "5px"}}/>
@@ -98,7 +105,7 @@ const SetNickName: React.FC = () => {
                         )
                     )}
                 <BtnContainer>
-                    <MoveNextRoundBtn nextPage={"/setProfile/image"} disable={isDupilicate}/>
+                    <MoveNextRoundBtn nextPage={"/setProfile/image"} disable={isDupilicate || nickname !== inputValue}/>
                 </BtnContainer>
             </Container>
         </>
@@ -151,7 +158,7 @@ const DupilicateBtn = styled.button`
     }
 `;
 const Warning = styled.div<{ $isRed?: boolean }>`
-    margin-top:10px;
+    margin-top:-10px;
     display:flex;
     font-size:14px;
     width:100%;

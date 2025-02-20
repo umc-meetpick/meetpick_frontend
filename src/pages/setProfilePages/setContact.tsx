@@ -8,11 +8,17 @@ import { ProfileInfoContext } from '../../context/profileInfoContext';
 import ProfileSelectedBorder from '../../components/profileSelectedBorder';
 import SelectToggle from '../../components/SelectToggle';
 import MoveToPrevBtn from '../../components/button/MoveToPrevBtn';
+import {useForm} from 'react-hook-form';
+import * as yup from 'yup';
+import {yupResolver} from '@hookform/resolvers/yup';
+import { PiWarningCircle } from "react-icons/pi";
+import usePostFirstProfile from '../../apis/basicProfile/postFirstProfile';
 
 const SetContact= () => {
-    const {nickname, image, studentNum, mbti, major, hobby, setContactType, setContact} = useContext(ProfileInfoContext);
+    const {nickname, image, imgNum, studentNum, mbti, major, hobby, contactType, setContactType, setContact} = useContext(ProfileInfoContext);
     const [inputValue, setInputValue] = useState("");
-    const options = ["카카오톡 ID", "오픈채팅 링크", "전화번호"]
+    const [ctype, setCtype] = useState<"kakaoId" | "openKakao" | "phoneNum">("kakaoId");
+    const options = ["카카오톡", "오픈채팅", "전화번호"]
     const stdnum = String(studentNum)+"학번";
     const inputRef = useRef<HTMLDivElement>(null);
     
@@ -36,6 +42,78 @@ const SetContact= () => {
             setContactType(selectedOption.value);
         }
     };
+    
+    useEffect(() => {
+        if (contactType === "카카오톡") {
+            setCtype("kakaoId");
+        } else if (contactType === "오픈채팅") {
+            setCtype("openKakao");
+        } else if (contactType === "전화번호") {
+            setCtype("phoneNum");
+        }
+    }, [contactType]);
+
+    const getSchema = (contactType: string) => {
+        switch (contactType) {
+          case "카카오톡":
+            return yup.object({ kakaoId: yup.string().required("카카오톡 ID를 입력해주세요.") });
+          case "오픈채팅":
+            return yup.object({ openKakao: yup
+                .string().matches(
+                    /^https:\/\/open\.kakao\.com\/.+$/,
+                    "올바른 오픈 채팅방 링크를 입력해주세요."
+                ).required("오픈채팅 링크를 입력해주세요" )});
+          case "전화번호":
+            return yup.object({ phoneNum: yup.
+                string()
+                .matches(
+                    /^010-\d{4}-\d{4}$/,
+                    "010-xxxx-xxxx 형식으로 입력해주세요"
+                ).required("전화번호를 입력해주세요") });
+          default:
+            return yup.object();
+        }
+    };
+      
+    const schema = getSchema(contactType);
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors, isValid },
+        setValue,
+    } = useForm<{ kakaoId?: string, openKakao?: string; phoneNum?: string }>({
+        resolver: yupResolver(schema),
+        mode: "onChange",
+    });
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (ctype === "kakaoId" || ctype === "openKakao" || ctype === "phoneNum") {
+            setValue(ctype, e.target.value, { shouldValidate: true });
+        }
+        setInputValue(e.target.value);
+    };
+
+    const { mutate } = usePostFirstProfile(); 
+    const extractKorean = (text: string) => text.match(/[가-힣ㄱ-ㅎㅏ-ㅣ\s]+/g)?.join("").trim() || "";
+    const hobbyListKorean = hobby.map(extractKorean);
+    const onSubmit = (data: { kakaoId?: string; openKakao?: string; phoneNum?: string }) => {
+        const newContact = data.kakaoId || data.openKakao || data.phoneNum || "";
+        setContact(newContact);
+        setTimeout(() => {
+            mutate({
+                "nickName": nickname,
+                "imageNumber": imgNum,
+                "studentNumber": studentNum,
+                "mbti": mbti,
+                "hobbyList": hobbyListKorean,
+                "contactType": contactType,
+                "contactInfo": newContact, 
+                "subMajor": major,
+            });
+        }, 0)
+    };
+
     return (
         <>
             <SetProfileNavbar title={"프로필 작성"}/>
@@ -50,16 +128,24 @@ const SetContact= () => {
                 <Space/>
                 <GrayBottomInput
                     value={inputValue} 
-                    onChange={(e)=>setInputValue(e.target.value)} 
+                    {...register(ctype)}
+                    onChange={handleInputChange} 
                 />
+                { (errors as any)[ctype] && 
+                    <Warning $isRed={true}>
+                        <PiWarningCircle color={"#DB1818"} style={{ marginTop: "5px"}}/>
+                        <div>{(errors as any)[ctype]?.message}</div>
+                    </Warning>  
+                }
                 <div ref={inputRef}/>
                 <BtnContainer>
                     <MoveToPrevBtn/>
                     <MoveNextRoundBtn 
-                        nextPage={"/"} 
+                        nextPage={"/looking"} 
                         title="메이트 찾으러 가기" 
-                        onClick={()=>{setContact(inputValue)}} 
+                        onClick={handleSubmit(onSubmit)}
                         width={160}
+                        disable={!isValid || inputValue==""}
                     />
                 </BtnContainer>
             </Container>
@@ -94,5 +180,17 @@ const BtnContainer = styled.div`
     margin: 10vh auto;
     form{
         margin-top:-50px;
+    }
+`;
+const Warning = styled.div<{ $isRed?: boolean }>`
+    margin-top:10px;
+    display:flex;
+    font-size:14px;
+    width:100%;
+    height:24px;
+    line-height:24px;
+    div{
+        margin-left:5px;
+        color:${({$isRed})=>($isRed ? "#DB1818" : "black")};
     }
 `;

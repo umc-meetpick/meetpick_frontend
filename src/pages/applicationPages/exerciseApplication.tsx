@@ -1,12 +1,25 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import Navbar from "../../components/navbar/Navbar";
-import ApplicationImage from "../../assets/images/Application.png";
+import ApplicationImage from "../../assets/profileImg/프로필2.png";
 import ApplicationAlert from "../../assets/images/ApplicationAlert.png";
 import ApplicationGrayButton from "../../components/button/ApplicationGrayButton";
 import ApplicationGrayBox from "../../components/ApplicationGrayBox";
 import { IoHeart } from "react-icons/io5";
 import { FaCheck } from "react-icons/fa6";
+import { useParams } from "react-router-dom";
+import getDetailProfile from "../../apis/detailMemberInfo/getDetailProfile";
+import { useJoinRequest } from "../../apis/application/joinRequest";
+
+const weekMap:Record<string,string> = {
+    MON: "월",
+    TUE : "화",
+    WED : "수",
+    THU : "목",
+    FRI : "금",
+    SAT : "토",
+    SUN : "일"
+};
 
 const ExerciseApplication = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -17,20 +30,43 @@ const ExerciseApplication = () => {
         background: "#E7F2FE",
     });
 
+    const {requestId} = useParams();
+    const {data:profileData, isError} = getDetailProfile(Number(requestId));
+
+    const joinRequestMutation = useJoinRequest();
+
     const handleOpenModal = () => setIsModalOpen(true); // 팝업 열기
 
-    const handleConfirm = () => {
-        setMessage("신청이 완료되었습니다.");
+    const handleConfirm = async () => {
+        if (!requestId) {
+            console.error("❌ requestId가 존재하지 않습니다.");
+            setMessage("신청할 수 없습니다.");
+            setIsModalOpen(false);
+            return;
+        }
+
+        try {
+            await joinRequestMutation.mutateAsync({ requestId: Number(requestId) }); // ✅ API 호출
+            setMessage("신청이 완료되었습니다.");
+            setButtonMessage("신청 완료");
+            setButtonStyle({
+                color: "white",
+                background: "#101010",
+            });
+        } catch (error) {
+            console.error("❌ 매칭 참가 신청 실패:", error);
+            setMessage("신청 조건을 다시 확인해주세요!");
+        } finally {
+            setIsModalOpen(false);
+        }
+    };
+
+    const handleError = () => {
+        setMessage("신청 조건을 다시 확인해주세요!");
         setIsModalOpen(false); // 팝업 닫기
-        setButtonMessage("신청 완료"); // 버튼 텍스트 변경
-        setButtonStyle({ // 버튼 스타일 변경
-            color: "white",
-            background: "#101010",
-        });
     };
 
     const handleCancel = () => {
-        setMessage("신청 조건을 다시 확인해주세요!");
         setIsModalOpen(false); // 팝업 닫기
     };
 
@@ -45,32 +81,46 @@ const ExerciseApplication = () => {
         }
     }, [message]);
 
+    useEffect(() => {
+        if (isError) {
+          handleError(); // 에러 발생 시 handleCancel 실행
+        }
+      }, [isError]); // isError 값이 변경될 때 실행
+
+    const formatWeekAndTime = (weekAndTime: {week:string; times:string}[]) => {
+        return weekAndTime.map(({week, times})=> {
+            const koreanWeek = weekMap[week] || week;
+            const formattedTimes = times.split(", ").map(time => `${time}:00`).join(", ");
+            return `${koreanWeek} ${formattedTimes}`
+        }).join(" / ");
+    };
+
     return (
         <>
-            <Navbar title ="제이시의 프로필" before = {true}/>
+            <Navbar title ={profileData?.result?.공통?.nickName + "의 프로필"} before = {true}/>
             <Wrapper>
                 <ImageContainer>
-                    <StyledImage src={ApplicationImage} alt="회원가입 완료 이미지" />
+                    <StyledImage src={profileData?.result?.공통?.imageUrl} alt="회원가입 완료 이미지" />
                 </ImageContainer>
                 <Container>
                     <Text1>나이•학번</Text1>
                     <Button>
-                        <ApplicationGrayButton text="23살"/>
-                        <ApplicationGrayButton text="20학번"/>
+                        <ApplicationGrayButton text={profileData?.result?.공통?.age}/>
+                        <ApplicationGrayButton text={profileData?.result?.공통?.studentNumber}/>
                     </Button>
                 </Container>
                 <DoubleContainer>
                     <Container>
                         <Text1>성별</Text1>
                         <Button>
-                            <ApplicationGrayButton text="남성"/>
+                            <ApplicationGrayButton text={profileData?.result?.공통?.gender}/>
                         </Button>
                     </Container>
                     <Container>
                         <Text1>전공</Text1>
                         <Button>
-                            <ApplicationGrayButton text="자연과학계열" width="90"/>
-                            <ApplicationGrayButton text="물리학과" width="68"/>
+                            <ApplicationGrayButton text={profileData?.result?.공통?.major} width="95"/>
+                            <ApplicationGrayButton text={profileData?.result?.공통?.subMajor} width="68"/>
                         </Button>
                     </Container>
                 </DoubleContainer>
@@ -78,15 +128,16 @@ const ExerciseApplication = () => {
                     <Container>
                         <Text1>MBTI</Text1>
                         <Button>
-                            <ApplicationGrayButton text="ISFP" width="60"/>
+                            <ApplicationGrayButton text={profileData?.result?.공통?.mbti} width="60"/>
                         </Button>
                     </Container>
                     <Container>
                         <Text1>취미</Text1>
                         <Button>
-                            <ApplicationGrayButton text="🧘🏻명상" width="60"/>
-                            <ApplicationGrayButton text="🧩바둑" width="60"/>
-                            <ApplicationGrayButton text="💤 잠" width="60"/>
+                        {(profileData?.result?.공통?.hobbies || []).map((hobby: string, index: number) => (
+                            <ApplicationGrayButton key={index} text={hobby} width="60"/>
+                        ))}
+
                         </Button>
                     </Container>
                 </DoubleContainer>
@@ -100,28 +151,28 @@ const ExerciseApplication = () => {
                 </Text2>
             </Mate>
             <Mate1>
-                <ApplicationGrayBox text1="운동 종류" text2="⚽ 축구" width="152px" />
-                <ApplicationGrayBox text1="인원수" text2="5/10" width="152px" />
+                <ApplicationGrayBox text1="운동 종류" text2={profileData?.result?.타입?.exercise} width="152px" />
+                <ApplicationGrayBox text1="인원수" text2={profileData?.result?.타입?.currentPeople} width="152px" />
             </Mate1>
             <Mate1>
-                <ApplicationGrayBox text1="성별" text2="무관" width="152px" />
-                <ApplicationGrayBox text1="나이 / 학번" text2="22살 / 동기" width="152px" />
+                <ApplicationGrayBox text1="성별" text2={profileData?.result?.타입?.gender} width="152px" />
+                <ApplicationGrayBox text1="나이 / 학번" text2={profileData?.result?.타입?.ageAndPeer} width="152px" />
             </Mate1>
             <Mate1>
-                <ApplicationGrayBox text1="전공" text2="IT 계열" width="152px" />
-                <ApplicationGrayBox text1="MBTI" text2="상관없음" width="152px" />
+                <ApplicationGrayBox text1="전공" text2={profileData?.result?.타입?.major||"상관없어"} width="152px" />
+                <ApplicationGrayBox text1="MBTI" text2={profileData?.result?.타입?.mbti || "상관없어"} width="152px" />
             </Mate1>
             <Mate1>
-                <ApplicationGrayBox text1="취미" text2="상관없음" width="318px"/>
+                <ApplicationGrayBox text1="취미" text2={profileData?.result?.타입?.hobby} width="318px"/>
             </Mate1>
             <Mate1>
-                <ApplicationGrayBox text1="시간대" text2="월 12:00, 13:00, 18:00 / 화 15:00" width="318px"/>
+                <ApplicationGrayBox text1="시간대" text2={formatWeekAndTime(profileData?.result?.타입?.weekAndTime || [])} width="318px"/>
             </Mate1>
             <Mate1>
-                <ApplicationGrayBox text1="운동 장소" text2="외부시설/ 구립체육관" width="318px"/>
+                <ApplicationGrayBox text1="운동 장소" text2={profileData?.result?.타입?.place} width="318px"/>
             </Mate1>
             <Mate1>
-                <ApplicationGrayBox text1="하고 싶은 말" text2="같이 재밌게 해봐요!" width="318px"/>
+                <ApplicationGrayBox text1="하고 싶은 말" text2={profileData?.result?.타입?.comment} width="318px"/>
             </Mate1>
             <Button2>
                 <ApplicationButton style={buttonStyle} onClick={handleOpenModal}>

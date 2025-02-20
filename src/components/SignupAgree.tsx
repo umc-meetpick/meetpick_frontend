@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 
 interface AgreeItemProps {
@@ -7,6 +6,7 @@ interface AgreeItemProps {
   $isMain?: boolean; // 약관 전체 동의인지 여부
   checked: boolean; // 선택 여부
   onChange: () => void; // 선택 변경 핸들러
+  onViewClick?:() => void;
 }
 
 const AgreeItem: React.FC<AgreeItemProps> = ({ 
@@ -15,6 +15,7 @@ const AgreeItem: React.FC<AgreeItemProps> = ({
   $isMain = false,
   checked,
   onChange,
+  onViewClick,
 }) => {
   return (
     <Container $isMain={$isMain}>
@@ -22,11 +23,11 @@ const AgreeItem: React.FC<AgreeItemProps> = ({
         <CheckBoxButton 
           type="checkbox" 
           checked={checked} 
-          onChange={onChange} 
+          onChange={onChange}
         />
         <Text>{text}</Text>
       </CheckBoxContainer>
-      {hasViewButton && <ViewButton>보기</ViewButton>}
+      {hasViewButton && <ViewButton onClick={onViewClick}>보기</ViewButton>}
     </Container>
   );
 };

@@ -1,6 +1,5 @@
-import React from "react";
 import styled from "styled-components";
-import { AiOutlineCheck } from "react-icons/ai"; // 체크 아이콘 추가
+//import { AiOutlineCheck } from "react-icons/ai"; // 체크 아이콘 추가
 import { Icon } from "@iconify/react";
 
 interface SignupProgressbarProps {

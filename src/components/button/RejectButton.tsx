@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 
 const Button = styled.button<{ width?: string; height?: string; fontSize?: string; fontWeight?: string; $borderRadius?: string;}>`
@@ -10,6 +9,7 @@ const Button = styled.button<{ width?: string; height?: string; fontSize?: strin
   font-size: ${({ fontSize }) => fontSize || "16px"};
   font-weight: ${({ fontWeight }) => fontWeight || "500"};
   cursor: pointer;
+  font-family: "Pretendard Variable";
 
   display: flex;
   justify-content: center;

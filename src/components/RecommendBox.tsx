@@ -1,121 +1,166 @@
-import React,{useState, useEffect} from "react";
+import  { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Icon } from "@iconify/react";
-import RecommendImage from "../assets/images/Recommend3.png";
+import { useLikeMatch, useDeleteLikeMatch } from "../apis/matchingRecommend/matchingHeart";
+
 
 interface ButtonProps {
-  id:number;
+  profileImage:string;
+  category: string;
+  requestId: number;
   text1: string;
-  text2:string;
-  text3:string;
-  number1:string;
-  number2:string;
+  text2: string;
+  text3: string;
+  $number1: string | number;
+  $number2: string | number;
   $backgroundColor?: string;
   width?: string;
   color?: string;
   disabled?: boolean;
-  detail1?:string;
-  detail2?:string;
-  detail3?:string;
-  detail4?:string;
-  detail5?:string;
-  detail6?:string;
+  detail1?: string;
+  detail2?: string;
+  detail3?: string;
+  detail4?: string;
+  detail5?: string;
+  detail6?: string;
   onClick?: () => void;
+  showHeart?:boolean;
 }
 
 const RecommendBox: React.FC<ButtonProps> = ({
-  id,
+  profileImage,
+  category,
+  requestId,
   text1,
   text2,
   text3,
-  number1,
-  number2,
-  $backgroundColor = "#E3F2FD", // 기본값 설정
-  width = "140px", // 기본값 설정
+  $number1,
+  $number2,
+  $backgroundColor = "#E3F2FD",
+  width = "140px",
   color = "black",
   disabled = false,
-  detail1,
+  detail1, 
   detail2,
   detail3,
   detail4,
   detail5,
   detail6,
-  onClick,
+  showHeart,
 }) => {
+  const favoriteKey = `heart_${category}_${requestId}`;
+
+  const likeMutation = useLikeMatch(); // 좋아요 요청 훅
+  const deleteLikeMutation = useDeleteLikeMatch(); // 좋아요 취소 요청 훅
 
   const [isIconClicked, setIsIconClicked] = useState<boolean>(() => {
-    const savedState = localStorage.getItem(`heart_${id}`);
+    const savedState = localStorage.getItem(favoriteKey);
     return savedState ? JSON.parse(savedState) : false;
-  }); 
+  });
 
   useEffect(() => {
-    const savedState = localStorage.getItem(`heart_${id}`);
-    if(savedState) {
-      setIsIconClicked(JSON.parse(savedState)); // JSON을 불러와 상태 업데이트 
+    const savedState = localStorage.getItem(favoriteKey);
+    if (savedState) {
+      setIsIconClicked(JSON.parse(savedState));
     }
-  },[id]);
+  }, [favoriteKey]);
 
-  // 하트를 클릭하면 상태를 토글하고 로컬 스토리지에 저장 
-  const handleIconClick=() => {
-    setIsIconClicked(!isIconClicked); // 클릭 시 상태 토글
-    //console.log("아이콘 클릭됨"); // 디버깅 로그
+  const handleIconClick = async (event: React.MouseEvent) => {
+    event.stopPropagation();
+    console.log("💖 하트 버튼 클릭됨! -> requestId =", requestId);
+    
+    
+  
     const newState = !isIconClicked;
-    localStorage.setItem(`heart_${id}`, JSON.stringify(newState));
-  }
-
+    setIsIconClicked(newState);
+    localStorage.setItem(favoriteKey, JSON.stringify(newState));
+  
+    // ✅ localStorage 변경 이벤트 발생 → LikePage에도 반영되도록 함
+    window.dispatchEvent(new Event("storage"));
+  
+    try {
+      if (newState) {
+        console.log("🟢 좋아요 요청 전송 중...");
+        await likeMutation.mutateAsync({ requestId});
+        console.log("✅ 좋아요 성공:", requestId);
+      } else {
+        console.log("🔴 좋아요 취소 요청 전송 중...");
+        await deleteLikeMutation.mutateAsync({ requestId});
+        console.log("🚨 좋아요 취소 성공:", requestId);
+      }
+    } catch (error) {
+      console.error("❌ 좋아요 요청 실패:", error);
+  
+      window.dispatchEvent(new Event("storage"));
+    }
+  };
+  
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const toggleExpand =() => {
+  const toggleExpand = () => {
     setIsExpanded(!isExpanded);
-  }
+    
+  };
 
   return (
     <StyledButton
       $backgroundColor={$backgroundColor}
-      number1={number1}
-      number2={number2}
+      $number1={$number1}
+      $number2={$number2}
       width={width}
       color={color}
       disabled={disabled}
-      $isExpanded ={isExpanded}
-      onClick = {disabled? undefined : onClick}
-    >  
-        <FirstLine>
-            <PersonText>{number1}/{number2}명</PersonText>
-            <StyledIcon 
-            icon= {isIconClicked? "si:heart-fill": "si:heart-line"}
+      $isExpanded={isExpanded}
+    >
+      <FirstLine>
+        <PersonText>
+          {$number1}/{$number2}명
+        </PersonText>
+        {showHeart ? (
+          <StyledIcon
+            icon={isIconClicked ? "si:heart-fill" : "si:heart-line"}
             width="20"
-            height="20" 
-            $isClicked = {isIconClicked}
-            onClick = {handleIconClick}
-            
-            />
-        </FirstLine>
-        <SecondLine>
-            <StyledImage src={RecommendImage} alt="추천 리스트 이미지" />
-            <Nickname>{text1}</Nickname>
-            <Keyword1>{text2}</Keyword1>
-            <Keyword2>{text3}</Keyword2>
-        </SecondLine>
-    
-        <FourthLine  $isExpanded={isExpanded} onClick={toggleExpand}>
-          <StyledBox>
-                {detail1 && <Box>{detail1}</Box>}
-                {detail2 && <Box>{detail2}</Box>}
-                {detail3 && <Box>{detail3}</Box>}
-                {detail4 && <Box>{detail4}</Box>}
-                {detail5 && <Box>{detail5}</Box>}
-                {detail6 && <Box>{detail6}</Box>}
-          </StyledBox>
-          <StyledArrowIcon 
-            icon={isExpanded ? "akar-icons:chevron-up" : "akar-icons:chevron-down"} 
-            width="20" 
-            height="10"
+            height="20"
+            $isClicked={isIconClicked}
+            onClick={handleIconClick}
           />
-        </FourthLine>
+        ) : 
+        <StyledIcon
+          icon="si:heart-fill"
+          width="20"
+          height="20"
+          $isClicked={true}
+      />}
+      </FirstLine>
+      <SecondLine>
+        <StyledImage src={profileImage} alt="사용자 프로필" />
+        <Nickname>{text1}</Nickname>
+        <Keyword1>{text2}</Keyword1>
+        <Keyword2>{text3}</Keyword2>
+      </SecondLine>
+
+      <FourthLine $isExpanded={isExpanded} onClick={(e: React.MouseEvent<HTMLDivElement>) => {
+        e.stopPropagation();
+        toggleExpand();
+      }}>
+        <StyledBox>
+          {detail1 && <Box>{detail1}</Box>}
+          {detail2 && <Box>{detail2}</Box>}
+          {detail3 && <Box>{detail3}</Box>}
+          {detail4 && <Box>{detail4}</Box>}
+          {detail5 && <Box>{detail5}</Box>}
+          {detail6 && <Box>{detail6}</Box>}
+        </StyledBox>
+        <StyledArrowIcon
+          icon={isExpanded ? "akar-icons:chevron-up" : "akar-icons:chevron-down"}
+          width="20"
+          height="10"
+        />
+      </FourthLine>
     </StyledButton>
   );
 };
+
 
 const StyledArrowIcon = styled(Icon)`
     align-self: center;
@@ -128,8 +173,8 @@ const StyledButton = styled.button<{
   $backgroundColor: string;
   width: string;
   color: string;
-  number1:string;
-  number2:string;
+  $number1:string|number;
+  $number2:string|number;
   $isExpanded:boolean;
 }>`
   background-color: ${({ $backgroundColor }) => $backgroundColor};

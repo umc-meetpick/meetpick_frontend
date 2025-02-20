@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState} from "react";
 import styled from "styled-components";
 
 interface DropdownButtonProps {
@@ -77,13 +77,13 @@ const DropdownButton: React.FC<DropdownButtonProps> = ({
           </DropdownList>
 
           {subOptions && (
-            <DropdownList $width="60px" $left={left} $top={top}>
+            <DropdownList2 $width="65px" $left={left} $top={top}>
               {subOptions.map((subOption, index) => (
                 <DropdownItem2 key={index} onClick={() => handleSubOptionClick(subOption)}>
                   {subOption}
                 </DropdownItem2>
               ))}
-            </DropdownList>
+            </DropdownList2>
           )}
         </DropdownWrapper>
       )}
@@ -102,13 +102,17 @@ const ArrowIcon = styled.span`
 `;
 
 const DropdownWrapper = styled.div`
-  position: relative;
+  position: absolute;
+  border: 1px solid none;
+  height:auto;
+  z-index:50;
 `;
 
 const Container = styled.div`
   position: relative;
   display: inline-block;
   z-index: 10; /* 필요시 값 조정 */
+  overflow: visible; /* Swiper 내부에 있다면 필요 */
 `;
 
 const StyledButton = styled.button<{ $isSelected?: boolean; $color?:string; $height:string }>`
@@ -122,28 +126,46 @@ const StyledButton = styled.button<{ $isSelected?: boolean; $color?:string; $hei
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  margin-right: 10px;
+  margin-right: 5px;
   box-sizing: border-box;
-  padding:0;
+  padding:0 15px;
+  overflow:visible;
 
   &:hover {
     border-color: #007aff;
   }
 `;
 
-const DropdownList = styled.ul<{$width : string; $top?: string; $left?: string }>`
-  position: relative;
+const DropdownList = styled.ul<{$width?:string; $top?: string; $left?: string }>`
+  position:absolute;
   left: 0;
+  margin-top:5px;
+  margin-left:7.5px;
+  padding: 0px;
+  background: white;
+  border: 1.5px solid #cecece;
+  list-style: none;
+  min-width: 50px; /* 최소 너비는 버튼 크기 */
+  width: ${({ $width }) => ($width ? `${parseInt($width) - 16}px` : "auto")};
+  white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+  top: ${({ $top }) => $top || "0px"};
+  left: ${({ $left }) => $left || "px"};
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.27);
+`;
+
+const DropdownList2 = styled.ul<{$width : string; $top?: string; $left?: string }>`
+  position:absolute;
   margin-top:5px;
   padding: 0px;
   background: white;
   border: 1.5px solid #cecece;
   list-style: none;
-  width: ${({ $width }) => `calc(${Number($width.replace('px', '')) - 4}px)`};
-  top: ${({ $top }) => $top || "0px"};
-  left: ${({ $left }) => $left || "0px"};
+  width: 60px;
+  //top: ${({ $top }) => `${$top}` || "0px"};
+  top:0px;
+  left:  ${({ $left }) => `${$left}` || "60px"};; 
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.27); /* 드롭다운 전체에 그림자 추가 */
-   
+
 `;
 
 const DropdownItem = styled.li`
@@ -153,7 +175,7 @@ const DropdownItem = styled.li`
   cursor: pointer;
   text-align:center;
   color:#6C6C73;
-  font-size:12px;
+  font-size:10.5px;
   font-weight: 500;
   padding: 5px 3px;
   &:hover{
@@ -167,9 +189,10 @@ const DropdownItem2 = styled.li`
   cursor: pointer;
   text-align:center;
   color:#6C6C73;
-  font-size:12px;
+  font-size:10.5px;
   font-weight: 500;
   padding: 4px 0;
+  
 
   &:hover{
     background-color:#F5F5F5;

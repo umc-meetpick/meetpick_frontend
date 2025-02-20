@@ -8,17 +8,19 @@ import { ExerciseProfileInfoContext } from "../../context/exerciseInfoContext";
 import ToggleListModal from "../../components/modal/ToggleListModal";
 import SelectNumModal from "../../components/modal/selectNumModal";
 import ChatingInput from "../../components/input/ChatingInput";
-import { useNavigate } from "react-router-dom";
 import SetDateTimeModal from "../../components/modal/SetDateTimeModal";
+import intervalQ from "../../utils/intervalQuestions"
+import FirstAndLast from "../../utils/firstAndLastMessage";
 
 interface OptionClick{
     option:string;
-    type?: string;
+    type?: string
 }
+
 const ExerciseMateProfile = () =>{
-    const {messages, addMessage, resetMessages} = useChatContext();
+    const {messages, addMessage} = useChatContext();
     const [currentQueryIndex, setCurrentQueryIndex] = useState(0); 
-    const { setGender, majors, studentNum, setStudentNum, ageRange, mbtiList, setMbtiList, 
+    const { setGender, selectedMajors, studentNum, setStudentNum, ageRange, mbtiList, setMbtiList, setIsSchool,setIsHobbySame,
             exercise, setExercise, place, dateTime, peopleNum, ment } = useContext(ExerciseProfileInfoContext);
     const [modalOpen, setModalOpen] = useState(false);
     const [modalOpenS, setModalOpenS] = useState(false);
@@ -26,14 +28,11 @@ const ExerciseMateProfile = () =>{
     const [modalOpenD, setModalOpenD] = useState(false);
     const [chatDisable, setChatDisable] = useState(true);
     const messageEndRef = useRef<HTMLDivElement>(null);
-    const timerRef = useRef<number | null>(null);
-    const hasRun = useRef(false);
     const [keyboardOpen, setKeyboardOpen] = useState(false);
     const [isManyOptions, setIsManyOptions] = useState(false);
     const [saveType, setSaveType] = useState("");
-
-    const navigate = useNavigate();
-
+    const [optionSelectEnd, setOptionSelectEnd] = useState(false);
+    
     const scrollToBottom = () => {
       messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
     };
@@ -43,14 +42,14 @@ const ExerciseMateProfile = () =>{
     }, [messages]);
 
     useEffect(() => {
-        if ( !modalOpen && majors.length > 0) {
-            addMessage({ question: [majors.join(", ") + "!"], direction: "outgoing" });
+        if ( !modalOpen && selectedMajors.length > 0) {
+            addMessage({ question: [selectedMajors.join(", ") + "!"], direction: "outgoing" });
             nextOption(); 
         }
-    }, [ modalOpen, majors]);
+    }, [ modalOpen, selectedMajors]);
 
     useEffect(() => {
-        if (mbtiList.length === 4) {
+        if (mbtiList.length === 4 && mbtiList.join("") != "xxxx") {
           addMessage({ question: [mbtiList.join("")], direction: "outgoing" });
           addMessage({ question: ["아하 이제 슬슬 알겠다!"], direction: "incoming" });
         }
@@ -106,38 +105,8 @@ const ExerciseMateProfile = () =>{
         }
     }, [ment])
 
-    useEffect(() => {
-        const hasWaveEmoji = messages.some((msg) =>
-            msg.question?.includes("👋")
-        );
-
-        if (hasWaveEmoji) {
-            if (timerRef.current) {
-                clearTimeout(timerRef.current);
-            }
-            timerRef.current = setTimeout(() => {
-                resetMessages();
-                navigate("/waitForMate",{state:"운동"}); 
-            }, 3000);
-        }
-        return () => {
-            if (timerRef.current) {
-                clearTimeout(timerRef.current);
-            }
-        };
-    }, [messages, navigate]);
-
-    useEffect(() => {
-        if (!hasRun.current) {
-          hasRun.current = true; 
-          if (messages.length === 0) {
-            addMessage({
-              question: exerciseProfileQuery[0].question,
-              direction: exerciseProfileQuery[0].direction as "incoming" | "outgoing",
-            });
-          }
-        }
-      }, [messages, addMessage, exerciseProfileQuery]);
+    
+    FirstAndLast("운동");
 
     useEffect(() => {
         const handleResize = () => {
@@ -155,15 +124,9 @@ const ExerciseMateProfile = () =>{
     const handleOptionClick = ({option, type}: OptionClick): void => {
         if (type == "first"){
             setIsManyOptions(true);
+            addMessage({ question: [option], direction: "outgoing" });
         }else if (type == "exercise"){
-            if ( option == "기타"){
-                setChatDisable(false);
-                setSaveType("exercise");
-            }else{
-                setSaveType("");
-                setExercise(option);
-                setChatDisable(true); 
-            }
+            setExercise(option);
         }else if (type == "major" && option != "상관없어"){
             setModalOpen(true); 
         }else if (type == "studentNum" && option != "상관없어"){
@@ -174,16 +137,18 @@ const ExerciseMateProfile = () =>{
         }else if (type == "mbti"){
             addMessage({ question: [option], direction: "outgoing" });
             if (option == "상관없어"){
+                setOptionSelectEnd(true); 
+                setMbtiList(["x","x","x","x"])
                 const nextQueryIndex = currentQueryIndex + 5;
-                if (nextQueryIndex < exerciseProfileQuery.length && !modalOpen ) {
-                    setTimeout(() => {
-                        addMessage({ question: exerciseProfileQuery[nextQueryIndex]?.question, direction: "incoming" });
-                        setCurrentQueryIndex(nextQueryIndex); 
-                    },500);
-                }
-            }
+                if (nextQueryIndex < exerciseProfileQuery.length && !modalOpen) {
+                setCurrentQueryIndex(nextQueryIndex);  
+                setTimeout(() => {
+                    const questions = exerciseProfileQuery[nextQueryIndex]?.question || [];
+                    intervalQ({ questions, setCurrentQueryIndex, nextQueryIndex, addMessage, setOptionSelectEnd, time:300});
+                }, 100);  
+            }}
         }else if (type?.includes("mbti") ) {
-            if (option == "상관없어!"){
+            if (option == "상관없어"){
                 setMbtiList([...mbtiList, "x"]);
             }else{
                 const mbtiMap: { [key: string]: string } = {
@@ -197,20 +162,27 @@ const ExerciseMateProfile = () =>{
                 const mbtiValue = mbtiMap[mbtiKey];
                 setMbtiList([...mbtiList, mbtiValue]);
             }
+            nextOption(500);
         }else if (type == "gender" ){
             setGender(option);
             addMessage({ question: [option], direction: "outgoing" });
         }else if (type == "hobby"){
-            addMessage({ question: [option], direction: "outgoing" })
+            option == "같으면 좋겠어" ? setIsHobbySame(true) : setIsHobbySame(false);
+            addMessage({ question: [option], direction: "outgoing" });
             setChatDisable(false);
             setSaveType("ment");
         } else if (type == "date"){
             setModalOpenD(true);
         }else if (type == "peopleNum"){
             setModalOpenS2(true); 
-        }else if (type == "place" && option == "외부시설"){
-            setSaveType("place")
-            setChatDisable(false);
+        }else if (type == "place"){
+            if(option == "외부시설"){
+                setSaveType("place")
+                setChatDisable(false);
+                setIsSchool(false);
+            }else{
+                setIsSchool(true);
+            }
 
         }else{
             addMessage({ question: [option], direction: "outgoing" });
@@ -218,32 +190,33 @@ const ExerciseMateProfile = () =>{
         
         if (!((type == "major" && option != "상관없어") || (type == "exercise") 
             || (type == "place" && option == "외부시설") || (type == "age" && option != "상관없어") 
-            || (type == "extraExercise" && option == "없어") || type == "date" || type == "peopleNum"
+            || type == "date" || type == "peopleNum"
+            || (type != "mbti" && type?.includes("mbti")) 
             || (type == "mbti" && option == "상관없어")
             )){
                 nextOption();
             }
     };
-    const nextOption = () =>{
+    const nextOption = (time?:number) =>{
         const nextQueryIndex = currentQueryIndex + 1;
         setCurrentQueryIndex(-1); 
         if (nextQueryIndex < exerciseProfileQuery.length && !modalOpen ) {
             setTimeout(() => {
-                addMessage({ question: exerciseProfileQuery[nextQueryIndex]?.question, direction: "incoming" });
-                setCurrentQueryIndex(nextQueryIndex); 
+                const questions = exerciseProfileQuery[nextQueryIndex]?.question || [];
+                intervalQ({questions, setCurrentQueryIndex, nextQueryIndex, addMessage, time:time});
             },500);
         }
     }
     return(
         <>
-            <BasicNavbar title="운동 메이트 찾기" bell={true}></BasicNavbar>
+            <BasicNavbar title="운동 메이트 찾기" fixed={true}></BasicNavbar>
             <Container>
                 <StyledMainContainer $short={isManyOptions}>
                     <MessagesContainer>
                         {messages.map((msg, index) => (
                             msg.question?.map((que, idx) => (
                                 <ImageContainer key={`${index}-${idx}`}>
-                                    {idx + 1 === msg.question?.length && msg.direction === "incoming" && (
+                                    {msg?.type == "last" && msg.direction === "incoming" && (
                                         <Img src={recommend_exercise} alt="운동 프로필" />
                                     )}
                                     {
@@ -252,7 +225,7 @@ const ExerciseMateProfile = () =>{
                                         ) : (
                                             <BaseMessage
                                                 direction={msg.direction}
-                                                $isImg={idx + 1 === msg.question?.length && msg.direction === "incoming"}
+                                                $isImg={msg?.type == "last"}
                                                 $length={que.length}
                                             >
                                                 {que}
@@ -265,28 +238,33 @@ const ExerciseMateProfile = () =>{
                     </MessagesContainer>
                     <div ref={messageEndRef} />
                 </StyledMainContainer>
-                <OptionsContainer $isSmall={window.innerHeight <700} $short={isManyOptions}>
-                        {currentQueryIndex >=0 && exerciseProfileQuery[currentQueryIndex]?.options && (
-                            <>
-                                {exerciseProfileQuery[currentQueryIndex].options.map((option, idx) => (
-                                    <Button 
-                                        key={idx} 
-                                        onClick={
-                                            () => handleOptionClick({option, type: exerciseProfileQuery[currentQueryIndex]?.type}) 
-                                        }
-                        
-                                        $ismodal={ (exerciseProfileQuery[currentQueryIndex]?.type == "age" && option != "상관없어") 
-                                            || exerciseProfileQuery[currentQueryIndex]?.type == "major" && option != "상관없어"
-                                            || exerciseProfileQuery[currentQueryIndex]?.type == "date" 
-                                            || exerciseProfileQuery[currentQueryIndex]?.type == "peopleNum"}
-                                        $isSelected={exerciseProfileQuery[currentQueryIndex]?.type == "age" && option != "상관없어"}
-                                    >
-                                        {option}
-                                    </Button>
-                                ))}
-                            </>
-                        )}
-                    </OptionsContainer>
+                {messages.some(msg => (msg?.type === "last" || !msg) && msg.direction === "incoming") && !optionSelectEnd &&
+                    <OptionsContainer $isSmall={window.innerHeight <700} $short={isManyOptions}>
+                            {currentQueryIndex >=0 && exerciseProfileQuery[currentQueryIndex]?.options && (
+                                <>
+                                    {exerciseProfileQuery[currentQueryIndex].options.map((option, idx) => (
+                                        <Button 
+                                            key={idx} 
+                                            onClick={
+                                                () => handleOptionClick({option, type: exerciseProfileQuery[currentQueryIndex]?.type}) 
+                                            }
+                            
+                                            $ismodal={ (exerciseProfileQuery[currentQueryIndex]?.type == "age" && option != "상관없어") 
+                                                || exerciseProfileQuery[currentQueryIndex]?.type == "major" && option != "상관없어"
+                                                || exerciseProfileQuery[currentQueryIndex]?.type == "date" 
+                                                || exerciseProfileQuery[currentQueryIndex]?.type == "peopleNum"}
+                                            $isSelected={
+                                                (exerciseProfileQuery[currentQueryIndex]?.type == "age" && option != "상관없어")
+                                                || (exerciseProfileQuery[currentQueryIndex]?.type == "place" && option =="외부시설" && !chatDisable) 
+                                            }
+                                        >
+                                            {option}
+                                        </Button>
+                                    ))}
+                                </>
+                            )}
+                        </OptionsContainer>
+                    }               
                     <ChatingInput 
                         disable={chatDisable} 
                         setChatDisable={setChatDisable} 
@@ -373,13 +351,13 @@ const OptionsContainer = styled.div<{ $isSmall: boolean; $short: boolean }>`
     display: flex;
     flex-wrap: wrap;
     justify-content: center; 
-    gap: 10px;  
+    gap: 15px;
     margin-top: ${({ $isSmall, $short }) =>
         $isSmall ? ($short ? "calc(100vh * 0.05)" : "calc(100vh * 0.15)") : "calc(100vh * 0.05)"};
     margin-bottom: calc(100vh * 0.1); 
 `;
 const BaseMessage = styled.div<{ direction: string, $isImg : boolean, $length:number }>`
-    width:180px;
+    width:185px;
     height: ${({$length})=> $length < 17 ? "35px" : `${$length + 15}px`};
     padding: 12px 15px;
     margin: 10px;
@@ -392,6 +370,7 @@ const BaseMessage = styled.div<{ direction: string, $isImg : boolean, $length:nu
     position:relative;
     display: flex;
     align-items: center; 
+    white-space: pre-line;
     div{
         display: -webkit-box;
         -webkit-box-orient: vertical;

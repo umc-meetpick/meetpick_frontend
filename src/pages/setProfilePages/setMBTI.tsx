@@ -36,7 +36,7 @@ const SetMBTI = () =>{
             </Container>
             <BtnContainer>
                 <MoveToPrevBtn/>
-                <MoveNextRoundBtn nextPage={"/setProfile/major"} width={160}/>
+                <MoveNextRoundBtn nextPage={"/setProfile/major"} width={160} disable={mbti.length!==4}/>
             </BtnContainer>
         </>
     )

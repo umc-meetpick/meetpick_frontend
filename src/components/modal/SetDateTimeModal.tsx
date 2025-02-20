@@ -10,12 +10,13 @@ interface SetDateTimeModalProps {
     title: string;
     setModalOpen: (isOpen: boolean) => void;
     type: string;
+    max?: number;
 }
 interface Selected {
     [key: string]: string[];
 }
 
-const SetDateTimeModal: React.FC<SetDateTimeModalProps> = ({title, setModalOpen, type}) =>{
+const SetDateTimeModal: React.FC<SetDateTimeModalProps> = ({title, setModalOpen, type, max}) =>{
     function useProfileContext(type: string) {
         if (type == "food"){
             return useContext(FoodProfileInfoContext);
@@ -28,28 +29,31 @@ const SetDateTimeModal: React.FC<SetDateTimeModalProps> = ({title, setModalOpen,
     const { dateTime, setDateTime } = useProfileContext(type);
     const [selectedDate, setSelectedDate] = useState("");
     const [selected, setSelected] = useState<{ [key: string]: string[] }>({});
-    const dates = ["월", "화", "수", "목", "금"];
+    const dates = type == "study" ? ["월", "화", "수", "목", "금", "토", "일"] : ["월", "화", "수", "목", "금"];
     const morningTimes = ["5:00", "6:00", "7:00", "8:00", "9:00", "10:00"]
     const lunchTimes = ["11:00", "12:00", "13:00", "14:00", "15:00", "16:00"]
     const dinnerTimes = ["17:00", "18:00", "19:00", "20:00", "21:00", "22:00"]
     const isSmall = window.innerHeight < 700; 
 
     const handleDateClick = (date: string) => {
-        setSelectedDate(date);
-        setSelected((prev) => {
-            if (prev[date]) {
-                return prev; 
-            }
-            const newSelected = { ...prev, [date]: [] };
-            const sortedSelected = Object.keys(newSelected)
-                .sort((a, b) => dates.indexOf(a) - dates.indexOf(b))
-                .reduce<Selected>((acc, key) => {
-                    acc[key] = newSelected[key];
-                    return acc;
-                }, {} as Selected);
-
-            return sortedSelected;
-        });
+        if (!max || Object.keys(selected).length < max + 1){
+            setSelectedDate(date);
+            setSelected((prev) => {
+                if (prev[date]) {
+                    return prev; 
+                }else{
+                    const newSelected = { ...prev, [date]: [] };
+                    const sortedSelected = Object.keys(newSelected)
+                        .sort((a, b) => dates.indexOf(a) - dates.indexOf(b))
+                        .reduce<Selected>((acc, key) => {
+                            acc[key] = newSelected[key];
+                            return acc;
+                        }, {} as Selected);
+    
+                    return sortedSelected;
+                }
+            });
+        }
     };
 
 
@@ -79,7 +83,7 @@ const SetDateTimeModal: React.FC<SetDateTimeModalProps> = ({title, setModalOpen,
     }
     return(
         <Wrapper>
-            <Background $isSmall={isSmall}>
+            <Background $isSmall={isSmall}/>
             <Container $isSmall={isSmall}>
                 <Title>{title}</Title>
                 <InputWrapper>
@@ -167,7 +171,6 @@ const SetDateTimeModal: React.FC<SetDateTimeModalProps> = ({title, setModalOpen,
                 </Btn>
                 </InputWrapper>
             </Container>
-        </Background>
         </Wrapper>
     )
 }
@@ -177,14 +180,15 @@ const Wrapper = styled.div`
     display: flex;
     width: 100vw;
     height: 100vh;
+    font-family: "Pretendard Variable";
 `;
 const Background = styled.div<{$isSmall:boolean}>`
     width:100%;
     max-width:393px;
     height: 100%;
     background-color:rgba(0,0,0,0.2);
-    position: relative;
-    bottom:${({$isSmall}) => $isSmall ? "calc(100vh - 40px)" : "calc(100vh - 80px)"};
+    position: fixed;
+    bottom:0;
 `;
 const Container = styled.div<{$isSmall:boolean}>`
     width: calc(100vw); 
@@ -195,8 +199,8 @@ const Container = styled.div<{$isSmall:boolean}>`
     display: flex;
     flex-direction: column;
     align-items: center;
-    position: absolute;
-    bottom: ${({$isSmall})=>$isSmall ? "0px" : "0px"};
+    position: fixed;
+    bottom: -40px;
     overflow-y: auto;
     border-radius: 30px 30px 0 0;
 `;
@@ -236,6 +240,7 @@ const Box =  styled.button<{$isSelected:boolean}>`
     height:40px;
     display:flex;
     justify-content: center;
+    color: black;
     border:${({$isSelected})=> $isSelected ? "1px solid #007AFF" : "1px solid #E7E7E7"};
     background-color: ${({$isSelected}) => $isSelected ? "#EFF3FE" : "white"};
     box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1); 
@@ -249,6 +254,7 @@ const Box2 =  styled.button<{$isSelected:boolean}>`
     height:40px;
     display:flex;
     justify-content: center;
+    color: black;
     border:${({$isSelected})=> $isSelected ? "1px solid #007AFF" : "1px solid #E7E7E7"};
     background-color: ${({$isSelected}) => $isSelected ? "#EFF3FE" : "white"};
     box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1); 

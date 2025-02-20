@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import Background from '../assets/background/HomeBackground'; 
 import Slider from '../components/Slider'; 
@@ -13,9 +13,10 @@ import CategotyContainer from '../container/CategoryContainer';
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { useFetchMates, useFetchUniversities } from "../apis/home/homeFetch";
+import { debounce } from "../utils/debounce";
 
-const CATEGORY_TYPES = ["MEAL", "EXERCISE", "STUDY", "ALL"] as const;
-const CATEGORY_LABELS = { MEAL: "혼밥", EXERCISE: "운동", STUDY: "공부", ALL: "전체" } as const;
+const CATEGORY_TYPES = ["혼밥", "운동", "공부", "전체"] as const;
+const CATEGORY_LABELS = { 혼밥: "혼밥", 운동: "운동", 공부: "공부", 전체: "전체" } as const;
 
 
 interface University {
@@ -27,10 +28,12 @@ interface University {
 const HomePage = () => {
 
   const navigate = useNavigate(); // 네비게이션 훅을 사용
-  const [activeCategory, setActiveCategory] = useState<keyof typeof CATEGORY_LABELS>("MEAL");
+  const [activeCategory, setActiveCategory] = useState<keyof typeof CATEGORY_LABELS>("혼밥");
   const [query, setQuery] = useState("");
+  const [search, setSearch] = useState("");
+  const [isTyping, setIsTyping] = useState<boolean>(false);
 
-  const { data: universities, isLoading: isLoadingUniversities } = useFetchUniversities(query);
+  const { data: universities, isLoading: isLoadingUniversities } = useFetchUniversities(search);
   const { data: mates, isLoading: isLoadingMates } = useFetchMates(activeCategory);
 
   const totalCards = 4;
@@ -46,6 +49,21 @@ const HomePage = () => {
     navigate('/looking', { state: { universityName: university.universityName } });
   };
 
+  const debouncedSearch = debounce((query: string) => {
+    setSearch(query);
+    setIsTyping(false); 
+  }, 500);
+
+  useEffect(() => {
+    if (query) {
+      setIsTyping(true); // 타이핑 중일 때는 isTyping 상태를 true로 설정
+      debouncedSearch(query); // query 값이 바뀔 때마다 debouncedSearch 호출
+    } else {
+      setSearch(''); // query 값이 비어있으면 search도 비워줌
+    }
+  }, [query]);
+
+ 
   return (
       <Wrapper>
           <Background /> {/* 배경 삽입 */}
@@ -64,15 +82,15 @@ const HomePage = () => {
                     type="text" 
                     placeholder="학교명 검색" 
                     value={query}
-                    onChange={(e) => setQuery(e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>)=>setQuery(e.target.value)}
                   />
-                  {! isLoadingUniversities && universities?.length > 0 && (
+                  { !isLoadingUniversities && !isTyping && universities?.length > 0 && (
                     <SearchResultContainer>
-                      {universities.map((university:University, index:number) => (
+                      {universities.slice(0, 5).map((university:University, index:number) => (
                         <SearchResultItem 
                           key={university.id ? `${university.id}-${index}` : `university-${index}`} // 🔹 key 수정
                           $isFirst={index === 0}
-                          $isLast={index === universities.length - 1}
+                          $isLast={index === Math.min(5, universities.length) - 1}
                           onClick={() => handleUniversityClick(university)}
                         >
                           <strong>{university.universityName}</strong>
@@ -116,7 +134,7 @@ const HomePage = () => {
                           </MateCardInfo1>
                           <MateCardInfo2>
                             <TagContainer>
-                              <Tag>남성</Tag>
+                              <Tag>{mate.gender}</Tag>
                               <Tag>{mate.studentNumber}</Tag>
                               <Tag>{mate.major}</Tag>
                             </TagContainer>
@@ -263,6 +281,8 @@ const SearchIcon = styled(IoSearchOutline)`
 
 const SearchResultContainer = styled.div`
   width: 81.5%;
+  height: 140px;
+  overflow-y:auto;
   border-radius: 5px;
   margin-top: 10px;
   left: 35px;

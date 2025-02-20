@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import { useState, useContext } from 'react';
 import styled from "styled-components";
 import { FaChevronDown } from "react-icons/fa6";
 import majorList from '../assets/majorList';
@@ -17,7 +17,7 @@ interface ToggleListProps {
     type?:string;
 }
 
-const ToggleList: React.FC<ToggleListProps> = ({button, multi, setModalOpen, type}) =>{
+const ToggleList = ({ button, multi, setModalOpen, type }: ToggleListProps) => {
     const navigate = useNavigate();
     const lists = (type == "study") ? studyLists : majorList;
     function useProfileContext(type: string) {
@@ -30,10 +30,10 @@ const ToggleList: React.FC<ToggleListProps> = ({button, multi, setModalOpen, typ
         }
     }
     const {major, setMajor} = useContext(ProfileInfoContext);
-    const { majors, setMajors } = useProfileContext(type || "");
-    const { subject, setSubject} = useContext(StudyProfileInfoContext)
+    const { majors, setMajors, selectedMajors, setSelectedMajors } = useProfileContext(type || "");
+    const { subject, setSubject, subjectType, setSubjectType} = useContext(StudyProfileInfoContext)
     const [openItems, setOpenItems] = useState<number[]>([]);
-    const [selectedMajors, setSelectedMajors] = useState<string[]>([]); 
+    const [value, setValue] = useState("");
     
     const handleToggle = (id: number) => {
         if (openItems.includes(id)) {
@@ -44,16 +44,17 @@ const ToggleList: React.FC<ToggleListProps> = ({button, multi, setModalOpen, typ
     };
     const handleMajor = (major:string, title:string, all:string[]) =>{
         if (type == "study"){
-            setSubject(major)
+            setSubjectType(title)
+            setSubject(`${title}-${major}`)
         }else{
             if (multi) {
                 if (major === "all") {
-                    if (majors.includes(title)){
-                        setMajors(majors.filter((m) => m !== title));
-                        setSelectedMajors(selectedMajors.filter((m) => !all.includes(m)));
+                    if (selectedMajors.includes(title)){
+                        setMajors(majors.filter((m) => !all.includes(m)));
+                        setSelectedMajors(selectedMajors.filter((m) => m !== title));
                     }else{
-                        setMajors([...majors.filter((m) => !all.includes(m)), title]); 
-                        setSelectedMajors([...selectedMajors, ...all.filter((m) => !selectedMajors.includes(m))]);
+                        setMajors([...majors.filter((m) => all.includes(m)),...all]); 
+                        setSelectedMajors([...selectedMajors.filter((m) => !all.includes(m)), title]);
                     }
                 }else{
                     if (!majors.includes(title)){
@@ -81,38 +82,55 @@ const ToggleList: React.FC<ToggleListProps> = ({button, multi, setModalOpen, typ
                         <FaChevronDown style={{color:"#AAAAAA"}}/>
                     </Toggle>
                     {openItems.includes(item.id) && (
-                        <>  
+                        <div key={`toggle-${item.id}`}>  
                             {multi && 
                                 <Detail 
                                     onClick={()=>handleMajor("all", item.title+" 전체", item.items)} 
-                                    $isSelected={majors.includes(item.title+" 전체")}
+                                    $isSelected={selectedMajors.includes(item.title+" 전체")}
+                                    key={item.id}
                                 >
                                     {`${item.title} 전체`}
                                 </Detail>
                             }
                             {item.items.map((i, index) => (
+                            <div key={`major-wrap-${item.id}-${index}`}>
                                 <Detail
-                                    key={`major-${item.id}-${index}`}
-                                    onClick={() => handleMajor(i, item.title+" 전체", item.items)}
-                                    $isSelected=
-                                    {multi ? selectedMajors.includes(i) : 
-                                    (type == "study" ? subject === i : major === i)}
+                                key={`major-${item.id}-${index}`}
+                                onClick={() => handleMajor(i, item.title, item.items)}
+                                $isSelected={multi ? majors.includes(i) 
+                                    : (type == "study" ? (subject.split('-')[1] === i && subjectType == item.title) : major == i)}
                                 >
-                                    {i}
+                                {i}
                                 </Detail>
+                                {(i == "기타" && (subject.split('-')[1] === i || value != "")) && subjectType == item.title &&
+                                    <Input 
+                                        placeholder="스터디 과목을 입력해주세요!" 
+                                        value={value}
+                                        onChange={(e: React.FocusEvent<HTMLInputElement>)=>setValue(e.target.value)}
+                                        onBlur={(e: React.FocusEvent<HTMLInputElement>) => setSubject(e.target.value)}
+                                    />}
+                            </div>
                             ))}
-                        </>
+                        </div>
                     )}
                 </div>
             ))}
             {button ? (
                 <BtnContainer>
                     <MoveToPrevBtn/>
-                    <Btn onClick={()=>navigate("/setProfile/hobby")}>다음</Btn>
+                    <Btn onClick={()=>navigate("/setProfile/hobby")} $isDisable={major==""}>다음</Btn>
                 </BtnContainer>
             ) : (
 
-                <Btn2 onClick={()=>setModalOpen?.(false)}>저장</Btn2>
+                <Btn2 
+                    onClick={()=>{
+                        setModalOpen?.(false);
+                    }} 
+                    disabled={type == "study" ? subject === "" || subject === "기타" : majors.length === 0}
+                    $isDisable={type == "study" ? subject === "" :  majors.length === 0}
+                >
+                    저장
+                </Btn2>
 
             )}
             </Container>
@@ -124,9 +142,10 @@ export default ToggleList;
 const Container = styled.div`
     width:312px;
     height:500px;
-    margin-top:20px;
     max-height: calc(100vh - 150px);
     position:relative;
+    overflow-y:auto;
+    overflow-x:hidden;
 `;
 const Toggle = styled.button<{$isOpened:boolean;}>`
     width:312px;
@@ -164,13 +183,13 @@ const Detail = styled.button<{$isSelected: boolean}>`
         outline: none;
     }
 `;
-const Btn = styled.button`
+const Btn = styled.button<{$isDisable:boolean}>`
     width:160px;
     height:48px;
-    color:#326DC1;
+    color:${({$isDisable})=>$isDisable ? "#373E4B" : "#326DC1"};
     font-size:15px;
     font-weight:600;
-    background-color:#E7F2FE;
+    background-color:${({$isDisable})=>$isDisable ? "#F4F5F9" : "#E7F2FE"};
     border-radius:100px;
     border:none;
     &:focus {
@@ -178,13 +197,13 @@ const Btn = styled.button`
         border:none;
     }
 `;
-const Btn2 = styled.button`
-    width:312px;
+const Btn2 = styled.button<{$isDisable:boolean}>`
+    width: 312px;
     height:48px;
-    color:#326DC1;
+    color:${({$isDisable})=>$isDisable ? "#373E4B" : "#326DC1"};
     font-size:15px;
     font-weight:600;
-    background-color:#E7F2FE;
+    background-color:${({$isDisable})=>$isDisable ? "#F4F5F9" : "#E7F2FE"};
     margin-top:43px;
     margin-bottom:20px;
     border:none;
@@ -198,4 +217,14 @@ const BtnContainer = styled.div`
     display:flex;
     justify-content:space-between;
     margin: 30px auto;
+`;
+const Input = styled.input`
+    width:100%;
+    height:40px;
+    border: 1px solid #5A5A5A;
+    border-radius: 3px;
+    &:focus {
+        outline: none;
+        border: 1px solid #5A5A5A;
+    }
 `;

@@ -30,7 +30,7 @@ const SetImage = () =>{
             <Container>
                 <Title>원하는 프로필을 선택하세요!</Title>
                 <ImageWrapper>
-                    <ProfileRound src={original} alt="기본본" $isSelected={1==imgNum} onClick={()=>handleSelected(1, original)}/>
+                    <ProfileRound src={original} alt="기본" $isSelected={1==imgNum} onClick={()=>handleSelected(1, original)}/>
                     <ProfileRound src={hamburger} alt="햄버거" $isSelected={2==imgNum} onClick={()=>handleSelected(2, hamburger)}/>
                     <ProfileRound src={study} alt="공부" $isSelected={3==imgNum} onClick={()=>handleSelected(3, study)}/>
                     <ProfileRound src={scarf} alt="목도리" $isSelected={4==imgNum} onClick={()=>handleSelected(4, scarf)}/>
@@ -43,7 +43,7 @@ const SetImage = () =>{
             </Container>
             <BtnContainer>
                 <MoveToPrevBtn/>
-                <MoveNextRoundBtn nextPage={"/setProfile/studentNum"} width={160}/>
+                <MoveNextRoundBtn nextPage={"/setProfile/studentNum"} width={160} disable={imgNum==0}/>
             </BtnContainer>
         </>
     )

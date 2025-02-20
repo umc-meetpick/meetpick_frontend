@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 
 interface ButtonProps {
@@ -47,6 +46,7 @@ const StyledButton = styled.button<{
   cursor: pointer;
   margin-bottom: 14px;
   display: flex;
+  font-family: "Pretendard Variable";
   justify-content: space-between; /* 텍스트와 화살표 사이 간격 */
   align-items: center; /* 수직 가운데 정렬 */
   padding: 0 10px; /* 버튼 내부 여백 */

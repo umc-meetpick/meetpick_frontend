@@ -1,11 +1,13 @@
 import { createContext, useState, ReactNode } from "react";
 
 // 타입 정의
-interface StudyProfileInfoContextType {
+export interface StudyProfileInfoContextType {
     gender: string;
     setGender:(gender: string) => void;
     majors: string[];
     setMajors: (majors: string[]) => void;
+    selectedMajors: string[];
+    setSelectedMajors: (majors: string[]) => void;
     studentNum: string;
     setStudentNum: (studentNum: string) => void;
     ageRange: number[];
@@ -18,14 +20,20 @@ interface StudyProfileInfoContextType {
     setStudyType: (studyType: string) => void;
     subject: string;
     setSubject:(subject: string) => void;
+    subjectType: string;
+    setSubjectType:(subjectT: string) => void;
+    isOnline:boolean;
+    setIsOnline: (o:boolean) => void;
     place:string;
     setPlace: (place:string) => void;
     peopleNum: number;
     setPeopleNum: (peoplenum: number) => void;
-    hobby: string[];
-    setHobby: (hobby: string[]) => void;
+    isHobbySame: boolean;
+    setIsHobbySame: (h:boolean) => void;
     ment: string;
     setMent: (ment: string) => void;
+    studyTime: number;
+    setStudyTime: (s:number) => void;
     dateTime: { [key: string]: string[] };
     setDateTime: (dateTime: { [key: string]: string[] }) => void;
   }
@@ -37,6 +45,8 @@ const defaultValue: StudyProfileInfoContextType = {
     majors: [],
     setMajors: () => {},
     studentNum: "",
+    selectedMajors: [],
+    setSelectedMajors: () => {},
     setStudentNum: () => {},
     ageRange: [],
     setAgeRange: () => {},
@@ -48,14 +58,20 @@ const defaultValue: StudyProfileInfoContextType = {
     setStudyType: () => {},
     subject:"",
     setSubject:() => {},
+    subjectType:"",
+    setSubjectType:() => {},
+    isOnline: true,
+    setIsOnline: () => {},
     place: "",
     setPlace: () => {},
     peopleNum: 0,
     setPeopleNum: () => {},
-    hobby: [],
-    setHobby: () => {},
+    isHobbySame: true,
+    setIsHobbySame: () => {},
     ment: "",
     setMent: () => {},
+    studyTime: 0,
+    setStudyTime: () =>{},
     dateTime: {},
     setDateTime: () => {},
   };
@@ -70,16 +86,20 @@ interface StudyProfileContextProviderProps {
 export function StudyProfileContextProvider({children}:StudyProfileContextProviderProps){
     const [gender, setGender] = useState<string>("");
     const [majors, setMajors] = useState<string[]>([]);
+    const [selectedMajors, setSelectedMajors] = useState<string[]>([]);
     const [studentNum, setStudentNum] = useState<string>("");
     const [ageRange, setAgeRange] = useState<number[]>([])
     const [mbtiList, setMbtiList] = useState<string[]>([]);
     const [mbti, setMbti] = useState<string>("");
     const [studyType, setStudyType] = useState<string>("");
     const [subject, setSubject] = useState<string>("");
+    const [subjectType, setSubjectType] = useState<string>("");
+    const [isOnline, setIsOnline] = useState<boolean>(true);
     const [place, setPlace] = useState<string>("");
     const [peopleNum, setPeopleNum] = useState<number>(0);
-    const [hobby, setHobby] = useState<string[]>([]);
+    const [isHobbySame, setIsHobbySame] = useState<boolean>(true);
     const [ment, setMent] = useState<string>("");
+    const [studyTime, setStudyTime] = useState<number>(0);
     const [dateTime, setDateTime] = useState<{ [key: string]: string[] }>({});
 
     return(
@@ -89,6 +109,8 @@ export function StudyProfileContextProvider({children}:StudyProfileContextProvid
                 setGender,
                 majors,
                 setMajors,
+                selectedMajors,
+                setSelectedMajors,
                 studentNum,
                 setStudentNum,
                 ageRange,
@@ -101,14 +123,20 @@ export function StudyProfileContextProvider({children}:StudyProfileContextProvid
                 setStudyType,
                 subject,
                 setSubject,
+                subjectType,
+                setSubjectType,
+                isOnline,
+                setIsOnline,
                 place,
                 setPlace,
                 peopleNum,
                 setPeopleNum,
-                hobby,
-                setHobby,
+                isHobbySame,
+                setIsHobbySame,
                 ment,
                 setMent,
+                studyTime,
+                setStudyTime,
                 dateTime,
                 setDateTime,
             }}

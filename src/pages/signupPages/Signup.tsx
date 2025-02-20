@@ -1,12 +1,17 @@
-import React, { useState } from "react";
+import  { useState, useEffect } from "react";
 import styled from "styled-components";
 import BasicNavbar from "../../components/navbar/BasicNavbar";
 import AgreeItem from "../../components/SignupAgree";
 import SignupButton from "../../components/button/SignupButton";
 import { Link } from "react-router-dom";
+import getToken from "../../apis/login/getToken";
+import { termsData } from "../../data/termsData";
 
 const Signup = () => {
   const [allChecked, setAllChecked] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState("");
+  const [modalType, setModalType] = useState<"terms"|"privacy"|null>(null);
   const [agreements, setAgreements] = useState({
     age: false,
     terms: false,
@@ -26,8 +31,24 @@ const Signup = () => {
     });
   };
 
+  const handleClickView = (type:"terms" | "privacy") => {
+    setIsModalOpen(true);
+    setModalContent(termsData[type]);
+    setModalType(type);
+  }
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setModalType(null);
+  }
+
+  useEffect(() => {
+    getToken();
+  }, []);
+  
   // 개별 항목 핸들러
   const handleIndividualCheck = (key: keyof typeof agreements) => {
+
     const newAgreements = {
       ...agreements,
       [key]: !agreements[key],
@@ -67,12 +88,14 @@ const Signup = () => {
               hasViewButton={true}
               checked={agreements.terms}
               onChange={() => handleIndividualCheck("terms")}
+              onViewClick ={() => handleClickView("terms")}
             />
             <AgreeItem
               text="(필수) 개인정보 수집 / 이용 동의"
               hasViewButton={true}
               checked={agreements.privacy}
               onChange={() => handleIndividualCheck("privacy")}
+              onViewClick ={() => handleClickView("privacy")}
             />
             <AgreeItem
               text="(선택) 마케팅 수신 동의"
@@ -109,6 +132,20 @@ const Signup = () => {
         </ButtonContainer>
       </Container>
 
+      {isModalOpen && (
+                <ModalOverlay>
+                    <Box>
+                      <ScrollContainer>
+                          <Title>{modalType === "terms"? "이용약관" : "개인정보 처리방침"} </Title>
+                          <Content>{modalContent}</Content>
+                      </ScrollContainer>
+                        <Button>
+                        <CloseButton onClick={handleCloseModal}>닫기</CloseButton>
+                        </Button>
+                    </Box>
+                </ModalOverlay>
+            )}
+
     </>
   );
 };
@@ -141,3 +178,90 @@ const AgreeList = styled.div`
 const SecondAgree = styled.div`
   padding: 8px;
 `;
+
+
+const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  width: 100%;
+  max-width:393px;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.29); /* 반투명 배경 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* 최상위 배치 */
+`;
+
+const Box = styled.div`
+  border-radius:10px;
+  position:relative;
+  top:-20px;
+  background-color:white;
+  height:515px;
+  justify-content:center;
+  max-height:515px;
+  margin-left:2px;
+  justify-content:centter;
+
+   &::-webkit-scrollbar {
+    width: 8px; 
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: rgb(0,0,0,0.1); 
+    border-radius: 4px;
+  }
+  &::-webkit-scrollbar-track {
+    background-color:none;
+  }
+`
+
+const Title = styled.div`
+  height:40px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-weight:700;
+  margin-top:15px;
+  font-size:17px;
+  color:#326DC1;
+`
+const Content = styled.div`
+  padding:0 15px 0 15px;
+  white-space:pre-wrap;
+  font-family: "Pretendard Variable";
+`
+
+const CloseButton = styled.button`
+  width:200px;
+  background-color:#E7F2FE;
+  color:#326DC1;
+  border-radius:20px;
+  font-family: "Pretendard Variable";
+  font-weight:700;
+`
+
+const Button = styled.div`
+  display:flex;
+  justify-content:center;
+  margin-bottom:20px;
+  font-family: "Pretendard Variable";
+`
+
+const ScrollContainer = styled.div`
+  overflow-y:scroll;
+  width:310px;
+  max-height:460px;
+  margin-bottom:10px;
+
+   &::-webkit-scrollbar {
+    width: 8px; 
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: rgb(0,0,0,0.1); 
+    border-radius: 4px;
+  }
+  &::-webkit-scrollbar-track {
+    background-color:none;
+  }
+`

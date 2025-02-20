@@ -1,8 +1,8 @@
-import React from "react";
 import styled from "styled-components";
 import { IoClose } from "react-icons/io5";
 import { useContext,useRef, useState } from "react";
 import { FoodProfileInfoContext } from "../context/foodProfileInfo";
+import majorList from "../assets/majorList";
 
 interface SelectedProps {
     input: string[];
@@ -10,16 +10,25 @@ interface SelectedProps {
 }
 
 const ProfileSelectedBorder:React.FC<SelectedProps> = ({input, multi}) =>{
-    const { majors, setMajors } = useContext(FoodProfileInfoContext);
+    const { selectedMajors, setSelectedMajors, majors, setMajors } = useContext(FoodProfileInfoContext);
     const scrollRef = useRef<HTMLDivElement>(null);
     const [isDragging, setIsDragging] = useState(false);
     const [startX, setStartX] = useState<number | null>(null);
     const handleMajor = (major:string) =>{
         if (multi) {
-            if (majors.includes(major)) {
-                setMajors(majors.filter((m) => m !== major));
+            if (selectedMajors.includes(major)) {
+                setSelectedMajors(selectedMajors.filter((m) => m !== major));
+                setMajors(majors.filter((m) =>  m !== major))
+                if (major.includes("전체")){
+                    majorList.map((college)=>{
+                        if (college.title+" 전체" == major){
+                            setMajors(majors.filter((m) => !college.items.includes(m)))
+                        }
+                    })
+                    setMajors
+                }
             } else {
-                setMajors([...majors, major]);
+                setSelectedMajors([...selectedMajors, major]);
             }
         }
     };
@@ -72,6 +81,8 @@ const Container = styled.div`
     justify-content: flex-start; 
     margin-bottom: 30px;
     gap:10px;
+    font-family: 'Pretendard Variable', sans-serif;
+    font-weight:600;
     cursor: pointer;
     &::-webkit-scrollbar {
         display: none;
