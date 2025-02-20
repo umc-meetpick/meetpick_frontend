@@ -91,9 +91,6 @@ const RecommendBox: React.FC<ButtonProps> = ({
     } catch (error) {
       console.error("❌ 좋아요 요청 실패:", error);
   
-      // ✅ 실패 시 기존 상태로 되돌림
-      //setIsIconClicked(!newState);
-      //localStorage.setItem(favoriteKey, JSON.stringify(!newState));
       window.dispatchEvent(new Event("storage"));
     }
   };

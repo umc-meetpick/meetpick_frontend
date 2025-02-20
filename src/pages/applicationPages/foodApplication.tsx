@@ -11,6 +11,15 @@ import { useJoinRequest } from "../../apis/application/joinRequest";
 import getDetailProfile from "../../apis/detailMemberInfo/getDetailProfile";
 import { useParams } from "react-router-dom";
 
+const weekMap:Record<string,string> = {
+    MON: "월",
+    TUE : "화",
+    WED : "수",
+    THU : "목",
+    FRI : "금",
+    SAT : "토",
+    SUN : "일"
+};
 
 const FoodApplication = () => {
 
@@ -80,6 +89,14 @@ const FoodApplication = () => {
         }
       }, [isError]); // isError 값이 변경될 때 실행
       
+    const formatWeekAndTime = (weekAndTime: {week:string; times:string}[]) => {
+        return weekAndTime.map(({week, times})=> {
+            const koreanWeek = weekMap[week] || week;
+            const formattedTimes = times.split(", ").map(time => `${time}:00`).join(", ");
+            return `${koreanWeek} ${formattedTimes}`
+        }).join(" / ");
+    };
+
 
     return (
         <>
@@ -152,7 +169,7 @@ const FoodApplication = () => {
                 <ApplicationGrayBox text1="취미" text2={profileData?.result?.타입?.hobby} width="318px"/>
             </Mate1>
             <Mate1>
-                <ApplicationGrayBox text1="시간대" text2={profileData?.result?.타입?.weekAndTime} width="318px"/>
+                <ApplicationGrayBox text1="시간대" text2={formatWeekAndTime(profileData?.result?.타입?.weekAndTime || [])} width="318px"/>
             </Mate1>
             <Mate1>
                 <ApplicationGrayBox text1="하고 싶은 말" text2={profileData?.result?.타입?.comment} width="318px"/>
