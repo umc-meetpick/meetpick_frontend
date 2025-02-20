@@ -8,6 +8,14 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Icon } from '@iconify/react';
 import { GoArrowRight } from "react-icons/go";
 import getToken from '../apis/login/getToken';
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+import { useFetchMates } from "../apis/home/homeFetch";
+
+
+
+const CATEGORY_TYPES = ["혼밥", "운동", "공부", "전체"] as const;
+const CATEGORY_LABELS = { 혼밥: "혼밥", 운동: "운동", 공부: "공부", 전체: "전체" } as const;
 
 
 // Modal Overlay
@@ -27,10 +35,13 @@ const ModalOverlay = styled.div`
 
 const LookingMate = () => {
     const [isAlertModalOpen, setIsAlertModalOpen] = useState(false);
+    const [activeCategory, setActiveCategory] = useState<keyof typeof CATEGORY_LABELS>("혼밥");
 
     const navigate = useNavigate();
     const location = useLocation();
     const universityName = location.state?.universityName || "대학교";
+    const { data: mates, isLoading: isLoadingMates } = useFetchMates(activeCategory);
+    
 
     useEffect(() => {
       getToken();
@@ -57,6 +68,12 @@ const LookingMate = () => {
     const handleAccept = () => {
       setIsAlertModalOpen(false);
     };
+
+    const totalCards = 4;
+    const displayedMates = isLoadingMates
+      ? Array(totalCards).fill(null) // 로딩 상태일 때 Skeleton 카드
+      : [...(mates || []), ...Array(totalCards - (mates?.length || 0)).fill(null)];
+
 
     
     return (
@@ -114,36 +131,53 @@ const LookingMate = () => {
                 </Card>
               </Container2> 
             </CardContainer>
+
+            {/* 카테고리별 메이트 카드 */}
             <CategorySection>
-                  <SectionTitle><span>Pick!</span>&nbsp;실시간 메이트 찾아보기🔥</SectionTitle>
-                  <CategoryTabs>
-                      <CategoryTab $active>혼밥</CategoryTab>
-                      <CategoryTab>운동</CategoryTab>
-                      <CategoryTab>공부</CategoryTab>
-                      <CategoryTab>전체</CategoryTab>
-                  </CategoryTabs>
-                  <Slider>
-                    {[1, 2, 3, 4].map((_, index) => (
-                      <div key={index}>
-                        <MateCard>
-                          <MateCardInfo1>
-                            <MateCardTitle>{universityName}</MateCardTitle> 
-                            <MateImage src={mateImage} alt="mate profile" />
-                            </MateCardInfo1>
-                          <MateCardInfo2>
-                            <TagContainer>
-                              <Tag>여성</Tag>
-                              <Tag>20학번</Tag>
-                              <Tag>자연과학계열</Tag>
-                            </TagContainer>
-                            <MateMessage>
-                              같이 고기 구워먹어요~! 🥩
-                            </MateMessage>
-                          </MateCardInfo2>
-                        </MateCard>
-                      </div>
-                    ))}
-                  </Slider>
+              <SectionTitle>
+                <span>Pick!</span>&nbsp;실시간 메이트 찾아보기🔥
+              </SectionTitle>
+
+              {/* 카테고리 탭 */}
+              <CategoryTabs>
+                {CATEGORY_TYPES.map((type) => (
+                  <CategoryTab 
+                    key={type} 
+                    $active={activeCategory === type} 
+                    onClick={() => setActiveCategory(type)}
+                  >
+                    {CATEGORY_LABELS[type]}
+                  </CategoryTab>
+                ))}
+              </CategoryTabs>
+
+              {/* 메이트 카드 리스트 */}
+              <Slider>
+                {displayedMates.map((mate, index) => (
+                  <MateCard key={index}>
+                    {isLoadingMates ? (
+                      <Skeleton height={120} width="100vw" borderRadius={10} />
+                    ) : mate ? (
+                      <>
+                        <MateCardInfo1>
+                          <MateCardTitle>{mate.university}</MateCardTitle>
+                          <MateImage src={mate.userImage || mateImage} alt="mate profile" />
+                        </MateCardInfo1>
+                        <MateCardInfo2>
+                          <TagContainer>
+                            <Tag>{mate.gender}</Tag>
+                            <Tag>{mate.studentNumber}</Tag>
+                            <Tag>{mate.major}</Tag>
+                          </TagContainer>
+                          <MateMessage>{mate.comment || "함께할 메이트를 찾아보세요!"}</MateMessage>
+                        </MateCardInfo2>
+                      </>
+                    ) : (
+                      <NoMateMessage>현재 해당 카테고리에 등록된 메이트가 없습니다.</NoMateMessage>
+                    )}
+                  </MateCard>
+                ))}
+              </Slider>
             </CategorySection>
         </LookingPageWrapper>
 
@@ -405,4 +439,10 @@ const MateMessage = styled.div`
   font-size: 11.5px;
   font-weight: 500;
   color: #60656F;
+`;
+
+const NoMateMessage = styled.p`
+  font-size: 16px;
+  color: #888;
+  margin-top: 20px;
 `;

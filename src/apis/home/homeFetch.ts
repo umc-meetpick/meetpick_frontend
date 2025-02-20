@@ -17,9 +17,9 @@ export const useFetchMates = (activeCategory: string) => {
   return useQuery({
     queryKey: ["mates", activeCategory],
     queryFn: async () => {
-      const validCategory = ["MEAL", "EXERCISE", "STUDY", "ALL"].includes(activeCategory) 
+      const validCategory = ["혼밥", "운동", "공부", "전체"].includes(activeCategory) 
         ? activeCategory 
-        : "MEAL";
+        : "혼밥";
       const { data } = await axiosInstance.get(`/api/home/random-user?mateType=${validCategory}&limit=4`);
       return data.result ? [data.result] : [];
     },
