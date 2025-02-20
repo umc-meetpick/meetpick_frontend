@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Icon } from '@iconify/react';
@@ -7,6 +7,7 @@ import { GoArrowRight } from "react-icons/go";
 import ProfileImg from "../assets/profileImg/프로필2.png"
 import MateProfileImg from "../assets/profileImg/프로필3.png"
 import MatchSlider from "../components/Slider"
+import DialogButton from '../components/button/DialogButton';
 import AcceptButton from '../components/button/AcceptButton';
 import RejectButton from '../components/button/RejectButton';
 import { Link } from 'react-router-dom';
@@ -14,6 +15,10 @@ import BasicNavbar from '../components/navbar/BasicNavbar';
 import Modal from '../components/modal/detailedModal';
 import getMyProfile from '../apis/basicProfile/getMyProfile';
 import { usePatchRequest } from '../apis/matches/patchRequest';
+import useGetRequestMatch from "../apis/matches/getRequestMatch";
+import getContactInfo from '../apis/detailMemberInfo/getContactInfo';
+import axios from 'axios';
+import { IoCloseOutline } from 'react-icons/io5';
 
 // Styled Components
 const Container = styled.div`
@@ -212,44 +217,45 @@ const FooterItem2 = styled.div`
 
 // ButtonGroup Component
 interface ButtonGroupProps {
-  onAccept: () => void;
-  onReject: () => void;
+  handleAccept: (mateId: number) => void;
+  onReject: (mateId: number) => void;
+  mateId: number;
 }
 
 // ButtonGroup Component
-const ButtonGroup: React.FC<ButtonGroupProps> = ({ onAccept, onReject }) => {
+const ButtonGroup: React.FC<ButtonGroupProps> = ({ handleAccept, onReject, mateId }) => {
     
-    const handleAccept = () => {
-      onAccept(); // 수락 핸들러 호출
-    };
-  
-    const handleReject = () => {
-      onReject(); // 거절 핸들러 호출
-    };
-  
-    return (
-      <ButtonGroupContainer>
-        <AcceptButton onClick={handleAccept} width="122px" height="32px" fontSize="14px" fontWeight="550"/>
-        <RejectButton onClick={handleReject} width="122px" height="32px" fontSize="14px" fontWeight="550" />
-      </ButtonGroupContainer>
-    );
-  };
+  return (
+    <ButtonGroupContainer>
+      <AcceptButton onClick={() => handleAccept(mateId)} width="122px" height="32px" fontSize="14px" fontWeight="550"/>
+      <RejectButton onClick={() => onReject(mateId)} width="122px" height="32px" fontSize="14px" fontWeight="550" />
+    </ButtonGroupContainer>
+  );
+};
 
 
 // Main Component
 const MyPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRequestId, setSelectedRequestId] = useState<number | undefined>(undefined);
+  const [isAcceptDialogOpen, setIsAcceptDialogOpen] = useState(false);
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
+  const [kakaoId, setKakaoId] = useState<string | null>(null); // 카카오톡 ID 저장
+  const [isProcessing, setIsProcessing] = useState(false); // 요청 중 여부
   const navigate = useNavigate();
+  const patchRequest = usePatchRequest();
 
-  const { mutate: patchRequest } = usePatchRequest();
+ 
+
+  const { data: matchRequests = [] } = useGetRequestMatch("전체", 0, 10);
 
   const handleViewAllClick = () => {
     navigate('/viewRequest'); // Replace '/viewRequest' with the correct path
   };
 
-  const handleOpenModal = (requestId: number) => {
-    setSelectedRequestId(requestId); // 선택한 요청 ID 저장
+  const handleOpenModal = (mappingId: number) => {
+    console.log("📌 handleOpenModal 호출됨 - mappingId:", mappingId);
+    setSelectedRequestId(mappingId); // 선택한 요청 ID 저장
     setIsModalOpen(true);
   };
 
@@ -260,25 +266,127 @@ const MyPage = () => {
   
   const {data} = getMyProfile();
 
-  const handleAccept = () => {
-  console.log("수락 요청 발생");
-
-  if (selectedRequestId !== undefined) {
-    patchRequest({ isAccepted: true, matchingRequestId: selectedRequestId });
-  } else {
-    console.warn("요청 ID가 없습니다.");
-  }
-  };
   
-  const handleReject = () => {
-    console.log("거절 요청 발생");
+  const handleAccept = (requestId: number) => {
+    const selectedRequest = matchRequests.find((req) => req.id === requestId);
+    if (!selectedRequest) {
+      alert("해당 요청을 찾을 수 없습니다.");
+      return;
+    }
 
-    if (selectedRequestId !== undefined) {
-      patchRequest({ isAccepted: false, matchingRequestId: selectedRequestId });
+    const mappingId = selectedRequest.mappingId; // mappingId 가져오기
+    setSelectedRequestId(mappingId);
+    console.log("수락 버튼 클릭");
+
+    patchRequest.mutate(
+      { isAccepted: true, matchingRequestId: mappingId },
+      {
+        onSuccess: async (data) => {
+          console.log("✅ 수락 요청 성공", data);
+          if (data.isSuccess) {
+            setIsAcceptDialogOpen(false); // 다이얼로그 닫기
+            setIsContactModalOpen(true); // 연락 수단 모달 열기
+
+            try {
+              // API 호출하여 연락처 정보 가져오기
+              const contactInfo = await getContactInfo(requestId);
+              if (contactInfo?.contactName) {
+                setKakaoId(contactInfo.contactName);
+              } else {
+                setKakaoId(null);
+                alert("상대방의 카카오톡 ID를 찾을 수 없습니다.");
+              }
+            } catch (error) {
+              alert("연락처 정보를 불러오지 못했습니다.");
+            }
+          } else {
+            alert(`요청 실패: ${data.result || data.message}`);
+          }
+        },
+        onError: (error: unknown) => {
+          if (axios.isAxiosError(error)) {
+            // AxiosError인 경우
+            console.error("❌ 오류 발생:", error.response?.data || error.message);
+            alert(`서버 요청 중 오류가 발생했습니다: ${error.response?.data?.message || error.message}`);
+          } else {
+            // 일반 Error인 경우
+            console.error("❌ 일반 오류 발생:", error);
+            alert(`오류가 발생했습니다: ${error}`);
+          }
+        },
+        onSettled: () => {
+          console.log("🔄 요청 완료 (isProcessing false로 변경)");
+          setIsProcessing(false);
+        }
+      }
+    );
+  };
+
+  const handleReject = (requestId: number) => {
+    const selectedRequest = matchRequests.find((req) => req.id === requestId);
+  if (!selectedRequest) {
+    alert("해당 요청을 찾을 수 없습니다.");
+    return;
+  }
+
+  const mappingId = selectedRequest.mappingId; // mappingId 가져오기
+  setSelectedRequestId(requestId);
+
+    console.log('🔍 handleReject 호출됨');
+    console.log("📌 matchingRequestId:", mappingId);
+    console.log('📌 isProcessing:', isProcessing);
+
+    setIsProcessing(true);
+    console.log(`🚀 거절 요청 보냄 (matchingRequestId: ${mappingId})`);
+
+    patchRequest.mutate(
+      { isAccepted: false, matchingRequestId: mappingId },
+      {
+        onSuccess: (data) => {
+          console.log("✅ 거절 요청 성공", data);
+          if (data.isSuccess) {
+            alert("매칭 요청이 거절되었습니다.");
+          } else {
+            alert(`요청 실패: ${data.result || data.message}`);
+          }
+        },
+        onError: (error) => {
+          console.error("❌ 오류 발생:", error);
+        },
+        onSettled: () => setIsProcessing(false),
+      }
+    );
+  };
+
+  
+  const handleOpenAcceptDialog = (requestId: number) => {
+    const selectedRequest = matchRequests.find((req) => req.id === requestId);
+    if (!selectedRequest) {
+      alert("해당 요청을 찾을 수 없습니다.");
+      return;
+    }
+
+    const mappingId = selectedRequest.mappingId; // mappingId 가져오기
+    setSelectedRequestId(mappingId); // mappingId를 selectedRequestId에 설정
+    console.log("수락 다이얼로그 열기, mappingId:", mappingId);
+    setIsAcceptDialogOpen(true); // 다이얼로그 열기
+  };
+
+  const handleCloseContact = () => {
+    setIsContactModalOpen(false);
+  };
+
+
+  const handleCopy = () => {
+    if (kakaoId) {
+      navigator.clipboard.writeText(kakaoId);
+      alert("카카오톡 ID가 복사되었습니다.");
     } else {
-      console.warn("요청 ID가 없습니다.");
+      alert("복사할 카카오톡 ID가 없습니다.");
     }
   };
+
+
 
   return (
     <>
@@ -299,7 +407,7 @@ const MyPage = () => {
           </ProfileInfo>
         </ProfileSection>
 
-          {/* Match Request Section */}
+        {/* Match Request Section */}
         <SectionHeader>
           <TitleWrapper>
             <Dot />
@@ -308,24 +416,29 @@ const MyPage = () => {
           <ViewText onClick={handleViewAllClick}>전체보기</ViewText>
         </SectionHeader>
 
+        {/* Match Requests Slider */}
         <MatchSlider>
-          {[1, 2, 3, 4].map((_, index) => (
-              <MatchCard key={index}>
-                  <MatchTitle><Icon icon="fluent-color:sport-16" width="20" height="20" />운동 MATE</MatchTitle>
-                  <MatchCardHeader>
-                      <MatchImage src={MateProfileImg} alt="MatchProfile" />
-                      <MatchInfo>
-                      <MateName>제이시</MateName>
-                      <MateInfo>남성, 20학번, 23살</MateInfo>
-                      <MateInfo>경영학부</MateInfo>
-                      </MatchInfo>
-                      <ChevronButton onClick={() => handleOpenModal(index)} />
-                  </MatchCardHeader>
-                  <ButtonGroup onAccept={handleAccept} onReject={handleReject} />
-              </MatchCard>
-          ))}
-        </MatchSlider>
-        
+        {matchRequests.slice(0, 4).map((match) => (
+          <MatchCard key={match.mappingId}>
+            <MatchTitle>
+              <Icon icon="fluent-color:food-20" width="20" height="20" />
+              {match.mateType} MATE
+            </MatchTitle>
+            <MatchCardHeader>
+              <MatchImage src={match.imageUrl} alt="MatchProfile" />
+              <MatchInfo>
+                <MateName>{match.nickName}</MateName>
+                <MateInfo>
+                  {match.studentNumber}, {match.age}살
+                </MateInfo>
+                <MateInfo>{match.major}</MateInfo>
+              </MatchInfo>
+              <ChevronButton onClick={() => handleOpenModal(match.mappingId)} />
+            </MatchCardHeader>
+            <ButtonGroup handleAccept={handleOpenAcceptDialog} onReject={handleReject} mateId={match.id} />
+          </MatchCard>
+        ))}
+      </MatchSlider>
 
         {/* Footer Menu */}
         <FooterMenu>
@@ -337,11 +450,159 @@ const MyPage = () => {
           </FooterItem2>
         </FooterMenu>
       </Container>
+
       {/* ✅ Modal을 Container 바깥에서 렌더링 */}
       <Modal isOpen={isModalOpen} onClose={handleCloseModal}/>
+
+      {/* 수락 확인 Dialog */}
+      {isAcceptDialogOpen && (
+        <Overlay>
+        <DialogButton
+          isOpen={isAcceptDialogOpen}
+          onCancel={() => setIsAcceptDialogOpen(false)}
+          onConfirm={() => {
+            if (selectedRequestId !== undefined) {
+              console.log("수락 요청 ID:", selectedRequestId); 
+              handleAccept(selectedRequestId);
+            } else {
+              console.error("❌ selectedRequestId가 설정되지 않았습니다.");
+            }
+          }}
+          text="수락하시겠습니까?"
+          cancelText="취소"
+          confirmText="수락"
+          textFontSize="17px"
+          buttonTextColor="rgba(0, 122, 255, 1)"
+          buttonBgColor="rgba(233, 233, 233, 0.1)"
+        />
+        </Overlay>
+      )}
+
+      {/* 연락 수단 모달 */}
+      {isContactModalOpen && (
+        <Overlay>
+          <ContactContainer>
+            <CloseContainer onClick={handleCloseContact}>
+              <IoCloseOutline size={24}/>   
+            </CloseContainer> 
+            <ContactHeader>
+              <ContactTitle>연락 수단</ContactTitle>
+            </ContactHeader>
+            <ContactContent>
+              카카오톡 ID
+              <InputContainer>
+                <KakaoIdInput value={kakaoId || ""} readOnly />
+                <CopyButton onClick={handleCopy}>
+                  복사
+                </CopyButton>
+              </InputContainer>
+            </ContactContent>
+          </ContactContainer>
+        </Overlay>
+      )}
     </>
   );
 };
 
 export default MyPage;
 
+
+
+const Overlay = styled.div`
+  width: calc(100vw);
+  max-width: 393px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3000;
+`;
+
+
+const ContactContainer = styled.div`
+  width: 67%;
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  position: relative;
+`;
+
+const ContactHeader = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 15px;
+  position: relative;
+`;
+
+const ContactTitle = styled.div`
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  text-align: center;
+`;
+
+const CloseContainer = styled.div`
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  width: 19px;
+  height: 19px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+`;
+
+const ContactContent = styled.div`
+  font-size: 14px;
+  font-weight: 400;
+  margin-bottom: 8px;
+  text-align: left;
+`;
+
+const Button = styled.button`
+  width: 40px;
+  padding: 5px 5px;
+  background: #268EFF;
+  color: #FFF;
+  border-radius: 4px;
+  font-size: 13.5px;
+  font-weight: 400;
+  cursor: pointer;
+  background: #268EFF;
+  color: #FFF;
+  text-align: center;
+
+  &:hover {
+    background: "#005FCC" : "#F5F5F5";
+  }
+`;
+
+
+const InputContainer = styled.div`
+  margin-top: 20px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: #FAFAFC;
+  border-radius: 3px;
+`;
+
+const KakaoIdInput = styled.input`
+  padding: 10px;
+  font-size: 14px;
+  border: none;
+  background: none;
+`;
+
+const CopyButton = styled(Button)`
+  flex-shrink: 0;
+`;
