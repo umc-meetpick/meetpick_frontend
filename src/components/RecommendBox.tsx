@@ -142,7 +142,7 @@ const RecommendBox: React.FC<ButtonProps> = ({
         <Keyword2>{text3}</Keyword2>
       </SecondLine>
 
-      <FourthLine $isExpanded={isExpanded} onClick={(e) => {
+      <FourthLine $isExpanded={isExpanded} onClick={(e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation();
         toggleExpand();
       }}>

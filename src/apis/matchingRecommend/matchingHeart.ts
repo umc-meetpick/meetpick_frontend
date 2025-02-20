@@ -31,15 +31,10 @@ export const useDeleteLikeMatch = () => {
 }
 
 export const useFetchLikes = (mateType: string) => {
-    const memberId = "1"; // ✅ 임시로 memberId를 1로 지정
 
     return useQuery({
         queryKey: ["likes", mateType],
         queryFn: async () => {
-            if (!memberId) {
-                console.error("❌ memberId가 없습니다.");
-                return []; // memberId 없으면 빈 배열 반환
-            }
 
             console.log(`📡 찜한 목록 불러오기 요청: /api/matches/like?mateType=${mateType}`);
 
