@@ -6,6 +6,7 @@ import RejectButton from '../button/RejectButton';
 import DialogButton from '../button/DialogButton';
 import MateProfileImg from "../../assets/profileImg/프로필3.png"
 import { usePatchRequest } from '../../apis/matches/patchRequest';
+import getContactInfo from '../../apis/detailMemberInfo/getContactInfo';
 import axios from 'axios';
 
 // Modal Overlay
@@ -262,6 +263,7 @@ const Modal = ({ isOpen, onClose }: ModalProps) => {
   const [isAcceptDialogOpen, setIsAcceptDialogOpen] = useState(false);
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false); // 요청 중 여부
+  const [kakaoId, setKakaoId] = useState<string | null>(null); // 카카오톡 ID 저장
   
   const patchRequest = usePatchRequest();
   const matchingRequestId = 94; // 임의의 값으로 설정
@@ -295,11 +297,19 @@ const Modal = ({ isOpen, onClose }: ModalProps) => {
     patchRequest.mutate(
       { isAccepted: true, matchingRequestId },
       {
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
           console.log("✅ 수락 요청 성공", data);
           if (data.isSuccess) {
             setIsAcceptDialogOpen(false);
             setIsContactModalOpen(true);
+
+            try {
+              // API 호출하여 연락처 정보 가져오기
+              const contactInfo = await getContactInfo(matchingRequestId);
+              setKakaoId(contactInfo.contactName);
+            } catch (error) {
+              alert("연락처 정보를 불러오지 못했습니다.");
+            }
           } else {
             alert(`요청 실패: ${data.result || data.message}`);
           }
@@ -360,8 +370,10 @@ const Modal = ({ isOpen, onClose }: ModalProps) => {
 
 
   const handleCopy = () => {
-    navigator.clipboard.writeText("kakao_id_example");
-    alert("카카오톡 ID가 복사되었습니다.");
+    if (kakaoId) {
+      navigator.clipboard.writeText(kakaoId);
+      alert("카카오톡 ID가 복사되었습니다.");
+    }
   };
 
   if (!isOpen) return null;
@@ -490,7 +502,7 @@ const Modal = ({ isOpen, onClose }: ModalProps) => {
             <ContactContent>
               카카오톡 ID
               <InputContainer>
-                <KakaoIdInput  />
+                <KakaoIdInput value={kakaoId || ""} readOnly />
                 <CopyButton onClick={handleCopy}>
                   복사
                 </CopyButton>
