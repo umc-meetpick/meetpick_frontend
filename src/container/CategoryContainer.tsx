@@ -139,8 +139,17 @@ const Category = styled.button`
   justify-content: center;
   background-color: #fff;
   border-radius: 100px;
+  border: 1px solid transparent;
   font-size: 13px;
   height: 44px; 
   white-space: nowrap; /* 텍스트 줄바꿈 방지 */
   cursor: default; /* 커서가 눌리는 버튼 효과 제거 */
+
+  &:hover {
+    border-color: transparent; /* hover 상태에서도 border 변경되지 않도록 */
+  }
+  &:active {
+    border-color: transparent; /* 클릭 및 포커스 시에도 border 유지 */
+    outline: none; /* 기본 포커스 아웃라인 제거 */
+  }
 `;

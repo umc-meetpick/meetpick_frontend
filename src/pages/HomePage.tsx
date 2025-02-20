@@ -15,8 +15,8 @@ import "react-loading-skeleton/dist/skeleton.css";
 import { useFetchMates, useFetchUniversities } from "../apis/home/homeFetch";
 import { debounce } from "../utils/debounce";
 
-const CATEGORY_TYPES = ["MEAL", "EXERCISE", "STUDY", "ALL"] as const;
-const CATEGORY_LABELS = { MEAL: "혼밥", EXERCISE: "운동", STUDY: "공부", ALL: "전체" } as const;
+const CATEGORY_TYPES = ["혼밥", "운동", "공부", "전체"] as const;
+const CATEGORY_LABELS = { 혼밥: "혼밥", 운동: "운동", 공부: "공부", 전체: "전체" } as const;
 
 
 interface University {
@@ -28,7 +28,7 @@ interface University {
 const HomePage = () => {
 
   const navigate = useNavigate(); // 네비게이션 훅을 사용
-  const [activeCategory, setActiveCategory] = useState<keyof typeof CATEGORY_LABELS>("MEAL");
+  const [activeCategory, setActiveCategory] = useState<keyof typeof CATEGORY_LABELS>("혼밥");
   const [query, setQuery] = useState("");
   const [search, setSearch] = useState("");
   const [isTyping, setIsTyping] = useState<boolean>(false);
@@ -134,7 +134,7 @@ const HomePage = () => {
                           </MateCardInfo1>
                           <MateCardInfo2>
                             <TagContainer>
-                              <Tag>남성</Tag>
+                              <Tag>{mate.gender}</Tag>
                               <Tag>{mate.studentNumber}</Tag>
                               <Tag>{mate.major}</Tag>
                             </TagContainer>
