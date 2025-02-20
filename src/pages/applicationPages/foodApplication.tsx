@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import Navbar from "../../components/navbar/Navbar";
-import ApplicationImage from "../../assets/images/Application.png";
+import ApplicationImage from "../../assets/profileImg/프로필2.png";
 import ApplicationAlert from "../../assets/images/ApplicationAlert.png";
 import ApplicationGrayButton from "../../components/button/ApplicationGrayButton";
 import ApplicationGrayBox from "../../components/ApplicationGrayBox";
