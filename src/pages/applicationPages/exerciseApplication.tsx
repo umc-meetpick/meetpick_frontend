@@ -9,6 +9,7 @@ import { IoHeart } from "react-icons/io5";
 import { FaCheck } from "react-icons/fa6";
 import { useParams } from "react-router-dom";
 import getDetailProfile from "../../apis/detailMemberInfo/getDetailProfile";
+import { useJoinRequest } from "../../apis/application/joinRequest";
 
 const ExerciseApplication = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -20,22 +21,42 @@ const ExerciseApplication = () => {
     });
 
     const {requestId} = useParams();
-    const {data:profileData} = getDetailProfile(Number(requestId));
+    const {data:profileData, isError} = getDetailProfile(Number(requestId));
+
+    const joinRequestMutation = useJoinRequest();
 
     const handleOpenModal = () => setIsModalOpen(true); // 팝업 열기
 
-    const handleConfirm = () => {
-        setMessage("신청이 완료되었습니다.");
+    const handleConfirm = async () => {
+        if (!requestId) {
+            console.error("❌ requestId가 존재하지 않습니다.");
+            setMessage("신청할 수 없습니다.");
+            setIsModalOpen(false);
+            return;
+        }
+
+        try {
+            await joinRequestMutation.mutateAsync({ requestId: Number(requestId) }); // ✅ API 호출
+            setMessage("신청이 완료되었습니다.");
+            setButtonMessage("신청 완료");
+            setButtonStyle({
+                color: "white",
+                background: "#101010",
+            });
+        } catch (error) {
+            console.error("❌ 매칭 참가 신청 실패:", error);
+            setMessage("신청 조건을 다시 확인해주세요!");
+        } finally {
+            setIsModalOpen(false);
+        }
+    };
+
+    const handleError = () => {
+        setMessage("신청 조건을 다시 확인해주세요!");
         setIsModalOpen(false); // 팝업 닫기
-        setButtonMessage("신청 완료"); // 버튼 텍스트 변경
-        setButtonStyle({ // 버튼 스타일 변경
-            color: "white",
-            background: "#101010",
-        });
     };
 
     const handleCancel = () => {
-        setMessage("신청 조건을 다시 확인해주세요!");
         setIsModalOpen(false); // 팝업 닫기
     };
 
@@ -49,6 +70,12 @@ const ExerciseApplication = () => {
             return () => clearTimeout(timer); // 컴포넌트가 unmount 되거나 message가 바뀌면 타이머 클리어
         }
     }, [message]);
+
+    useEffect(() => {
+        if (isError) {
+          handleError(); // 에러 발생 시 handleCancel 실행
+        }
+      }, [isError]); // isError 값이 변경될 때 실행
 
     return (
         <>

@@ -14,7 +14,6 @@ import { useParams } from "react-router-dom";
 
 const FoodApplication = () => {
 
-    const {mutate:joinRequest} = useJoinRequest();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [message, setMessage]= useState<string | null>(null); // 메세지 상태 추가
     const [buttonMessage, setButtonMessage] = useState<string>("메이트 신청하기"); // 버튼에 있는 텍스트
@@ -28,28 +27,30 @@ const FoodApplication = () => {
 
     const handleOpenModal = () => setIsModalOpen(true); // 팝업 열기
 
-    const handleConfirm = () => {
+    const joinRequestMutation = useJoinRequest();
 
-        joinRequest(
-            {requestId : Number(requestId)}, 
-            {
-                onSuccess: (data) => {
-                    console.log("신청 완료!", data);
-                    setMessage("신청이 완료되었습니다.");
-                    setIsModalOpen(false);
-                    setButtonMessage("신청 완료");
-                    setButtonStyle({ // 버튼 스타일 변경
-                        color: "white",
-                        background: "#101010",
-                    });
-                },
-            onError:(error) => {
-                if(error){
-                    handleError();
-                }
-            }
-            }
-        );
+    const handleConfirm = async () => {
+        if (!requestId) {
+            console.error("❌ requestId가 존재하지 않습니다.");
+            setMessage("신청할 수 없습니다.");
+            setIsModalOpen(false);
+            return;
+        }
+
+        try {
+            await joinRequestMutation.mutateAsync({ requestId: Number(requestId) }); // ✅ API 호출
+            setMessage("신청이 완료되었습니다.");
+            setButtonMessage("신청 완료");
+            setButtonStyle({
+                color: "white",
+                background: "#101010",
+            });
+        } catch (error) {
+            console.error("❌ 매칭 참가 신청 실패:", error);
+            setMessage("신청 조건을 다시 확인해주세요!");
+        } finally {
+            setIsModalOpen(false);
+        }
     };
 
     const handleError = () => {
