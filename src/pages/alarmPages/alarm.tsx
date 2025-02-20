@@ -40,7 +40,7 @@ const Alarm = () => {
 
     // API 데이터 필터링 수정 
     const filteredAlerts = alerts?.filter((alert : AlarmData) => {
-        selectedCategory === "전체" || alert.mateType === selectedCategory
+        return selectedCategory === "전체" || alert.mateType === selectedCategory
     });
 
     return (
@@ -138,7 +138,7 @@ const AlertList = styled.div`
 `;
 
 const AlertItem = styled.div`
-    display: flex;
+    //display: flex;
     flex-direction: column;
     padding: 10px 10px 5px 20px;
     background: #f8f9fa;
