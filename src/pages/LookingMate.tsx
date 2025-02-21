@@ -363,7 +363,7 @@ const MateCard = styled.div`
   border: 1px solid #d9d9d9;
   border-radius: 12px;
   padding: 0 15px;
-  margin: 20px 0;
+  margin: 19px 0;
   display: flex;
   align-items: left;
   flex-direction: row; /* 세로로 배치 */
@@ -386,7 +386,7 @@ const MateCardInfo2 = styled.div`
 const MateCardTitle = styled.h3`
   margin-top: 20px;
   font-family: "Pretendard Variable";
-  font-size: 13px;
+  font-size: 11.9px;
   font-weight: 600;
   margin-bottom: 5px;
   text-align: center; /* 제목을 왼쪽 정렬 */

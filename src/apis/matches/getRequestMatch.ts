@@ -2,6 +2,9 @@ import { useQuery } from "@tanstack/react-query";
 import axiosInstance from "../axiosInstance";
 
 interface MatchRequest {
+  imageUrl: string;
+  nickName: string;
+  gender: string;
   mappingId: number;
   memberSecondProfileId: number;
   studentNumber: string;
