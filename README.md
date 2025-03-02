@@ -37,9 +37,13 @@
 </table>
 
 ## 역할 분담 
+✅ 탱/서태영(팀장)
+ 
+✅ 마리/임하리 
 
+✅ 이서/이서윤 
 
-## 기술 스택 👩🏻‍💻
+## ✨ 기술 스택 
 <div>
 <img src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white">
 <img src="https://img.shields.io/badge/css3-1572B6?style=for-the-badge&logo=css3&logoColor=white">
@@ -47,7 +51,7 @@
 <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black">
 </div>
 
-## Cowork Tools 
+## 🌐 Cowork Tools 
 <div>
 <img src="https://img.shields.io/badge/discord-5865F2?style=for-the-badge&logo=discord&logoColor=white"/>
 <img src="https://img.shields.io/badge/notion-E53888?style=for-the-badge&logo=notion&logoColor=white"/>
