@@ -1,6 +1,7 @@
 # meetpick_frontend
 ![스크린샷 2025-02-23 184523](https://github.com/user-attachments/assets/142fbc8e-20c3-404e-bf09-b7e392da197a)
 
+
 ## 팀원(Contributors)
 #### :loudspeaker: 팀명: 미기피기
 <table>
