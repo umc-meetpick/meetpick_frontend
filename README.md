@@ -9,8 +9,7 @@
 ## 개발 기간 
 > 2025.01.04 ~ 2025.02.21
 
-## 👥팀원(Contributors)
-#### 팀명: 미기피기
+## 👥FE 팀원(Contributors)
 <table>
   <tbody>
     <tr>
@@ -30,9 +29,9 @@
       </td>
     </tr>
     <tr>
-      <td align="center">서태영</td>
-      <td align="center">임하리</td>
-      <td align="center">이서윤</td>
+      <td align="center">탱/서태영</td>
+      <td align="center">마리/임하리</td>
+      <td align="center">이서/이서윤</td>
     </tr>
   </tbody>
 </table>
