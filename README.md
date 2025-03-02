@@ -1,6 +1,35 @@
 # meetpick_frontend
 ![스크린샷 2025-02-23 184523](https://github.com/user-attachments/assets/142fbc8e-20c3-404e-bf09-b7e392da197a)
 
+## 팀원(Contributors)
+#### :loudspeaker: 팀명: 미기피기
+<table>
+  <tbody>
+    <tr>
+      <td align="center">
+        <a href="https://github.com/kelly121212">
+          <img src="https://github.com/taeyoung0524.png" width="100">
+        </a>
+      <td align="center">
+        <a href="https://github.com/Limhari0301">
+          <img src="https://github.com/Limhari0301.png" width="100">
+        </a>
+      </td>
+      <td align="center">
+        <a href="https://github.com/seoyoon127">
+          <img src="https://github.com/seoyoon127.png" width="100">
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">서태영</td>
+      <td align="center">임하리</td>
+      <td align="center">이서윤</td>
+    </tr>
+  </tbody>
+</table>
+
+
 
 ## 🎯 Commit convention
 ```
