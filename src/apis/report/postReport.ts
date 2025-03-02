@@ -7,6 +7,13 @@ interface ReportRequestParams {
   reportType: string;
 }
 
+type CommonReseponse<T> = {
+  isSuccess:boolean;
+  code: string;
+  message:string
+  result: T
+}
+
 interface ReportResponse {
   isSuccess: boolean;
   code: string;

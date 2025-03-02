@@ -85,7 +85,8 @@ const router = createBrowserRouter([
           },
           {
             path:'setProfile/image',
-            element:<SetImage/>
+            element:<SetImage/>,
+        
           },
           {
             path:'setProfile/studentNum',

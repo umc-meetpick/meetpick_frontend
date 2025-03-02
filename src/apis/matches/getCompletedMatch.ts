@@ -30,7 +30,8 @@ export const useFetchCompletedMatch = (
         age: item.age, // API에서 받은 값
         major: item.major, // API에서 받은 값
         studentId: item.studentNumber, // API에서 받은 값
-        avatar: "", // API에서 제공 안 하면 기본 값 설정
+        imageUrl: item.imageUrl,
+        nickName: item.nickName,
         date: item.createdAt.substring(2, 10), // "24.01.07" 형식 변환
       }));
 
